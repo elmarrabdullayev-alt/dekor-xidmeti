@@ -1,288 +1,303 @@
-import React, { useState } from 'react';
-import { store } from '../lib/store';
-import { DecorItem, DecorCategorySlug, RegionalSuitability, CustomerInquiry } from '../types';
-import { CATEGORIES } from '../data/categories';
-import { REGIONAL_LOCATIONS } from '../data/regionalData';
+import React, { useState, useEffect } from 'react';
 import {
-  generateDecorSlug,
-  generateSeoTitle,
-  generateMetaDescription,
-  generateImageAltText,
-  generateSeoFileName
-} from '../lib/seoHelper';
-import { processUploadedImage, formatFileSize, ProcessedImage } from '../lib/imageOptimizer';
-import {
-  Plus, Edit2, Trash2, Check, X, Upload, Eye, Star,
-  Lock, LogOut, Phone, MessageCircle, Settings, Image as ImageIcon,
-  Sparkles, CheckCircle2, AlertCircle, FileText, Building2
+  Lock, LogOut, Upload, RefreshCw, Trash2, Star, Check, ArrowUp, ArrowDown,
+  Edit3, ExternalLink, Image as ImageIcon, Sparkles, AlertCircle, Eye,
+  Building2, Flower2, Layers, Grid, MapPin, Gift, ChevronRight
 } from 'lucide-react';
-import { AdminVenuesSection } from '../components/admin/AdminVenuesSection';
+import { ImageSection, ManagedImage } from '../types';
+import { imageService } from '../lib/imageService';
+import { CATEGORIES } from '../data/categories';
+import { INITIAL_DECORS } from '../data/initialDecors';
+import { INITIAL_VENUES } from '../data/initialVenues';
+import { ImageUploadModal } from '../components/admin/ImageUploadModal';
+import { ImageReplaceModal } from '../components/admin/ImageReplaceModal';
+import { ImageMetaModal } from '../components/admin/ImageMetaModal';
+import { SeoHead } from '../components/layout/SeoHead';
 
 interface AdminPageProps {
   navigate: (path: string) => void;
   currentPath?: string;
 }
 
-export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    () => sessionStorage.getItem('dreamart_admin_auth') === 'true' || sessionStorage.getItem('aurora_admin_auth') === 'true'
-  );
-  const [password, setPassword] = useState('');
-  const [authError, setAuthError] = useState(false);
+interface TargetItem {
+  id: string;
+  name: string;
+  subtitle?: string;
+}
 
-  // Tabs: 'decors' | 'venues' | 'inquiries' | 'settings'
-  const [activeTab, setActiveTab] = useState<'decors' | 'venues' | 'inquiries' | 'settings'>(() => {
-    if (currentPath?.startsWith('/admin/restoranlar')) return 'venues';
-    return 'decors';
+const SECTION_CONFIG: Array<{
+  id: ImageSection;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
+  getTargets: () => TargetItem[];
+}> = [
+  {
+    id: 'home_hero',
+    label: 'Ana Səhifə Hero',
+    icon: Sparkles,
+    description: 'Ana səhifənin ən yuxarı 16:9 böyük banner slaydları (mobil və masaüstü fokal nöqtə dəstəyi ilə).',
+    getTargets: () => [
+      { id: 'hero-slide-1', name: 'Slayd 1: Zövqlü Dekor Həlləri', subtitle: 'Əsas açılış slayd' },
+      { id: 'hero-slide-2', name: 'Slayd 2: Müasir Zəriflik', subtitle: 'İkinci zəriflik slayd' },
+      { id: 'hero-slide-3', name: 'Slayd 3: Böyük Zallar və İnstalyasiyalar', subtitle: 'Üçüncü genişmiqyaslı slayd' }
+    ]
+  },
+  {
+    id: 'category_cover',
+    label: 'Xidmət Kateqoriyaları',
+    icon: Layers,
+    description: 'Xidmətlər kataloqu və SEO səhifələrinin əsas təqdimat örtük şəkilləri.',
+    getTargets: () => CATEGORIES.map(c => ({
+      id: c.slug,
+      name: c.name,
+      subtitle: c.shortDescription
+    }))
+  },
+  {
+    id: 'decor_project',
+    label: 'Dekor Layihələri',
+    icon: Flower2,
+    description: 'Dekor layihələrinin kart örtük şəkli və ətraflı layihə foto qalereyası.',
+    getTargets: () => INITIAL_DECORS.map(d => ({
+      id: d.id,
+      name: d.name,
+      subtitle: `${d.city} • ${d.category}`
+    }))
+  },
+  {
+    id: 'venue_project',
+    label: 'Restoran / Məkanlar',
+    icon: Building2,
+    description: 'Məkanların örtük şəkli və DreamArt Events real layihə foto sübutları qalereyası.',
+    getTargets: () => INITIAL_VENUES.map(v => ({
+      id: v.slug,
+      name: v.name,
+      subtitle: `${v.city}${v.district ? ', ' + v.district : ''}`
+    }))
+  },
+  {
+    id: 'xonca_service',
+    label: 'Xonça Xidməti',
+    icon: Gift,
+    description: 'Xonça xidməti bölməsinin vitrin və təqdimat fotoşəkilləri.',
+    getTargets: () => [
+      { id: 'xonca-main', name: 'Əsas Xonça Vitrini', subtitle: 'Xonça bölməsi örtük şəkli' },
+      { id: 'xonca-nisan', name: 'Nişan Xonçaları', subtitle: 'Nişan üçün eksklüziv dəst' },
+      { id: 'xonca-xina', name: 'Xına Xonçaları', subtitle: 'Xına və şirniyyat kompozisiyası' }
+    ]
+  },
+  {
+    id: 'portfolio_lookbook',
+    label: 'Portfolio Vitrini',
+    icon: Grid,
+    description: 'Portfolio və Lookbook səhifəsində nümayiş olunan işlərin şəkilləri.',
+    getTargets: () => [
+      { id: 'portfolio-showcase', name: 'Əsas Lookbook Vitrini', subtitle: 'Bütün seçilmiş işlər' }
+    ]
+  },
+  {
+    id: 'regional_service',
+    label: 'Region Xidməti',
+    icon: MapPin,
+    description: 'Bölgələr və rayonlar tədbir loqistikası bölməsinin vizualı.',
+    getTargets: () => [
+      { id: 'regional-main', name: 'Azərbaycan Regionları Xidməti', subtitle: 'Bütün rayonlar üzrə dekor tərtibatı' }
+    ]
+  }
+];
+
+export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) => {
+  // Auth state
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => imageService.hasToken());
+  const [passwordInput, setPasswordInput] = useState('');
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  // Section selection
+  const [activeSection, setActiveSection] = useState<ImageSection>(() => {
+    if (currentPath?.includes('restoranlar')) return 'venue_project';
+    if (currentPath?.includes('dekorlar')) return 'decor_project';
+    return 'home_hero';
   });
 
-  // Decor List State
-  const [decors, setDecors] = useState<DecorItem[]>(() => store.getDecors());
-  const [inquiries, setInquiries] = useState<CustomerInquiry[]>(() => store.getInquiries());
-  const [settings, setSettings] = useState(() => store.getSettings());
+  // Target selection
+  const currentSectionConfig = SECTION_CONFIG.find(s => s.id === activeSection) || SECTION_CONFIG[0];
+  const targets = currentSectionConfig.getTargets();
+  const [activeTargetId, setActiveTargetId] = useState<string>(() => targets[0]?.id || '');
 
-  // Form modal state for Add / Edit
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
-
-  // Decor Form Data
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState<DecorCategorySlug>('toy-dekoru');
-  const [city, setCity] = useState('Bakı');
-  const [style, setStyle] = useState('Klassik Lüks');
-  const [regionalSuitability, setRegionalSuitability] = useState<RegionalSuitability>('regional');
-  const [shortDescription, setShortDescription] = useState('');
-  const [fullDescription, setFullDescription] = useState('');
-  const [includedInput, setIncludedInput] = useState('dekor konsepti, arxa fon, gül kompozisiyası, masa dekoru, quraşdırma, sökülmə');
-  const [isFeatured, setIsFeatured] = useState(false);
-  const [isPublished, setIsPublished] = useState(true);
-  const [priceDisplay, setPriceDisplay] = useState('');
-
-  // SEO Fields (auto-generated but editable)
-  const [slug, setSlug] = useState('');
-  const [seoTitle, setSeoTitle] = useState('');
-  const [metaDescription, setMetaDescription] = useState('');
-  const [imageAltText, setImageAltText] = useState('');
+  // Keep target ID in sync when section changes
+  useEffect(() => {
+    const newTargets = currentSectionConfig.getTargets();
+    if (!newTargets.some(t => t.id === activeTargetId)) {
+      setActiveTargetId(newTargets[0]?.id || '');
+    }
+  }, [activeSection]);
 
   // Images state
-  const [mainImage, setMainImage] = useState<string>('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85');
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
-  const [uploadProcessing, setUploadProcessing] = useState(false);
-  const [lastOptimization, setLastOptimization] = useState<ProcessedImage | null>(null);
+  const [images, setImages] = useState<ManagedImage[]>(() => imageService.getImages());
+  const [actionNotice, setActionNotice] = useState<string | null>(null);
 
-  // Handle Login
-  const handleLogin = (e: React.FormEvent) => {
+  // Modals state
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [replacingImage, setReplacingImage] = useState<ManagedImage | null>(null);
+  const [editingMetaImage, setEditingMetaImage] = useState<ManagedImage | null>(null);
+
+  // Verify server token on mount
+  useEffect(() => {
+    if (isAuthenticated) {
+      imageService.verifyAdminSession().then(valid => {
+        if (!valid) {
+          setIsAuthenticated(false);
+        }
+      });
+    }
+  }, []);
+
+  // Subscribe to image changes
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setImages(imageService.getImages());
+    });
+    return () => unsub();
+  }, []);
+
+  // Filter images for active section and target
+  const currentTarget = targets.find(t => t.id === activeTargetId) || targets[0];
+  const activeImages = images
+    .filter(img => img.section === activeSection && img.targetId === activeTargetId)
+    .sort((a, b) => a.order - b.order);
+
+  // Notice helper
+  const showNotice = (msg: string) => {
+    setActionNotice(msg);
+    setTimeout(() => setActionNotice(null), 3500);
+  };
+
+  // Login handler
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Default admin code for demo: admin123 or dreamart2026 or admin
-    if (password === 'admin123' || password === 'dreamart2026' || password === 'aurora2026' || password === 'admin') {
-      sessionStorage.setItem('dreamart_admin_auth', 'true');
-      setIsAuthenticated(true);
-      setAuthError(false);
-    } else {
-      setAuthError(true);
+    setAuthError(null);
+    setIsLoggingIn(true);
+
+    try {
+      const res = await imageService.loginAdmin(passwordInput);
+      if (res.success) {
+        setIsAuthenticated(true);
+        setPasswordInput('');
+      } else {
+        setAuthError(res.error || 'Şifrə yalnışdır');
+      }
+    } catch (err: any) {
+      setAuthError(err.message || 'Daxil olarkən xəta baş verdi');
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('dreamart_admin_auth');
-    sessionStorage.removeItem('aurora_admin_auth');
+    imageService.logoutAdmin();
     setIsAuthenticated(false);
   };
 
-  // Auto-generate SEO fields when Name, Category or City changes
-  const handleNameChange = (val: string) => {
-    setName(val);
-    const catName = CATEGORIES.find(c => c.slug === category)?.name || 'Dekor';
-    const autoSlug = generateDecorSlug(val, category, city);
-    setSlug(autoSlug);
-    setSeoTitle(generateSeoTitle(val, catName, city));
-    setMetaDescription(generateMetaDescription(val, catName, city, style));
-    setImageAltText(generateImageAltText(val, catName, city));
-  };
-
-  // Open modal for new decor
-  const openNewForm = () => {
-    setEditingId(null);
-    setName('');
-    setCategory('toy-dekoru');
-    setCity('Bakı');
-    setStyle('Klassik Lüks');
-    setRegionalSuitability('regional');
-    setShortDescription('');
-    setFullDescription('');
-    setIncludedInput('dekor konsepti, arxa fon, gül kompozisiyası, masa dekoru, quraşdırma, sökülmə');
-    setIsFeatured(false);
-    setIsPublished(true);
-    setPriceDisplay('');
-    setMainImage('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85');
-    setGalleryImages([]);
-    setSlug('');
-    setSeoTitle('');
-    setMetaDescription('');
-    setImageAltText('');
-    setLastOptimization(null);
-    setIsFormOpen(true);
-  };
-
-  // Open modal for editing existing decor
-  const openEditForm = (item: DecorItem) => {
-    setEditingId(item.id);
-    setName(item.name);
-    setCategory(item.category);
-    setCity(item.city);
-    setStyle(item.style || '');
-    setRegionalSuitability(item.regionalSuitability);
-    setShortDescription(item.shortDescription);
-    setFullDescription(item.fullDescription || '');
-    setIncludedInput(item.includedServices.join(', '));
-    setIsFeatured(item.isFeatured);
-    setIsPublished(item.status === 'published' || item.isPublished === true);
-    setPriceDisplay(item.priceDisplay || '');
-    setMainImage(item.mainImage);
-    setGalleryImages(item.galleryImages || []);
-    setSlug(item.slug);
-    setSeoTitle(item.seoTitle);
-    setMetaDescription(item.metaDescription);
-    setImageAltText(item.imageAltText);
-    setLastOptimization(null);
-    setIsFormOpen(true);
-  };
-
-  // Save Decor (Create or Update)
-  const handleSaveDecor = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) return;
-
-    const catObj = CATEGORIES.find(c => c.slug === category);
-    const includedArr = includedInput
-      .split(',')
-      .map(s => s.trim())
-      .filter(Boolean);
-
-    const decorData: Omit<DecorItem, 'id' | 'createdAt' | 'updatedAt'> = {
-      name,
-      slug: slug || generateDecorSlug(name, category, city),
-      category,
-      categoryName: catObj?.name || 'Dekor',
-      city,
-      style,
-      regionalSuitability,
-      shortDescription,
-      fullDescription,
-      includedServices: includedArr,
-      mainImage,
-      galleryImages,
-      isFeatured,
-      isPublished,
-      status: isPublished ? 'published' : 'draft',
-      regionalService: regionalSuitability !== 'local',
-      seoTitle: seoTitle || generateSeoTitle(name, catObj?.name || 'Dekor', city),
-      metaDescription: metaDescription || generateMetaDescription(name, catObj?.name || 'Dekor', city, style),
-      imageAltText: imageAltText || generateImageAltText(name, catObj?.name || 'Dekor', city),
-      priceDisplay
-    };
-
-    if (editingId) {
-      store.updateDecor(editingId, decorData);
-    } else {
-      store.addDecor(decorData);
-    }
-
-    setDecors(store.getDecors());
-    setIsFormOpen(false);
-  };
-
-  // Delete Decor
-  const handleDelete = (id: string, decorName: string) => {
-    if (window.confirm(`"${decorName}" layihəsini silmək istədiyinizdən əminsiniz?`)) {
-      store.deleteDecor(id);
-      setDecors(store.getDecors());
-    }
-  };
-
-  // Client-Side Image Upload & Compression Pipeline
-  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>, isGallery = false) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-
-    setUploadProcessing(true);
+  // Image actions
+  const handleSetCover = async (imgId: string) => {
     try {
-      const file = files[0];
-      const seoFileName = generateSeoFileName(name || 'dekor', category, city);
-      const optimized = await processUploadedImage(file, {
-        maxWidth: 1600,
-        maxHeight: 1200,
-        quality: 0.84,
-        targetFilename: seoFileName
-      });
-
-      setLastOptimization(optimized);
-
-      if (isGallery) {
-        setGalleryImages(prev => [...prev, optimized.dataUrl]);
-      } else {
-        setMainImage(optimized.dataUrl);
-      }
-    } catch (err) {
-      console.error('Image optimization failed', err);
-      alert('Şəkil emalı zamanı xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.');
-    } finally {
-      setUploadProcessing(false);
+      await imageService.setCoverImage(imgId);
+      showNotice('Qapaq şəkli uğurla yeniləndi!');
+    } catch (err: any) {
+      alert(err.message || 'Xəta baş verdi');
     }
   };
 
-  // If not logged in, render PIN/Password Screen
+  const handleMove = async (imgId: string, direction: 'up' | 'down') => {
+    try {
+      await imageService.reorderImage(imgId, direction);
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
+
+  const handleDelete = async (imgId: string) => {
+    if (!window.confirm('Bu şəkli silmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarılmır.')) {
+      return;
+    }
+
+    try {
+      await imageService.deleteImage(imgId);
+      showNotice('Şəkil uğurla silindi');
+    } catch (err: any) {
+      alert(err.message || 'Şəkil silinərkən xəta baş verdi');
+    }
+  };
+
+  // Render Login View if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-[75vh] flex items-center justify-center bg-[#F6F2EC] px-4 py-16">
-        <div className="w-full max-w-md bg-[#FCFBF8] border border-[#EAE2D5] rounded-xs shadow-lg p-8 text-center">
-          <div className="w-12 h-12 rounded-full bg-[#B8925A]/15 text-[#B8925A] flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-6 h-6" />
+      <div className="min-h-screen bg-[#0E0E0E] text-white flex flex-col justify-center items-center px-4 py-12">
+        <SeoHead
+          title="DreamArt Events - Şəkil İdarəetmə Girişi"
+          description="DreamArt Events minimal şəkil idarəetmə paneli"
+          noindex={true}
+        />
+        <div className="w-full max-w-md bg-[#161616] border border-[#2B2B2B] rounded-2xl p-6 sm:p-8 shadow-2xl">
+          <div className="flex flex-col items-center text-center mb-6">
+            <div className="w-14 h-14 rounded-2xl bg-[#C5A262]/10 border border-[#C5A262]/30 flex items-center justify-center text-[#C5A262] mb-3">
+              <Lock className="w-7 h-7" />
+            </div>
+            <h1 className="text-xl font-bold text-[#F5F5F7]">DreamArt Events</h1>
+            <p className="text-xs text-neutral-400 mt-1">
+              Şəkil İdarəetmə Paneli (Təhlükəsiz Giriş)
+            </p>
           </div>
-          <span className="text-[10px] uppercase tracking-[0.3em] text-[#C5A059] block mb-1">
-            DREAMART EVENTS
-          </span>
-          <h1 className="font-serif text-2xl text-[#1F1A17] font-normal mb-2">
-            İdarəetmə Paneli
-          </h1>
-          <p className="text-xs text-[#7A6E63] mb-6">
-            Yeni dekorasiya əlavə etmək və ya məlumatları yeniləmək üçün daxil olun.
-          </p>
+
+          {authError && (
+            <div className="mb-4 p-3 rounded-xl bg-red-950/60 border border-red-800/60 text-red-300 text-xs flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{authError}</span>
+            </div>
+          )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
+              <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+                Admin Şifrəsi:
+              </label>
               <input
+                id="admin-password-input"
                 type="password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setAuthError(false);
-                }}
-                placeholder="Giriş şifrəsi (məs: admin)"
-                className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm px-4 py-2.5 text-sm text-[#1F1A17] focus:outline-hidden focus:border-[#B8925A]"
+                required
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Şifrənizi daxil edin..."
+                className="w-full px-4 py-3 text-sm bg-[#1E1E1E] border border-[#333] rounded-xl text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#C5A262] transition"
               />
-              {authError && (
-                <p className="text-xs text-red-600 mt-1.5 flex items-center justify-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  <span>Şifrə yanlışdır</span>
-                </p>
-              )}
             </div>
 
             <button
+              id="admin-login-button"
               type="submit"
-              className="w-full bg-[#B8925A] hover:bg-[#A37E48] text-white py-2.5 rounded-full text-xs font-medium tracking-wider transition-colors cursor-pointer"
+              disabled={isLoggingIn}
+              className="w-full py-3 px-4 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-sm transition shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
-              Daxil Ol
+              {isLoggingIn ? (
+                <>Daxil olunur...</>
+              ) : (
+                <>
+                  <Lock className="w-4 h-4" />
+                  Daxil ol
+                </>
+              )}
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-[#EFE8DD]">
+          <div className="mt-6 pt-4 border-t border-[#252525] text-center">
             <button
               onClick={() => navigate('/')}
-              className="text-xs text-[#8C7A6B] hover:text-[#1F1A17]"
+              className="text-xs text-neutral-400 hover:text-[#C5A262] transition flex items-center justify-center gap-1 mx-auto"
             >
-              ← Sayta qayıt
+              <ExternalLink className="w-3.5 h-3.5" />
+              Sayta qayıt
             </button>
           </div>
         </div>
@@ -291,623 +306,366 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   }
 
   return (
-    <div className="min-h-screen bg-[#F6F2EC] text-[#1F1A17] pb-20">
-      {/* Top Admin Navigation Bar */}
-      <header className="bg-[#1C1714] text-[#FAF8F5] border-b border-[#352B24] sticky top-0 z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <span className="font-serif text-lg tracking-widest text-[#FAF8F5] uppercase">
-              DREAMART
-            </span>
-            <span className="text-[10px] tracking-wider bg-[#C5A059] text-[#0B0B0B] font-semibold px-2 py-0.5 rounded-xs uppercase">
-              Admin
-            </span>
-          </div>
+    <div className="min-h-screen bg-[#0D0D0D] text-white">
+      <SeoHead
+        title="Admin - DreamArt Events Şəkil İdarəetmə"
+        description="Minimal Şəkil İdarəetmə Paneli"
+        noindex={true}
+      />
 
-          <div className="flex items-center space-x-4 text-xs">
-            <button
-              onClick={() => navigate('/')}
-              className="text-[#D8D0C5] hover:text-white transition-colors"
-            >
-              Sayta bax
-            </button>
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center space-x-1 text-[#A6998A] hover:text-red-400 transition-colors"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>Çıxış</span>
-            </button>
+      {/* Top Navbar */}
+      <header className="sticky top-0 z-40 bg-[#141414]/95 backdrop-blur-md border-b border-[#242424] px-4 sm:px-8 py-3.5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-[#C5A262]/15 border border-[#C5A262]/30 flex items-center justify-center text-[#C5A262]">
+            <ImageIcon className="w-5 h-5" />
           </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm sm:text-base text-[#F5F5F7]">DreamArt Events</span>
+              <span className="px-2 py-0.5 rounded-full bg-[#C5A262]/20 border border-[#C5A262]/40 text-[#C5A262] text-[10px] font-medium uppercase tracking-wider">
+                Yalnız Şəkillər
+              </span>
+            </div>
+            <p className="text-[11px] text-neutral-400 hidden sm:block">
+              Mobil-dostu sürətli WebP yükləmə və şəkil idarəetməsi
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            id="admin-view-site-btn"
+            onClick={() => navigate('/')}
+            className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 text-xs flex items-center gap-1.5 transition"
+          >
+            <Eye className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Sayta bax</span>
+          </button>
+          <button
+            id="admin-logout-btn"
+            onClick={handleLogout}
+            className="px-3 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/60 border border-red-800/40 text-red-300 text-xs flex items-center gap-1.5 transition"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Çıxış</span>
+          </button>
         </div>
       </header>
 
-      {/* Main Admin Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        {/* Admin Navigation Tabs & Action */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div className="flex items-center space-x-2 border-b sm:border-b-0 border-[#E5DACD] pb-2 sm:pb-0 overflow-x-auto">
-            <button
-              onClick={() => {
-                setActiveTab('decors');
-                navigate('/admin');
-              }}
-              className={`px-4 py-2 text-xs sm:text-sm font-medium tracking-wide rounded-sm transition-colors whitespace-nowrap ${
-                activeTab === 'decors'
-                  ? 'bg-[#B8925A] text-white shadow-xs'
-                  : 'bg-white text-[#524941] hover:bg-[#EAE2D5]'
-              }`}
-            >
-              Dekorlar ({decors.length})
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab('venues');
-                navigate('/admin/restoranlar');
-              }}
-              className={`px-4 py-2 text-xs sm:text-sm font-medium tracking-wide rounded-sm transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-                activeTab === 'venues'
-                  ? 'bg-[#B8925A] text-white shadow-xs'
-                  : 'bg-white text-[#524941] hover:bg-[#EAE2D5]'
-              }`}
-            >
-              <Building2 className="w-3.5 h-3.5" />
-              <span>Restoranlar ({store.getVenues(false).length})</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('inquiries')}
-              className={`px-4 py-2 text-xs sm:text-sm font-medium tracking-wide rounded-sm transition-colors relative whitespace-nowrap ${
-                activeTab === 'inquiries'
-                  ? 'bg-[#B8925A] text-white shadow-xs'
-                  : 'bg-white text-[#524941] hover:bg-[#EAE2D5]'
-              }`}
-            >
-              Müraciətlər ({inquiries.length})
-              {inquiries.some(i => i.status === 'new') && (
-                <span className="w-2 h-2 rounded-full bg-red-500 absolute -top-1 -right-1" />
+      {/* Action Notice toast */}
+      {actionNotice && (
+        <div className="fixed top-16 right-4 z-50 bg-emerald-900/90 border border-emerald-500/80 text-emerald-100 px-4 py-2.5 rounded-xl shadow-2xl text-xs flex items-center gap-2 animate-fade-in">
+          <Check className="w-4 h-4 text-emerald-400" />
+          <span>{actionNotice}</span>
+        </div>
+      )}
+
+      {/* Main Content Area */}
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-6 space-y-6">
+
+        {/* Security / Scope Reminder Notice */}
+        <div className="p-3.5 rounded-xl bg-[#1A1A1A] border border-[#2C2C2C] flex items-start gap-3">
+          <Sparkles className="w-4 h-4 text-[#C5A262] shrink-0 mt-0.5" />
+          <div className="text-xs text-neutral-300 space-y-0.5">
+            <span className="font-semibold text-[#F5F5F7]">Minimal Şəkil İdarəetmə Rejimi:</span> Bu paneldə yalnız saytın fotoşəkilləri idarə olunur. Mətnlər, SEO başlıqları, telefon nömrələri və strukturlaşdırılmış məlumatlar sabit kod təhlükəsizliyi altında qorunur.
+          </div>
+        </div>
+
+        {/* 1. SECTION TABS (7 Image Groups) */}
+        <div className="space-y-2">
+          <div className="text-xs font-semibold text-neutral-400 uppercase tracking-wider px-1">
+            Şəkil Bölməsini Seçin (7 Qrup):
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+            {SECTION_CONFIG.map(sec => {
+              const Icon = sec.icon;
+              const isActive = activeSection === sec.id;
+              const count = images.filter(img => img.section === sec.id).length;
+
+              return (
+                <button
+                  key={sec.id}
+                  id={`section-tab-${sec.id}`}
+                  onClick={() => setActiveSection(sec.id)}
+                  className={`px-3.5 py-2.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-2 border transition shrink-0 cursor-pointer ${
+                    isActive
+                      ? 'bg-[#C5A262] text-black font-semibold border-[#C5A262] shadow-md'
+                      : 'bg-[#161616] text-neutral-300 border-[#2A2A2A] hover:bg-[#202020]'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-black' : 'text-[#C5A262]'}`} />
+                  <span>{sec.label}</span>
+                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
+                    isActive ? 'bg-black/20 text-black font-bold' : 'bg-white/10 text-neutral-400'
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Section Description Bar */}
+        <div className="text-xs text-neutral-400 bg-white/3 border border-white/5 rounded-xl px-4 py-2.5">
+          {currentSectionConfig.description}
+        </div>
+
+        {/* 2. TARGET SELECTOR */}
+        <div className="bg-[#141414] border border-[#242424] rounded-2xl p-4 sm:p-5 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222]">
+            <div>
+              <h2 className="text-sm font-semibold text-[#F5F5F7] flex items-center gap-2">
+                <span>Hədəf Element / Layihə:</span>
+                <span className="text-[#C5A262] font-bold">{currentTarget?.name}</span>
+              </h2>
+              {currentTarget?.subtitle && (
+                <p className="text-xs text-neutral-400 mt-0.5">{currentTarget.subtitle}</p>
               )}
-            </button>
+            </div>
+
+            {/* Tap to Upload New Image Button (Mobile-First) */}
             <button
-              onClick={() => setActiveTab('settings')}
-              className={`px-4 py-2 text-xs sm:text-sm font-medium tracking-wide rounded-sm transition-colors whitespace-nowrap ${
-                activeTab === 'settings'
-                  ? 'bg-[#B8925A] text-white shadow-xs'
-                  : 'bg-white text-[#524941] hover:bg-[#EAE2D5]'
-              }`}
+              id="open-upload-modal-btn"
+              onClick={() => setIsUploadOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-2 transition shadow-md cursor-pointer self-start sm:self-auto"
             >
-              Tənzimləmələr
+              <Upload className="w-4 h-4" />
+              Yeni Şəkil Əlavə Et
             </button>
           </div>
 
-          {activeTab === 'decors' && (
-            <button
-              onClick={openNewForm}
-              className="inline-flex items-center space-x-2 bg-[#B8925A] hover:bg-[#A37E48] text-white px-5 py-2.5 rounded-full text-xs font-medium tracking-wider shadow-xs cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Yeni Dekor Əlavə Et</span>
-            </button>
+          {/* Targets Horizontal Scroll / Pills */}
+          <div className="flex flex-wrap gap-2 pt-1">
+            {targets.map(t => {
+              const isSelected = t.id === activeTargetId;
+              const targetCount = images.filter(
+                img => img.section === activeSection && img.targetId === t.id
+              ).length;
+
+              return (
+                <button
+                  key={t.id}
+                  id={`target-btn-${t.id}`}
+                  onClick={() => setActiveTargetId(t.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs transition border flex items-center gap-1.5 cursor-pointer ${
+                    isSelected
+                      ? 'bg-white/15 text-white border-[#C5A262] font-medium'
+                      : 'bg-[#1E1E1E] text-neutral-400 border-[#2E2E2E] hover:text-white hover:bg-[#252525]'
+                  }`}
+                >
+                  <span>{t.name}</span>
+                  <span className="text-[10px] text-neutral-500 font-mono">({targetCount})</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 3. IMAGES GALLERY GRID */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+              Mövcud Şəkillər ({activeImages.length})
+            </h3>
+            <span className="text-[11px] text-neutral-500">
+              Sıranı dəyişmək üçün oxlardan istifadə edin
+            </span>
+          </div>
+
+          {activeImages.length === 0 ? (
+            <div className="py-16 text-center border-2 border-dashed border-[#262626] rounded-2xl bg-[#141414]/50 p-6 space-y-3">
+              <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto text-neutral-500">
+                <ImageIcon className="w-6 h-6" />
+              </div>
+              <p className="text-sm font-medium text-neutral-300">
+                Bu bölmə üçün hələ heç bir şəkil yüklənməyib
+              </p>
+              <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                Telefondan və ya kompüterdən bir toxunuşla yeni şəkil əlavə edin. WebP optimallaşdırılması avtomatik aparılacaq.
+              </p>
+              <button
+                onClick={() => setIsUploadOpen(true)}
+                className="px-4 py-2 rounded-xl bg-[#C5A262] text-black font-semibold text-xs inline-flex items-center gap-1.5 mt-2 cursor-pointer hover:bg-[#b08d4f] transition"
+              >
+                <Upload className="w-4 h-4" />
+                İlk Şəkli Yüklə
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {activeImages.map((img, idx) => {
+                const isCover = img.isCover;
+
+                return (
+                  <div
+                    key={img.id}
+                    id={`image-card-${img.id}`}
+                    className={`relative rounded-2xl overflow-hidden bg-[#161616] border transition flex flex-col ${
+                      isCover ? 'border-[#C5A262] ring-1 ring-[#C5A262]/50 shadow-lg' : 'border-[#262626]'
+                    }`}
+                  >
+                    {/* Visual Card Image */}
+                    <div className="relative aspect-video w-full overflow-hidden bg-black/60">
+                      <img
+                        src={img.thumbUrl || img.url}
+                        alt={img.altText}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+
+                      {/* Cover Badge */}
+                      {isCover && (
+                        <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md bg-[#C5A262] text-black font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-md">
+                          <Star className="w-3 h-3 fill-black" />
+                          Əsas Qapaq Şəkli
+                        </div>
+                      )}
+
+                      {/* Order indicator */}
+                      <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/70 border border-white/10 text-white text-[10px] font-mono">
+                        #{idx + 1}
+                      </div>
+
+                      {/* Resolution & Size */}
+                      <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/75 text-[10px] font-mono text-neutral-300">
+                        {img.width}×{img.height} • WebP
+                      </div>
+                    </div>
+
+                    {/* Metadata & Details */}
+                    <div className="p-3.5 flex-1 flex flex-col justify-between space-y-3">
+                      <div className="space-y-1">
+                        <div className="text-xs font-mono text-neutral-200 truncate" title={img.filename}>
+                          {img.filename}
+                        </div>
+                        <div className="text-[11px] text-neutral-400 line-clamp-2" title={img.altText}>
+                          {img.altText}
+                        </div>
+                      </div>
+
+                      {/* Action Buttons Toolbar */}
+                      <div className="pt-2 border-t border-[#242424] space-y-2">
+                        {/* Primary actions: Cover & Replace */}
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            id={`set-cover-btn-${img.id}`}
+                            type="button"
+                            onClick={() => handleSetCover(img.id)}
+                            disabled={isCover}
+                            className={`py-1.5 px-2 text-[11px] rounded-lg border font-medium flex items-center justify-center gap-1 transition ${
+                              isCover
+                                ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/40 cursor-default'
+                                : 'bg-white/5 text-neutral-200 border-white/10 hover:bg-[#C5A262] hover:text-black hover:border-[#C5A262] cursor-pointer'
+                            }`}
+                          >
+                            <Star className="w-3 h-3" />
+                            {isCover ? 'Qapaqdır' : 'Qapaq et'}
+                          </button>
+
+                          <button
+                            id={`replace-img-btn-${img.id}`}
+                            type="button"
+                            onClick={() => setReplacingImage(img)}
+                            className="py-1.5 px-2 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 font-medium flex items-center justify-center gap-1 transition cursor-pointer"
+                          >
+                            <RefreshCw className="w-3 h-3 text-[#C5A262]" />
+                            Şəkil dəyiş
+                          </button>
+                        </div>
+
+                        {/* Secondary actions: Reorder, Edit Meta, Delete */}
+                        <div className="flex items-center justify-between gap-1">
+                          <div className="flex items-center gap-1">
+                            <button
+                              id={`move-up-btn-${img.id}`}
+                              type="button"
+                              onClick={() => handleMove(img.id, 'up')}
+                              disabled={idx === 0}
+                              title="Əvvələ çək"
+                              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              id={`move-down-btn-${img.id}`}
+                              type="button"
+                              onClick={() => handleMove(img.id, 'down')}
+                              disabled={idx === activeImages.length - 1}
+                              title="Sonraya çək"
+                              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                            >
+                              <ArrowDown className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="flex items-center gap-1">
+                            <button
+                              id={`edit-meta-btn-${img.id}`}
+                              type="button"
+                              onClick={() => setEditingMetaImage(img)}
+                              title="Fayl adı və Alt mətnini redaktə et"
+                              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-[#C5A262] transition"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              id={`delete-img-btn-${img.id}`}
+                              type="button"
+                              onClick={() => handleDelete(img.id)}
+                              title="Şəkli sil"
+                              className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 hover:text-red-200 transition"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           )}
         </div>
+      </main>
 
-        {/* TAB 1: DECORS LIST */}
-        {activeTab === 'decors' && (
-          <div className="bg-white border border-[#EAE2D5] rounded-xs shadow-2xs overflow-hidden">
-            <div className="p-4 bg-[#FAF8F5] border-b border-[#EAE2D5] flex items-center justify-between text-xs text-[#7A6E63]">
-              <span>Mövcud layihələr və statuslar</span>
-              <span>Mobil telefondan birbaşa foto yükləyə bilərsiniz</span>
-            </div>
+      {/* Upload Modal */}
+      {isUploadOpen && (
+        <ImageUploadModal
+          isOpen={isUploadOpen}
+          onClose={() => setIsUploadOpen(false)}
+          section={activeSection}
+          targetId={activeTargetId}
+          targetName={currentTarget?.name || ''}
+          onSuccess={() => {
+            showNotice('Yeni şəkil uğurla yükləndi və optimallaşdırıldı!');
+          }}
+        />
+      )}
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs sm:text-sm">
-                <thead>
-                  <tr className="border-b border-[#EAE2D5] bg-[#FAF8F5] text-[#7A6E63] uppercase tracking-wider text-[11px]">
-                    <th className="py-3 px-4">Şəkil</th>
-                    <th className="py-3 px-4">Ad & Kateqoriya</th>
-                    <th className="py-3 px-4">Məkan</th>
-                    <th className="py-3 px-4">Region Uyğunluğu</th>
-                    <th className="py-3 px-4 text-center">Status</th>
-                    <th className="py-3 px-4 text-right">Əməliyyatlar</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#EAE2D5]">
-                  {decors.map((d) => (
-                    <tr key={d.id} className="hover:bg-[#FAF8F5]/80 transition-colors">
-                      <td className="py-3 px-4">
-                        <div className="w-14 h-12 rounded-xs overflow-hidden bg-[#ECE5DB] border border-[#EAE2D5]">
-                          <img
-                            src={d.mainImage}
-                            alt={d.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </td>
-                      <td className="py-3 px-4">
-                        <div className="font-serif font-medium text-[#1F1A17] text-sm sm:text-base">
-                          {d.name}
-                        </div>
-                        <div className="text-xs text-[#8C7A6B] flex items-center gap-1 mt-0.5">
-                          <span>{d.categoryName}</span>
-                          {d.style && <span>• {d.style}</span>}
-                          {d.isFeatured && (
-                            <span className="bg-[#B8925A]/15 text-[#B8925A] text-[10px] px-1.5 py-0.2 rounded-xs ml-1 font-medium">
-                              Seçilmiş
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 font-medium text-[#4A413A]">
-                        {d.city}
-                      </td>
-                      <td className="py-3 px-4">
-                        <span className="text-[11px] text-[#7A6E63]">
-                          {d.regionalSuitability === 'premiumRegional'
-                            ? 'Azərbaycan üzrə'
-                            : d.regionalSuitability === 'regional'
-                            ? 'Regionlara uyğun'
-                            : 'Yalnız Bakı'}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        <span
-                          className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium uppercase ${
-                            d.isPublished
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : 'bg-amber-50 text-amber-700 border border-amber-200'
-                          }`}
-                        >
-                          {d.isPublished ? 'Aktiv' : 'Qaralama'}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-right space-x-2">
-                        <button
-                          onClick={() => openEditForm(d)}
-                          className="p-1.5 text-[#5A5047] hover:text-[#B8925A] transition-colors"
-                          title="Redaktə et"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(d.id, d.name)}
-                          className="p-1.5 text-[#5A5047] hover:text-red-600 transition-colors"
-                          title="Sil"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+      {/* Replace Modal */}
+      {replacingImage && (
+        <ImageReplaceModal
+          isOpen={!!replacingImage}
+          onClose={() => setReplacingImage(null)}
+          image={replacingImage}
+          onSuccess={() => {
+            showNotice('Şəkil uğurla əvəzləndi!');
+          }}
+        />
+      )}
 
-        {/* TAB 2: VENUES LIST */}
-        {activeTab === 'venues' && (
-          <AdminVenuesSection navigate={navigate} currentPath={currentPath} />
-        )}
-
-        {/* TAB 3: INQUIRIES LIST */}
-        {activeTab === 'inquiries' && (
-          <div className="bg-white border border-[#EAE2D5] rounded-xs shadow-2xs p-6">
-            <h2 className="font-serif text-xl text-[#1F1A17] mb-4">Müştəri Sorğuları</h2>
-            {inquiries.length === 0 ? (
-              <p className="text-sm text-[#7A6E63] py-8 text-center">Hələ heç bir sorğu daxil olmayıb.</p>
-            ) : (
-              <div className="space-y-4">
-                {inquiries.map((inq) => (
-                  <div
-                    key={inq.id}
-                    className="p-4 border border-[#EAE2D5] rounded-xs bg-[#FAF8F5] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-medium text-sm text-[#1F1A17]">{inq.name}</h3>
-                        <span className="text-xs bg-[#B8925A]/15 text-[#B8925A] px-2 py-0.5 rounded-full font-medium">
-                          {inq.eventType}
-                        </span>
-                        {inq.decorName && (
-                          <span className="text-xs text-[#7A6E63]">• {inq.decorName}</span>
-                        )}
-                      </div>
-                      <div className="text-xs text-[#524941] space-y-0.5">
-                        <p><strong>Telefon:</strong> {inq.phone}</p>
-                        <p><strong>Məkan / Şəhər:</strong> {inq.location || 'Göstərilməyib'} | <strong>Tarix:</strong> {inq.date || 'Dəqiqləşdirilməyib'}</p>
-                        {inq.notes && <p className="text-[#7A6E63] mt-1"><em>"{inq.notes}"</em></p>}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      <a
-                        href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Salam, ${inq.name}! Aurora Event Decor-a müraciətiniz üçün təşəkkür edirik.`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 bg-[#25D366] text-white px-3 py-1.5 rounded-full text-xs font-medium"
-                      >
-                        <MessageCircle className="w-3.5 h-3.5" />
-                        <span>WhatsApp ilə yaz</span>
-                      </a>
-                      <a
-                        href={`tel:${inq.phone}`}
-                        className="inline-flex items-center gap-1.5 bg-[#1F1A17] text-white px-3 py-1.5 rounded-full text-xs font-medium"
-                      >
-                        <Phone className="w-3.5 h-3.5" />
-                        <span>Zəng et</span>
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* TAB 3: SETTINGS */}
-        {activeTab === 'settings' && (
-          <div className="bg-white border border-[#EAE2D5] rounded-xs shadow-2xs p-6 max-w-2xl">
-            <h2 className="font-serif text-xl text-[#1F1A17] mb-4">Əlaqə və Brend Tənzimləmələri</h2>
-            <div className="space-y-4 text-xs sm:text-sm">
-              <div>
-                <label className="block text-[#6B5F54] mb-1 font-medium">WhatsApp Nömrəsi (ölkə kodu ilə)</label>
-                <input
-                  type="text"
-                  value={settings.whatsappNumber}
-                  onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
-                  className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm p-2 text-[#1F1A17]"
-                />
-              </div>
-              <div>
-                <label className="block text-[#6B5F54] mb-1 font-medium">Telefon (görünən format)</label>
-                <input
-                  type="text"
-                  value={settings.phoneDisplay}
-                  onChange={(e) => setSettings({ ...settings, phoneDisplay: e.target.value })}
-                  className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm p-2 text-[#1F1A17]"
-                />
-              </div>
-              <div>
-                <label className="block text-[#6B5F54] mb-1 font-medium">Instagram Hesabı</label>
-                <input
-                  type="text"
-                  value={settings.instagram}
-                  onChange={(e) => setSettings({ ...settings, instagram: e.target.value })}
-                  className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm p-2 text-[#1F1A17]"
-                />
-              </div>
-              <div>
-                <label className="block text-[#6B5F54] mb-1 font-medium">Ünvan</label>
-                <input
-                  type="text"
-                  value={settings.address}
-                  onChange={(e) => setSettings({ ...settings, address: e.target.value })}
-                  className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm p-2 text-[#1F1A17]"
-                />
-              </div>
-              <button
-                onClick={() => {
-                  store.updateSettings(settings);
-                  alert('Tənzimləmələr uğurla yadda saxlanıldı!');
-                }}
-                className="bg-[#B8925A] text-white px-6 py-2 rounded-full text-xs font-medium tracking-wider"
-              >
-                Yadda saxla
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* MODAL: ADD / EDIT DECOR FORM */}
-      {isFormOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-3xl bg-[#FCFBF8] border border-[#EAE2D5] rounded-xs shadow-2xl p-6 sm:p-8 my-8 max-h-[90vh] overflow-y-auto">
-            {/* Header */}
-            <div className="flex items-center justify-between pb-4 mb-6 border-b border-[#EAE2D5]">
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.25em] text-[#8C7A6B] block">
-                  AURORA EVENT DECOR
-                </span>
-                <h2 className="font-serif text-2xl text-[#1F1A17]">
-                  {editingId ? 'Dekor Layihəsini Redaktə Et' : 'Yeni Dekor Layihəsi Əlavə Et'}
-                </h2>
-              </div>
-              <button
-                onClick={() => setIsFormOpen(false)}
-                className="p-2 text-[#7A6E63] hover:text-[#1F1A17]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveDecor} className="space-y-6">
-              {/* 1. Basic Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#665B51] font-medium mb-1">
-                    Dekorun Adı *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => handleNameChange(e.target.value)}
-                    placeholder="Məs: Ağ Qızılgül və Şam Kompozisiyası"
-                    className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm px-3 py-2 text-sm text-[#1F1A17] focus:outline-hidden focus:border-[#B8925A]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#665B51] font-medium mb-1">
-                    Kateqoriya
-                  </label>
-                  <select
-                    value={category}
-                    onChange={(e) => {
-                      const newCat = e.target.value as DecorCategorySlug;
-                      setCategory(newCat);
-                      const catName = CATEGORIES.find(c => c.slug === newCat)?.name || 'Dekor';
-                      setSlug(generateDecorSlug(name, newCat, city));
-                      setSeoTitle(generateSeoTitle(name, catName, city));
-                      setMetaDescription(generateMetaDescription(name, catName, city, style));
-                    }}
-                    className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm px-3 py-2 text-sm text-[#1F1A17] focus:outline-hidden focus:border-[#B8925A]"
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c.id} value={c.slug}>{c.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* 2. City, Style & Regional Suitability */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#665B51] font-medium mb-1">
-                    Şəhər / Məkan
-                  </label>
-                  <input
-                    type="text"
-                    value={city}
-                    onChange={(e) => {
-                      setCity(e.target.value);
-                      const catName = CATEGORIES.find(c => c.slug === category)?.name || 'Dekor';
-                      setSlug(generateDecorSlug(name, category, e.target.value));
-                      setSeoTitle(generateSeoTitle(name, catName, e.target.value));
-                    }}
-                    placeholder="Bakı, Sumqayıt, Qəbələ..."
-                    className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm px-3 py-2 text-sm text-[#1F1A17] focus:outline-hidden focus:border-[#B8925A]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#665B51] font-medium mb-1">
-                    Stil
-                  </label>
-                  <input
-                    type="text"
-                    value={style}
-                    onChange={(e) => setStyle(e.target.value)}
-                    placeholder="Məs: Klassik Lüks, Romantik..."
-                    className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm px-3 py-2 text-sm text-[#1F1A17] focus:outline-hidden focus:border-[#B8925A]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#665B51] font-medium mb-1">
-                    Region Uyğunluğu
-                  </label>
-                  <select
-                    value={regionalSuitability}
-                    onChange={(e) => setRegionalSuitability(e.target.value as RegionalSuitability)}
-                    className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm px-3 py-2 text-sm text-[#1F1A17] focus:outline-hidden focus:border-[#B8925A]"
-                  >
-                    <option value="local">Yalnız Bakı və yaxın ərazilər</option>
-                    <option value="regional">Regionlara uyğun (logistika ilə)</option>
-                    <option value="premiumRegional">Azərbaycan üzrə quraşdırma</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* 3. Descriptions */}
-              <div>
-                <label className="block text-xs uppercase tracking-wider text-[#665B51] font-medium mb-1">
-                  Qısa Təsvir
-                </label>
-                <textarea
-                  rows={2}
-                  value={shortDescription}
-                  onChange={(e) => setShortDescription(e.target.value)}
-                  placeholder="Layihənin qısa estetik təsviri..."
-                  className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm p-2.5 text-sm text-[#1F1A17] focus:outline-hidden focus:border-[#B8925A]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-wider text-[#665B51] font-medium mb-1">
-                  Daxil Olan Xidmətlər (vergüllə ayırın)
-                </label>
-                <input
-                  type="text"
-                  value={includedInput}
-                  onChange={(e) => setIncludedInput(e.target.value)}
-                  placeholder="dekor konsepti, arxa fon, gül kompozisiyası, quraşdırma, sökülmə"
-                  className="w-full bg-[#FAF8F5] border border-[#E5DACD] rounded-sm px-3 py-2 text-sm text-[#1F1A17] focus:outline-hidden focus:border-[#B8925A]"
-                />
-              </div>
-
-              {/* 4. Client-Side Image Optimizer Pipeline */}
-              <div className="p-4 bg-[#F5F0E8] border border-[#E2D5C3] rounded-xs space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <ImageIcon className="w-4 h-4 text-[#B38E5D]" />
-                    <span className="text-xs uppercase tracking-wider font-semibold text-[#1F1A17]">
-                      Şəkil Emalı & Optimizasiya (Mobil Dostu)
-                    </span>
-                  </div>
-                  {uploadProcessing && (
-                    <span className="text-xs text-[#B38E5D] animate-pulse font-medium">
-                      Optimizasiya edilir...
-                    </span>
-                  )}
-                </div>
-
-                <p className="text-xs text-[#665B51]">
-                  Mobil telefondan çəkilən 10MB+ şəkillər avtomatik olaraq <strong>WebP</strong> formatına sıxılır, EXIF məlumatları silinir və SEO uyğun fayl adı verilir.
-                </p>
-
-                {/* Upload Buttons */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-[#4A413A] mb-1">
-                      Əsas Şəkil
-                    </label>
-                    <label className="flex items-center justify-center gap-2 border-2 border-dashed border-[#D6BD96] p-3 rounded-xs cursor-pointer hover:bg-[#FAF8F5] transition-colors">
-                      <Upload className="w-4 h-4 text-[#B38E5D]" />
-                      <span className="text-xs text-[#524941]">Telefondan / Kompüterdən Seç</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageFileChange(e, false)}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-medium text-[#4A413A] mb-1">
-                      Qalereyaya Əlavə Et
-                    </label>
-                    <label className="flex items-center justify-center gap-2 border-2 border-dashed border-[#D6BD96] p-3 rounded-xs cursor-pointer hover:bg-[#FAF8F5] transition-colors">
-                      <Plus className="w-4 h-4 text-[#B38E5D]" />
-                      <span className="text-xs text-[#524941]">Əlavə Foto Yüklə</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageFileChange(e, true)}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                {/* Compression Metrics Feedback */}
-                {lastOptimization && (
-                  <div className="p-3 bg-white border border-[#E5DACD] rounded-xs text-xs space-y-1">
-                    <div className="flex items-center justify-between font-medium text-[#1F1A17]">
-                      <span>Optimizasiya Nəticəsi:</span>
-                      <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                        {lastOptimization.savedPercentage}% Qənaət olundu
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-[#665B51] flex items-center justify-between">
-                      <span>İlkin həcm: {formatFileSize(lastOptimization.originalSize)}</span>
-                      <span>Sıxılmış WebP: {formatFileSize(lastOptimization.compressedSize)}</span>
-                    </div>
-                    <div className="text-[10px] text-[#8C7A6B] font-mono">
-                      Fayl adı: {lastOptimization.filename}
-                    </div>
-                  </div>
-                )}
-
-                {/* Main Image Preview */}
-                {mainImage && (
-                  <div className="relative w-32 h-24 rounded-xs overflow-hidden border border-[#E5DACD]">
-                    <img src={mainImage} alt="Preview" className="w-full h-full object-cover" />
-                    <span className="absolute bottom-1 left-1 bg-black/70 text-white text-[9px] px-1 rounded-xs">
-                      Əsas şəkil
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* 5. SEO Automation Preview */}
-              <div className="p-4 bg-[#FAF8F5] border border-[#E5DACD] rounded-xs space-y-3">
-                <div className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold text-[#8C7A6B]">
-                  <Sparkles className="w-4 h-4 text-[#B38E5D]" />
-                  <span>Avtomatik SEO & GEO Parametrləri</span>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-[#7A6E63] mb-1 font-mono">
-                    URL Slug (avtomatik yaranır): /dekorlar/{slug}
-                  </label>
-                  <input
-                    type="text"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    className="w-full bg-white border border-[#E5DACD] rounded-sm p-1.5 text-xs text-[#1F1A17] font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-[#7A6E63] mb-1">
-                    SEO Başlıq (Title Tag)
-                  </label>
-                  <input
-                    type="text"
-                    value={seoTitle}
-                    onChange={(e) => setSeoTitle(e.target.value)}
-                    className="w-full bg-white border border-[#E5DACD] rounded-sm p-1.5 text-xs text-[#1F1A17]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-[#7A6E63] mb-1">
-                    Meta Təsvir (Meta Description)
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={metaDescription}
-                    onChange={(e) => setMetaDescription(e.target.value)}
-                    className="w-full bg-white border border-[#E5DACD] rounded-sm p-1.5 text-xs text-[#1F1A17]"
-                  />
-                </div>
-              </div>
-
-              {/* 6. Status & Actions */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#EAE2D5]">
-                <div className="flex items-center space-x-4">
-                  <label className="flex items-center space-x-2 cursor-pointer text-xs font-medium">
-                    <input
-                      type="checkbox"
-                      checked={isPublished}
-                      onChange={(e) => setIsPublished(e.target.checked)}
-                      className="rounded-sm text-[#B8925A]"
-                    />
-                    <span>Saytda dərc edilsin</span>
-                  </label>
-
-                  <label className="flex items-center space-x-2 cursor-pointer text-xs font-medium">
-                    <input
-                      type="checkbox"
-                      checked={isFeatured}
-                      onChange={(e) => setIsFeatured(e.target.checked)}
-                      className="rounded-sm text-[#B8925A]"
-                    />
-                    <span>Ana səhifədə göstərilsin</span>
-                  </label>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsFormOpen(false)}
-                    className="px-4 py-2 border border-[#E5DACD] rounded-full text-xs font-medium hover:bg-[#FAF8F5]"
-                  >
-                    Ləğv et
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-[#B8925A] hover:bg-[#A37E48] text-white px-6 py-2 rounded-full text-xs font-medium tracking-wider shadow-xs"
-                  >
-                    Yadda saxla
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
+      {/* Edit Meta Modal */}
+      {editingMetaImage && (
+        <ImageMetaModal
+          isOpen={!!editingMetaImage}
+          onClose={() => setEditingMetaImage(null)}
+          image={editingMetaImage}
+          onSuccess={() => {
+            showNotice('Şəkil təsviri və fayl adı yeniləndi!');
+          }}
+        />
       )}
     </div>
   );

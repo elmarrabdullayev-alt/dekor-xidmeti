@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight, Gem, ShieldCheck, MapPin } from 'lucide-react';
+import { imageService } from '../../lib/imageService';
+import { ManagedImage } from '../../types';
 
 interface HeroSectionProps {
   onExplore: () => void;
@@ -32,6 +34,16 @@ const HERO_SLIDES = [
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortfolio }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [heroImages, setHeroImages] = useState<ManagedImage[]>(() =>
+    imageService.getImagesBySection('home_hero')
+  );
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setHeroImages(imageService.getImagesBySection('home_hero'));
+    });
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -53,20 +65,30 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
   return (
     <section id="hero-section" className="relative w-full min-h-[680px] lg:h-[86vh] lg:max-h-[820px] flex items-center overflow-hidden bg-[#0A0A0A]">
       {/* Background Images with Crossfade */}
-      {HERO_SLIDES.map((s, idx) => (
-        <div
-          key={idx}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            idx === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <img
-            src={s.image}
-            alt="DreamArt Events Dekorasiya"
-            className="w-full h-full object-cover object-center brightness-[0.75] contrast-[1.05]"
-          />
-        </div>
-      ))}
+      {HERO_SLIDES.map((s, idx) => {
+        const managed = heroImages[idx];
+        const imageUrl = managed?.url || s.image;
+        const altText = managed?.altText || 'DreamArt Events Dekorasiya';
+        const focalStyle = managed?.focalPoint
+          ? { objectPosition: `${managed.focalPoint.x}% ${managed.focalPoint.y}%` }
+          : undefined;
+
+        return (
+          <div
+            key={idx}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              idx === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img
+              src={imageUrl}
+              alt={altText}
+              style={focalStyle}
+              className="w-full h-full object-cover brightness-[0.75] contrast-[1.05]"
+            />
+          </div>
+        );
+      })}
 
       {/* Atmospheric gradient overlay for typography readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20 sm:w-4/5 pointer-events-none" />

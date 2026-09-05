@@ -10,7 +10,7 @@ export const CATEGORIES: CategoryInfo[] = [
     shortDescription: 'Zövqlü arxa fonlar, zərif gəlin-bəy masası və xüsusi çiçək kompozisiyaları.',
     seoH1: 'Toy Dekoru Xidməti – Zövqlü və Premium Həllər',
     seoIntroduction: 'Toy gününüz üçün unudulmaz atmosfer yaradan premium dekorasiya xidməti. Təbii və eksklüziv güllər, xüsusi işıqlandırma, arxa fon və zərif masa dekorları ilə hər məqamı unikal edirik.',
-    metaTitle: 'Toy Dekoru Xidməti Bakı və Regionlar | Aurora Event Decor',
+    metaTitle: 'Toy Dekoru Xidməti Bakı və Regionlar | DreamArt Events',
     metaDescription: 'Toy dekoru, gəlin masası, toy zalı dekorasiyası və gül kompozisiyaları. Bakı və Azərbaycanın bütün regionlarında peşəkar quraşdırma.',
     faqs: [
       {
@@ -40,7 +40,7 @@ export const CATEGORIES: CategoryInfo[] = [
     shortDescription: 'Romantik və incə detallarla bəzədilmiş fərdi nişan mərasimi dekorları.',
     seoH1: 'Nişan Dekoru və Nişan Masası Bəzədilməsi',
     seoIntroduction: 'Ev, restoran və açıq hava məkanlarında nişan mərasimləri üçün incə və romantik dekor konseptləri. Pastel tonlar, canlı çiçəklər və xüsusi işıqlandırma detalları.',
-    metaTitle: 'Nişan Dekoru və Nişan Masası Xidməti | Aurora Event Decor',
+    metaTitle: 'Nişan Dekoru və Nişan Masası Xidməti | DreamArt Events',
     metaDescription: 'Zərif nişan dekoru, nişan masası, xüsusi fotozona və gül kompozisiyaları. Bakı, Sumqayıt və regionlarda quraşdırma.',
     faqs: [
       {
@@ -66,7 +66,7 @@ export const CATEGORIES: CategoryInfo[] = [
     shortDescription: 'Milli ənənələrlə müasir estetik zərifliyi birləşdirən xına gecəsi dekorasiyası.',
     seoH1: 'Xına Dekoru – Milli Ruh və Müasir Zəriflik',
     seoIntroduction: 'Ənənəvi qırmızı və qızılı elementlərin müasir dəbdəbəli gül arxitekturası ilə vəhdəti. Gəlin taxtı, zəngin şam kompozisiyaları və xına atributları.',
-    metaTitle: 'Xına Gecəsi Dekoru və Xına Masası Xidməti | Aurora Event Decor',
+    metaTitle: 'Xına Gecəsi Dekoru və Xına Masası Xidməti | DreamArt Events',
     metaDescription: 'Möhtəşəm xına dekoru, gəlin taxtı, arxa fon və milli zəriflik. Bakı və regionlar üçün xına gecəsi tərtibatı.',
     faqs: [
       {
@@ -88,7 +88,7 @@ export const CATEGORIES: CategoryInfo[] = [
     shortDescription: 'Böyüklər və uşaqlar üçün estetik fotozonalar, neon işıqlar və şar-gül instalyasiyaları.',
     seoH1: 'Ad Günü Dekoru və Fotozona Tərtibatı',
     seoIntroduction: 'Yubileylər, ad günləri və xüsusi ildönümləri üçün zövqlü dizayn həlləri. Neon yazılar, pastel şar arxitekturası və canlı güllərlə unudulmaz xatirələr.',
-    metaTitle: 'Ad Günü Dekoru və Fotozona Xidməti Bakı | Aurora Event Decor',
+    metaTitle: 'Ad Günü Dekoru və Fotozona Xidməti Bakı | DreamArt Events',
     metaDescription: 'Ad günü üçün zövqlü dekorasiya, estetik fotozona, neon işıqlar və şar instalyasiyaları.',
     faqs: [
       {
@@ -110,7 +110,7 @@ export const CATEGORIES: CategoryInfo[] = [
     shortDescription: 'Şirkət tədbirləri, qala gecələr, rəsmi qəbullar və təqdimatlar üçün peşəkar dekorasiya.',
     seoH1: 'Korporativ Tədbir Dekoru və Brendinq İnteqrasiyası',
     seoIntroduction: 'Brendinizin nüfuzunu əks etdirən rəsmi və qala gecə dekorasiyaları. Səhnə tərtibatı, giriş zonası, foto divar və brend rənglərinə uyğun gül arxitekturası.',
-    metaTitle: 'Korporativ Tədbir Dekoru və Qala Gecələri | Aurora Event Decor',
+    metaTitle: 'Korporativ Tədbir Dekoru və Qala Gecələri | DreamArt Events',
     metaDescription: 'Şirkət tədbirləri, qala gecələri, seminar və təqdimatlar üçün premium korporativ dekor həlləri.',
     faqs: [
       {

@@ -115,3 +115,32 @@ export interface VenueItem {
   updatedAt?: string;
 }
 
+export type ImageSection =
+  | 'home_hero'
+  | 'category_cover'
+  | 'decor_project'
+  | 'venue_project'
+  | 'xonca_service'
+  | 'portfolio_lookbook'
+  | 'regional_service';
+
+export interface ManagedImage {
+  id: string;
+  url: string;
+  thumbUrl?: string;
+  filename: string;
+  altText: string;
+  section: ImageSection;
+  targetId: string;
+  targetName: string;
+  isCover: boolean;
+  order: number;
+  width?: number;
+  height?: number;
+  focalPoint?: { x: number; y: number };
+  sizeKb?: number;
+  format: 'webp' | 'jpeg' | 'png';
+  uploadedAt: string;
+}
+
+

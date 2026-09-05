@@ -73,7 +73,7 @@ export function generateDefaultVenueFaqs(venueName: string, hasRealProject: bool
   return [
     {
       question: `${safeName} məkanında DreamArt Events dekor xidməti sifariş etmək olarmı?`,
-      answer: `Bəli. DreamArt Events Azərbaycanın bütün şadlıq sarayları və restoranlarında olduğu kimi, ${safeName} məkanında da fərdi dekorasiya və florisika layihələrini həyata keçirməyə hazırdır. Əlaqə: ${phoneDisplay}.`
+      answer: `Bəli. DreamArt Events Azərbaycanın bütün şadlıq sarayları və restoranlarında olduğu kimi, ${safeName} məkanında da fərdi dekorasiya və floristika layihələrini həyata keçirməyə hazırdır. Əlaqə: ${phoneDisplay}.`
     },
     {
       question: `DreamArt Events ilə necə əlaqə saxlamaq olar?`,

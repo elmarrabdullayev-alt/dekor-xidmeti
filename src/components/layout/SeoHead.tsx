@@ -55,8 +55,10 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
     ogImg.setAttribute('content', ogImage);
 
     // Canonical link
-    const origin = window.location.origin;
-    const fullCanonical = `${origin}${canonicalPath}`;
+    const BASE_CANONICAL_DOMAIN = 'https://dreamart.az';
+    const fullCanonical = canonicalPath.startsWith('http')
+      ? canonicalPath
+      : `${BASE_CANONICAL_DOMAIN}${canonicalPath.startsWith('/') ? '' : '/'}${canonicalPath}`;
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
     if (!canonical) {
       canonical = document.createElement('link');

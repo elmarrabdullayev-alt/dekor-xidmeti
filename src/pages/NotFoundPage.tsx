@@ -13,6 +13,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({ navigate }) => {
         title="Səhifə Tapılmadı (404) | DreamArt Events"
         description="Axtardığınız səhifə mövcud deyil və ya ünvan dəyişdirilib."
         canonicalPath="/404"
+        noIndex={true}
       />
 
       <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 py-24 text-center bg-[#0B0B0B] text-white">

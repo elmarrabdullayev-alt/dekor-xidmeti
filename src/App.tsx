@@ -18,6 +18,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { store } from './lib/store';
 import { DecorItem, DecorCategorySlug } from './types';
 import { CATEGORIES } from './data/categories';
+import { REGIONAL_LOCATIONS } from './data/regionalData';
 import { MessageCircle } from 'lucide-react';
 
 export default function App() {
@@ -92,6 +93,10 @@ export default function App() {
     // 3. Venue Detail Page (/restoranlar/:slug)
     if (path.startsWith('/restoranlar/')) {
       const slug = path.replace('/restoranlar/', '');
+      const venue = store.getVenueBySlug(slug);
+      if (!venue) {
+        return <NotFoundPage navigate={navigate} />;
+      }
       return (
         <VenueDetailPage
           slug={slug}
@@ -126,6 +131,10 @@ export default function App() {
     // 4. Project Detail Page (/dekorlar/:slug)
     if (path.startsWith('/dekorlar/')) {
       const slug = path.replace('/dekorlar/', '');
+      const decor = store.getDecorBySlug(slug);
+      if (!decor) {
+        return <NotFoundPage navigate={navigate} />;
+      }
       return (
         <ProjectDetailPage
           slug={slug}
@@ -195,11 +204,12 @@ export default function App() {
       const potentialCatSlug = parts[0] as DecorCategorySlug;
       const citySlug = parts[1];
       const matchedCat = CATEGORIES.find(c => c.slug === potentialCatSlug);
-      if (matchedCat) {
+      const matchedLoc = REGIONAL_LOCATIONS.find(l => l.slug.toLowerCase() === citySlug.toLowerCase());
+      if (matchedCat && matchedLoc) {
         return (
           <LocalSeoPage
             categorySlug={potentialCatSlug}
-            citySlug={citySlug}
+            citySlug={matchedLoc.slug}
             decors={publishedDecors}
             navigate={navigate}
             onOpenQuoteModal={handleOpenQuoteModal}
@@ -212,7 +222,7 @@ export default function App() {
     return <NotFoundPage navigate={navigate} />;
   };
 
-  const isAdmin = currentPath === '/admin';
+  const isAdmin = currentPath.startsWith('/admin');
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#1C1C1C] font-sans antialiased selection:bg-[#C5A059] selection:text-[#FAF9F6]">
@@ -238,7 +248,7 @@ export default function App() {
       {/* Floating WhatsApp Action Button */}
       {!isAdmin && (
         <a
-          href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Salam, Aurora Event Decor! Tədbir dekorasiyası ilə bağlı məlumat almaq istəyirəm.')}`}
+          href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Salam, DreamArt Events! Tədbir dekorasiyası ilə bağlı məlumat almaq istəyirəm.')}`}
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-6 right-6 z-40 bg-[#1C1C1C] hover:bg-[#C5A059] text-[#FAF9F6] p-3.5 border border-[#C5A059]/30 shadow-xl transition-all duration-300 flex items-center justify-center group"

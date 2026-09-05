@@ -2,6 +2,7 @@ import { DecorItem, InquiryRequest, SiteSettings, DecorCategorySlug, VenueItem }
 import { INITIAL_DECORS } from '../data/initialDecors';
 import { INITIAL_VENUES } from '../data/initialVenues';
 import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData';
+import { imageService } from './imageService';
 
 const DECORS_STORAGE_KEY = 'dreamart_decors_v2';
 const INQUIRIES_STORAGE_KEY = 'dreamart_inquiries_v2';
@@ -12,7 +13,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   brandName: 'DreamArt Events',
   brandSubtitle: 'Tədbir Dekorasiyası',
   phoneDisplay: '050 231 17 28',
-  phoneRaw: '994502311728',
+  phoneRaw: '+994502311728',
   whatsappNumber: '994502311728',
   email: 'info@dreamart-events.az',
   address: 'Bakı şəhəri, Azərbaycan',
@@ -55,6 +56,42 @@ class DecorStore {
 
   constructor() {
     this.init();
+    imageService.subscribe(() => {
+      this.notify();
+    });
+  }
+
+  private hydrateDecor(d: DecorItem): DecorItem {
+    const coverUrl = imageService.getCoverImage(d.id, 'decor_project', d.mainImage);
+    const managedImgs = imageService.getImagesByTarget(d.id, 'decor_project');
+    const coverObj = managedImgs.find(img => img.isCover);
+    const gallery = managedImgs.length > 0 ? managedImgs.map(i => i.url) : d.galleryImages;
+
+    return {
+      ...d,
+      mainImage: coverUrl || d.mainImage,
+      imageAltText: coverObj?.altText || d.imageAltText,
+      galleryImages: gallery
+    };
+  }
+
+  private hydrateVenue(v: VenueItem): VenueItem {
+    const coverUrl = imageService.getCoverImage(v.slug, 'venue_project') ||
+                     imageService.getCoverImage(v.id, 'venue_project', v.mainImage);
+    const managedImgs = [
+      ...imageService.getImagesByTarget(v.slug, 'venue_project'),
+      ...imageService.getImagesByTarget(v.id, 'venue_project')
+    ];
+    // deduplicate by id
+    const uniqueMap = new Map<string, string>();
+    managedImgs.forEach(img => uniqueMap.set(img.id, img.url));
+    const gallery = uniqueMap.size > 0 ? Array.from(uniqueMap.values()) : v.galleryImages;
+
+    return {
+      ...v,
+      mainImage: coverUrl || v.mainImage,
+      galleryImages: gallery
+    };
   }
 
   private init() {
@@ -102,6 +139,9 @@ class DecorStore {
       const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
       if (savedSettings) {
         this.settings = { ...DEFAULT_SETTINGS, ...JSON.parse(savedSettings) };
+        if (this.settings.phoneRaw && !this.settings.phoneRaw.startsWith('+')) {
+          this.settings.phoneRaw = '+' + this.settings.phoneRaw;
+        }
       }
     } catch {
       this.settings = { ...DEFAULT_SETTINGS };
@@ -157,34 +197,42 @@ class DecorStore {
 
   // Getters
   public getDecors(onlyPublished: boolean = true): DecorItem[] {
-    if (onlyPublished) {
-      return this.decors.filter(d => d.status === 'published');
-    }
-    return [...this.decors];
+    const list = onlyPublished
+      ? this.decors.filter(d => d.status === 'published')
+      : [...this.decors];
+    return list.map(d => this.hydrateDecor(d));
   }
 
   public getDecorById(id: string): DecorItem | undefined {
-    return this.decors.find(d => d.id === id);
+    const d = this.decors.find(item => item.id === id);
+    return d ? this.hydrateDecor(d) : undefined;
   }
 
   public getDecorBySlug(slug: string): DecorItem | undefined {
-    return this.decors.find(d => d.slug === slug);
+    const d = this.decors.find(item => item.slug === slug);
+    return d ? this.hydrateDecor(d) : undefined;
   }
 
   public getDecorsByCategory(category: DecorCategorySlug): DecorItem[] {
-    return this.decors.filter(d => d.status === 'published' && d.category === category);
+    return this.decors
+      .filter(d => d.status === 'published' && d.category === category)
+      .map(d => this.hydrateDecor(d));
   }
 
   public getFeaturedDecors(): DecorItem[] {
-    return this.decors.filter(d => d.status === 'published' && d.isFeatured);
+    return this.decors
+      .filter(d => d.status === 'published' && d.isFeatured)
+      .map(d => this.hydrateDecor(d));
   }
 
   public getDecorsByCity(citySlug: string): DecorItem[] {
     const cityNameLower = citySlug.toLowerCase();
-    return this.decors.filter(d =>
-      d.status === 'published' &&
-      d.city.toLowerCase().includes(cityNameLower)
-    );
+    return this.decors
+      .filter(d =>
+        d.status === 'published' &&
+        d.city.toLowerCase().includes(cityNameLower)
+      )
+      .map(d => this.hydrateDecor(d));
   }
 
   // Decor Mutations
@@ -224,18 +272,20 @@ class DecorStore {
 
   // Venue Operations
   public getVenues(onlyPublished: boolean = false): VenueItem[] {
-    if (onlyPublished) {
-      return this.venues.filter(v => v.status === 'published');
-    }
-    return [...this.venues];
+    const list = onlyPublished
+      ? this.venues.filter(v => v.status === 'published')
+      : [...this.venues];
+    return list.map(v => this.hydrateVenue(v));
   }
 
   public getVenueById(id: string): VenueItem | undefined {
-    return this.venues.find(v => v.id === id);
+    const v = this.venues.find(item => item.id === id);
+    return v ? this.hydrateVenue(v) : undefined;
   }
 
   public getVenueBySlug(slug: string): VenueItem | undefined {
-    return this.venues.find(v => v.slug === slug);
+    const v = this.venues.find(item => item.slug === slug);
+    return v ? this.hydrateVenue(v) : undefined;
   }
 
   public addVenue(venue: Omit<VenueItem, 'id' | 'createdAt'>): VenueItem {
@@ -311,14 +361,9 @@ class DecorStore {
     return false;
   }
 
-  // Settings Operations
+  // Settings Operations - strictly code-controlled
   public getSettings(): SiteSettings {
-    return { ...this.settings };
-  }
-
-  public updateSettings(updates: Partial<SiteSettings>): void {
-    this.settings = { ...this.settings, ...updates };
-    this.persistSettings();
+    return { ...DEFAULT_SETTINGS };
   }
 }
 
