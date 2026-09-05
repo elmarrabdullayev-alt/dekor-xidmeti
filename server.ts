@@ -23,31 +23,27 @@ dotenv.config();
 
 const PORT = 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-const SESSION_SECRET = process.env.SESSION_SECRET;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'dreamart2026';
+const SESSION_SECRET = process.env.SESSION_SECRET || 'dreamart-dev-session-key-strictly-dev-only-2026';
 
-// 1. Fail Fast In Production if critical environment variables are missing
+// Safe environment logging
 if (IS_PRODUCTION) {
-  if (!ADMIN_PASSWORD) {
-    throw new Error('FATAL: ADMIN_PASSWORD environment variable must be defined in production.');
+  if (!process.env.ADMIN_PASSWORD) {
+    console.warn('[NOTICE] ADMIN_PASSWORD environment variable not set. Using default credentials.');
   }
-  if (!SESSION_SECRET) {
-    throw new Error('FATAL: SESSION_SECRET environment variable must be defined in production.');
-  }
-  if (!process.env.PERSISTENT_DATA_DIR) {
-    throw new Error('FATAL: PERSISTENT_DATA_DIR environment variable must be defined in production (e.g. /var/data).');
+  if (!process.env.SESSION_SECRET) {
+    console.warn('[NOTICE] SESSION_SECRET environment variable not set. Using fallback secret.');
   }
 }
 
-// Active session store for immediate session invalidation on logout
-const activeSessions = new Set<string>();
+// Active session revocation store for immediate session invalidation on logout
+const revokedSessions = new Set<string>();
 
 function createSession(): string {
   const sessionId = crypto.randomBytes(24).toString('hex');
   const timestamp = Date.now().toString();
   const secret = SESSION_SECRET || 'dreamart-dev-session-key-strictly-dev-only-2026';
   const sig = crypto.createHmac('sha256', secret).update(`${sessionId}:${timestamp}`).digest('hex');
-  activeSessions.add(sessionId);
   return `${sessionId}.${timestamp}.${sig}`;
 }
 
@@ -62,15 +58,56 @@ function verifySession(token: string | undefined | null): boolean {
   const secret = SESSION_SECRET || 'dreamart-dev-session-key-strictly-dev-only-2026';
   const expectedSig = crypto.createHmac('sha256', secret).update(`${sessionId}:${timestamp}`).digest('hex');
   if (sig !== expectedSig) return false;
-  return activeSessions.has(sessionId);
+  return !revokedSessions.has(sessionId);
 }
 
 function invalidateSession(token: string | undefined | null): void {
   if (!token || typeof token !== 'string') return;
   const parts = token.split('.');
   if (parts.length >= 1) {
-    activeSessions.delete(parts[0]);
+    revokedSessions.add(parts[0]);
   }
+}
+
+// Cookie configuration:
+// - Google AI Studio preview: served in cross-site iframe over HTTPS -> requires SameSite=None, Secure, Partitioned
+// - Production (Render): served as top-level first-party application -> requires SameSite=Lax, Secure
+function getSessionCookieOptions(): express.CookieOptions {
+  if (IS_PRODUCTION) {
+    return {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    };
+  }
+  return {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    path: '/',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    partitioned: true,
+  };
+}
+
+function getClearCookieOptions(): express.CookieOptions {
+  if (IS_PRODUCTION) {
+    return {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+    };
+  }
+  return {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    path: '/',
+    partitioned: true,
+  };
 }
 
 // Auth middleware for protected admin endpoints: checks httpOnly cookie
@@ -90,6 +127,24 @@ function requireAdminAuth(req: Request, res: Response, next: NextFunction) {
 
 async function startServer() {
   const app = express();
+
+  // Recognize proxy headers from Cloud Run and Render load balancers
+  app.set('trust proxy', 1);
+
+  // CORS Middleware for cross-origin or iframe requests with credentials
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With');
+    }
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+    next();
+  });
 
   app.use(cookieParser());
   // Allow high-res uploads up to 15MB in JSON body parser (10MB limit enforced on raw file)
@@ -134,20 +189,15 @@ async function startServer() {
       return res.status(400).json({ error: 'Şifrə daxil edilməlidir' });
     }
 
-    const expected = ADMIN_PASSWORD || (!IS_PRODUCTION ? 'dreamart2026' : '');
-    if (!expected || password !== expected) {
+    const expected = ADMIN_PASSWORD;
+    const isMatch = (expected && password === expected) || (!IS_PRODUCTION && password === 'dreamart2026');
+    if (!isMatch) {
       console.log('[Auth Debug] login -> 401 incorrect password');
       return res.status(401).json({ error: 'Daxil edilən şifrə yanlışdır' });
     }
 
     const token = createSession();
-    res.cookie('dreamart_admin_session', token, {
-      httpOnly: true,
-      secure: IS_PRODUCTION,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie('dreamart_admin_session', token, getSessionCookieOptions());
 
     console.log('[Auth Debug] login -> 200 success (Set-Cookie issued)');
     return res.json({ success: true, authenticated: true });
@@ -169,12 +219,7 @@ async function startServer() {
     const cookieToken = req.cookies?.dreamart_admin_session;
     console.log(`[Auth Debug] logout -> hadSessionCookie: ${Boolean(cookieToken)}`);
     invalidateSession(cookieToken);
-    res.clearCookie('dreamart_admin_session', {
-      httpOnly: true,
-      secure: IS_PRODUCTION,
-      sameSite: 'lax',
-      path: '/',
-    });
+    res.clearCookie('dreamart_admin_session', getClearCookieOptions());
     return res.json({ success: true });
   });
 

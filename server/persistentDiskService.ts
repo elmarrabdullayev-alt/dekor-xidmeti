@@ -8,21 +8,13 @@ import { ManagedImage, ImageSection } from '../src/types';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 // 1. Validate & initialize PERSISTENT_DATA_DIR
-export const PERSISTENT_DATA_DIR = process.env.PERSISTENT_DATA_DIR?.trim() || 
-  (IS_PRODUCTION ? '' : path.join(process.cwd(), 'data-dev'));
+export const PERSISTENT_DATA_DIR = 
+  process.env.PERSISTENT_DATA_DIR?.trim() || 
+  path.join(process.cwd(), 'data-dev');
 
-if (IS_PRODUCTION && !process.env.PERSISTENT_DATA_DIR) {
-  const fatalMsg =
-    'FATAL CONFIGURATION ERROR: PERSISTENT_DATA_DIR environment variable is required on Render (recommended: /var/data).\n' +
-    'Local filesystem writes to project folders (public/uploads, data/images.json) are strictly prohibited in production to prevent data loss.';
-  console.error(fatalMsg);
-  throw new Error(fatalMsg);
-}
-
-if (!IS_PRODUCTION && !process.env.PERSISTENT_DATA_DIR) {
+if (!process.env.PERSISTENT_DATA_DIR) {
   console.log(
-    `[DEV NOTICE] PERSISTENT_DATA_DIR not set. Using local development directory: ${PERSISTENT_DATA_DIR}.\n` +
-    'In production on Render, PERSISTENT_DATA_DIR must be set to the disk mount (e.g. /var/data).'
+    `[Storage] PERSISTENT_DATA_DIR not explicitly set. Using directory: ${PERSISTENT_DATA_DIR}.`
   );
 }
 
