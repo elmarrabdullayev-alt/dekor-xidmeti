@@ -1,11 +1,10 @@
 import { ManagedImage, ImageSection } from '../types';
 
-const TOKEN_KEY = 'dreamart_admin_token';
-
 class ImageService {
   private images: ManagedImage[] = [];
   private listeners: Array<() => void> = [];
   private isLoaded: boolean = false;
+  private isAuthenticated: boolean = false;
 
   constructor() {
     this.init();
@@ -32,89 +31,78 @@ class ImageService {
     });
   }
 
-  // Token management
+  // Session state (no tokens stored in localStorage or sessionStorage)
   public hasToken(): boolean {
-    return this.getAuthToken() !== null;
+    return this.isAuthenticated;
   }
 
-  public getAuthToken(): string | null {
-    try {
-      return sessionStorage.getItem(TOKEN_KEY);
-    } catch {
-      return null;
-    }
+  public isSessionActive(): boolean {
+    return this.isAuthenticated;
   }
 
-  public setAuthToken(token: string | null) {
-    try {
-      if (token) {
-        sessionStorage.setItem(TOKEN_KEY, token);
-      } else {
-        sessionStorage.removeItem(TOKEN_KEY);
-      }
-    } catch {}
-  }
-
-  // Server Auth Calls
+  // Server Auth Calls using httpOnly cookie (credentials: 'include')
   public async loginAdmin(password: string): Promise<{ success: boolean; error?: string }> {
     try {
       const res = await fetch('/api/admin/login', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password })
       });
 
+      console.log('[Auth Client Debug] login response status:', res.status);
       const data = await res.json();
       if (!res.ok) {
+        this.isAuthenticated = false;
         return { success: false, error: data.error || 'Daxil olmaq mümkün olmadı' };
       }
 
-      if (data.token) {
-        this.setAuthToken(data.token);
+      if (data.authenticated || data.success) {
+        this.isAuthenticated = true;
         return { success: true };
       }
-      return { success: false, error: 'Token alına bilmədi' };
+      return { success: false, error: 'Daxil olmaq mümkün olmadı' };
     } catch {
       return { success: false, error: 'Serverlə əlaqə qurula bilmədi' };
     }
   }
 
   public async verifyAdminSession(): Promise<boolean> {
-    const token = this.getAuthToken();
-    if (!token) return false;
-
     try {
       const res = await fetch('/api/admin/verify', {
-        headers: { Authorization: `Bearer ${token}` }
+        credentials: 'include'
       });
+      console.log('[Auth Client Debug] verify response status:', res.status);
       const data = await res.json();
       if (res.ok && data.authenticated) {
+        this.isAuthenticated = true;
         return true;
       }
-      this.setAuthToken(null);
+      this.isAuthenticated = false;
       return false;
     } catch {
+      this.isAuthenticated = false;
       return false;
     }
   }
 
   public async logoutAdmin(): Promise<void> {
-    const token = this.getAuthToken();
-    if (token) {
-      try {
-        await fetch('/api/admin/logout', {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      } catch {}
-    }
-    this.setAuthToken(null);
+    try {
+      const res = await fetch('/api/admin/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      console.log('[Auth Client Debug] logout response status:', res.status);
+    } catch {}
+    this.isAuthenticated = false;
   }
 
   // Images fetching & getters
   public async fetchImages(): Promise<ManagedImage[]> {
     try {
-      const res = await fetch('/api/images');
+      const res = await fetch('/api/images', {
+        credentials: 'include'
+      });
       if (res.ok) {
         const data = await res.json();
         this.images = data;
@@ -164,7 +152,7 @@ class ImageService {
     return fallbackUrls;
   }
 
-  // Protected Admin Actions
+  // Protected Admin Actions (uses httpOnly cookie session)
   public async uploadImage(data: {
     section: ImageSection;
     targetId: string;
@@ -178,17 +166,16 @@ class ImageService {
     height?: number;
     focalPoint?: { x: number; y: number };
   }): Promise<ManagedImage> {
-    const token = this.getAuthToken();
-    if (!token) throw new Error('İcazəsiz müraciət. Zəhmət olmasa yenidən daxil olun.');
-
+    console.log('[Auth Client Debug] uploadImage calling /api/images/upload with credentials: include');
     const res = await fetch('/api/images/upload', {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     });
+    console.log('[Auth Client Debug] uploadImage response status:', res.status);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: 'Yükləmə xətası' }));
@@ -212,17 +199,16 @@ class ImageService {
       focalPoint?: { x: number; y: number };
     }
   ): Promise<ManagedImage> {
-    const token = this.getAuthToken();
-    if (!token) throw new Error('İcazəsiz müraciət. Zəhmət olmasa yenidən daxil olun.');
-
+    console.log('[Auth Client Debug] replaceImage calling /api/images/' + id + '/replace with credentials: include');
     const res = await fetch(`/api/images/${id}/replace`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     });
+    console.log('[Auth Client Debug] replaceImage response status:', res.status);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: 'Əvəzetmə xətası' }));
@@ -242,14 +228,11 @@ class ImageService {
       focalPoint?: { x: number; y: number };
     }
   ): Promise<ManagedImage> {
-    const token = this.getAuthToken();
-    if (!token) throw new Error('İcazəsiz müraciət');
-
     const res = await fetch(`/api/images/${id}`, {
       method: 'PUT',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     });
@@ -264,12 +247,9 @@ class ImageService {
   }
 
   public async setImageCover(id: string): Promise<void> {
-    const token = this.getAuthToken();
-    if (!token) throw new Error('İcazəsiz müraciət');
-
     const res = await fetch(`/api/images/${id}/cover`, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${token}` }
+      credentials: 'include'
     });
 
     if (!res.ok) {
@@ -310,14 +290,11 @@ class ImageService {
   }
 
   public async reorderImages(ids: string[]): Promise<void> {
-    const token = this.getAuthToken();
-    if (!token) throw new Error('İcazəsiz müraciət');
-
     const res = await fetch('/api/images/reorder', {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ ids })
     });
@@ -329,12 +306,9 @@ class ImageService {
   }
 
   public async deleteImage(id: string): Promise<void> {
-    const token = this.getAuthToken();
-    if (!token) throw new Error('İcazəsiz müraciət');
-
     const res = await fetch(`/api/images/${id}`, {
       method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` }
+      credentials: 'include'
     });
 
     if (!res.ok) {

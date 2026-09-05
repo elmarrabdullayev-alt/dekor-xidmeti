@@ -143,15 +143,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   const [replacingImage, setReplacingImage] = useState<ManagedImage | null>(null);
   const [editingMetaImage, setEditingMetaImage] = useState<ManagedImage | null>(null);
 
-  // Verify server token on mount
+  // Verify server cookie session on mount
   useEffect(() => {
-    if (isAuthenticated) {
-      imageService.verifyAdminSession().then(valid => {
-        if (!valid) {
-          setIsAuthenticated(false);
-        }
-      });
-    }
+    imageService.verifyAdminSession().then(valid => {
+      setIsAuthenticated(valid);
+    });
   }, []);
 
   // Subscribe to image changes
