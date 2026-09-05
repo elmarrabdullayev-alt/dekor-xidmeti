@@ -1,0 +1,298 @@
+import { DecorItem } from '../types';
+
+export const INITIAL_DECORS: DecorItem[] = [
+  {
+    id: 'decor-1',
+    name: 'Ağ Qızılgül və Zərif Şamlı Toy Altarı',
+    slug: 'ag-qizilgul-ve-zerif-samli-toy-altari-baki',
+    category: 'toy-dekoru',
+    categoryName: 'Toy dekoru',
+    style: 'Klassik Lüks',
+    city: 'Bakı',
+    shortDescription: 'Təbii ağ qızılgüllər, hündür şüşə şamdanlar və qızılı elementlərlə işlənmiş möhtəşəm toy altar tağı.',
+    fullDescription: 'Zövqlü və unudulmaz toy mərasimi üçün xüsusi hazırlanmış tərtibat. Dairəvi monumental arxa fon konstruksiyası, təravətli ağ qızılgül və qortenziya çiçək kompozisiyaları, pilləli şam işıqlandırması və zərif gəlin-bəy masası ahəngi ilə məkanınıza krallıq dəbdəbəsi gətirir.',
+    mainImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85',
+      'https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1200&q=85',
+      'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      'Fərdi dekor konseptinin eskizi',
+      'Arxa fon tağ konstruksiyası',
+      'Təbii və premium süni gül arxitekturası',
+      'Gəlin və bəy masasının bəzədilməsi',
+      'İtalyan şüşə şamdanlar və təhlükəsiz şamlar',
+      'Məkan xüsusi isti işıqlandırması',
+      'Bakı daxilində çatdırılma və montaj',
+      'Tədbir bitdikdən sonra sökülmə'
+    ],
+    regionalService: true,
+    regionalSuitability: 'premiumRegional',
+    minimumRegionalOrderValue: 2000,
+    seoTitle: 'Ağ Qızılgül Toy Altarı Dekoru Bakı | DreamArt Events',
+    metaDescription: 'Bakıda klassik lüks toy altar dekoru. Canlı ağ güllər, şam işıqlandırması və eksklüziv gəlin masası tərtibatı.',
+    imageAltText: 'Bakıda dəbdəbəli ağ güllər və şamlarla bəzədilmiş toy altarı və gəlin masası dekoru',
+    status: 'published',
+    isFeatured: true,
+    createdAt: '2026-08-20T10:00:00Z'
+  },
+  {
+    id: 'decor-2',
+    name: 'Pudra Çəhrayı və Qızılı Pastel Nişan Masası',
+    slug: 'pudra-cehrayi-qizili-pastel-nisan-masasi-sumqayit',
+    category: 'nisan-dekoru',
+    categoryName: 'Nişan dekoru',
+    style: 'Modern Romantik',
+    city: 'Sumqayıt',
+    shortDescription: 'İpək parçalar, pudra pionlar və qızılı zərif tağ ilə işlənmiş intim nişan dekoru.',
+    fullDescription: 'Nişan mərasimini nağılvari edən romantik pastel kompozisiya. Yumşaq krem və çəhrayı tonların incə balansı, xüsusi xonça və üzük masaları, güzgü aksesuarlar və zərif arxa fon işıqlandırması.',
+    mainImage: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=85',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=85',
+      'https://images.unsplash.com/photo-1478146896981-b80fe463b330?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      'Dekor konsepti və rəng ahəngi seçimi',
+      'Zərif tağ və arxa fon pərdələri',
+      'Pastel pion və qızılgül buketi',
+      'Nişan masası və xonça stendləri',
+      'Xüsusi zərli şamdanlar',
+      'Quraşdırma və sökülmə'
+    ],
+    regionalService: true,
+    regionalSuitability: 'regional',
+    minimumRegionalOrderValue: 800,
+    seoTitle: 'Pudra Çəhrayı Nişan Masası Dekoru Sumqayıt | DreamArt Events',
+    metaDescription: 'Sumqayıt və Abşeron üçün romantik pastel nişan dekoru və xonça masası bəzəyi.',
+    imageAltText: 'Pudra çəhrayı və qızılı güllərlə bəzədilmiş romantik nişan masası dekoru',
+    status: 'published',
+    isFeatured: true,
+    createdAt: '2026-08-22T14:30:00Z'
+  },
+  {
+    id: 'decor-3',
+    name: 'Kraliyyət Məxməri və Şam Kompozisiyalı Xına Dekoru',
+    slug: 'kraliyyet-mexmeri-sam-kompozisiyali-xina-dekoru-qebele',
+    category: 'xina-dekoru',
+    categoryName: 'Xına dekoru',
+    style: 'Şərq Zərifliyi',
+    city: 'Qəbələ',
+    shortDescription: 'Dərin yaqut qırmızısı güllər, antik mis şamdanlar və dəbdəbəli xına taxtı kompleksi.',
+    fullDescription: 'Qəbələnin füsunkar təbiətində yerləşən villalar və zallar üçün tərtib edilmiş eksklüziv xına dekoru. Dəbdəbəli qırmızı məxmər parça toxumaları, yüzlərlə canlı şam, milli buta elementlərinin modern estetikası və xüsusi xına mərasimi atributları.',
+    mainImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1600&q=85',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85',
+      'https://images.unsplash.com/photo-1522413452208-996ff3f3e740?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      'Eksklüziv gəlin xına taxtı və zərli xalça',
+      'Monumental qırmızı çiçək tağı',
+      'Canlı və qorunan güllərdən kompozisiyalar',
+      'Xonçalar üçün fərdi stendlər və döşəkcələr',
+      'Antik şamdanlar və atmosferik işıqlandırma',
+      'Qəbələ və şimal bölgəsinə çatdırılma və montaj'
+    ],
+    regionalService: true,
+    regionalSuitability: 'premiumRegional',
+    minimumRegionalOrderValue: 2500,
+    seoTitle: 'Qəbələdə Premium Xına Gecəsi Dekoru | DreamArt Events',
+    metaDescription: 'Qəbələ və regionlar üçün dəbdəbəli qırmızı xına dekoru, gəlin taxtı və şam kompozisiyası.',
+    imageAltText: 'Qəbələdə qırmızı güllər, şamlar və taxt ilə bəzədilmiş dəbdəbəli xına dekoru',
+    status: 'published',
+    isFeatured: true,
+    createdAt: '2026-08-25T11:15:00Z'
+  },
+  {
+    id: 'decor-4',
+    name: 'Krem Və Qızılı İşıqlı Estetik Ad Günü Fotozonası',
+    slug: 'krem-qizili-isigli-estetik-ad-gunu-fotozonasi-baki',
+    category: 'ad-gunu-dekoru',
+    categoryName: 'Ad günü dekoru',
+    style: 'Modern Minimal',
+    city: 'Bakı',
+    shortDescription: 'Pastel şar instalyasiyası, parlaq neon yazı və canlı güllərlə tamamlanan şık fotozona.',
+    fullDescription: 'Yubiley və ad günləri üçün qonaqların heyran qalacağı foto və video fonu. Həcmli pastel şarlar, fərdi neon yazı lövhəsi, zərif tort stendi və müasir podyum dizaynı.',
+    mainImage: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=85',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      'Arxa fon panelinin montajı',
+      'Pastel mat şar arxitekturası',
+      'Fərdi "Happy Birthday" neon yazısı',
+      'Silindr tort və şirniyyat stendləri',
+      'Aksesuarlar və fotozona işıqlandırması',
+      'Quraşdırma və sökülmə'
+    ],
+    regionalService: true,
+    regionalSuitability: 'local',
+    minimumRegionalOrderValue: 600,
+    seoTitle: 'Ad Günü Fotozona Dekoru Bakı | DreamArt Events',
+    metaDescription: 'Bakıda ad günləri üçün estetik şar fotozonası, neon işıqlar və zərif tort stendi tərtibatı.',
+    imageAltText: 'Bakıda krem və pudra tonlarında estetik ad günü fotozona dekoru',
+    status: 'published',
+    isFeatured: true,
+    createdAt: '2026-08-27T16:40:00Z'
+  },
+  {
+    id: 'decor-5',
+    name: 'Qala Şam Yeməyi və Korporativ Tədbir Tərtibatı',
+    slug: 'qala-sam-yemeyi-korporativ-tedbir-tertibati-baki',
+    category: 'korporativ-dekor',
+    categoryName: 'Korporativ tədbir',
+    style: 'Rəsmi Dəbdəbə',
+    city: 'Bakı',
+    shortDescription: 'Geniş banket masası üzərində uzanan canlı gül lenti, büllur çilçıraqlar və xüsusi brend fotozonası.',
+    fullDescription: 'Şirkət təqdimatları, ilsonu qala gecələri və rəsmi ziyafətlər üçün nəzərdə tutulmuş nüfuzlu tərtibat. 40 metrlik masa boyu davam edən qızılgül və evkalipt runner-i, fərdi brend lövhələri və peşəkar işıq dizaynı.',
+    mainImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=85',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      'Brend vizual kimliyinə uyğun konsept',
+      'Giriş qarşılama zonası və foto divar',
+      'Banket masaları üçün uzun gül runner-ləri',
+      'Büllur şamdanlar və süfrə aksesuarları',
+      'Səhnə arxa fonu və çıxış kürsüsü dekoru',
+      'Rəsmi müqavilə və bank köçürməsi ilə sənədləşmə'
+    ],
+    regionalService: true,
+    regionalSuitability: 'premiumRegional',
+    minimumRegionalOrderValue: 3000,
+    seoTitle: 'Korporativ Tədbir və Qala Gecəsi Dekoru Bakı | DreamArt Events',
+    metaDescription: 'Bakıda korporativ tədbirlər, qala şam yeməkləri və konfranslar üçün peşəkar dekorasiya xidməti.',
+    imageAltText: 'Bakıda korporativ qala gecəsi üçün büllur çilçıraqlar və gül kompozisiyası ilə bəzədilmiş banket zalı',
+    status: 'published',
+    isFeatured: true,
+    createdAt: '2026-08-29T09:00:00Z'
+  },
+  {
+    id: 'decor-6',
+    name: 'Panoramik Şadlıq Zalı və Tavan İşıq İnstalyasiyası',
+    slug: 'panoramik-sadliq-zali-tavan-isig-instalyasiyasi-baki',
+    category: 'zal-dekoru',
+    categoryName: 'Zal dekoru',
+    style: 'Monumental Lüks',
+    city: 'Bakı',
+    shortDescription: 'Geniş banket zalının tavanından asılan minlərlə işıq və gül saçaqları, zəngin masa dekorları.',
+    fullDescription: '500 nəfərlik böyük şadlıq sarayları və banket zalları üçün 360 dərəcəlik hərtərəfli vizual dəyişim. Mərkəzi rəqs meydançası üzərində üzən gül tavanı, pilləli giriş tağları və qonaq masalarının hər biri üçün hündür şüşə vaza kompozisiyaları.',
+    mainImage: '/images/boyuk-zal-dekor.jpg',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85',
+      'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      'Bütün zalın 3D vizuallaşdırma layihəsi',
+      'Tavan və çilçıraq gül bəzəkləri',
+      'Bütün qonaq masaları üçün hündür gül kompozisiyaları',
+      'Giriş qarşılama tuneli və fotozona',
+      'Xüsusi ziyafət podyumu və səhnə dizaynı',
+      '25 nəfərlik texniki və florist heyəti ilə tam montaj'
+    ],
+    regionalService: true,
+    regionalSuitability: 'premiumRegional',
+    minimumRegionalOrderValue: 5000,
+    seoTitle: 'Böyük Zal Dekoru və Şadlıq Sarayı Tərtibatı | DreamArt Events',
+    metaDescription: 'Bakı və regionlarda böyük toy zalları və restoranların tam həcmli dekorasiyası və tavan instalyasiyaları.',
+    imageAltText: 'Böyük toy və banket zalı üçün möhtəşəm çilçıraqlar və güllərlə bəzədilmiş zal dekorasiyası',
+    status: 'published',
+    isFeatured: true,
+    createdAt: '2026-08-30T13:20:00Z'
+  },
+  {
+    id: 'decor-7',
+    name: 'Açıq Hava Dağ Mənzərəli Toy Altarı',
+    slug: 'aciq-hava-dag-menzereli-toy-altari-qebele',
+    category: 'toy-dekoru',
+    categoryName: 'Toy dekoru',
+    style: 'Təbiət Şıq',
+    city: 'Qəbələ',
+    shortDescription: 'Qəbələ dağlarının fonunda təbii ağac tağ, yaşıl evkalipt və ağ pionlarla bəzədilmiş açıq hava dekoru.',
+    fullDescription: 'Qafqaz dağlarının əzəmətli mənzərəsini tamamlayan zərif təbii dekor konsepti. Küləyə və hava şəraitinə dayanıqlı möhkəm tağ konstruksiyası, təbii çəmənlik üzərində ağ kreslolar və zərif çiçək ləçəkləri ilə bəzədilmiş gəlin yolu.',
+    mainImage: 'https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1600&q=85',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      'Açıq hava şəraitinə uyğun dayanıqlı konstruksiya',
+      'Təbii ağ və krem çiçəklərdən tağ',
+      'Qonaq oturacaqları üçün çiçək detalları',
+      'Gəlin yolu xalçası və fənərlər',
+      'Qəbələyə xüsusi nəqliyyat və montaj komandası'
+    ],
+    regionalService: true,
+    regionalSuitability: 'premiumRegional',
+    minimumRegionalOrderValue: 2200,
+    seoTitle: 'Qəbələdə Açıq Hava Toy Dekoru | DreamArt Events',
+    metaDescription: 'Qəbələ dağ kurortları və villalar üçün açıq hava toy dekoru, nikah tağı və qonaq masaları.',
+    imageAltText: 'Qəbələdə dağ fonunda açıq hava toy altar tağı və çiçək bəzəkləri',
+    status: 'published',
+    isFeatured: true,
+    createdAt: '2026-08-31T15:00:00Z'
+  },
+  {
+    id: 'decor-8',
+    name: 'Klassik Gəncə İntim Nişan və Xonça Tərtibatı',
+    slug: 'klassik-gence-intim-nisan-ve-xonca-tertibati-gence',
+    category: 'nisan-dekoru',
+    categoryName: 'Nişan dekoru',
+    style: 'Aristokratik',
+    city: 'Gəncə',
+    shortDescription: 'Gəncə şəhəri və qərb bölgəsi üçün aristokratik zərli tonlar, canlı güllər və xonça stendləri.',
+    fullDescription: 'Qərb regionunun qonaqpərvərlik ənənələrinə uyğunlaşdırılmış zərif nişan tərtibatı. Gəncənin seçilmiş restoranları və həyət evləri üçün qüsursuz işıqlandırma, fərdi ad lövhəsi və 12 ədəd xonça üçün xüsusi pilləli stendlər.',
+    mainImage: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1600&q=85',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      'Gəncə şəhərinə çatdırılma və montaj',
+      'Xüsusi arxa fon və ad monoqramı',
+      'Gül kompozisiyaları və zərif şamlar',
+      'Xonçalar üçün xüsusi bəzədilmiş stendlər',
+      'Tədbirdən dərhal sonra operativ sökülmə'
+    ],
+    regionalService: true,
+    regionalSuitability: 'regional',
+    minimumRegionalOrderValue: 1500,
+    seoTitle: 'Gəncədə Nişan Dekoru və Xonça Masası | DreamArt Events',
+    metaDescription: 'Gəncə və qərb bölgəsi üçün zövqlü nişan dekoru, tağ və xonça stendləri xidməti.',
+    imageAltText: 'Gəncədə zərif qızılı və krem tonlarında nişan masası dekoru',
+    status: 'published',
+    isFeatured: false,
+    createdAt: '2026-09-01T12:00:00Z'
+  },
+  {
+    id: 'decor-9',
+    name: 'Eksklüziv Büllur və Qızılı Xonça Kompozisiyası',
+    slug: 'ekskluziv-bullur-ve-qizili-xonca-kompozisiyasi-baki',
+    category: 'xonca-xidmeti',
+    categoryName: 'Xonça xidməti',
+    style: 'Kraliyyət Lüks',
+    city: 'Bakı',
+    shortDescription: 'Milli toy və nişan ənənələrinə uyğun xüsusi dizaynlı büllur, məxmər və təbii güllərlə bəzədilmiş xonça dəstləri.',
+    fullDescription: 'DreamArt Events tərəfindən təqdim edilən xüsusi büllur qapaqlı, qızılı metal çərçivəli və təbii gül kompozisiyaları ilə zənginləşdirilmiş xonça xidməti. Şirniyyat, nəsihət, kəllə qənd və hədiyyə xonçalarının fərdi zövqlə bəzədilməsi və təhlükəsiz çatdırılması.',
+    mainImage: '/images/xonca-xidmeti-cover.jpg',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85',
+      'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1200&q=85'
+    ],
+    includedServices: [
+      '12-24 ədəd fərdi büllur və qızılı xonça qabları',
+      'Təbii canlı çiçək bəzəkləri və ipək lentlər',
+      'Xüsusi dizaynlı şirniyyat və hədiyyə tərtibatı',
+      'Xonçalar üçün işıqlı və pilləli nümayiş stendləri',
+      'Bakı və Abşeron üzrə təhlükəsiz zərif çatdırılma'
+    ],
+    regionalService: true,
+    regionalSuitability: 'premiumRegional',
+    minimumRegionalOrderValue: 1200,
+    priceDisplay: '350 AZN-dən',
+    seoTitle: 'Eksklüziv Xonça Bəzədilməsi və İcarəsi Bakı | DreamArt Events',
+    metaDescription: 'Toy, nişan və xına üçün lüks xonça xidməti. Canlı güllər, büllur qablar və fərdi tərtibat.',
+    imageAltText: 'Bakıda toy və nişan üçün büllur və qızılı xonça dekorasiyası',
+    status: 'published',
+    isFeatured: true,
+    createdAt: '2026-09-02T10:00:00Z'
+  }
+];

@@ -1,0 +1,7 @@
+{
+  "name": "DreamArt Events",
+  "description": "Bakı və Azərbaycanın bütün regionları üçün zövqlü və premium toy, nişan, xına, ad günü, korporativ, zal və xonça dekor xidmətləri.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
