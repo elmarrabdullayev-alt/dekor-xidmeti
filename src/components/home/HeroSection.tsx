@@ -1,124 +1,190 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, ChevronLeft, ChevronRight, Gem, ShieldCheck, MapPin } from 'lucide-react';
-import { imageService } from '../../lib/imageService';
-import { ManagedImage } from '../../types';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ArrowRight, Gem, ShieldCheck, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
+import heroImg1 from '../../1.webp';
+import heroImg2 from '../../2.webp';
+import heroImg3 from '../../3.webp';
 
 interface HeroSectionProps {
   onExplore: () => void;
   onViewPortfolio: () => void;
 }
 
-const HERO_SLIDES = [
+interface HeroSlide {
+  id: string;
+  image: string;
+  fallbackUrl: string;
+  title: string;
+  subtitle: string;
+  alt: string;
+}
+
+const HERO_SLIDES: HeroSlide[] = [
   {
-    image: '/images/dreamart-toy-dekoru-qizili-altar.webp',
-    eyebrow: 'XÜSUSİ GÜNLƏR ÜÇÜN',
-    titleLine1: 'Zövqlü Dekor',
-    titleLine2: 'Həlləri',
-    subtitle: 'Toy, nişan, xına, ad günü, korporativ tədbirlər və xonça xidməti üçün peşəkar dekor və konsept həlləri.',
+    id: 'hero-slide-1',
+    image: heroImg1,
+    fallbackUrl: '/1.webp',
+    title: 'Eksklüziv Toy Altarı & Masası',
+    subtitle: 'Zövqlü Qızılı Çiçək Kompozisiyaları',
+    alt: 'DreamArt Events lüks toy və məclis dekorasiyası, zövqlü dekor həlləri',
   },
   {
-    image: '/images/dreamart-nisan-dekoru-fotozona.webp',
-    eyebrow: 'MÜASİR ZƏRİFLİK',
-    titleLine1: 'Fərdi və Emosional',
-    titleLine2: 'Məkanlar',
-    subtitle: 'Hər bir tədbiriniz üçün təbiətin və incəsənətin harmoniyasını əks etdirən konseptlər.',
+    id: 'hero-slide-2',
+    image: heroImg2,
+    fallbackUrl: '/2.webp',
+    title: 'Zərif Nişan & Fotozona Tərtibatı',
+    subtitle: 'Müasir İşıqlandırma və Estetik Dizayn',
+    alt: 'DreamArt Events eksklüziv tədbir və nişan dizaynı, fotozona və konsept bəzədilməsi',
   },
   {
-    image: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
-    eyebrow: 'BAKI VƏ REGİONLAR',
-    titleLine1: 'Böyük Zallar və',
-    titleLine2: 'İnstalyasiyalar',
-    subtitle: 'Genişmiqyaslı şadlıq sarayları və açıq hava villaları üçün tam həcmli dekor.',
-  }
+    id: 'hero-slide-3',
+    image: heroImg3,
+    fallbackUrl: '/3.webp',
+    title: 'Panoramik Şadlıq Zalı & Banket',
+    subtitle: 'Möhtəşəm Tavan Pərdələri və İnstalyasiya',
+    alt: 'DreamArt Events premium banket və korporativ zal dekorasiyası Bakı Azərbaycan',
+  },
 ];
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortfolio }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [heroImages, setHeroImages] = useState<ManagedImage[]>(() =>
-    imageService.getImagesBySection('home_hero')
-  );
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
-  useEffect(() => {
-    const unsub = imageService.subscribe(() => {
-      setHeroImages(imageService.getImagesBySection('home_hero'));
-    });
-    return () => unsub();
-  }, []);
+  const totalSlides = HERO_SLIDES.length;
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 7000);
-    return () => clearInterval(timer);
-  }, []);
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
 
-  const slide = HERO_SLIDES[currentSlide];
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
 
-  const handlePrev = () => {
-    setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
+  const goToSlide = (idx: number) => {
+    setCurrentSlide(idx);
   };
 
-  const handleNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  // Auto-advance carousel every 5.5 seconds (paused on hover)
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [isPaused, nextSlide]);
+
+  // Touch swipe support for mobile devices
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      // Swiped left -> next slide
+      nextSlide();
+    } else if (distance < -minSwipeDistance) {
+      // Swiped right -> prev slide
+      prevSlide();
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
   };
 
   return (
-    <section id="hero-section" className="relative w-full min-h-[680px] lg:h-[86vh] lg:max-h-[820px] flex items-center overflow-hidden bg-[#0A0A0A]">
-      {/* Background Images with Crossfade */}
-      {HERO_SLIDES.map((s, idx) => {
-        const managed = heroImages[idx];
-        const imageUrl = managed?.url || s.image;
-        const altText = managed?.altText || 'DreamArt Events Dekorasiya';
-        const focalStyle = managed?.focalPoint
-          ? { objectPosition: `${managed.focalPoint.x}% ${managed.focalPoint.y}%` }
-          : undefined;
+    <section
+      id="hero-section"
+      className="relative w-full min-h-[580px] sm:min-h-[640px] md:min-h-[700px] lg:min-h-[750px] flex items-center overflow-hidden bg-[#0A0A0A] select-none border-b border-[#C5A059]/20"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      aria-label="Əsas cover karusel"
+    >
+      {/* 1. CAROUSEL BACKGROUND SLIDES WITH LUXURY TRANSITION */}
+      <div className="absolute inset-0 z-0">
+        {HERO_SLIDES.map((slide, idx) => {
+          const isActive = idx === currentSlide;
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-all duration-1000 ease-out ${
+                isActive
+                  ? 'opacity-100 scale-100 pointer-events-auto z-10'
+                  : 'opacity-0 scale-105 pointer-events-none z-0'
+              }`}
+              aria-hidden={!isActive}
+            >
+              <img
+                src={slide.image || slide.fallbackUrl}
+                alt={slide.alt}
+                loading={idx === 0 ? 'eager' : 'lazy'}
+                fetchPriority={idx === 0 ? 'high' : 'auto'}
+                className="w-full h-full object-cover object-center"
+                onError={(e) => {
+                  // Fallback if bundled asset path differs
+                  const target = e.currentTarget;
+                  if (target.src !== slide.fallbackUrl) {
+                    target.src = slide.fallbackUrl;
+                  }
+                }}
+              />
+            </div>
+          );
+        })}
 
-        return (
-          <div
-            key={idx}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              idx === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <img
-              src={imageUrl}
-              alt={altText}
-              style={focalStyle}
-              className="w-full h-full object-cover brightness-[0.75] contrast-[1.05]"
-            />
+        {/* Soft, lightweight overlay (average 20%-35% opacity):
+            Left-to-right soft gradient ensures effortless text readability on the left,
+            while the center and right areas remain vivid, bright, and showcase decoration details. */}
+        <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-r from-black/75 via-black/40 via-45% to-black/10 sm:to-transparent" />
+
+        {/* Delicate bottom edge gradient for smooth transition into the next page section */}
+        <div className="absolute inset-x-0 bottom-0 h-24 z-20 pointer-events-none bg-gradient-to-t from-[#0A0A0A]/90 via-[#0A0A0A]/40 to-transparent" />
+
+        {/* Soft top gradient to support navigation bar readability */}
+        <div className="absolute inset-x-0 top-0 h-16 z-20 pointer-events-none bg-gradient-to-b from-black/40 to-transparent" />
+      </div>
+
+      {/* 2. HERO CONTENT CONTAINER (TEXT, CTAs, BADGES) */}
+      <div className="relative z-30 max-w-7xl w-full mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-24">
+        <div className="max-w-3xl">
+          {/* Eyebrow badge */}
+          <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-black/55 border border-[#C5A059]/40 backdrop-blur-md mb-4 sm:mb-5 shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-[#C5A059] animate-pulse" />
+            <span className="text-[10px] sm:text-xs uppercase tracking-[0.28em] text-[#E5C378] font-medium font-sans">
+              XÜSUSİ GÜNLƏR ÜÇÜN
+            </span>
           </div>
-        );
-      })}
 
-      {/* Atmospheric gradient overlay for typography readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20 sm:w-4/5 pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/70 to-transparent pointer-events-none" />
-
-      {/* Main Content */}
-      <div className="relative z-10 max-w-7xl w-full mx-auto px-5 sm:px-8 lg:px-10 py-16 sm:py-24 flex flex-col justify-between h-full">
-        <div className="max-w-2xl pt-6 sm:pt-10">
-          {/* Eyebrow */}
-          <span className="text-[11px] sm:text-xs uppercase tracking-[0.32em] text-[#E5C378] font-medium font-sans block mb-3">
-            {slide.eyebrow}
-          </span>
-
-          {/* Heading */}
-          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white font-normal leading-[1.05] tracking-tight mb-5">
-            {slide.titleLine1} <br />
-            {slide.titleLine2}
+          {/* Main Heading with crisp drop shadow for clarity */}
+          <h1 className="font-serif text-3.5xl sm:text-5xl md:text-6xl lg:text-6.5xl text-white font-normal leading-[1.08] tracking-tight mb-4 sm:mb-5 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+            Zövqlü Dekor <br />
+            <span className="text-[#FAF8F5] bg-gradient-to-r from-white via-[#F5E6CA] to-[#C5A059] bg-clip-text text-transparent">
+              Həlləri
+            </span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-xs sm:text-sm md:text-base text-white/80 font-light leading-relaxed max-w-lg mb-8">
-            {slide.subtitle}
+          {/* Supporting Text with gentle text shadow */}
+          <p className="text-sm sm:text-base md:text-lg text-white/95 font-light leading-relaxed max-w-2xl mb-7 sm:mb-9 drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
+            Toy, nişan, xına, ad günü, korporativ tədbirlər və xonça xidməti üçün peşəkar dekor və konsept həlləri.
           </p>
 
-          {/* Buttons */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10 sm:mb-12">
+          {/* CTA Buttons */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-9 sm:mb-11">
             <button
               id="hero-primary-cta"
               onClick={onExplore}
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-6 sm:px-8 py-3.5 rounded-sm text-xs sm:text-[13px] font-medium tracking-wide inline-flex items-center gap-2 transition-all duration-300 shadow-md cursor-pointer"
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-6 sm:px-8 py-3.5 rounded-sm text-xs sm:text-[13px] font-medium tracking-wide inline-flex items-center gap-2.5 transition-all duration-300 shadow-2xl hover:shadow-[#C5A059]/30 hover:translate-y-[-1px] cursor-pointer"
             >
               <span>Dekorları kəşf et</span>
               <ArrowRight className="w-4 h-4" />
@@ -127,57 +193,78 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
             <button
               id="hero-secondary-cta"
               onClick={onViewPortfolio}
-              className="bg-black/40 hover:bg-black/70 border border-white/25 hover:border-[#C5A059] text-white px-6 sm:px-8 py-3.5 rounded-sm text-xs sm:text-[13px] font-medium tracking-wide inline-flex items-center gap-2 transition-all duration-300 cursor-pointer"
+              className="bg-black/60 hover:bg-black/85 backdrop-blur-md border border-white/30 hover:border-[#C5A059] text-white px-6 sm:px-8 py-3.5 rounded-sm text-xs sm:text-[13px] font-medium tracking-wide inline-flex items-center gap-2.5 transition-all duration-300 shadow-xl hover:translate-y-[-1px] cursor-pointer"
             >
               <span>Portfoliyoya bax</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Trust Badges Row matching mockup */}
-          <div className="flex flex-wrap items-center gap-6 sm:gap-8 pt-4 border-t border-white/10 text-white/85 text-xs sm:text-[13px]">
+          {/* Premium Service Badges Row */}
+          <div className="flex flex-wrap items-center gap-5 sm:gap-8 pt-5 sm:pt-6 border-t border-white/20 text-white/95 text-xs sm:text-[13px] drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
             <div className="flex items-center gap-2">
-              <Gem className="w-4 h-4 text-[#C5A059]" />
+              <Gem className="w-4 h-4 text-[#C5A059] shrink-0" />
               <span>Premium dizaynlar</span>
             </div>
             <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
+              <ShieldCheck className="w-4 h-4 text-[#C5A059] shrink-0" />
               <span>Peşəkar komanda</span>
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-[#C5A059]" />
+              <MapPin className="w-4 h-4 text-[#C5A059] shrink-0" />
               <span>Azərbaycan üzrə xidmət</span>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Bar: Slider indicators and Next/Prev buttons matching mockup */}
-        <div className="flex items-center justify-between pt-8 sm:pt-12">
-          <div className="flex items-center gap-2 text-white/60 font-mono text-xs sm:text-sm">
-            <span className={currentSlide === 0 ? 'text-[#C5A059] font-bold' : ''}>01</span>
-            <span className="w-8 h-px bg-white/30 inline-block" />
-            <span className={currentSlide === 1 ? 'text-[#C5A059] font-bold' : ''}>02</span>
-            <span className={currentSlide === 2 ? 'text-[#C5A059] font-bold' : ''}>03</span>
-            <span className="w-12 h-px bg-white/20 inline-block" />
-          </div>
+      {/* 3. NAVIGATION ARROWS (LEFT / RIGHT) */}
+      <button
+        onClick={prevSlide}
+        aria-label="Əvvəlki slayd"
+        className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/45 hover:bg-black/80 text-white/80 hover:text-white border border-white/15 hover:border-[#C5A059] backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer shadow-lg group"
+      >
+        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:-translate-x-0.5" />
+      </button>
 
-          {/* Arrow navigation buttons */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrev}
-              aria-label="Əvvəlki slayd"
-              className="w-9 h-9 rounded-full border border-white/20 hover:border-[#C5A059] hover:text-[#C5A059] text-white flex items-center justify-center transition-colors cursor-pointer bg-black/40"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={handleNext}
-              aria-label="Növbəti slayd"
-              className="w-9 h-9 rounded-full border border-white/20 hover:border-[#C5A059] hover:text-[#C5A059] text-white flex items-center justify-center transition-colors cursor-pointer bg-black/40"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+      <button
+        onClick={nextSlide}
+        aria-label="Növbəti slayd"
+        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/45 hover:bg-black/80 text-white/80 hover:text-white border border-white/15 hover:border-[#C5A059] backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer shadow-lg group"
+      >
+        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-0.5" />
+      </button>
+
+      {/* 4. BOTTOM CONTROLS: 3 INDICATOR DOTS + CURRENT SLIDE INFO */}
+      <div className="absolute bottom-5 sm:bottom-7 left-0 right-0 z-40 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pointer-events-none">
+        {/* Subtle slide caption indicator for desktop */}
+        <div className="hidden md:flex items-center gap-3 text-white/70 text-xs font-light">
+          <span className="font-mono text-[#E5C378] tracking-widest text-[11px] font-medium">
+            0{currentSlide + 1} / 0{totalSlides}
+          </span>
+          <span className="w-1 h-1 rounded-full bg-white/30" />
+          <span className="text-white/80 tracking-wide font-sans">
+            {HERO_SLIDES[currentSlide].title}
+          </span>
+        </div>
+
+        {/* 3 Clickable Indicator Dots */}
+        <div className="flex items-center gap-2.5 pointer-events-auto bg-black/40 px-3.5 py-1.5 rounded-full border border-white/10 backdrop-blur-md">
+          {HERO_SLIDES.map((slide, idx) => {
+            const isActive = idx === currentSlide;
+            return (
+              <button
+                key={slide.id}
+                onClick={() => goToSlide(idx)}
+                aria-label={`Slayd ${idx + 1}: ${slide.title}`}
+                className={`transition-all duration-500 rounded-full cursor-pointer h-2 ${
+                  isActive
+                    ? 'w-8 bg-gradient-to-r from-[#C5A059] to-[#E5C378] shadow-md shadow-[#C5A059]/40'
+                    : 'w-2 bg-white/30 hover:bg-white/60'
+                }`}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
