@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { ArrowLeft, MapPin, Check, MessageCircle, Sparkles } from 'lucide-react';
+import { ArrowLeft, MapPin, Check, MessageCircle, Sparkles, Maximize2, Image as ImageIcon } from 'lucide-react';
 import { DecorItem } from '../types';
 import { RegionBadge } from '../components/decor/RegionBadge';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getProjectDetailSchema, getBreadcrumbSchema } from '../lib/structuredData';
 import { store } from '../lib/store';
+import { ImageLightbox, LightboxImage } from '../components/common/ImageLightbox';
+import { TOY_DEKORU_COLLECTION } from '../data/toyDekoruImages';
 
 interface ProjectDetailPageProps {
   slug: string;
@@ -20,6 +22,8 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const decor = store.getDecorBySlug(slug);
   const settings = store.getSettings();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   if (!decor) {
     return (
@@ -39,6 +43,62 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const currentMainImage = selectedImage || decor.mainImage;
   const allImages = [decor.mainImage, ...(decor.galleryImages || [])];
 
+  // Map images with accurate Azerbaijani alt texts and captions for SEO and accessibility
+  const lightboxImages: LightboxImage[] = allImages.map((img, idx) => {
+    const matched = TOY_DEKORU_COLLECTION.find(t => t.src === img || t.url === img);
+    if (matched) {
+      return {
+        url: matched.url || matched.src,
+        alt: matched.alt,
+        title: matched.title,
+        caption: matched.caption
+      };
+    }
+    if (img.includes('toy-dekoru-qizili-altar')) {
+      return {
+        url: img,
+        alt: 'DreamArt Weddings qızılı tağ və dəbdəbəli bəy-gəlin masası toy dekoru',
+        title: 'Qızılı Tağ və Toy Altarı',
+        caption: 'Təbii ağ qızılgüllər və zərif şam işıqlandırması'
+      };
+    }
+    if (img.includes('monumental-toy-sehnesi')) {
+      return {
+        url: img,
+        alt: 'Premium toy səhnəsi dekoru – Monumental arxa fon və pilləli şamlar',
+        title: 'Monumental Toy Səhnəsi',
+        caption: 'Böyük toy zalları üçün fərdi konsept'
+      };
+    }
+    if (img.includes('bey-gelin-masasi')) {
+      return {
+        url: img,
+        alt: 'Toy zalı üçün zövqlü dekorasiya – Çiçək tağları və büllur çilçıraqlı masa',
+        title: 'Bəy-Gəlin Masası Çiçək Arxitekturası',
+        caption: 'Zərif güllər və estetik işıqlandırma'
+      };
+    }
+    if (img.includes('tavan-instalyasiyasi')) {
+      return {
+        url: img,
+        alt: 'DreamArt Weddings toy dekorasiya layihəsi – Tavan instalyasiyası və çilçıraqlar',
+        title: 'Zal Tavan İnstalyasiyası',
+        caption: 'Həcmli büllur və çiçək tavan dekoru'
+      };
+    }
+    return {
+      url: img,
+      alt: `DreamArt Weddings ${decor.name} – Toy dekoru layihəsi (${idx + 1})`,
+      title: `${decor.name} (${idx + 1})`,
+      caption: `${decor.city} · ${decor.style || 'Premium Toy Dekoru'}`
+    };
+  });
+
+  const handleOpenLightbox = (indexToOpen: number) => {
+    setLightboxIndex(indexToOpen);
+    setIsLightboxOpen(true);
+  };
+
   const handleWhatsApp = () => {
     const text = `Salam, DreamArt Events! "${decor.name}" (${decor.categoryName}, ${decor.city}) dekorasiyası üçün qiymət təklifi və məlumat almaq istəyirəm.`;
     const url = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(text)}`;
@@ -54,6 +114,8 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
     ])
   ];
 
+  const currentIdx = allImages.findIndex(img => img === currentMainImage);
+
   return (
     <>
       <SeoHead
@@ -64,10 +126,10 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         jsonLd={jsonLd}
       />
 
-      <div className="bg-[#0B0B0B] text-white py-10 sm:py-16 min-h-screen border-b border-white/10">
+      <div className="bg-[#0B0B0B] text-white py-8 sm:py-14 min-h-screen border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb & Back */}
-          <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10 text-xs text-white/60">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10 text-xs text-white/60">
             <button
               onClick={() => navigate(`/${decor.category}`)}
               className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider hover:text-[#C5A059] transition-colors font-medium cursor-pointer"
@@ -83,42 +145,68 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           </div>
 
           {/* Main Layout Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             {/* Left Col: Imagery */}
             <div className="lg:col-span-7 space-y-4">
-              {/* Active Hero Image */}
-              <div className="relative aspect-4/3 sm:aspect-16/11 bg-[#161616] border border-white/10 overflow-hidden rounded-sm shadow-xl">
+              {/* Active Hero Image with Zoom Trigger */}
+              <div
+                onClick={() => handleOpenLightbox(currentIdx >= 0 ? currentIdx : 0)}
+                className="group relative aspect-4/3 sm:aspect-16/11 bg-[#141413] border border-[#C5A059]/25 hover:border-[#C5A059] overflow-hidden rounded-sm shadow-2xl transition-all duration-300 cursor-pointer"
+              >
                 <img
                   src={currentMainImage}
-                  alt={decor.imageAltText || decor.name}
-                  className="w-full h-full object-cover object-center transition-all duration-300"
+                  alt={lightboxImages[currentIdx]?.alt || decor.imageAltText || decor.name}
+                  className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500 ease-out"
                 />
-                <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/80 backdrop-blur-sm text-white text-[10px] tracking-wider uppercase px-3 py-1 border border-white/10">
+
+                {/* City location badge */}
+                <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white text-[10px] tracking-wider uppercase px-2.5 py-1 border border-white/15 rounded-xs">
                   <MapPin className="w-3 h-3 text-[#C5A059]" />
                   <span>{decor.city}</span>
                 </div>
+
+                {/* Lightbox / Zoom Prompt Overlay */}
+                <div className="absolute bottom-3.5 right-3.5 flex items-center gap-1.5 bg-black/75 backdrop-blur-md text-[#E5C378] text-[11px] font-medium tracking-wide px-3 py-1.5 border border-[#C5A059]/40 rounded-xs opacity-90 group-hover:opacity-100 group-hover:bg-black/90 transition-all">
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  <span>Tam ekranda bax</span>
+                </div>
               </div>
 
-              {/* Gallery Thumbnails */}
+              {/* Gallery Thumbnails Strip */}
               {allImages.length > 1 && (
-                <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 pt-2">
-                  {allImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedImage(img)}
-                      className={`relative aspect-square border overflow-hidden rounded-sm transition-all cursor-pointer ${
-                        currentMainImage === img
-                          ? 'border-[#C5A059] ring-2 ring-[#C5A059]/40'
-                          : 'border-white/10 opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <img
-                        src={img}
-                        alt={`${decor.name} - ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
+                <div className="pt-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#C5A059] font-medium">
+                      Layihənin digər görüntüləri ({allImages.length} şəkil)
+                    </span>
+                    <span className="text-[10px] text-white/50">
+                      Böyütmək üçün toxunun
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 sm:gap-2.5">
+                    {allImages.map((img, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setSelectedImage(img);
+                          handleOpenLightbox(idx);
+                        }}
+                        className={`group relative aspect-4/3 border overflow-hidden rounded-xs transition-all cursor-pointer ${
+                          currentMainImage === img
+                            ? 'border-[#C5A059] ring-2 ring-[#C5A059]/50 scale-[1.02]'
+                            : 'border-white/15 opacity-70 hover:opacity-100 hover:border-white/40'
+                        }`}
+                      >
+                        <img
+                          src={img}
+                          alt={lightboxImages[idx]?.alt || `${decor.name} - ${idx + 1}`}
+                          className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -134,7 +222,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 </div>
 
                 {/* Decor Name */}
-                <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-normal leading-tight mb-4">
+                <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl text-white font-normal leading-tight mb-4">
                   {decor.name}
                 </h1>
 
@@ -149,7 +237,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 </div>
 
                 {/* Included Services List */}
-                <div className="mb-8 pt-4 border-t border-white/10">
+                <div className="mb-6 pt-4 border-t border-white/10">
                   <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium mb-3">
                     Daxildir:
                   </h3>
@@ -178,14 +266,14 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 <button
                   id="project-quote-cta-btn"
                   onClick={() => onOpenQuoteModal(decor.name)}
-                  className="w-full bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] py-3.5 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm text-center cursor-pointer"
+                  className="w-full bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] py-3.5 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm text-center cursor-pointer shadow-lg hover:shadow-[0_4px_20px_rgba(197,160,89,0.3)]"
                 >
                   Bu dekor üçün qiymət al
                 </button>
 
                 <button
                   onClick={handleWhatsApp}
-                  className="w-full flex items-center justify-center gap-2 border border-white/20 hover:border-[#25D366] text-white py-3 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 border border-white/20 hover:border-[#25D366] text-white py-3 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm cursor-pointer hover:bg-[#25D366]/10"
                 >
                   <MessageCircle className="w-4 h-4 text-[#25D366]" />
                   <span>WhatsApp ilə soruş</span>
@@ -193,8 +281,72 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
               </div>
             </div>
           </div>
+
+          {/* Full Visual Project Gallery Section */}
+          <div className="mt-14 sm:mt-20 pt-10 border-t border-white/10">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-4 border-b border-white/10">
+              <div>
+                <span className="text-[10px] uppercase tracking-[0.3em] text-[#C5A059] block mb-1 font-medium">
+                  FOTOGALEREYA
+                </span>
+                <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal">
+                  {decor.name} – Bütün Detallar
+                </h2>
+              </div>
+              <div className="mt-2 sm:mt-0 text-xs text-white/50">
+                {allImages.length} yüksək keyfiyyətli kadr
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {allImages.map((img, idx) => {
+                const info = lightboxImages[idx];
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => handleOpenLightbox(idx)}
+                    className="group relative bg-[#121211] rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059]/60 shadow-lg transition-all duration-400 cursor-pointer"
+                  >
+                    <div className="relative aspect-4/3 overflow-hidden bg-[#181816]">
+                      <img
+                        src={img}
+                        alt={info.alt}
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                      
+                      <div className="absolute top-3 right-3 p-1.5 rounded-full bg-black/60 text-white/80 group-hover:text-[#E5C378] group-hover:bg-black/90 transition-all opacity-0 group-hover:opacity-100">
+                        <Maximize2 className="w-3.5 h-3.5" />
+                      </div>
+
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <p className="text-xs font-serif text-[#F5E6C8] font-normal leading-snug truncate">
+                          {info.title || info.alt}
+                        </p>
+                        {info.caption && (
+                          <p className="text-[10px] text-white/60 font-light truncate mt-0.5">
+                            {info.caption}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Fullscreen Interactive Lightbox */}
+      <ImageLightbox
+        isOpen={isLightboxOpen}
+        images={lightboxImages}
+        currentIndex={lightboxIndex}
+        onClose={() => setIsLightboxOpen(false)}
+        onNavigate={(newIdx) => setLightboxIndex(newIdx)}
+      />
     </>
   );
 };

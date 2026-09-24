@@ -1,4 +1,5 @@
 import { CategoryInfo } from '../types';
+import { TOY_DEKORU_COVER_IMAGE } from './toyDekoruImages';
 
 export const CATEGORIES: CategoryInfo[] = [
   {
@@ -6,7 +7,7 @@ export const CATEGORIES: CategoryInfo[] = [
     name: 'Toy dekoru',
     slug: 'toy-dekoru',
     canonicalSlug: 'toy-dekoru',
-    heroImage: '/images/dreamart-toy-dekoru-qizili-altar.webp',
+    heroImage: TOY_DEKORU_COVER_IMAGE.src,
     shortDescription: 'Zövqlü arxa fonlar, zərif gəlin-bəy masası və xüsusi çiçək kompozisiyaları.',
     seoH1: 'Toy Dekoru Xidməti – Zövqlü və Premium Həllər',
     seoIntroduction: 'Toy gününüz üçün unudulmaz atmosfer yaradan premium dekorasiya xidməti. Təbii və eksklüziv güllər, xüsusi işıqlandırma, arxa fon və zərif masa dekorları ilə hər məqamı unikal edirik.',

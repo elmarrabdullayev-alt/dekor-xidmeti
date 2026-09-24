@@ -58,37 +58,42 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
       id="site-header"
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#0B0B0B]/95 backdrop-blur-md shadow-md border-b border-[#C5A059]/20'
-          : 'bg-[#0B0B0B] border-b border-[#C5A059]/15'
+          ? 'bg-[#0B0B0A]/92 backdrop-blur-lg shadow-[0_6px_30px_rgba(0,0,0,0.65)] border-b border-[#C5A059]/25 py-0'
+          : 'bg-[#0B0B0A]/80 backdrop-blur-md shadow-[0_4px_25px_rgba(0,0,0,0.4)] border-b border-[#C5A059]/20 py-1'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo with DA Monogram matching mockup */}
+          {/* Logo with DA Monogram & Atelier Wordmark */}
           <button
             id="brand-logo-button"
             onClick={() => handleNav('/')}
             className="flex items-center gap-3 text-left group focus:outline-hidden cursor-pointer"
           >
-            {/* Elegant Monogram DA */}
-            <div className="w-10 h-10 rounded-sm border border-[#C5A059]/50 bg-gradient-to-br from-[#1C1A14] to-[#0D0D0D] flex items-center justify-center shrink-0 shadow-sm group-hover:border-[#C5A059] transition-colors">
-              <span className="font-serif text-xl font-bold tracking-tighter text-[#E5C378] group-hover:text-white transition-colors select-none">
+            {/* Elegant Monogram DA: Refined, restrained, no excessive glow */}
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xs border border-[#C5A059]/40 bg-[#141310] flex items-center justify-center shrink-0 shadow-sm group-hover:border-[#C5A059]/75 transition-colors duration-300">
+              <span className="font-serif text-base sm:text-lg font-normal tracking-tight text-[#E5C378] group-hover:text-[#FAF8F5] transition-colors select-none">
                 DA
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="font-serif text-lg sm:text-xl tracking-[0.18em] text-[#FAF8F5] uppercase font-medium group-hover:text-[#E5C378] transition-colors leading-none">
-                DREAMART EVENTS
-              </span>
-              <span className="text-[8px] sm:text-[9px] tracking-[0.32em] text-[#C5A059] uppercase font-sans mt-1 font-normal">
-                TƏDBİR DEKORASİYASI
+              <div className="flex items-baseline gap-1.5">
+                <span className="font-cinzel text-base sm:text-[17px] tracking-[0.24em] text-[#FAF8F5] uppercase font-semibold group-hover:text-[#E5C378] transition-colors duration-300 leading-none">
+                  DREAMART
+                </span>
+                <span className="font-script text-base sm:text-lg text-[#C5A059] opacity-90 group-hover:opacity-100 transition-opacity">
+                  Weddings
+                </span>
+              </div>
+              <span className="text-[8px] sm:text-[8.5px] tracking-[0.38em] text-[#C5A059]/75 uppercase font-sans mt-1 font-light flex items-center gap-1">
+                <span>ZÖVQLÜ TƏDBİR DEKORU</span>
               </span>
             </div>
           </button>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs sm:text-[13px] font-normal tracking-wide">
+          {/* Desktop Navigation with restrained dark luxury pill container */}
+          <nav className="hidden lg:flex items-center space-x-1.5 xl:space-x-2 bg-[#141310]/60 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-[#C5A059]/20 shadow-inner">
             {navLinks.map((link) => {
               const active = isCurrentActive(link.path);
               return (
@@ -96,56 +101,56 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
                   key={link.path}
                   id={`nav-link-${link.path.replace(/[^a-z0-9]/g, '') || 'home'}`}
                   onClick={() => handleNav(link.path)}
-                  className={`relative transition-colors duration-200 py-1.5 cursor-pointer ${
+                  className={`relative transition-all duration-300 ease-out px-3.5 py-1.5 rounded-full text-xs tracking-wide cursor-pointer ${
                     active
-                      ? 'text-[#E5C378] font-medium'
-                      : 'text-white/80 hover:text-white'
+                      ? 'bg-[#C5A059]/12 text-[#F5E6CA] border border-[#C5A059]/35 font-medium shadow-[0_0_10px_rgba(197,160,89,0.12)]'
+                      : 'text-[#F5F2EB]/90 hover:text-[#E5C378] hover:bg-[#C5A059]/5 border border-transparent'
                   }`}
                 >
-                  {link.label}
-                  {active && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C5A059] rounded-full" />
-                  )}
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    {link.label}
+                    {active && <span className="w-1 h-1 rounded-full bg-[#D4AF37]" />}
+                  </span>
                 </button>
               );
             })}
           </nav>
 
-          {/* Header Action CTA: Phone Pill + Golden Button */}
-          <div className="hidden sm:flex items-center space-x-3">
+          {/* Header Action CTA: Refined Phone Pill + Golden Button */}
+          <div className="hidden sm:flex items-center space-x-3.5">
             <a
               href={`tel:${settings.phoneRaw}`}
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-sm bg-[#161616] border border-[#C5A059]/30 text-white/90 hover:border-[#C5A059] text-xs font-mono transition-colors"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#12110E]/60 border border-[#C5A059]/30 hover:border-[#C5A059]/70 text-[#F5F2EB]/90 hover:text-[#FAF8F5] hover:shadow-[0_0_12px_rgba(197,160,89,0.14)] text-xs font-mono transition-all duration-300 group"
             >
-              <Phone className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>{settings.phoneDisplay}</span>
+              <Phone className="w-3.5 h-3.5 text-[#C5A059] group-hover:scale-105 transition-transform duration-300" />
+              <span className="tracking-wider">{settings.phoneDisplay}</span>
             </a>
 
             <button
               id="header-cta-quote-button"
               onClick={onOpenQuoteModal}
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-5 sm:px-6 py-2 rounded-sm text-xs sm:text-[13px] font-medium tracking-wide shadow-sm hover:shadow transition-all duration-300 cursor-pointer"
+              className="relative group bg-gradient-to-r from-[#C5A059] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#DFC17B] text-[#0B0B0A] px-5 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 shadow-sm hover:shadow-[0_2px_14px_rgba(197,160,89,0.28)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
             >
-              Qiymət təklifi al
+              <span className="relative z-10 font-sans">Qiymət təklifi al</span>
             </button>
           </div>
 
-          {/* Mobile hamburger button */}
-          <div className="flex items-center space-x-2 lg:hidden">
+          {/* Mobile menu trigger */}
+          <div className="flex items-center space-x-2.5 lg:hidden">
             <button
               id="mobile-quote-btn"
               onClick={onOpenQuoteModal}
-              className="bg-[#C5A059] text-[#0B0B0B] px-3 py-1.5 rounded-sm text-xs font-medium hover:bg-[#D4AF37] sm:hidden"
+              className="bg-gradient-to-r from-[#C5A059] to-[#D4AF37] text-[#0B0B0A] px-3.5 py-1.5 rounded-full text-xs font-semibold hover:from-[#D4AF37] hover:to-[#DFC17B] sm:hidden shadow-sm"
             >
               Təklif al
             </button>
             <button
               id="mobile-menu-toggle"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-white/80 hover:text-white focus:outline-hidden"
+              className="p-2 text-[#F5F2EB]/80 hover:text-[#FAF8F5] focus:outline-hidden rounded-full border border-[#C5A059]/30 hover:border-[#C5A059]/60 transition-colors bg-[#141310]/80"
               aria-label="Menyu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 text-[#E5C378]" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -183,46 +188,49 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#0E0E0E] border-t border-[#C5A059]/20 z-50 flex flex-col justify-between px-6 py-8 overflow-y-auto animate-fadeIn">
+        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#0C0C0B]/98 backdrop-blur-xl border-t border-[#C5A059]/20 z-50 flex flex-col justify-between px-6 py-8 overflow-y-auto animate-fadeIn">
           <div className="space-y-6">
-            <div className="text-[10px] uppercase tracking-[0.3em] text-[#C5A059] font-medium pb-2 border-b border-white/10">
+            <div className="text-[10px] uppercase tracking-[0.3em] text-[#C5A059] font-medium pb-2 border-b border-[#C5A059]/15">
               Naviqasiya
             </div>
-            <div className="flex flex-col space-y-4">
-              {navLinks.map((link) => (
-                <button
-                  key={link.path}
-                  onClick={() => handleNav(link.path)}
-                  className={`text-left text-base font-serif tracking-wide transition-colors ${
-                    isCurrentActive(link.path)
-                      ? 'text-[#E5C378] font-medium'
-                      : 'text-white/80 hover:text-white'
-                  }`}
-                >
-                  {link.label}
-                </button>
-              ))}
+            <div className="flex flex-col space-y-2">
+              {navLinks.map((link) => {
+                const active = isCurrentActive(link.path);
+                return (
+                  <button
+                    key={link.path}
+                    onClick={() => handleNav(link.path)}
+                    className={`text-left text-base font-serif tracking-wide transition-all duration-300 py-2.5 px-3 rounded-sm ${
+                      active
+                        ? 'bg-[#C5A059]/12 text-[#E5C378] border-l-2 border-[#C5A059] font-medium pl-3.5'
+                        : 'text-[#F5F2EB]/80 hover:text-[#FAF8F5] hover:bg-white/5'
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          <div className="pt-6 border-t border-white/10 space-y-4">
+          <div className="pt-6 border-t border-[#C5A059]/15 space-y-4">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenQuoteModal();
               }}
-              className="w-full bg-[#C5A059] text-[#0B0B0B] py-3 rounded-sm text-xs font-medium tracking-wider uppercase text-center shadow-sm hover:bg-[#D4AF37]"
+              className="w-full bg-gradient-to-r from-[#C5A059] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#DFC17B] text-[#0B0B0A] py-3 rounded-full text-xs font-semibold tracking-wider uppercase text-center shadow-md transition-all"
             >
               Qiymət təklifi al
             </button>
-            <div className="flex items-center justify-between text-xs text-white/70 pt-2">
-              <a href={`tel:${settings.phoneRaw}`} className="flex items-center space-x-2 hover:text-[#C5A059]">
+            <div className="flex items-center justify-between text-xs text-[#F5F2EB]/70 pt-2">
+              <a href={`tel:${settings.phoneRaw}`} className="flex items-center space-x-2 text-[#F5F2EB]/90 hover:text-[#C5A059] transition-colors">
                 <Phone className="w-3.5 h-3.5 text-[#C5A059]" />
                 <span className="font-mono">{settings.phoneDisplay}</span>
               </a>
               <button
                 onClick={() => handleNav('/admin')}
-                className="flex items-center space-x-1 text-white/60 hover:text-[#C5A059]"
+                className="flex items-center space-x-1 text-white/50 hover:text-[#C5A059] transition-colors"
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>Admin Panel</span>

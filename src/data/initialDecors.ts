@@ -1,4 +1,5 @@
 import { DecorItem } from '../types';
+import { TOY_DEKORU_COLLECTION, TOY_DEKORU_COVER_IMAGE } from './toyDekoruImages';
 
 export const INITIAL_DECORS: DecorItem[] = [
   {
@@ -11,8 +12,14 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Bakı',
     shortDescription: 'Təbii ağ qızılgüllər, hündür şüşə şamdanlar və qızılı elementlərlə işlənmiş möhtəşəm toy altar tağı.',
     fullDescription: 'Zövqlü və unudulmaz toy mərasimi üçün xüsusi hazırlanmış tərtibat. Dairəvi monumental arxa fon konstruksiyası, təravətli ağ qızılgül və qortenziya çiçək kompozisiyaları, pilləli şam işıqlandırması və zərif gəlin-bəy masası ahəngi ilə məkanınıza krallıq dəbdəbəsi gətirir.',
-    mainImage: '/images/dreamart-toy-dekoru-qizili-altar.webp',
+    mainImage: TOY_DEKORU_COVER_IMAGE.src,
     galleryImages: [
+      TOY_DEKORU_COLLECTION[1].src,
+      TOY_DEKORU_COLLECTION[2].src,
+      TOY_DEKORU_COLLECTION[3].src,
+      TOY_DEKORU_COLLECTION[4].src,
+      TOY_DEKORU_COLLECTION[5].src,
+      '/images/dreamart-toy-dekoru-qizili-altar.webp',
       '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
       '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp',
       '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp'
@@ -32,7 +39,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 2000,
     seoTitle: 'Ağ Qızılgül Toy Altarı Dekoru Bakı | DreamArt Events',
     metaDescription: 'Bakıda klassik lüks toy altar dekoru. Canlı ağ güllər, şam işıqlandırması və eksklüziv gəlin masası tərtibatı.',
-    imageAltText: 'DreamArt Events qızılı tağ və dəbdəbəli bəy-gəlin masası toy dekoru',
+    imageAltText: TOY_DEKORU_COVER_IMAGE.alt,
     status: 'published',
     isFeatured: true,
     createdAt: '2026-08-20T10:00:00Z'

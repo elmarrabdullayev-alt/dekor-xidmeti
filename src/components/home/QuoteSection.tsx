@@ -52,41 +52,44 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
   };
 
   return (
-    <section id="quote-section" className="py-16 sm:py-24 bg-[#0B0B0B] text-white border-b border-white/10 relative overflow-hidden">
+    <section id="quote-section" className="py-20 sm:py-28 bg-[#0B0B0B] text-white border-b border-[#C5A059]/15 relative overflow-hidden">
       {/* Subtle atmospheric glow behind quote section */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-[#C5A059]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-[#C5A059]/4 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Column matching mockup */}
+          {/* Left Column: Brand Invitation Message */}
           <div className="lg:col-span-6 space-y-6">
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-[#C5A059] font-medium font-sans block">
-              BİZİMLƏ ƏLAQƏ
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-px bg-[#C5A059]" />
+              <span className="font-script text-2xl sm:text-3xl text-[#E5C378] select-none">
+                Birlikdə Yaradaq
+              </span>
+            </div>
 
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-normal leading-[1.15]">
-              Gəlin, xəyalınızdakı tədbiri birlikdə gerçəkləşdirək!
+            <h2 className="font-serif text-3.5xl sm:text-4.5xl md:text-5xl text-white font-normal leading-[1.12]">
+              Gəlin, xəyalınızdakı mərasimi birlikdə gerçəkləşdirək!
             </h2>
 
             <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed max-w-lg">
-              Tədbiriniz üçün fərdi təklif almaq və ətraflı məlumat üçün bizimlə əlaqə saxlayın.
+              Toy, nişan, xına və ya korporativ tədbiriniz üçün fərdi bədii baxış və konsept hesabatı almaq üçün bizimlə əlaqə saxlayın.
             </p>
 
-            {/* Direct Phone Callout Box matching mockup */}
+            {/* Direct Phone Callout Box */}
             <div className="pt-2">
               <a
                 href={`tel:${settings.phoneRaw}`}
-                className="inline-flex items-center gap-4 bg-[#141414] border border-[#C5A059]/40 hover:border-[#C5A059] p-4 sm:p-5 rounded-sm transition-all duration-300 group"
+                className="inline-flex items-center gap-4 bg-[#12110E] border border-[#C5A059]/35 hover:border-[#C5A059] p-4 sm:p-5 rounded-sm transition-all duration-300 group shadow-lg hover:shadow-[0_4px_25px_rgba(197,160,89,0.2)]"
               >
-                <div className="w-12 h-12 rounded-full bg-[#C5A059]/15 border border-[#C5A059]/40 flex items-center justify-center text-[#C5A059] group-hover:scale-105 group-hover:bg-[#C5A059] group-hover:text-[#0B0B0B] transition-all shrink-0">
+                <div className="w-12 h-12 rounded-full bg-[#1A1814] border border-[#C5A059]/40 flex items-center justify-center text-[#C5A059] group-hover:scale-105 group-hover:bg-[#C5A059] group-hover:text-[#0A0A0A] transition-all shrink-0">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl sm:text-2xl font-mono font-medium text-white group-hover:text-[#E5C378] transition-colors">
+                  <div className="text-xl sm:text-2xl font-mono font-medium text-white group-hover:text-[#E5C378] transition-colors tracking-wide">
                     {settings.phoneDisplay}
                   </div>
-                  <div className="text-xs text-[#C5A059] mt-0.5">
-                    Hər zaman sizin üçün buradayıq!
+                  <div className="text-xs text-[#C5A059]/90 mt-0.5 font-light">
+                    Hər zaman zərif məsləhət üçün buradayıq!
                   </div>
                 </div>
               </a>
@@ -96,17 +99,22 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
               <button
                 type="button"
                 onClick={handleWhatsAppDirect}
-                className="inline-flex items-center gap-2 text-xs sm:text-sm text-white/80 hover:text-[#25D366] transition-colors"
+                className="inline-flex items-center gap-2.5 text-xs sm:text-sm text-white/80 hover:text-[#25D366] transition-colors cursor-pointer group"
               >
-                <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                <span>WhatsApp ilə birbaşa yazın</span>
+                <div className="w-7 h-7 rounded-full bg-[#25D366]/15 flex items-center justify-center text-[#25D366] group-hover:scale-110 transition-transform">
+                  <MessageCircle className="w-4 h-4" />
+                </div>
+                <span className="border-b border-white/20 group-hover:border-[#25D366]">WhatsApp ilə birbaşa yazın</span>
               </button>
             </div>
           </div>
 
-          {/* Right Column: Refined Direct Form matching mockup */}
+          {/* Right Column: Refined Atelier Direct Form */}
           <div className="lg:col-span-6">
-            <div className="bg-[#121212] rounded-sm border border-white/10 hover:border-[#C5A059]/40 p-6 sm:p-8 shadow-2xl transition-colors">
+            <div className="bg-[#12110E] rounded-sm border border-[#C5A059]/25 hover:border-[#C5A059]/50 p-6 sm:p-9 shadow-2xl transition-colors relative">
+              {/* Subtle top frame notch */}
+              <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#C5A059]/40 to-transparent" />
+
               {submitted ? (
                 <div className="text-center py-10 space-y-4">
                   <div className="w-12 h-12 mx-auto rounded-full bg-[#C5A059]/20 border border-[#C5A059] flex items-center justify-center text-[#C5A059]">
@@ -122,7 +130,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
                       setSubmitted(false);
                       setFormData({ name: '', phone: '', notes: '' });
                     }}
-                    className="text-xs text-[#C5A059] underline hover:text-white pt-2"
+                    className="text-xs text-[#C5A059] underline hover:text-white pt-2 cursor-pointer"
                   >
                     Yeni müraciət göndər
                   </button>
@@ -131,16 +139,16 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="pb-1">
                     <h3 className="font-serif text-xl sm:text-2xl text-white font-normal">
-                      Qiymət təklifi alın
+                      Qiymət Təklifi Alın
                     </h3>
                     <p className="text-xs text-white/60 font-light mt-1">
-                      Məlumatlarınızı qeyd edin, dərhal əlaqə saxlayaq.
+                      Məlumatlarınızı qeyd edin, dizaynerimiz dərhal əlaqə saxlasın.
                     </p>
                   </div>
 
                   <div>
-                    <label className="block text-xs uppercase tracking-wider text-white/70 mb-1.5 font-medium">
-                      Adınız
+                    <label className="block text-[11px] uppercase tracking-wider text-white/75 mb-1.5 font-medium font-sans">
+                      Ad və Soyadınız
                     </label>
                     <input
                       type="text"
@@ -148,12 +156,12 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Məsələn: Leyla Əliyeva"
-                      className="w-full bg-[#181818] border border-white/10 focus:border-[#C5A059] rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-hidden transition-colors"
+                      className="w-full bg-[#181714] border border-[#C5A059]/20 focus:border-[#C5A059] rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-hidden transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs uppercase tracking-wider text-white/70 mb-1.5 font-medium">
+                    <label className="block text-[11px] uppercase tracking-wider text-white/75 mb-1.5 font-medium font-sans">
                       Telefon nömrəniz
                     </label>
                     <input
@@ -162,12 +170,12 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="050 123 45 67"
-                      className="w-full bg-[#181818] border border-white/10 focus:border-[#C5A059] rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-hidden transition-colors font-mono"
+                      className="w-full bg-[#181714] border border-[#C5A059]/20 focus:border-[#C5A059] rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-hidden transition-colors font-mono"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs uppercase tracking-wider text-white/70 mb-1.5 font-medium">
+                    <label className="block text-[11px] uppercase tracking-wider text-white/75 mb-1.5 font-medium font-sans">
                       Tədbir haqqında qısa məlumat
                     </label>
                     <textarea
@@ -175,17 +183,17 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                       placeholder="Tədbir növü, planlaşdırılan tarix, məkan və ya arzuladığınız konsept..."
-                      className="w-full bg-[#181818] border border-white/10 focus:border-[#C5A059] rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-hidden transition-colors resize-none"
+                      className="w-full bg-[#181714] border border-[#C5A059]/20 focus:border-[#C5A059] rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-hidden transition-colors resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[#C5A059] hover:bg-[#D4AF37] disabled:opacity-50 text-[#0B0B0B] font-medium py-3.5 rounded-sm text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2"
+                    className="w-full bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#C5A059] hover:from-[#D4AF37] hover:to-[#E5C378] disabled:opacity-50 text-[#0A0A0A] font-semibold py-3.5 rounded-sm text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(197,160,89,0.3)] hover:shadow-[0_6px_30px_rgba(197,160,89,0.5)] flex items-center justify-center gap-2 cursor-pointer mt-3"
                   >
                     <span>{loading ? 'Göndərilir...' : 'Qiymət təklifi al'}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 text-[#0A0A0A]" />
                   </button>
                 </form>
               )}

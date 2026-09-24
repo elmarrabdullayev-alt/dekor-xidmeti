@@ -160,6 +160,14 @@ async function startServer() {
     })
   );
 
+  // Serve static public images (decoding spaces and special chars)
+  app.use(
+    '/images',
+    express.static(path.join(process.cwd(), 'public', 'images'), {
+      maxAge: '1y',
+    })
+  );
+
   // Health check
   app.get('/api/health', (_req, res) => {
     const dbOk = fs.existsSync(IMAGES_DB_FILE);
