@@ -2,6 +2,7 @@ import React from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { ServicesSection } from '../components/home/ServicesSection';
 import { Sparkles, CheckCircle, Clock, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface ServicesPageProps {
   navigate: (path: string) => void;
@@ -82,12 +83,14 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, onOpenQuot
           </div>
 
           <div className="mt-12 text-center">
-            <button
-              onClick={() => onOpenQuoteModal('Xidmət Sifarişi')}
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer"
+            <a
+              href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings dekorasiya xidmətləri ilə bağlı qiymət təklifi almaq istəyirəm.' })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer inline-block"
             >
               Layihəniz üçün təklif alın
-            </button>
+            </a>
           </div>
         </section>
       </div>

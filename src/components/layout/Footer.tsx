@@ -1,6 +1,7 @@
 import React from 'react';
 import { Phone, Instagram, Facebook, Youtube, MessageCircle, MapPin, ShieldCheck } from 'lucide-react';
 import { store } from '../../lib/store';
+import { getWhatsAppQuoteUrl } from '../../lib/whatsapp';
 
 interface FooterProps {
   navigate: (path: string) => void;
@@ -94,11 +95,12 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
               <Youtube className="w-4 h-4" />
             </a>
             <a
-              href={`https://wa.me/${settings.whatsappNumber}`}
+              href={getWhatsAppQuoteUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full border border-white/15 hover:border-[#25D366] text-white/80 hover:text-[#25D366] flex items-center justify-center transition-all bg-[#121212]"
-              aria-label="WhatsApp"
+              aria-label="WhatsApp ilə qiymət təklifi al"
+              title="WhatsApp ilə qiymət təklifi al"
             >
               <MessageCircle className="w-4 h-4" />
             </a>

@@ -7,6 +7,7 @@ import { getProjectDetailSchema, getBreadcrumbSchema } from '../lib/structuredDa
 import { store } from '../lib/store';
 import { ImageLightbox, LightboxImage } from '../components/common/ImageLightbox';
 import { TOY_DEKORU_COLLECTION } from '../data/toyDekoruImages';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface ProjectDetailPageProps {
   slug: string;
@@ -99,10 +100,10 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
     setIsLightboxOpen(true);
   };
 
+  const projectWhatsAppUrl = getWhatsAppQuoteUrl({ decorName: decor.name, isProject: true });
+
   const handleWhatsApp = () => {
-    const text = `Salam, DreamArt Events! "${decor.name}" (${decor.categoryName}, ${decor.city}) dekorasiyası üçün qiymət təklifi və məlumat almaq istəyirəm.`;
-    const url = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(projectWhatsAppUrl, '_blank', 'noopener,noreferrer');
   };
 
   const jsonLd = [
@@ -263,21 +264,25 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
               {/* Action Buttons */}
               <div className="pt-6 border-t border-white/10 space-y-3">
-                <button
+                <a
                   id="project-quote-cta-btn"
-                  onClick={() => onOpenQuoteModal(decor.name)}
-                  className="w-full bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] py-3.5 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm text-center cursor-pointer shadow-lg hover:shadow-[0_4px_20px_rgba(197,160,89,0.3)]"
+                  href={projectWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] py-3.5 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm text-center cursor-pointer shadow-lg hover:shadow-[0_4px_20px_rgba(197,160,89,0.3)] block"
                 >
                   Bu dekor üçün qiymət al
-                </button>
+                </a>
 
-                <button
-                  onClick={handleWhatsApp}
+                <a
+                  href={projectWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 border border-white/20 hover:border-[#25D366] text-white py-3 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm cursor-pointer hover:bg-[#25D366]/10"
                 >
                   <MessageCircle className="w-4 h-4 text-[#25D366]" />
                   <span>WhatsApp ilə soruş</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>

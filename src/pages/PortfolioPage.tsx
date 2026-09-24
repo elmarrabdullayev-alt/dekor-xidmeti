@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DecorItem } from '../types';
 import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface PortfolioPageProps {
   decors: DecorItem[];
@@ -88,12 +89,14 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
           </div>
 
           <div className="mt-16 text-center">
-            <button
-              onClick={() => onOpenQuoteModal('Portfoliodan Təklif')}
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wider uppercase transition-colors cursor-pointer"
+            <a
+              href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings portfoliodakı layihələr əsasında tədbirim üçün qiymət təklifi almaq istəyirəm.' })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wider uppercase transition-colors cursor-pointer inline-block"
             >
               Tədbiriniz üçün təklif alın
-            </button>
+            </a>
           </div>
         </div>
       </div>

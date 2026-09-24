@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, ArrowRight, CheckCircle2, MessageCircle } from 'lucide-react';
 import { store } from '../../lib/store';
+import { getWhatsAppQuoteUrl, OFFICIAL_WHATSAPP_NUMBER } from '../../lib/whatsapp';
 
 interface QuoteSectionProps {
   initialDecorName?: string;
@@ -19,6 +20,20 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const handleWhatsAppDirect = () => {
+    let text = initialDecorName
+      ? `Salam, DreamArt Weddings! "${initialDecorName}" üçün qiymət təklifi almaq istəyirəm.`
+      : 'Salam, DreamArt Weddings dekor xidməti ilə bağlı qiymət təklifi almaq istəyirəm.';
+
+    if (formData.name || formData.phone || formData.notes) {
+      text += `\n\nAd: ${formData.name || 'Göstərilməyib'}\nTelefon: ${formData.phone || 'Göstərilməyib'}`;
+      if (formData.notes) text += `\nQeyd: ${formData.notes}`;
+    }
+
+    const url = `https://wa.me/${OFFICIAL_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) return;
@@ -36,19 +51,9 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
       });
       setLoading(false);
       setSubmitted(true);
+      handleWhatsAppDirect();
       if (onSuccess) onSuccess();
     }, 400);
-  };
-
-  const handleWhatsAppDirect = () => {
-    const text = `Salam, DreamArt Events! Tədbirim üçün qiymət təklifi almaq istəyirəm.\n\n` +
-      `Ad: ${formData.name || 'Göstərilməyib'}\n` +
-      `Telefon: ${formData.phone || 'Göstərilməyib'}\n` +
-      (initialDecorName ? `Seçilmiş dekor: ${initialDecorName}\n` : '') +
-      (formData.notes ? `Qeyd: ${formData.notes}` : '');
-
-    const url = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (

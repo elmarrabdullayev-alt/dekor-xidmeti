@@ -8,6 +8,7 @@ import { VenueItem, DecorItem } from '../types';
 import { SeoHead } from '../components/layout/SeoHead';
 import { store } from '../lib/store';
 import { isVenueIndexable, getVenueStructuredData } from '../lib/venueHelper';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface VenueDetailPageProps {
   slug: string;
@@ -70,11 +71,10 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
   const phoneDisplay = '050 231 17 28';
   const phoneRaw = '+994502311728';
   const whatsappNumber = '994502311728';
+  const venueWhatsAppUrl = getWhatsAppQuoteUrl({ venueName: venue.name });
 
   const handleWhatsApp = () => {
-    const text = `Salam, DreamArt Events! "${venue.name}" (${venue.city}) məkanında toy/tədbir dekorasiyası ilə bağlı məlumat və qiymət təklifi almaq istəyirəm.`;
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(venueWhatsAppUrl, '_blank', 'noopener,noreferrer');
   };
 
   const canonicalUrl = `https://dreamart.az/restoranlar/${venue.slug}`;
@@ -153,13 +153,15 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
 
                 {/* Direct Action Buttons */}
                 <div className="pt-3 flex flex-wrap items-center gap-3">
-                  <button
-                    onClick={handleWhatsApp}
-                    className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3 rounded-sm flex items-center gap-2 transition-colors cursor-pointer shadow-lg"
+                  <a
+                    href={venueWhatsAppUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3 rounded-sm flex items-center gap-2 transition-colors cursor-pointer shadow-lg inline-flex"
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>WhatsApp ilə sorğu göndərin</span>
-                  </button>
+                  </a>
 
                   <a
                     href={`tel:${phoneRaw}`}
@@ -374,20 +376,24 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                 </div>
 
                 <div className="space-y-2.5 pt-2">
-                  <button
-                    onClick={() => onOpenQuoteModal(`${venue.name} Dekoru`)}
-                    className="w-full bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase py-3 rounded-sm transition-colors cursor-pointer"
+                  <a
+                    href={venueWhatsAppUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase py-3 rounded-sm transition-colors cursor-pointer block text-center"
                   >
                     Qiymət Təklifi Alın
-                  </button>
+                  </a>
 
-                  <button
-                    onClick={handleWhatsApp}
+                  <a
+                    href={venueWhatsAppUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-full bg-white/5 hover:bg-white/10 text-white border border-[#C5A059]/40 text-xs tracking-wider uppercase py-3 rounded-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4 text-[#C5A059]" />
                     <span>WhatsApp: {phoneDisplay}</span>
-                  </button>
+                  </a>
                 </div>
 
                 {/* Venue Details Snapshot */}

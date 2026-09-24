@@ -6,6 +6,7 @@ import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getBreadcrumbSchema, getFaqPageSchema } from '../lib/structuredData';
 import { MapPin, Truck, ArrowLeft } from 'lucide-react';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface LocalSeoPageProps {
   categorySlug: DecorCategorySlug;
@@ -125,12 +126,14 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
               </div>
             </div>
 
-            <button
-              onClick={() => onOpenQuoteModal(`${location.city} - ${category.name}`)}
-              className="shrink-0 bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-5 py-2.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer"
+            <a
+              href={getWhatsAppQuoteUrl({ city: location.city, categoryName: category.name, customMessage: `Salam, DreamArt Weddings ${location.city} şəhərində ${category.name} xidməti ilə bağlı qiymət təklifi almaq istəyirəm.` })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-5 py-2.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer inline-block"
             >
               {location.city} üçün sorğu göndər
-            </button>
+            </a>
           </div>
         </div>
 

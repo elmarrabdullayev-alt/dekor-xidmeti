@@ -3,6 +3,7 @@ import { CATEGORIES } from '../data/categories';
 import { DecorCategorySlug, DecorItem } from '../types';
 import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface DecorsCatalogPageProps {
   decors: DecorItem[];
@@ -108,12 +109,14 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
             <p className="text-xs sm:text-sm text-white/70 mb-6 max-w-lg mx-auto font-light leading-relaxed">
               Biz hər bir müştəri üçün unikal, təkrarolunmaz və fərdi eskiz əsasında dekorasiya hazırlayırıq.
             </p>
-            <button
-              onClick={() => onOpenQuoteModal('Fərdi Dekor Sorğusu')}
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-all duration-300 cursor-pointer"
+            <a
+              href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings fərdi dekor konsepti ilə bağlı qiymət təklifi almaq istəyirəm.' })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-all duration-300 cursor-pointer inline-block"
             >
               Fərdi konsept sifariş et
-            </button>
+            </a>
           </div>
         </div>
       </div>

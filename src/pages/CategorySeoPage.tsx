@@ -7,6 +7,7 @@ import { getCategoryServiceSchema, getFaqPageSchema, getBreadcrumbSchema } from 
 import { ArrowRight, Sparkles, MapPin, Maximize2, Camera } from 'lucide-react';
 import { TOY_DEKORU_COLLECTION } from '../data/toyDekoruImages';
 import { ImageLightbox, LightboxImage } from '../components/common/ImageLightbox';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface CategorySeoPageProps {
   categorySlug: DecorCategorySlug;
@@ -120,12 +121,14 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
           ) : (
             <div className="text-center py-12 bg-[#121212] border border-white/10 rounded-sm p-8">
               <p className="text-xs sm:text-sm text-white/60 mb-4 font-light">Bu kateqoriya üzrə yeni layihələr hazırlanır.</p>
-              <button
-                onClick={() => onOpenQuoteModal(category.name)}
-                className="bg-[#C5A059] text-[#0B0B0B] hover:bg-[#D4AF37] px-6 py-2.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer"
+              <a
+                href={getWhatsAppQuoteUrl({ categorySlug: category.slug, categoryName: category.name })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#C5A059] text-[#0B0B0B] hover:bg-[#D4AF37] px-6 py-2.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer inline-block"
               >
                 Fərdi konsept sifariş et
-              </button>
+              </a>
             </div>
           )}
 
@@ -268,12 +271,14 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
             </div>
 
             <div className="mt-12 text-center">
-              <button
-                onClick={() => onOpenQuoteModal(`${category.name} Sorğusu`)}
-                className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-all duration-300 cursor-pointer shadow-lg"
+              <a
+                href={getWhatsAppQuoteUrl({ categorySlug: category.slug, categoryName: category.name })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-all duration-300 cursor-pointer shadow-lg inline-block"
               >
                 {category.name} üçün qiymət al
-              </button>
+              </a>
             </div>
           </div>
         </section>

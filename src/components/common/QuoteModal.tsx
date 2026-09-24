@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Send, CheckCircle2, Phone, User, Calendar, MapPin, MessageCircle } from 'lucide-react';
 import { store } from '../../lib/store';
+import { OFFICIAL_WHATSAPP_NUMBER } from '../../lib/whatsapp';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -23,6 +24,20 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, presetD
 
   if (!isOpen) return null;
 
+  const handleWhatsApp = () => {
+    const text = `Salam, DreamArt Weddings! Qiymət təklifi almaq istəyirəm.\n\n` +
+      `Ad: ${formData.name || 'Müştəri'}\n` +
+      `Telefon: ${formData.phone || ''}\n` +
+      `Tədbir: ${formData.eventType}\n` +
+      `Məkan: ${formData.location}\n` +
+      `Tarix: ${formData.date || 'Dəqiqləşdirilir'}\n` +
+      (presetDecorName ? `Seçilmiş dekor: ${presetDecorName}\n` : '') +
+      (formData.notes ? `Qeyd: ${formData.notes}` : '');
+
+    const url = `https://wa.me/${OFFICIAL_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) return;
@@ -40,21 +55,8 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, presetD
       });
       setLoading(false);
       setSubmitted(true);
+      handleWhatsApp();
     }, 350);
-  };
-
-  const handleWhatsApp = () => {
-    const text = `Salam, DreamArt Events! Qiymət təklifi almaq istəyirəm.\n\n` +
-      `Ad: ${formData.name || 'Müştəri'}\n` +
-      `Telefon: ${formData.phone || ''}\n` +
-      `Tədbir: ${formData.eventType}\n` +
-      `Məkan: ${formData.location}\n` +
-      `Tarix: ${formData.date || 'Dəqiqləşdirilir'}\n` +
-      (presetDecorName ? `Seçilmiş dekor: ${presetDecorName}\n` : '') +
-      (formData.notes ? `Qeyd: ${formData.notes}` : '');
-
-    const url = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (

@@ -4,6 +4,7 @@ import { VenueItem, DecorItem } from '../types';
 import { SeoHead } from '../components/layout/SeoHead';
 import { store } from '../lib/store';
 import { isVenueIndexable } from '../lib/venueHelper';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface VenuesCatalogPageProps {
   navigate: (path: string) => void;
@@ -231,17 +232,19 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
               DreamArt Events Azərbaycanın istənilən restoran və ya şadlıq sarayında fərdi dekor konsepti hazırlayaraq quraşdırma həyata keçirir.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <button
-                onClick={() => onOpenQuoteModal('Ümumi Məkan Sorğusu')}
-                className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3 rounded-sm transition-colors cursor-pointer"
-              >
-                Məkanınız üçün təklif alın
-              </button>
               <a
-                href="https://wa.me/994502311728?text=Salam%2C%20DreamArt%20Events!%20Restoran%20dekoru%20haqq%C4%B1nda%20m%C9%99lumat%20almaq%20ist%C9%99yir%C9%99m."
+                href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings ilə restoran və məkanlarda dekor xidməti üçün qiymət təklifi almaq istəyirəm.' })}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-[#C5A059]/50 hover:border-[#C5A059] text-white text-xs tracking-wider uppercase px-6 py-3 rounded-sm transition-colors"
+                className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3 rounded-sm transition-colors cursor-pointer inline-block"
+              >
+                Məkanınız üçün təklif alın
+              </a>
+              <a
+                href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings ilə restoran və məkanlarda dekor xidməti üçün qiymət təklifi almaq istəyirəm.' })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-[#C5A059]/50 hover:border-[#C5A059] text-white text-xs tracking-wider uppercase px-6 py-3 rounded-sm transition-colors inline-block"
               >
                 WhatsApp ilə yazın
               </a>

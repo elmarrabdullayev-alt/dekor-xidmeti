@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, MessageCircle, ShieldCheck, Search } from 'lucide-react';
 import { store } from '../../lib/store';
+import { getWhatsAppQuoteUrl } from '../../lib/whatsapp';
 
 interface HeaderProps {
   currentPath: string;
@@ -126,24 +127,28 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
               <span className="tracking-wider">{settings.phoneDisplay}</span>
             </a>
 
-            <button
+            <a
               id="header-cta-quote-button"
-              onClick={onOpenQuoteModal}
-              className="relative group bg-gradient-to-r from-[#C5A059] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#DFC17B] text-[#0B0B0A] px-5 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 shadow-sm hover:shadow-[0_2px_14px_rgba(197,160,89,0.28)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+              href={getWhatsAppQuoteUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative group bg-gradient-to-r from-[#C5A059] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#DFC17B] text-[#0B0B0A] px-5 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 shadow-sm hover:shadow-[0_2px_14px_rgba(197,160,89,0.28)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer inline-flex items-center justify-center"
             >
               <span className="relative z-10 font-sans">Qiymət təklifi al</span>
-            </button>
+            </a>
           </div>
 
           {/* Mobile menu trigger */}
           <div className="flex items-center space-x-2.5 lg:hidden">
-            <button
+            <a
               id="mobile-quote-btn"
-              onClick={onOpenQuoteModal}
-              className="bg-gradient-to-r from-[#C5A059] to-[#D4AF37] text-[#0B0B0A] px-3.5 py-1.5 rounded-full text-xs font-semibold hover:from-[#D4AF37] hover:to-[#DFC17B] sm:hidden shadow-sm"
+              href={getWhatsAppQuoteUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-r from-[#C5A059] to-[#D4AF37] text-[#0B0B0A] px-3.5 py-1.5 rounded-full text-xs font-semibold hover:from-[#D4AF37] hover:to-[#DFC17B] sm:hidden shadow-sm inline-flex items-center justify-center"
             >
               Təklif al
-            </button>
+            </a>
             <button
               id="mobile-menu-toggle"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -214,15 +219,15 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
           </div>
 
           <div className="pt-6 border-t border-[#C5A059]/15 space-y-4">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenQuoteModal();
-              }}
-              className="w-full bg-gradient-to-r from-[#C5A059] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#DFC17B] text-[#0B0B0A] py-3 rounded-full text-xs font-semibold tracking-wider uppercase text-center shadow-md transition-all"
+            <a
+              href={getWhatsAppQuoteUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full bg-gradient-to-r from-[#C5A059] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#DFC17B] text-[#0B0B0A] py-3 rounded-full text-xs font-semibold tracking-wider uppercase text-center shadow-md transition-all inline-block"
             >
               Qiymət təklifi al
-            </button>
+            </a>
             <div className="flex items-center justify-between text-xs text-[#F5F2EB]/70 pt-2">
               <a href={`tel:${settings.phoneRaw}`} className="flex items-center space-x-2 text-[#F5F2EB]/90 hover:text-[#C5A059] transition-colors">
                 <Phone className="w-3.5 h-3.5 text-[#C5A059]" />

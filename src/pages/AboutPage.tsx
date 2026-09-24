@@ -1,6 +1,7 @@
 import React from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { Sparkles, Heart, Award } from 'lucide-react';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface AboutPageProps {
   navigate: (path: string) => void;
@@ -68,12 +69,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal
           </div>
 
           <div className="mt-16 text-center">
-            <button
-              onClick={onOpenQuoteModal}
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer"
+            <a
+              href={getWhatsAppQuoteUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer inline-block"
             >
               Bizimlə əlaqə saxlayın
-            </button>
+            </a>
           </div>
         </div>
       </div>

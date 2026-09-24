@@ -3,6 +3,7 @@ import { SeoHead } from '../components/layout/SeoHead';
 import { QuoteSection } from '../components/home/QuoteSection';
 import { store } from '../lib/store';
 import { MapPin, Phone, Mail, Instagram, MessageCircle } from 'lucide-react';
+import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface ContactPageProps {
   onOpenQuoteModal: () => void;
@@ -56,7 +57,7 @@ export const ContactPage: React.FC<ContactPageProps> = () => {
               <h3 className="text-xs uppercase tracking-wider text-white font-semibold mb-1">WhatsApp</h3>
               <p className="text-sm text-white/80 mb-2">Sürətli cavab</p>
               <a
-                href={`https://wa.me/${settings.whatsappNumber}`}
+                href={getWhatsAppQuoteUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-[#25D366] hover:underline font-medium"
