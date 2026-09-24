@@ -11,11 +11,11 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Bakı',
     shortDescription: 'Təbii ağ qızılgüllər, hündür şüşə şamdanlar və qızılı elementlərlə işlənmiş möhtəşəm toy altar tağı.',
     fullDescription: 'Zövqlü və unudulmaz toy mərasimi üçün xüsusi hazırlanmış tərtibat. Dairəvi monumental arxa fon konstruksiyası, təravətli ağ qızılgül və qortenziya çiçək kompozisiyaları, pilləli şam işıqlandırması və zərif gəlin-bəy masası ahəngi ilə məkanınıza krallıq dəbdəbəsi gətirir.',
-    mainImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85',
+    mainImage: '/images/dreamart-toy-dekoru-qizili-altar.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85',
-      'https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1200&q=85',
-      'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp',
+      '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp'
     ],
     includedServices: [
       'Fərdi dekor konseptinin eskizi',
@@ -32,7 +32,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 2000,
     seoTitle: 'Ağ Qızılgül Toy Altarı Dekoru Bakı | DreamArt Events',
     metaDescription: 'Bakıda klassik lüks toy altar dekoru. Canlı ağ güllər, şam işıqlandırması və eksklüziv gəlin masası tərtibatı.',
-    imageAltText: 'Bakıda dəbdəbəli ağ güllər və şamlarla bəzədilmiş toy altarı və gəlin masası dekoru',
+    imageAltText: 'DreamArt Events qızılı tağ və dəbdəbəli bəy-gəlin masası toy dekoru',
     status: 'published',
     isFeatured: true,
     createdAt: '2026-08-20T10:00:00Z'
@@ -47,10 +47,10 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Sumqayıt',
     shortDescription: 'İpək parçalar, pudra pionlar və qızılı zərif tağ ilə işlənmiş intim nişan dekoru.',
     fullDescription: 'Nişan mərasimini nağılvari edən romantik pastel kompozisiya. Yumşaq krem və çəhrayı tonların incə balansı, xüsusi xonça və üzük masaları, güzgü aksesuarlar və zərif arxa fon işıqlandırması.',
-    mainImage: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=85',
+    mainImage: '/images/dreamart-nisan-dekoru-fotozona.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=85',
-      'https://images.unsplash.com/photo-1478146896981-b80fe463b330?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp',
+      '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp'
     ],
     includedServices: [
       'Dekor konsepti və rəng ahəngi seçimi',
@@ -65,7 +65,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 800,
     seoTitle: 'Pudra Çəhrayı Nişan Masası Dekoru Sumqayıt | DreamArt Events',
     metaDescription: 'Sumqayıt və Abşeron üçün romantik pastel nişan dekoru və xonça masası bəzəyi.',
-    imageAltText: 'Pudra çəhrayı və qızılı güllərlə bəzədilmiş romantik nişan masası dekoru',
+    imageAltText: 'DreamArt Events zərif bej parçalar və neon işıqlı nişan dekoru və fotozona',
     status: 'published',
     isFeatured: true,
     createdAt: '2026-08-22T14:30:00Z'
@@ -145,9 +145,10 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Bakı',
     shortDescription: 'Geniş banket masası üzərində uzanan canlı gül lenti, büllur çilçıraqlar və xüsusi brend fotozonası.',
     fullDescription: 'Şirkət təqdimatları, ilsonu qala gecələri və rəsmi ziyafətlər üçün nəzərdə tutulmuş nüfuzlu tərtibat. 40 metrlik masa boyu davam edən qızılgül və evkalipt runner-i, fərdi brend lövhələri və peşəkar işıq dizaynı.',
-    mainImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=85',
+    mainImage: '/images/dreamart-qala-gecesi-samdan-dekoru.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-restoran-qonaq-masasi-dekoru.webp',
+      '/images/dreamart-banket-zali-goy-isiq-dekoru.webp'
     ],
     includedServices: [
       'Brend vizual kimliyinə uyğun konsept',
@@ -162,7 +163,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 3000,
     seoTitle: 'Korporativ Tədbir və Qala Gecəsi Dekoru Bakı | DreamArt Events',
     metaDescription: 'Bakıda korporativ tədbirlər, qala şam yeməkləri və konfranslar üçün peşəkar dekorasiya xidməti.',
-    imageAltText: 'Bakıda korporativ qala gecəsi üçün büllur çilçıraqlar və gül kompozisiyası ilə bəzədilmiş banket zalı',
+    imageAltText: 'DreamArt Events büllur şamdanlar və zərif qab-qacaqla korporativ qala dekoru',
     status: 'published',
     isFeatured: true,
     createdAt: '2026-08-29T09:00:00Z'
@@ -177,10 +178,10 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Bakı',
     shortDescription: 'Geniş banket zalının tavanından asılan minlərlə işıq və gül saçaqları, zəngin masa dekorları.',
     fullDescription: '500 nəfərlik böyük şadlıq sarayları və banket zalları üçün 360 dərəcəlik hərtərəfli vizual dəyişim. Mərkəzi rəqs meydançası üzərində üzən gül tavanı, pilləli giriş tağları və qonaq masalarının hər biri üçün hündür şüşə vaza kompozisiyaları.',
-    mainImage: '/images/boyuk-zal-dekor.jpg',
+    mainImage: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85',
-      'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-restoran-qonaq-masasi-dekoru.webp',
+      '/images/dreamart-banket-zali-goy-isiq-dekoru.webp'
     ],
     includedServices: [
       'Bütün zalın 3D vizuallaşdırma layihəsi',
@@ -195,7 +196,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 5000,
     seoTitle: 'Böyük Zal Dekoru və Şadlıq Sarayı Tərtibatı | DreamArt Events',
     metaDescription: 'Bakı və regionlarda böyük toy zalları və restoranların tam həcmli dekorasiyası və tavan instalyasiyaları.',
-    imageAltText: 'Böyük toy və banket zalı üçün möhtəşəm çilçıraqlar və güllərlə bəzədilmiş zal dekorasiyası',
+    imageAltText: 'DreamArt Events böyük şadlıq zalı tavan pərdələri və çilçıraq zal dekoru',
     status: 'published',
     isFeatured: true,
     createdAt: '2026-08-30T13:20:00Z'
@@ -241,9 +242,10 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Gəncə',
     shortDescription: 'Gəncə şəhəri və qərb bölgəsi üçün aristokratik zərli tonlar, canlı güllər və xonça stendləri.',
     fullDescription: 'Qərb regionunun qonaqpərvərlik ənənələrinə uyğunlaşdırılmış zərif nişan tərtibatı. Gəncənin seçilmiş restoranları və həyət evləri üçün qüsursuz işıqlandırma, fərdi ad lövhəsi və 12 ədəd xonça üçün xüsusi pilləli stendlər.',
-    mainImage: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1600&q=85',
+    mainImage: '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-nisan-dekoru-fotozona.webp',
+      '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp'
     ],
     includedServices: [
       'Gəncə şəhərinə çatdırılma və montaj',
@@ -257,7 +259,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 1500,
     seoTitle: 'Gəncədə Nişan Dekoru və Xonça Masası | DreamArt Events',
     metaDescription: 'Gəncə və qərb bölgəsi üçün zövqlü nişan dekoru, tağ və xonça stendləri xidməti.',
-    imageAltText: 'Gəncədə zərif qızılı və krem tonlarında nişan masası dekoru',
+    imageAltText: 'DreamArt Events təbii budaqlardan hazırlanmış unikal ağac masa kompozisiyası',
     status: 'published',
     isFeatured: false,
     createdAt: '2026-09-01T12:00:00Z'

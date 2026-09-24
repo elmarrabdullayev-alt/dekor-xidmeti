@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
@@ -17,7 +17,7 @@ import {
   setCoverRecord,
   reorderImagesRecord,
   deleteImageRecord,
-} from './server/persistentDiskService';
+} from './server/persistentDiskService.ts';
 
 dotenv.config();
 

@@ -1,9 +1,9 @@
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
-import sharp, { Metadata } from 'sharp';
-import { getInitialSeedImages } from './initialImages';
-import { ManagedImage, ImageSection } from '../src/types';
+import sharp, { type Metadata } from 'sharp';
+import { getInitialSeedImages } from './initialImages.ts';
+import type { ManagedImage, ImageSection } from '../src/types';
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 

@@ -11,10 +11,10 @@ export const INITIAL_VENUES: VenueItem[] = [
     address: 'Badamdar qəsəbəsi, 3-cü massiv',
     shortDescription: 'Bakının ən nüfuzlu məkanlarından biri olan Meridian restoranında DreamArt Events tərəfindən icra edilmiş möhtəşəm toy və nikah dekorları.',
     venueNotes: 'Geniş tavan hündürlüyü, möhtəşəm çilçıraqlar və dairəvi səhnə quruluşu böyük monumental gül tağları və asma tavan instalyasiyaları üçün olduqca əlverişlidir. Giriş qarşılama tuneli üçün xüsusi işıqlandırma tələb olunur.',
-    mainImage: '/images/boyuk-zal-dekor.jpg',
+    mainImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85',
-      'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-toy-dekoru-qizili-altar.webp',
+      '/images/dreamart-banket-zali-goy-isiq-dekoru.webp'
     ],
     hasRealProject: true,
     relatedDecorIds: ['decor-1', 'decor-6'],
@@ -35,9 +35,10 @@ export const INITIAL_VENUES: VenueItem[] = [
     address: 'Badamdar qəsəbəsi',
     shortDescription: 'By Meridian ziyafət zalı üçün müasir zövqlü toy və nişan dekorasiyaları, zərif şam və canlı gül kompozisiyaları.',
     venueNotes: 'Zalın zərif interyeri və işıq infrastrukturu pastel və klassik ağ qızılgül mövzulu dekorasiyalarla mükəmməl uyğunlaşır. Masaların düzülüşü üçün hündür vaza kompozisiyaları ideal görünüş yaradır.',
-    mainImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85',
+    mainImage: '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-nisan-dekoru-fotozona.webp',
+      '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp'
     ],
     hasRealProject: true,
     relatedDecorIds: ['decor-1'],
@@ -58,9 +59,9 @@ export const INITIAL_VENUES: VenueItem[] = [
     address: 'Süleyman Vəzirov küç.',
     shortDescription: 'Bağçalı Saray şadlıq sarayının dəbdəbəli zalında həyata keçirilmiş premium toy, nişan və qala gecəsi dekorasiyaları.',
     venueNotes: 'Geniş banket masaları və mərkəzi podyum səhnəsi üçün fərdi isti işıqlandırma, hündür büllur şamdanlar və təbii çiçək runner-ləri xüsusi tərtib edilir.',
-    mainImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=85',
+    mainImage: '/images/dreamart-restoran-qonaq-masasi-dekoru.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-qala-gecesi-samdan-dekoru.webp'
     ],
     hasRealProject: true,
     relatedDecorIds: ['decor-1', 'decor-6'],
@@ -81,9 +82,9 @@ export const INITIAL_VENUES: VenueItem[] = [
     address: 'Heydər Əliyev prospekti',
     shortDescription: 'Böyük Saray üçün tavan instalyasiyaları, monumental gül kompozisiyaları və genişmiqyaslı zal dekorasiyası.',
     venueNotes: '500+ nəfərlik ziyafət həcmi, geniş rəqs meydançası və hündür tavanlar üçün asma gül konstruksiyaları və 20+ nəfərlik peşəkar floristika komandası ilə operativ montaj təmin olunur.',
-    mainImage: '/images/boyuk-zal-dekor.jpg',
+    mainImage: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-banket-zali-goy-isiq-dekoru.webp'
     ],
     hasRealProject: true,
     relatedDecorIds: ['decor-6'],

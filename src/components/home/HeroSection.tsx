@@ -10,21 +10,21 @@ interface HeroSectionProps {
 
 const HERO_SLIDES = [
   {
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2200&q=90',
+    image: '/images/dreamart-toy-dekoru-qizili-altar.webp',
     eyebrow: 'XÜSUSİ GÜNLƏR ÜÇÜN',
     titleLine1: 'Zövqlü Dekor',
     titleLine2: 'Həlləri',
     subtitle: 'Toy, nişan, xına, ad günü, korporativ tədbirlər və xonça xidməti üçün peşəkar dekor və konsept həlləri.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=2200&q=90',
+    image: '/images/dreamart-nisan-dekoru-fotozona.webp',
     eyebrow: 'MÜASİR ZƏRİFLİK',
     titleLine1: 'Fərdi və Emosional',
     titleLine2: 'Məkanlar',
     subtitle: 'Hər bir tədbiriniz üçün təbiətin və incəsənətin harmoniyasını əks etdirən konseptlər.',
   },
   {
-    image: '/images/boyuk-zal-dekor.jpg',
+    image: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
     eyebrow: 'BAKI VƏ REGİONLAR',
     titleLine1: 'Böyük Zallar və',
     titleLine2: 'İnstalyasiyalar',
