@@ -1,8 +1,10 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { type Request, type Response, type NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
-import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import sharp from 'sharp';
 import { createServer as createViteServer } from 'vite';
@@ -25,8 +27,6 @@ import {
   ADMIN_IMAGES_TABLE,
 } from './server/supabaseService.ts';
 import { runSupabaseMigration } from './server/migrateToSupabase.ts';
-
-dotenv.config();
 
 const PORT = 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';

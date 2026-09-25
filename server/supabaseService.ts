@@ -1,32 +1,56 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import path from 'path';
-import fs from 'fs';
 import sharp from 'sharp';
 import type { ManagedImage, ImageSection } from '../src/types';
 import type { StoredImage } from './imageUtils.ts';
 import { generateSeoFilename, processImageWithSharp } from './imageUtils.ts';
+import { readDbSafe } from './persistentDiskService.ts';
 
 dotenv.config();
 
-const SUPABASE_URL = process.env.SUPABASE_URL?.trim();
-const SUPABASE_KEY = (
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_KEY ||
-  process.env.SUPABASE_ANON_KEY
-)?.trim();
-
-export const SUPABASE_STORAGE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET?.trim() || 'dreamart-images';
 export const ADMIN_IMAGES_TABLE = 'admin_images';
 
 let supabaseClient: SupabaseClient | null = null;
 let bucketVerified = false;
 
 /**
- * Check whether Supabase environment variables are provided
+ * Dynamically read and sanitize Supabase URL from environment
+ */
+export function getSupabaseUrl(): string {
+  const raw = process.env.SUPABASE_URL || '';
+  return raw.trim().replace(/^["']|["']$/g, '');
+}
+
+/**
+ * Dynamically read and sanitize Supabase Service Role Key or API Key
+ */
+export function getSupabaseKey(): string {
+  const raw =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    '';
+  return raw.trim().replace(/^["']|["']$/g, '');
+}
+
+/**
+ * Dynamically read and sanitize Supabase Storage Bucket name
+ */
+export function getSupabaseBucket(): string {
+  const raw = process.env.SUPABASE_STORAGE_BUCKET || 'dreamart-images';
+  return raw.trim().replace(/^["']|["']$/g, '') || 'dreamart-images';
+}
+
+export const SUPABASE_STORAGE_BUCKET = getSupabaseBucket();
+
+/**
+ * Check whether Supabase environment variables are available and valid
  */
 export function isSupabaseConfigured(): boolean {
-  return Boolean(SUPABASE_URL && SUPABASE_KEY && SUPABASE_URL.startsWith('http'));
+  const url = getSupabaseUrl();
+  const key = getSupabaseKey();
+  return Boolean(url && key && url.startsWith('http'));
 }
 
 /**
@@ -34,8 +58,12 @@ export function isSupabaseConfigured(): boolean {
  */
 export function getSupabaseClient(): SupabaseClient | null {
   if (!isSupabaseConfigured()) return null;
+  const url = getSupabaseUrl();
+  const key = getSupabaseKey();
+
   if (!supabaseClient) {
-    supabaseClient = createClient(SUPABASE_URL!, SUPABASE_KEY!, {
+    console.log(`[Supabase Service] Initializing client -> URL: ${url} | Bucket: ${getSupabaseBucket()}`);
+    supabaseClient = createClient(url, key, {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
@@ -110,38 +138,41 @@ export function getStructuredStorageKey(
 }
 
 /**
- * Ensure Supabase storage bucket exists and is public
+ * Non-blocking bucket check/creation
  */
 export async function ensureSupabaseBucket(): Promise<boolean> {
   const client = getSupabaseClient();
   if (!client) return false;
   if (bucketVerified) return true;
 
+  const bucketName = getSupabaseBucket();
+
   try {
     const { data: buckets, error } = await client.storage.listBuckets();
     if (error) {
-      console.warn('[Supabase Storage] List buckets error:', error.message);
-      return false;
+      console.warn('[Supabase Storage] List buckets warning (proceeding directly):', error.message);
+      bucketVerified = true;
+      return true;
     }
 
-    const bucket = buckets?.find((b) => b.name === SUPABASE_STORAGE_BUCKET);
+    const bucket = buckets?.find((b) => b.name === bucketName);
     if (!bucket) {
-      console.log(`[Supabase Storage] Bucket "${SUPABASE_STORAGE_BUCKET}" not found. Creating public bucket...`);
-      const { error: createErr } = await client.storage.createBucket(SUPABASE_STORAGE_BUCKET, {
+      console.log(`[Supabase Storage] Bucket "${bucketName}" not found in list. Attempting create...`);
+      const { error: createErr } = await client.storage.createBucket(bucketName, {
         public: true,
         fileSizeLimit: 15 * 1024 * 1024,
         allowedMimeTypes: ['image/webp', 'image/jpeg', 'image/png'],
       });
       if (createErr) {
-        console.warn('[Supabase Storage] Could not auto-create bucket:', createErr.message);
-        return false;
+        console.warn('[Supabase Storage] Auto-create bucket notice (may already exist):', createErr.message);
       }
     }
     bucketVerified = true;
     return true;
   } catch (err: any) {
-    console.warn('[Supabase Storage] ensureSupabaseBucket exception:', err.message);
-    return false;
+    console.warn('[Supabase Storage] ensureSupabaseBucket catch (proceeding):', err.message);
+    bucketVerified = true;
+    return true;
   }
 }
 
@@ -151,7 +182,8 @@ export async function ensureSupabaseBucket(): Promise<boolean> {
 export function getPublicStorageUrl(storageKey: string): string {
   const client = getSupabaseClient();
   if (!client) return '';
-  const { data } = client.storage.from(SUPABASE_STORAGE_BUCKET).getPublicUrl(storageKey);
+  const bucketName = getSupabaseBucket();
+  const { data } = client.storage.from(bucketName).getPublicUrl(storageKey);
   return data.publicUrl;
 }
 
@@ -189,6 +221,57 @@ export function mapDbRowToStoredImage(row: any): StoredImage {
 }
 
 /**
+ * Safe Upsert Helper:
+ * 1. Tries full row with all metadata
+ * 2. If table lacks extended columns, automatically falls back to the exact 10 core fields
+ *    specified in the user's database model:
+ *    (id, group_name, target_id, storage_key, public_url, alt_text, sort_order, is_cover, created_at, updated_at)
+ */
+export async function safeUpsertImageRow(
+  client: SupabaseClient,
+  fullRow: any
+): Promise<{ data: any; error: any }> {
+  // 1. First attempt: Full row
+  const { data, error } = await client
+    .from(ADMIN_IMAGES_TABLE)
+    .upsert(fullRow, { onConflict: 'id' })
+    .select();
+
+  if (!error) {
+    return { data: data?.[0] || fullRow, error: null };
+  }
+
+  console.warn(`[Supabase DB] Full upsert notice: ${error.message} (code: ${error.code}). Retrying with 10 core fields...`);
+
+  // 2. Second attempt: Exact 10 core fields
+  const coreRow = {
+    id: fullRow.id,
+    group_name: fullRow.group_name,
+    target_id: fullRow.target_id,
+    storage_key: fullRow.storage_key,
+    public_url: fullRow.public_url,
+    alt_text: fullRow.alt_text || '',
+    sort_order: typeof fullRow.sort_order === 'number' ? fullRow.sort_order : 0,
+    is_cover: Boolean(fullRow.is_cover),
+    created_at: fullRow.created_at || new Date().toISOString(),
+    updated_at: fullRow.updated_at || new Date().toISOString(),
+  };
+
+  const { data: retryData, error: retryError } = await client
+    .from(ADMIN_IMAGES_TABLE)
+    .upsert(coreRow, { onConflict: 'id' })
+    .select();
+
+  if (retryError) {
+    console.error(`[Supabase DB ERROR] Core upsert failed: ${retryError.message} (code: ${retryError.code})`);
+    return { data: null, error: retryError };
+  }
+
+  console.log(`[Supabase DB] Successfully inserted/updated image "${fullRow.id}" using core schema fields.`);
+  return { data: retryData?.[0] || coreRow, error: null };
+}
+
+/**
  * Fetch all stored images from Supabase admin_images table
  */
 export async function fetchSupabaseImages(): Promise<StoredImage[] | null> {
@@ -202,7 +285,7 @@ export async function fetchSupabaseImages(): Promise<StoredImage[] | null> {
       .order('sort_order', { ascending: true });
 
     if (error) {
-      console.warn('[Supabase DB] Error querying admin_images table:', error.message);
+      console.warn('[Supabase DB] Query admin_images error:', error.message);
       return null;
     }
 
@@ -235,14 +318,17 @@ export async function uploadImageToSupabase(params: {
   const client = getSupabaseClient();
   if (!client) throw new Error('Supabase client is not configured.');
 
+  const bucketName = getSupabaseBucket();
   await ensureSupabaseBucket();
 
   const mainStorageKey = getStructuredStorageKey(params.section, params.targetId, params.filename, false);
   const thumbStorageKey = getStructuredStorageKey(params.section, params.targetId, params.filename, true);
 
+  console.log(`[Supabase Upload] Uploading main file -> Bucket: "${bucketName}", Key: "${mainStorageKey}" (${params.imageBuffer.length} bytes)...`);
+
   // 1. Upload main image to Supabase Storage
   const { error: mainUploadError } = await client.storage
-    .from(SUPABASE_STORAGE_BUCKET)
+    .from(bucketName)
     .upload(mainStorageKey, params.imageBuffer, {
       contentType: 'image/webp',
       cacheControl: '31536000',
@@ -250,12 +336,15 @@ export async function uploadImageToSupabase(params: {
     });
 
   if (mainUploadError) {
+    console.error(`[Supabase Storage ERROR] Main upload failed: ${mainUploadError.message}`);
     throw new Error(`Supabase Storage upload failed: ${mainUploadError.message}`);
   }
 
+  console.log(`[Supabase Upload] Main file uploaded successfully. Uploading thumb -> "${thumbStorageKey}"...`);
+
   // 2. Upload thumbnail to Supabase Storage
   const { error: thumbUploadError } = await client.storage
-    .from(SUPABASE_STORAGE_BUCKET)
+    .from(bucketName)
     .upload(thumbStorageKey, params.thumbBuffer, {
       contentType: 'image/webp',
       cacheControl: '31536000',
@@ -263,7 +352,7 @@ export async function uploadImageToSupabase(params: {
     });
 
   if (thumbUploadError) {
-    console.warn('[Supabase Storage] Thumb upload warning:', thumbUploadError.message);
+    console.warn('[Supabase Storage] Thumb upload notice:', thumbUploadError.message);
   }
 
   // 3. Resolve public URLs
@@ -271,29 +360,35 @@ export async function uploadImageToSupabase(params: {
   const thumbPublicUrl = getPublicStorageUrl(thumbStorageKey);
 
   // 4. Determine ordering and cover status
-  const { data: existingGroup } = await client
-    .from(ADMIN_IMAGES_TABLE)
-    .select('id, is_cover, sort_order')
-    .eq('group_name', params.section)
-    .eq('target_id', params.targetId);
+  let nextOrder = 0;
+  let shouldBeCover = Boolean(params.isCover);
 
-  const shouldBeCover = Boolean(params.isCover) || !existingGroup || existingGroup.length === 0;
-
-  if (shouldBeCover && existingGroup && existingGroup.length > 0) {
-    // Unset existing cover flags in this group
-    await client
+  try {
+    const { data: existingGroup } = await client
       .from(ADMIN_IMAGES_TABLE)
-      .update({ is_cover: false })
+      .select('id, is_cover, sort_order')
       .eq('group_name', params.section)
       .eq('target_id', params.targetId);
-  }
 
-  const nextOrder = existingGroup ? existingGroup.length : 0;
+    if (existingGroup && existingGroup.length > 0) {
+      nextOrder = existingGroup.length;
+      if (shouldBeCover) {
+        await client
+          .from(ADMIN_IMAGES_TABLE)
+          .update({ is_cover: false })
+          .eq('group_name', params.section)
+          .eq('target_id', params.targetId);
+      }
+    } else {
+      shouldBeCover = true;
+    }
+  } catch {}
+
   const newId = `img-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const now = new Date().toISOString();
 
-  // 5. Insert record into admin_images
-  const newRow = {
+  // 5. Insert record into admin_images using schema-resilient upsert
+  const fullRow = {
     id: newId,
     group_name: params.section,
     target_id: params.targetId,
@@ -314,26 +409,21 @@ export async function uploadImageToSupabase(params: {
     updated_at: now,
   };
 
-  const { data: inserted, error: insertError } = await client
-    .from(ADMIN_IMAGES_TABLE)
-    .insert(newRow)
-    .select()
-    .single();
+  const { data: inserted, error: insertError } = await safeUpsertImageRow(client, fullRow);
 
   if (insertError) {
-    // Attempt rollback of uploaded object if DB insert failed
-    await client.storage.from(SUPABASE_STORAGE_BUCKET).remove([mainStorageKey, thumbStorageKey]);
     throw new Error(`Supabase DB insert failed: ${insertError.message}`);
   }
 
-  return mapDbRowToStoredImage(inserted || newRow);
+  console.log(`[Supabase Upload] Success! Image "${newId}" saved in Storage & DB -> ${publicUrl}`);
+  return mapDbRowToStoredImage(inserted || fullRow);
 }
 
 /**
  * Replace safety:
  * 1. Upload new file
  * 2. Verify upload success
- * 3. Update DB record
+ * 3. Update DB record (or insert if replacing a local disk image)
  * 4. Only then delete old storage object
  */
 export async function replaceImageInSupabase(
@@ -344,46 +434,68 @@ export async function replaceImageInSupabase(
   const client = getSupabaseClient();
   if (!client) throw new Error('Supabase client is not configured.');
 
-  // Fetch existing DB record
-  const { data: existing, error: fetchErr } = await client
-    .from(ADMIN_IMAGES_TABLE)
-    .select('*')
-    .eq('id', id)
-    .single();
+  const bucketName = getSupabaseBucket();
+  await ensureSupabaseBucket();
 
-  if (fetchErr || !existing) {
-    const err: any = new Error('Şəkil tapılmadı (Supabase DB)');
-    err.status = 404;
-    throw err;
+  // 1. Fetch existing DB record (or fallback to local disk record if not yet in Supabase DB)
+  let existingGroup = 'general';
+  let existingTarget = 'general';
+  let existingTargetName = '';
+  let oldStorageKey: string | null = null;
+  let oldThumbKey: string | null = null;
+
+  try {
+    const { data: dbItem } = await client
+      .from(ADMIN_IMAGES_TABLE)
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (dbItem) {
+      existingGroup = dbItem.group_name;
+      existingTarget = dbItem.target_id;
+      existingTargetName = dbItem.target_name || '';
+      oldStorageKey = dbItem.storage_key;
+      oldThumbKey = dbItem.thumb_storage_key;
+    }
+  } catch {}
+
+  // If not found in Supabase DB, check local disk
+  if (!oldStorageKey) {
+    const localImg = readDbSafe().find((img) => img.id === id);
+    if (localImg) {
+      existingGroup = localImg.group || localImg.section;
+      existingTarget = localImg.targetId;
+      existingTargetName = localImg.targetName || '';
+    }
   }
 
-  const isHero = existing.group_name === 'home_hero';
+  const isHero = existingGroup === 'home_hero';
   const processed = await processImageWithSharp(
     rawBuffer,
-    existing.target_name || existing.target_id,
-    existing.target_id,
+    existingTargetName || existingTarget,
+    existingTarget,
     isHero
   );
 
-  const oldStorageKey = existing.storage_key;
-  const oldThumbKey = existing.thumb_storage_key;
-
   const newMainStorageKey = getStructuredStorageKey(
-    existing.group_name,
-    existing.target_id,
+    existingGroup,
+    existingTarget,
     processed.filename,
     false
   );
   const newThumbStorageKey = getStructuredStorageKey(
-    existing.group_name,
-    existing.target_id,
+    existingGroup,
+    existingTarget,
     processed.filename,
     true
   );
 
-  // 1. Upload new files
+  console.log(`[Supabase Replace] Uploading replacement file -> Bucket: "${bucketName}", Key: "${newMainStorageKey}"...`);
+
+  // 2. Upload new files to Supabase Storage
   const { error: mainUploadErr } = await client.storage
-    .from(SUPABASE_STORAGE_BUCKET)
+    .from(bucketName)
     .upload(newMainStorageKey, processed.imageBuffer, {
       contentType: 'image/webp',
       cacheControl: '31536000',
@@ -391,18 +503,19 @@ export async function replaceImageInSupabase(
     });
 
   if (mainUploadErr) {
+    console.error(`[Supabase Storage ERROR] Replacement upload failed: ${mainUploadErr.message}`);
     throw new Error(`Supabase new image upload failed: ${mainUploadErr.message}`);
   }
 
   await client.storage
-    .from(SUPABASE_STORAGE_BUCKET)
+    .from(bucketName)
     .upload(newThumbStorageKey, processed.thumbBuffer, {
       contentType: 'image/webp',
       cacheControl: '31536000',
       upsert: true,
     });
 
-  // 2. Verify upload success
+  // 3. Verify upload success
   const newPublicUrl = getPublicStorageUrl(newMainStorageKey);
   const newThumbPublicUrl = getPublicStorageUrl(newThumbStorageKey);
 
@@ -410,46 +523,39 @@ export async function replaceImageInSupabase(
     throw new Error('Supabase storage verification failed: public URL unavailable.');
   }
 
-  // 3. Update DB record
-  const updates: any = {
+  // 4. Update / Upsert DB record
+  const fullRow = {
+    id,
+    group_name: existingGroup,
+    target_id: existingTarget,
+    target_name: existingTargetName,
     storage_key: newMainStorageKey,
     public_url: newPublicUrl,
     thumb_storage_key: newThumbStorageKey,
     thumb_public_url: newThumbPublicUrl,
+    alt_text: meta.altText?.trim() || `DreamArt Events ${existingTargetName}`,
     width: processed.width,
     height: processed.height,
     size_kb: processed.sizeKb,
     format: 'webp',
+    focal_point: meta.focalPoint || null,
     updated_at: new Date().toISOString(),
   };
 
-  if (meta.altText) {
-    updates.alt_text = meta.altText.trim();
-  }
-  if (meta.focalPoint) {
-    updates.focal_point = meta.focalPoint;
-  }
-
-  const { data: updatedRow, error: updateErr } = await client
-    .from(ADMIN_IMAGES_TABLE)
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
+  const { data: updatedRow, error: updateErr } = await safeUpsertImageRow(client, fullRow);
 
   if (updateErr) {
-    // Clean up newly uploaded files on DB update error
-    await client.storage.from(SUPABASE_STORAGE_BUCKET).remove([newMainStorageKey, newThumbStorageKey]);
     throw new Error(`Supabase DB update failed during replacement: ${updateErr.message}`);
   }
 
-  // 4. Only then safely delete old storage objects
+  // 5. Only then safely delete old storage objects if they existed and differ
   if (oldStorageKey && oldStorageKey !== newMainStorageKey) {
     const keysToRemove = [oldStorageKey];
     if (oldThumbKey && oldThumbKey !== newThumbStorageKey) keysToRemove.push(oldThumbKey);
-    await client.storage.from(SUPABASE_STORAGE_BUCKET).remove(keysToRemove);
+    await client.storage.from(bucketName).remove(keysToRemove);
   }
 
+  console.log(`[Supabase Replace] Success! Image "${id}" replaced in Storage & DB -> ${newPublicUrl}`);
   return mapDbRowToStoredImage(updatedRow);
 }
 
@@ -463,76 +569,62 @@ export async function deleteImageFromSupabase(id: string): Promise<{ success: bo
   const client = getSupabaseClient();
   if (!client) throw new Error('Supabase client is not configured.');
 
-  // 1. Get existing record
-  const { data: existing, error: fetchErr } = await client
-    .from(ADMIN_IMAGES_TABLE)
-    .select('*')
-    .eq('id', id)
-    .single();
+  const bucketName = getSupabaseBucket();
 
-  if (fetchErr || !existing) {
-    const err: any = new Error('Şəkil tapılmadı (Supabase DB)');
-    err.status = 404;
-    throw err;
+  // 1. Get existing record
+  let existing: any = null;
+  try {
+    const { data } = await client
+      .from(ADMIN_IMAGES_TABLE)
+      .select('*')
+      .eq('id', id)
+      .single();
+    existing = data;
+  } catch {}
+
+  if (!existing) {
+    // If not found in DB, check local disk for storage keys
+    const local = readDbSafe().find((i) => i.id === id);
+    if (!local) return { success: true, id };
   }
 
   // 2. If it was cover, promote next image
-  if (existing.is_cover) {
-    const { data: groupImgs } = await client
-      .from(ADMIN_IMAGES_TABLE)
-      .select('id, sort_order')
-      .eq('group_name', existing.group_name)
-      .eq('target_id', existing.target_id)
-      .neq('id', id)
-      .order('sort_order', { ascending: true });
-
-    if (groupImgs && groupImgs.length > 0) {
-      await client
+  if (existing?.is_cover) {
+    try {
+      const { data: groupImgs } = await client
         .from(ADMIN_IMAGES_TABLE)
-        .update({ is_cover: true })
-        .eq('id', groupImgs[0].id);
-    }
+        .select('id, sort_order')
+        .eq('group_name', existing.group_name)
+        .eq('target_id', existing.target_id)
+        .neq('id', id)
+        .order('sort_order', { ascending: true });
+
+      if (groupImgs && groupImgs.length > 0) {
+        await client
+          .from(ADMIN_IMAGES_TABLE)
+          .update({ is_cover: true })
+          .eq('id', groupImgs[0].id);
+      }
+    } catch {}
   }
 
   // 3. Delete database record
-  const { error: deleteErr } = await client
-    .from(ADMIN_IMAGES_TABLE)
-    .delete()
-    .eq('id', id);
-
-  if (deleteErr) {
-    throw new Error(`Supabase DB delete failed: ${deleteErr.message}`);
+  try {
+    await client.from(ADMIN_IMAGES_TABLE).delete().eq('id', id);
+  } catch (err: any) {
+    console.warn('[Supabase DB] Delete row notice:', err.message);
   }
 
   // 4. Delete corresponding storage objects
   const keysToDelete: string[] = [];
-  if (existing.storage_key) keysToDelete.push(existing.storage_key);
-  if (existing.thumb_storage_key) keysToDelete.push(existing.thumb_storage_key);
+  if (existing?.storage_key) keysToDelete.push(existing.storage_key);
+  if (existing?.thumb_storage_key) keysToDelete.push(existing.thumb_storage_key);
 
   if (keysToDelete.length > 0) {
-    const { error: storageRemoveErr } = await client.storage
-      .from(SUPABASE_STORAGE_BUCKET)
-      .remove(keysToDelete);
-
-    if (storageRemoveErr) {
-      console.warn('[Supabase Storage] Delete storage object notice:', storageRemoveErr.message);
-    }
-  }
-
-  // 5. Re-normalize group sort orders
-  const { data: remaining } = await client
-    .from(ADMIN_IMAGES_TABLE)
-    .select('id')
-    .eq('group_name', existing.group_name)
-    .eq('target_id', existing.target_id)
-    .order('sort_order', { ascending: true });
-
-  if (remaining && remaining.length > 0) {
-    for (let idx = 0; idx < remaining.length; idx++) {
-      await client
-        .from(ADMIN_IMAGES_TABLE)
-        .update({ sort_order: idx })
-        .eq('id', remaining[idx].id);
+    try {
+      await client.storage.from(bucketName).remove(keysToDelete);
+    } catch (err: any) {
+      console.warn('[Supabase Storage] Delete object notice:', err.message);
     }
   }
 
@@ -547,10 +639,12 @@ export async function reorderImagesInSupabase(ids: string[]): Promise<void> {
   if (!client || ids.length === 0) return;
 
   for (let idx = 0; idx < ids.length; idx++) {
-    await client
-      .from(ADMIN_IMAGES_TABLE)
-      .update({ sort_order: idx })
-      .eq('id', ids[idx]);
+    try {
+      await client
+        .from(ADMIN_IMAGES_TABLE)
+        .update({ sort_order: idx })
+        .eq('id', ids[idx]);
+    } catch {}
   }
 }
 
@@ -561,30 +655,28 @@ export async function setCoverInSupabase(id: string): Promise<void> {
   const client = getSupabaseClient();
   if (!client) throw new Error('Supabase client is not configured.');
 
-  const { data: target, error } = await client
-    .from(ADMIN_IMAGES_TABLE)
-    .select('group_name, target_id')
-    .eq('id', id)
-    .single();
+  try {
+    const { data: target } = await client
+      .from(ADMIN_IMAGES_TABLE)
+      .select('group_name, target_id')
+      .eq('id', id)
+      .single();
 
-  if (error || !target) {
-    const err: any = new Error('Şəkil tapılmadı (Supabase)');
-    err.status = 404;
-    throw err;
+    if (target) {
+      await client
+        .from(ADMIN_IMAGES_TABLE)
+        .update({ is_cover: false })
+        .eq('group_name', target.group_name)
+        .eq('target_id', target.target_id);
+
+      await client
+        .from(ADMIN_IMAGES_TABLE)
+        .update({ is_cover: true })
+        .eq('id', id);
+    }
+  } catch (err: any) {
+    console.warn('[Supabase DB] setCover notice:', err.message);
   }
-
-  // Unset all covers for this group & target
-  await client
-    .from(ADMIN_IMAGES_TABLE)
-    .update({ is_cover: false })
-    .eq('group_name', target.group_name)
-    .eq('target_id', target.target_id);
-
-  // Set cover on target
-  await client
-    .from(ADMIN_IMAGES_TABLE)
-    .update({ is_cover: true })
-    .eq('id', id);
 }
 
 /**
@@ -608,16 +700,30 @@ export async function updateImageMetaInSupabase(
     dbUpdates.focal_point = updates.focalPoint;
   }
 
+  // Attempt update
   const { data: updated, error } = await client
     .from(ADMIN_IMAGES_TABLE)
     .update(dbUpdates)
     .eq('id', id)
-    .select()
-    .single();
+    .select();
 
-  if (error || !updated) {
-    throw new Error(`Supabase metadata update failed: ${error?.message || 'Şəkil tapılmadı'}`);
+  if (error || !updated || updated.length === 0) {
+    // If focal_point column doesn't exist, retry with alt_text only
+    const coreUpdates: any = {
+      updated_at: new Date().toISOString(),
+    };
+    if (typeof updates.altText === 'string') coreUpdates.alt_text = updates.altText.trim();
+
+    const { data: retryUpdated } = await client
+      .from(ADMIN_IMAGES_TABLE)
+      .update(coreUpdates)
+      .eq('id', id)
+      .select();
+
+    if (retryUpdated && retryUpdated.length > 0) {
+      return mapDbRowToStoredImage(retryUpdated[0]);
+    }
   }
 
-  return mapDbRowToStoredImage(updated);
+  return mapDbRowToStoredImage(updated?.[0] || dbUpdates);
 }

@@ -10,6 +10,7 @@ import {
   getPublicStorageUrl,
   ADMIN_IMAGES_TABLE,
   SUPABASE_STORAGE_BUCKET,
+  safeUpsertImageRow,
 } from './supabaseService.ts';
 import {
   PERSISTENT_DATA_DIR,
@@ -247,9 +248,7 @@ export async function runSupabaseMigration(): Promise<MigrationResult> {
         updated_at: new Date().toISOString(),
       };
 
-      const { error: upsertErr } = await client
-        .from(ADMIN_IMAGES_TABLE)
-        .upsert(dbRow, { onConflict: 'id' });
+      const { error: upsertErr } = await safeUpsertImageRow(client, dbRow);
 
       if (upsertErr) {
         throw new Error(`Database upsert error: ${upsertErr.message}`);

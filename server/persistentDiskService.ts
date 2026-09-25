@@ -25,9 +25,8 @@ import {
 } from './supabaseService.ts';
 
 // Re-export shared types and helpers for backwards compatibility
+export type { StoredImage, ProcessedImage };
 export {
-  StoredImage,
-  ProcessedImage,
   AsyncMutex,
   adaptInitialSeed,
   normalizeGroupOrders,
@@ -271,9 +270,22 @@ export async function uploadImageRecord(params: {
         isCover: params.isCover,
         focalPoint: params.focalPoint,
       });
+
+      // Update local persistent disk mirror record with Supabase URLs
+      await dbMutex.run(async () => {
+        const images = readDbSafe();
+        const local = images.find((i) => i.id === localRecord.id);
+        if (local) {
+          local.url = supabaseRecord.url;
+          local.thumbUrl = supabaseRecord.thumbUrl;
+          atomicWriteDb(images);
+        }
+      });
+
+      console.log(`[Upload Success] Saved to Supabase: ${supabaseRecord.id} -> ${supabaseRecord.url}`);
       return supabaseRecord;
     } catch (err: any) {
-      console.warn('[Upload] Supabase upload failed, falling back to local persistent record:', err.message);
+      console.error('[Upload Error] Supabase write failed, falling back to local persistent record:', err.message);
     }
   }
 
@@ -290,8 +302,9 @@ export async function replaceImageRecord(
   if (isSupabaseConfigured()) {
     try {
       supabaseRecord = await replaceImageInSupabase(id, rawBuffer, meta);
+      console.log(`[Replace Success] Image "${id}" replaced in Supabase Storage & DB.`);
     } catch (err: any) {
-      console.warn('[Replace] Supabase replace notice:', err.message);
+      console.error('[Replace Error] Supabase replace failed:', err.message);
     }
   }
 
