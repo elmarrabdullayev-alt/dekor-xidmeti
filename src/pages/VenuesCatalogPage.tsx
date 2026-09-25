@@ -41,8 +41,8 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
     {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      'name': 'Toy və tədbir məkanları | DreamArt Events',
-      'description': 'DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
+      'name': 'Toy və tədbir məkanları | DreamArt Weddings',
+      'description': 'DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
       'url': 'https://dreamartweddings.com/restoranlar'
     },
     {
@@ -68,8 +68,8 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
   return (
     <>
       <SeoHead
-        title="Toy və Tədbir Məkanları | Restoran Dekoru | DreamArt Events"
-        description="DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur."
+        title="Toy və Tədbir Məkanları | Restoran Dekoru | DreamArt Weddings"
+        description="DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur."
         canonicalPath="/restoranlar"
         jsonLd={jsonLd}
       />

@@ -79,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
 
             <div className="flex flex-col">
               <span className="font-serif text-lg sm:text-xl tracking-[0.18em] text-[#FAF8F5] uppercase font-medium group-hover:text-[#E5C378] transition-colors leading-none">
-                DREAMART EVENTS
+                DREAMART WEDDINGS
               </span>
               <span className="text-[8px] sm:text-[9px] tracking-[0.32em] text-[#C5A059] uppercase font-sans mt-1 font-normal">
                 TƏDBİR DEKORASİYASI

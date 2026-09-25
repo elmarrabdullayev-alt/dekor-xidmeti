@@ -11,8 +11,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal
   return (
     <>
       <SeoHead
-        title="Haqqımızda | DreamArt Events"
-        description="DreamArt Events haqqında məlumat. Azərbaycan üzrə zövqlü və premium toy, nişan, xına, xonça və tədbir dekorasiyası fəlsəfəmiz."
+        title="Haqqımızda | DreamArt Weddings"
+        description="DreamArt Weddings haqqında məlumat. Azərbaycan üzrə zövqlü və premium toy, nişan, xına, xonça və tədbir dekorasiyası fəlsəfəmiz."
         canonicalPath="/haqqimizda"
       />
 

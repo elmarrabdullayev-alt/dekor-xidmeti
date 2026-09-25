@@ -14,8 +14,8 @@ export const ContactPage: React.FC<ContactPageProps> = () => {
   return (
     <>
       <SeoHead
-        title="Əlaqə | DreamArt Events Bakı"
-        description="DreamArt Events ilə əlaqə. Ünvan, telefon, WhatsApp və tədbir dekorasiyası üçün sorğu göndərmə imkanı."
+        title="Əlaqə | DreamArt Weddings Bakı"
+        description="DreamArt Weddings ilə əlaqə. Ünvan, telefon, WhatsApp və tədbir dekorasiyası üçün sorğu göndərmə imkanı."
         canonicalPath="/elaqe"
       />
 

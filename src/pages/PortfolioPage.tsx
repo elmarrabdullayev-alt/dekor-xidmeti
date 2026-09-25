@@ -25,7 +25,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
   return (
     <>
       <SeoHead
-        title="Portfolio və Həyata Keçirilmiş İşlər | DreamArt Events"
+        title="Portfolio və Həyata Keçirilmiş İşlər | DreamArt Weddings"
         description="Bakı və Azərbaycan regionlarında həyata keçirdiyimiz toy, nişan, xına və xonça dekorasiyalarının fotoları."
         canonicalPath="/portfolio"
       />

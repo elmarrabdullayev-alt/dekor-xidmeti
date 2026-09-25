@@ -36,13 +36,13 @@ export function generateVenueSlug(name: string): string {
 export function generateVenueSeoTitle(name: string, city: string = 'Bakı'): string {
   const safeName = name.trim() || 'Məkan';
   const safeCity = city.trim() || 'Bakı';
-  return `${safeName} Toy Dekoru və Tədbir Tərtibatı | ${safeCity} | DreamArt Events`;
+  return `${safeName} Toy Dekoru və Tədbir Tərtibatı | ${safeCity} | DreamArt Weddings`;
 }
 
 export function generateVenueMetaDescription(name: string, city: string = 'Bakı', district?: string): string {
   const safeName = name.trim() || 'Məkan';
   const locStr = district ? `${city}, ${district} rayonu` : city;
-  return `${safeName} (${locStr}) üçün eksklüziv toy dekoru, gəlin masası və səhnə tərtibatı. DreamArt Events tərəfindən icra edilmiş real layihələr və fərdi dizayn həlləri.`;
+  return `${safeName} (${locStr}) üçün eksklüziv toy dekoru, gəlin masası və səhnə tərtibatı. DreamArt Weddings tərəfindən icra edilmiş real layihələr və fərdi dizayn həlləri.`;
 }
 
 /**
@@ -55,16 +55,20 @@ export function generateDefaultVenueFaqs(venueName: string, hasRealProject: bool
   if (hasRealProject) {
     return [
       {
-        question: `${safeName}-da toy dekoru üçün DreamArt Events ilə işləmək mümkündür?`,
-        answer: `Bəli. DreamArt Events ${safeName}-da real dekor layihələri həyata keçirib və məkanın quruluşuna uyğun toy və tədbir dekoru xidmətləri təqdim edir. Əlaqə və WhatsApp: ${phoneDisplay}.`
+        question: `${safeName}-da toy və tədbir dekoru üçün DreamArt Weddings ilə işləmək mümkündür?`,
+        answer: `Bəli. DreamArt Weddings ${safeName}-da real dekor layihələri həyata keçirib və məkanın daxili memarlığına uyğun toy, nişan və zal dekoru xidmətləri təqdim edir. Əlaqə və WhatsApp: ${phoneDisplay}.`
       },
       {
         question: `${safeName} üçün hansı dekor xidmətləri mümkündür?`,
-        answer: `Layihədən asılı olaraq toy dekoru, səhnə dekoru, masa dekoru, gül kompozisiyası, fotozona və digər fərdi dekor həlləri təqdim edilə bilər.`
+        answer: `Layihəyə əsasən gəlin-bəy masası, monumental arxa fon altar tağı, qonaq masaları üçün hündür gül kompozisiyaları, şam işıqlandırması və qarşılama fotozonası təqdim olunur.`
       },
       {
-        question: `DreamArt Events ilə necə əlaqə saxlamaq olar?`,
-        answer: `Telefon və WhatsApp: ${phoneDisplay}. İstənilən vaxt məkanınız üçün xüsusi eskiz və qiymət təklifi əldə edə bilərsiniz.`
+        question: `Bu məkanda dekorasiya quraşdırılması necə təşkil olunur?`,
+        answer: `DreamArt Weddings komandası məkan rəhbərliyi ilə montaj saatlarını və logistikanı öncədən tənzimləyir, tədbir başlamazdan saatlar öncə hər detalı hazır edir.`
+      },
+      {
+        question: `DreamArt Weddings ilə necə əlaqə saxlamaq olar?`,
+        answer: `Telefon və WhatsApp: ${phoneDisplay}. İstənilən vaxt ${safeName} üçün xüsusi eskiz və qiymət təklifi əldə edə bilərsiniz.`
       }
     ];
   }
@@ -72,11 +76,11 @@ export function generateDefaultVenueFaqs(venueName: string, hasRealProject: bool
   // If no real project yet
   return [
     {
-      question: `${safeName} məkanında DreamArt Events dekor xidməti sifariş etmək olarmı?`,
-      answer: `Bəli. DreamArt Events Azərbaycanın bütün şadlıq sarayları və restoranlarında olduğu kimi, ${safeName} məkanında da fərdi dekorasiya və floristika layihələrini həyata keçirməyə hazırdır. Əlaqə: ${phoneDisplay}.`
+      question: `${safeName} məkanında DreamArt Weddings dekor xidməti sifariş etmək olarmı?`,
+      answer: `Bəli. DreamArt Weddings Azərbaycanın bütün şadlıq sarayları və restoranlarında olduğu kimi, ${safeName} məkanında da fərdi dekorasiya və floristika layihələrini həyata keçirməyə hazırdır. Əlaqə: ${phoneDisplay}.`
     },
     {
-      question: `DreamArt Events ilə necə əlaqə saxlamaq olar?`,
+      question: `DreamArt Weddings ilə necə əlaqə saxlamaq olar?`,
       answer: `Telefon və WhatsApp: ${phoneDisplay}.`
     }
   ];
@@ -94,7 +98,7 @@ export function getVenueStructuredData(venue: VenueItem, canonicalUrl: string) {
       'description': venue.shortDescription,
       'provider': {
         '@type': 'LocalBusiness',
-        'name': 'DreamArt Events',
+        'name': 'DreamArt Weddings',
         'telephone': '+994502311728',
         'url': 'https://dreamartweddings.com',
         'address': {

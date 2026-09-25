@@ -5,7 +5,7 @@ export function getLocalBusinessSchema() {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     '@id': 'https://dreamartweddings.com/#business',
-    'name': 'DreamArt Events',
+    'name': 'DreamArt Weddings',
     'image': 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85',
     'telephone': '+994 50 231 17 28',
     'priceRange': '$$$',
@@ -51,7 +51,7 @@ export function getCategoryServiceSchema(category: CategoryInfo) {
     'description': category.seoIntroduction,
     'provider': {
       '@type': 'LocalBusiness',
-      'name': 'DreamArt Events'
+      'name': 'DreamArt Weddings'
     },
     'areaServed': 'Azerbaijan',
     'serviceType': category.name,
@@ -96,7 +96,7 @@ export function getProjectDetailSchema(decor: DecorItem) {
     'description': decor.shortDescription,
     'author': {
       '@type': 'Organization',
-      'name': 'DreamArt Events'
+      'name': 'DreamArt Weddings'
     },
     'locationCreated': {
       '@type': 'Place',

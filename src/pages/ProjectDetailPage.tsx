@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { ArrowLeft, MapPin, Check, MessageCircle, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MapPin, Check, MessageCircle, Sparkles, Building2 } from 'lucide-react';
 import { DecorItem } from '../types';
 import { RegionBadge } from '../components/decor/RegionBadge';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getProjectDetailSchema, getBreadcrumbSchema } from '../lib/structuredData';
 import { store } from '../lib/store';
+import { INITIAL_VENUES } from '../data/initialVenues';
+import { isVenueIndexable } from '../lib/venueHelper';
 
 interface ProjectDetailPageProps {
   slug: string;
@@ -39,8 +41,12 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const currentMainImage = selectedImage || decor.mainImage;
   const allImages = [decor.mainImage, ...(decor.galleryImages || [])];
 
+  // Resolve linked verified venue if any
+  const linkedVenue = INITIAL_VENUES.find(v => v.relatedDecorIds?.includes(decor.id) && isVenueIndexable(v));
+
   const handleWhatsApp = () => {
-    const text = `Salam, DreamArt Events! "${decor.name}" (${decor.categoryName}, ${decor.city}) dekorasiyası üçün qiymət təklifi və məlumat almaq istəyirəm.`;
+    const venueMention = linkedVenue ? ` (${linkedVenue.name})` : '';
+    const text = `Salam, DreamArt Weddings! "${decor.name}"${venueMention} layihəsi üzrə qiymət təklifi və məlumat almaq istəyirəm.`;
     const url = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -57,7 +63,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   return (
     <>
       <SeoHead
-        title={decor.seoTitle || `${decor.name} | DreamArt Events`}
+        title={decor.seoTitle || `${decor.name} | DreamArt Weddings`}
         description={decor.metaDescription || decor.shortDescription}
         canonicalPath={`/dekorlar/${decor.slug}`}
         ogImage={decor.mainImage}
@@ -171,6 +177,26 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                     <span className="font-serif text-xl font-normal text-[#E5C378]">{decor.priceDisplay}</span>
                   </div>
                 )}
+
+                {/* Linked Venue Connection */}
+                {linkedVenue && (
+                  <div className="mb-6 p-4 bg-[#141414] border border-[#C5A059]/30 rounded-sm flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <Building2 className="w-4 h-4 text-[#C5A059] shrink-0" />
+                      <div>
+                        <span className="text-[10px] uppercase tracking-wider text-white/50 block font-mono">İcra Edilmiş Məkan</span>
+                        <span className="font-serif text-sm text-white font-medium">{linkedVenue.name} ({linkedVenue.city})</span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => navigate(`/restoranlar/${linkedVenue.slug}`)}
+                      className="text-xs text-[#C5A059] hover:underline inline-flex items-center gap-1 cursor-pointer font-medium shrink-0"
+                    >
+                      <span>Məkan detalları</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -190,6 +216,23 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                   <MessageCircle className="w-4 h-4 text-[#25D366]" />
                   <span>WhatsApp ilə soruş</span>
                 </button>
+
+                {/* Contextual Entity Links */}
+                <div className="pt-3 border-t border-white/5 flex flex-wrap items-center justify-between gap-2 text-xs text-white/60">
+                  <button
+                    onClick={() => navigate(`/${decor.category}`)}
+                    className="text-[#C5A059] hover:underline cursor-pointer inline-flex items-center gap-1"
+                  >
+                    <span>← Bütün {decor.categoryName}</span>
+                  </button>
+                  <button
+                    onClick={() => navigate('/portfolio')}
+                    className="text-white/70 hover:text-white cursor-pointer inline-flex items-center gap-1"
+                  >
+                    <span>Lookbook & Portfolio</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

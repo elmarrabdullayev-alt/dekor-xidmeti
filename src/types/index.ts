@@ -40,6 +40,17 @@ export interface FAQItem {
   answer: string;
 }
 
+export interface CategoryProcessStep {
+  step: string;
+  title: string;
+  description: string;
+}
+
+export interface GeoDirectAnswer {
+  question: string;
+  answer: string;
+}
+
 export interface CategoryInfo {
   id: string;
   name: string;
@@ -52,6 +63,13 @@ export interface CategoryInfo {
   metaDescription: string;
   faqs: FAQItem[];
   canonicalSlug: string;
+  whatIncluded?: string[];
+  suitableFor?: string[];
+  planningProcess?: CategoryProcessStep[];
+  geoDirectAnswer?: GeoDirectAnswer;
+  relatedVenueSlugs?: string[];
+  relatedCuratedLocalSlugs?: string[];
+  whatsappPrefill?: string;
 }
 
 export interface InquiryRequest {

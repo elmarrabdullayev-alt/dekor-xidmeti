@@ -51,7 +51,7 @@ export function generateAutoSeo(decorName: string, categoryName: string, city: s
   const safeCity = city.trim() || 'Bakı';
 
   const slug = generateSlug(`${safeName}-${safeCity}`);
-  const seoTitle = `${safeName} | ${safeCity} ${safeCat} | DreamArt Events`;
+  const seoTitle = `${safeName} | ${safeCity} ${safeCat} | DreamArt Weddings`;
   const metaDescription = `${safeCity} şəhərində ${safeName.toLowerCase()} xidməti. Peşəkar quraşdırma, zərif dizayn və tədbir üçün xüsusi dekor həlləri.`;
   const imageAltText = `${safeCity} şəhərində ${safeName.toLowerCase()} və ${safeCat.toLowerCase()} layihəsi`;
   const suggestedFilename = generateSeoFilename(safeName, safeCat, 1, 'webp');
@@ -72,7 +72,7 @@ export function generateDecorSlug(decorName: string, category: string, city: str
 export function generateSeoTitle(decorName: string, categoryName: string, city: string = 'Bakı'): string {
   const safeName = decorName.trim() || 'Dekor';
   const safeCity = city.trim() || 'Bakı';
-  return `${safeName} | ${safeCity} ${categoryName} | DreamArt Events`;
+  return `${safeName} | ${safeCity} ${categoryName} | DreamArt Weddings`;
 }
 
 export function generateMetaDescription(decorName: string, categoryName: string, city: string = 'Bakı', style?: string): string {

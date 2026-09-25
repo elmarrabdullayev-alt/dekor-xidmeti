@@ -44,7 +44,7 @@ export const HomePage: React.FC<HomePageProps> = ({ decors, navigate, onOpenQuot
   return (
     <>
       <SeoHead
-        title="DreamArt Events | Zövqlü və Premium Dekor Həlləri Bakı"
+        title="DreamArt Weddings | Zövqlü və Premium Dekor Həlləri Bakı"
         description="Toy, nişan, xına, ad günü, zal dekor və xonça xidmətləri. Bakı və Azərbaycanın bütün regionlarında zövqlü və peşəkar quraşdırma."
         canonicalPath="/"
         jsonLd={jsonLd}

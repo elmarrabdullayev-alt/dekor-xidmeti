@@ -27,7 +27,7 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
   return (
     <>
       <SeoHead
-        title="Bütün Dekorlar və Xidmətlər | DreamArt Events"
+        title="Bütün Dekorlar və Xidmətlər | DreamArt Weddings"
         description="Toy, nişan, xına, ad günü, zal dekorasiyası və xonça xidməti layihələri kataloqu. Bakı və regionlar üçün premium dekorasiya."
         canonicalPath="/dekorlar"
       />

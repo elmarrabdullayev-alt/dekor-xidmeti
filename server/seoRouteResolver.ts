@@ -31,8 +31,8 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   // 1. Admin routes - noindex
   if (cleanPath.startsWith('/admin')) {
     return {
-      title: 'Admin Panel | DreamArt Events',
-      description: 'DreamArt Events idarəetmə paneli.',
+      title: 'Admin Panel | DreamArt Weddings',
+      description: 'DreamArt Weddings idarəetmə paneli.',
       canonicalUrl: `${PRIMARY_DOMAIN}/admin`,
       robots: 'noindex, nofollow',
       ogImage: DEFAULT_IMAGE,
@@ -62,7 +62,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
     ];
 
     return {
-      title: 'DreamArt Events | Zövqlü və Premium Dekor Həlləri Bakı',
+      title: 'DreamArt Weddings | Zövqlü və Premium Dekor Həlləri Bakı',
       description: 'Toy, nişan, xına, ad günü, zal dekor və xonça xidmətləri. Bakı və Azərbaycanın bütün regionlarında zövqlü və peşəkar quraşdırma.',
       canonicalUrl: `${PRIMARY_DOMAIN}/`,
       robots: 'index, follow',
@@ -78,8 +78,8 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   // 3. Venues Catalog Page (/restoranlar)
   if (cleanPath === '/restoranlar') {
     return {
-      title: 'Toy və Tədbir Məkanları | Restoran Dekoru | DreamArt Events',
-      description: 'DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur.',
+      title: 'Toy və Tədbir Məkanları | Restoran Dekoru | DreamArt Weddings',
+      description: 'DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur.',
       canonicalUrl: `${PRIMARY_DOMAIN}/restoranlar`,
       robots: 'index, follow',
       ogImage: DEFAULT_IMAGE,
@@ -88,8 +88,8 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
         {
           '@context': 'https://schema.org',
           '@type': 'WebPage',
-          'name': 'Toy və tədbir məkanları | DreamArt Events',
-          'description': 'DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
+          'name': 'Toy və tədbir məkanları | DreamArt Weddings',
+          'description': 'DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
           'url': `${PRIMARY_DOMAIN}/restoranlar`
         },
         {
@@ -123,7 +123,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
       const canonicalUrl = `${PRIMARY_DOMAIN}/restoranlar/${venue.slug}`;
       const jsonLd = getVenueStructuredData(venue, canonicalUrl);
       return {
-        title: venue.seoTitle || `${venue.name} Toy Dekoru | DreamArt Events`,
+        title: venue.seoTitle || `${venue.name} Toy Dekoru | DreamArt Weddings`,
         description: venue.metaDescription || venue.shortDescription,
         canonicalUrl,
         robots: isIndexable ? 'index, follow' : 'noindex, follow',
@@ -137,7 +137,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   // 5. Decors Catalog Page (/dekorlar)
   if (cleanPath === '/dekorlar') {
     return {
-      title: 'Bütün Dekorlar və Xidmətlər | DreamArt Events',
+      title: 'Bütün Dekorlar və Xidmətlər | DreamArt Weddings',
       description: 'Toy, nişan, xına, ad günü, zal dekorasiyası və xonça xidməti layihələri kataloqu. Bakı və regionlar üçün premium dekorasiya.',
       canonicalUrl: `${PRIMARY_DOMAIN}/dekorlar`,
       robots: 'index, follow',
@@ -161,7 +161,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
         ])
       ];
       return {
-        title: decor.seoTitle || `${decor.name} | DreamArt Events`,
+        title: decor.seoTitle || `${decor.name} | DreamArt Weddings`,
         description: decor.metaDescription || decor.shortDescription,
         canonicalUrl: `${PRIMARY_DOMAIN}/dekorlar/${decor.slug}`,
         robots: isPublished ? 'index, follow' : 'noindex, follow',
@@ -175,7 +175,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   // 7. Portfolio Page (/portfolio)
   if (cleanPath === '/portfolio') {
     return {
-      title: 'Portfolio və Həyata Keçirilmiş İşlər | DreamArt Events',
+      title: 'Portfolio və Həyata Keçirilmiş İşlər | DreamArt Weddings',
       description: 'Bakı və Azərbaycan regionlarında həyata keçirdiyimiz toy, nişan, xına və xonça dekorasiyalarının fotoları.',
       canonicalUrl: `${PRIMARY_DOMAIN}/portfolio`,
       robots: 'index, follow',
@@ -187,7 +187,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   // 8. Services Page (/xidmetler)
   if (cleanPath === '/xidmetler') {
     return {
-      title: 'Dekor Xidmətlərimiz və İş Prosesi | DreamArt Events',
+      title: 'Dekor Xidmətlərimiz və İş Prosesi | DreamArt Weddings',
       description: 'Fərdi dekor konsepti, floristik dizayn, çatdırılma, montaj, sökülmə və xonça xidmətləri. Bakı və regionlar üçün peşəkar servis.',
       canonicalUrl: `${PRIMARY_DOMAIN}/xidmetler`,
       robots: 'index, follow',
@@ -199,8 +199,8 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   // 9. About Page (/haqqimizda)
   if (cleanPath === '/haqqimizda') {
     return {
-      title: 'Haqqımızda | DreamArt Events',
-      description: 'DreamArt Events haqqında məlumat. Azərbaycan üzrə zövqlü və premium toy, nişan, xına, xonça və tədbir dekorasiyası fəlsəfəmiz.',
+      title: 'Haqqımızda | DreamArt Weddings',
+      description: 'DreamArt Weddings haqqında məlumat. Azərbaycan üzrə zövqlü və premium toy, nişan, xına, xonça və tədbir dekorasiyası fəlsəfəmiz.',
       canonicalUrl: `${PRIMARY_DOMAIN}/haqqimizda`,
       robots: 'index, follow',
       ogImage: DEFAULT_IMAGE,
@@ -211,12 +211,79 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   // 10. Contact Page (/elaqe)
   if (cleanPath === '/elaqe') {
     return {
-      title: 'Əlaqə | DreamArt Events Bakı',
-      description: 'DreamArt Events ilə əlaqə. Ünvan, telefon, WhatsApp və tədbir dekorasiyası üçün sorğu göndərmə imkanı.',
+      title: 'Əlaqə | DreamArt Weddings Bakı',
+      description: 'DreamArt Weddings ilə əlaqə. Ünvan, telefon, WhatsApp və tədbir dekorasiyası üçün sorğu göndərmə imkanı.',
       canonicalUrl: `${PRIMARY_DOMAIN}/elaqe`,
       robots: 'index, follow',
       ogImage: DEFAULT_IMAGE,
       ogType: 'website'
+    };
+  }
+
+  // 10b. Indian Destination Wedding Page (/indian-wedding-azerbaijan)
+  if (cleanPath === '/indian-wedding-azerbaijan') {
+    const indianFaqs = [
+      {
+        question: 'Do you provide Indian wedding decoration in Azerbaijan?',
+        answer: 'Yes. DreamArt Weddings provides event decor services across Azerbaijan, including multi-day wedding concepts, stage styling, floral decor, ceremony areas and reception decoration.'
+      },
+      {
+        question: 'Can DreamArt Weddings decorate a 3-day Indian wedding?',
+        answer: 'Yes. We design and manage coordinated yet visually distinct environments across multiple days, including Mehendi, Haldi, Sangeet, traditional ceremony and grand reception events with seamless daily transitions.'
+      },
+      {
+        question: 'Do you provide Mehendi and Sangeet decoration?',
+        answer: 'Yes. We craft colorful, bohemian or traditional setups for Mehendi and Haldi, dynamic stage and lighting backdrops for Sangeet nights, and regal settings for evening parties.'
+      },
+      {
+        question: 'Can you provide wedding decor outside Baku?',
+        answer: 'Yes. Our logistics fleet and professional setup crews manage destination weddings in Gabala, Guba, Shamakhi, and resort locations throughout Azerbaijan.'
+      },
+      {
+        question: 'How can international clients contact DreamArt Weddings?',
+        answer: 'International couples and wedding planners can reach our team via WhatsApp at +994 50 231 17 28 or phone 050 231 17 28 to schedule a virtual consultation and receive an initial decor estimate.'
+      }
+    ];
+
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Indian Wedding Decoration in Azerbaijan',
+        'description': 'Luxury Indian wedding decoration in Azerbaijan for Mehendi, Sangeet, ceremony and reception events. DreamArt Weddings provides custom multi-day decor across Baku and regions.',
+        'provider': {
+          '@type': 'LocalBusiness',
+          'name': 'DreamArt Weddings',
+          'telephone': '+994502311728',
+          'url': 'https://dreamartweddings.com',
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Baku',
+            'addressCountry': 'AZ'
+          }
+        },
+        'areaServed': {
+          '@type': 'Country',
+          'name': 'Azerbaijan'
+        },
+        'serviceType': 'Indian Destination Wedding Decor',
+        'url': `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan`
+      },
+      getBreadcrumbSchema([
+        { name: 'Home', url: PRIMARY_DOMAIN },
+        { name: 'Indian Wedding Decoration in Azerbaijan', url: `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan` }
+      ]),
+      getFaqPageSchema(indianFaqs)
+    ];
+
+    return {
+      title: 'Indian Wedding Decoration in Azerbaijan | DreamArt Weddings',
+      description: 'Luxury Indian wedding decoration in Azerbaijan for Mehendi, Sangeet, ceremony and reception events. DreamArt Weddings provides custom multi-day decor across Baku and regions.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan`,
+      robots: 'index, follow',
+      ogImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      ogType: 'website',
+      jsonLd
     };
   }
 
@@ -280,7 +347,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
       ].includes(`${category.slug}/${location.slug}`);
 
       return {
-        title: `${location.city} ${category.name} | DreamArt Events`,
+        title: `${location.city} ${category.name} | DreamArt Weddings`,
         description: `${location.city} şəhərində peşəkar ${category.name.toLowerCase()} xidməti. Quraşdırma, unikal çiçək dizaynı və etibarlı logistika.`,
         canonicalUrl: `${PRIMARY_DOMAIN}/${category.slug}/${location.slug}`,
         robots: isCuratedLocal ? 'index, follow' : 'noindex, follow',
@@ -293,7 +360,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
 
   // Fallback for not found routes
   return {
-    title: 'Səhifə Tapılmadı | DreamArt Events',
+    title: 'Səhifə Tapılmadı | DreamArt Weddings',
     description: 'Axtardığınız səhifə mövcud deyil və ya ünvanı dəyişdirilib.',
     canonicalUrl: `${PRIMARY_DOMAIN}/`,
     robots: 'noindex, follow',

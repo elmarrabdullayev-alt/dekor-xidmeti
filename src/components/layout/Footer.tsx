@@ -20,6 +20,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
     { label: 'Restoranlar', path: '/restoranlar' },
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Xidmətlər', path: '/xidmetler' },
+    { label: 'Indian Weddings', path: '/indian-wedding-azerbaijan' },
     { label: 'Haqqımızda', path: '/haqqimizda' },
     { label: 'Əlaqə', path: '/elaqe' },
   ];
@@ -37,7 +38,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
             </div>
             <div className="text-left">
               <span className="font-serif text-xl tracking-[0.18em] text-[#FAF8F5] uppercase font-medium block leading-none">
-                DREAMART EVENTS
+                DREAMART WEDDINGS
               </span>
               <span className="text-[8px] tracking-[0.32em] text-[#C5A059] uppercase font-sans mt-1 block">
                 TƏDBİR DEKORASİYASI

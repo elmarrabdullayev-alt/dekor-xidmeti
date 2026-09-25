@@ -14,6 +14,7 @@ import { ContactPage } from './pages/ContactPage';
 import { AdminPage } from './pages/AdminPage';
 import { VenuesCatalogPage } from './pages/VenuesCatalogPage';
 import { VenueDetailPage } from './pages/VenueDetailPage';
+import { IndianWeddingPage } from './pages/IndianWeddingPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { store } from './lib/store';
 import { DecorItem, DecorCategorySlug } from './types';
@@ -184,6 +185,16 @@ export default function App() {
       );
     }
 
+    // 8b. Indian Destination Wedding Page (/indian-wedding-azerbaijan)
+    if (path === '/indian-wedding-azerbaijan') {
+      return (
+        <IndianWeddingPage
+          navigate={navigate}
+          onOpenQuoteModal={handleOpenQuoteModal}
+        />
+      );
+    }
+
     // 9. Category or Local SEO Routes
     // Format: /:categorySlug or /:categorySlug/:citySlug
     const parts = path.split('/').filter(Boolean);
@@ -248,7 +259,7 @@ export default function App() {
       {/* Floating WhatsApp Action Button */}
       {!isAdmin && (
         <a
-          href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Salam, DreamArt Events! Tədbir dekorasiyası ilə bağlı məlumat almaq istəyirəm.')}`}
+          href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Salam, DreamArt Weddings! Tədbir dekorasiyası ilə bağlı məlumat almaq istəyirəm.')}`}
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-6 right-6 z-40 bg-[#1C1C1C] hover:bg-[#C5A059] text-[#FAF9F6] p-3.5 border border-[#C5A059]/30 shadow-xl transition-all duration-300 flex items-center justify-center group"

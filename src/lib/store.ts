@@ -10,7 +10,7 @@ const SETTINGS_STORAGE_KEY = 'dreamart_settings_v2';
 const VENUES_STORAGE_KEY = 'dreamart_venues_v3';
 
 export const DEFAULT_SETTINGS: SiteSettings = {
-  brandName: 'DreamArt Events',
+  brandName: 'DreamArt Weddings',
   brandSubtitle: 'Tədbir Dekorasiyası',
   phoneDisplay: '050 231 17 28',
   phoneRaw: '+994502311728',

@@ -1,11 +1,13 @@
 import React from 'react';
 import { CATEGORIES } from '../data/categories';
 import { REGIONAL_LOCATIONS } from '../data/regionalData';
+import { INITIAL_VENUES } from '../data/initialVenues';
 import { DecorCategorySlug, DecorItem } from '../types';
 import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getBreadcrumbSchema, getFaqPageSchema } from '../lib/structuredData';
-import { MapPin, Truck, ArrowLeft } from 'lucide-react';
+import { isVenueIndexable } from '../lib/venueHelper';
+import { MapPin, Truck, ArrowLeft, MessageCircle, Phone, Building2, Sparkles, ArrowRight } from 'lucide-react';
 
 interface LocalSeoPageProps {
   categorySlug: DecorCategorySlug;
@@ -48,10 +50,18 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
     d => d.category === categorySlug && !d.city.toLowerCase().includes(location.city.toLowerCase())
   );
 
+  const phoneDisplay = '050 231 17 28';
+  const whatsappNumber = '994502311728';
+
+  const handleWhatsApp = () => {
+    const text = `Salam, ${location.city} üzrə ${category.name.toLowerCase()} xidməti üçün qiymət təklifi almaq istəyirəm.`;
+    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+  };
+
   const localFaqs = [
     {
       question: `${location.city} şəhərində ${category.name.toLowerCase()} quraşdırılması necə aparılır?`,
-      answer: `Komandamız tədbir günü və ya bir gün əvvəl ${location.city} şəhərindəki məkana çatır və dekorasiyanın tam təhlükəsiz quraşdırılmasını təmin edir.`
+      answer: `DreamArt Weddings komandası tədbir günü və ya bir gün əvvəl ${location.city} şəhərindəki məkana çatır və dekorasiyanın tam təhlükəsiz quraşdırılmasını təmin edir.`
     },
     {
       question: `${location.city} üçün nəqliyyat və çatdırılma xərci necə hesablanır?`,
@@ -60,6 +70,14 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
     {
       question: `Hansı həcmdə ${category.name.toLowerCase()} layihələri ${location.city} üçün daha uyğundur?`,
       answer: 'Orta və lüks tam həcmli dekor layihələri üçün regiona xüsusi heyət ezam olunur.'
+    },
+    {
+      question: `DreamArt Weddings ${location.city} üçün sifarişləri necə qəbul edir?`,
+      answer: `Telefon və WhatsApp vasitəsilə: 050 231 17 28. Məkan parametrləri və eskiz öncədən onlayn razılaşdırılır.`
+    },
+    {
+      question: `${location.city} məkanlarında hava şəraitinə uyğun dekor seçimi necə aparılır?`,
+      answer: `Açıq hava villaları və ya qapalı zallara uyğun küləyə dayanıqlı konstruksiyalar və iqlimə dözümlü çiçək növləri seçilir.`
     }
   ];
 
@@ -69,6 +87,12 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
     'nisan-dekoru/baki',
     'xina-dekoru/baki'
   ].includes(`${category.slug}/${location.slug}`);
+
+  // Verified venues if in Baku
+  const isBaku = location.slug === 'baki';
+  const localVerifiedVenues = isBaku
+    ? INITIAL_VENUES.filter(v => isVenueIndexable(v)).slice(0, 4)
+    : [];
 
   const jsonLd = [
     getBreadcrumbSchema([
@@ -82,7 +106,7 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
   return (
     <>
       <SeoHead
-        title={`${location.city} ${category.name} | DreamArt Events`}
+        title={`${location.city} ${category.name} | DreamArt Weddings`}
         description={`${location.city} şəhərində peşəkar ${category.name.toLowerCase()} xidməti. Quraşdırma, unikal çiçək dizaynı və etibarlı logistika.`}
         canonicalPath={`/${category.slug}/${location.slug}`}
         jsonLd={jsonLd}
@@ -113,6 +137,16 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
             <p className="text-xs sm:text-sm md:text-base text-white/70 font-light max-w-2xl mx-auto leading-relaxed">
               {location.city} və ətraf məkanlar üçün zövqlü {category.name.toLowerCase()} həlləri, peşəkar florist komandası və vaxtında çatdırılma.
             </p>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={handleWhatsApp}
+                className="bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-2.5 rounded-sm text-xs font-medium tracking-wide uppercase flex items-center gap-2 transition-colors cursor-pointer shadow-lg"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>{location.city} üzrə WhatsApp sorğusu</span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -124,9 +158,9 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
                 <Truck className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs uppercase tracking-wider text-white font-semibold mb-1">
+                <h2 className="text-xs uppercase tracking-wider text-white font-semibold mb-1">
                   {location.city} üçün logistika və çatdırılma qaydası
-                </h3>
+                </h2>
                 <p className="text-xs text-white/70 leading-relaxed font-light">
                   {location.logisticsNotice}
                 </p>
@@ -148,6 +182,13 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
             <h2 className="font-serif text-2xl text-white font-normal">
               {cityProjects.length > 0 ? `${location.city} Layihələrimiz` : `Tövsiyə Olunan ${category.name} Layihələri`}
             </h2>
+            <button
+              onClick={() => navigate('/portfolio')}
+              className="text-xs text-[#C5A059] hover:underline inline-flex items-center gap-1 cursor-pointer"
+            >
+              <span>Bütün portfolio</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -159,6 +200,28 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
               />
             ))}
           </div>
+
+          {/* Related verified venues if in Baku */}
+          {localVerifiedVenues.length > 0 && (
+            <div className="mt-12 p-6 bg-[#121212] border border-white/10 rounded-sm">
+              <div className="flex items-center gap-2 mb-3 text-xs uppercase tracking-wider text-[#C5A059] font-mono">
+                <Building2 className="w-4 h-4" />
+                <span>{location.city} Şəhərində Real Dekor Layihələrimiz Olan Məkanlar</span>
+              </div>
+              <div className="flex flex-wrap gap-2 text-xs pt-1">
+                {localVerifiedVenues.map(venue => (
+                  <button
+                    key={venue.id}
+                    onClick={() => navigate(`/restoranlar/${venue.slug}`)}
+                    className="px-3.5 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer inline-flex items-center gap-1"
+                  >
+                    <span>{venue.name}</span>
+                    <ArrowRight className="w-3 h-3 text-[#C5A059]" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Local FAQ */}
@@ -179,6 +242,16 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
                   </p>
                 </div>
               ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <button
+                onClick={handleWhatsApp}
+                className="bg-[#25D366] hover:bg-[#20ba59] text-white px-7 py-3 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors inline-flex items-center gap-2 cursor-pointer shadow-lg"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>{location.city} üçün WhatsApp ilə yazın</span>
+              </button>
             </div>
           </div>
         </section>

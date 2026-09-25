@@ -72,7 +72,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
   const whatsappNumber = '994502311728';
 
   const handleWhatsApp = () => {
-    const text = `Salam, DreamArt Events! "${venue.name}" (${venue.city}) məkanında toy/tədbir dekorasiyası ilə bağlı məlumat və qiymət təklifi almaq istəyirəm.`;
+    const text = `Salam, ${venue.name} məkanında dekor xidməti üçün qiymət təklifi almaq istəyirəm.`;
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -83,7 +83,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
   return (
     <>
       <SeoHead
-        title={venue.seoTitle || `${venue.name} Toy Dekoru | DreamArt Events`}
+        title={venue.seoTitle || `${venue.name} Toy Dekoru | DreamArt Weddings`}
         description={venue.metaDescription || venue.shortDescription}
         canonicalPath={`/restoranlar/${venue.slug}`}
         ogImage={venue.mainImage}
@@ -179,6 +179,31 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             {/* Left Main Content (8 cols) */}
             <div className="lg:col-span-8 space-y-12">
+              {/* AI & GEO Direct-Answer Block */}
+              <div className="bg-[#121212] border border-[#C5A059]/40 rounded-sm p-5 sm:p-6 shadow-xl">
+                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium font-mono mb-2">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>DİREKT MƏLUMAT VƏ MƏKAN XİDMƏTLƏRİ</span>
+                </div>
+                <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+                  DreamArt Weddings <strong>{venue.name}</strong> məkanında toy, nikah və böyük zal dekorasiyası layihələri həyata keçirir. Məkanın daxili memarlığına uyğun fərdi floristika, şam işıqlandırması və altar dizaynı təqdim edilir. Sifariş və eskiz üçün: <strong className="text-[#C5A059]">{phoneDisplay}</strong> (WhatsApp aktivdir).
+                </p>
+                <div className="mt-4 pt-3 border-t border-white/10 flex flex-wrap gap-2 text-xs">
+                  <button onClick={() => navigate('/toy-dekoru')} className="px-3 py-1 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer">
+                    Toy Dekoru
+                  </button>
+                  <button onClick={() => navigate('/zal-dekoru')} className="px-3 py-1 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer">
+                    Zal Dekoru
+                  </button>
+                  <button onClick={() => navigate('/nisan-dekoru')} className="px-3 py-1 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer">
+                    Nişan Dekoru
+                  </button>
+                  <button onClick={() => navigate('/portfolio')} className="px-3 py-1 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer">
+                    Portfolio
+                  </button>
+                </div>
+              </div>
+
               {/* Venue-Specific Notes */}
               {venue.venueNotes && (
                 <section className="bg-[#121212] border border-white/10 p-6 sm:p-8 rounded-sm">
@@ -194,7 +219,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                 </section>
               )}
 
-              {/* Real DreamArt Events Projects */}
+              {/* Real DreamArt Weddings Projects */}
               <section className="space-y-6">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10">
                   <div>
@@ -202,7 +227,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                       {venue.name} məkanında real dekor layihələri
                     </h2>
                     <p className="text-xs text-white/50 mt-1">
-                      DreamArt Events komandası tərəfindən icra edilmiş faktiki tərtibatlar
+                      DreamArt Weddings komandası tərəfindən icra edilmiş faktiki tərtibatlar
                     </p>
                   </div>
                   {relatedDecors.length > 0 && (
