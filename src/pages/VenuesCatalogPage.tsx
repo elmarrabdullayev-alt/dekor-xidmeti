@@ -5,6 +5,7 @@ import { SeoHead } from '../components/layout/SeoHead';
 import { store } from '../lib/store';
 import { isVenueIndexable } from '../lib/venueHelper';
 import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
+import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface VenuesCatalogPageProps {
   navigate: (path: string) => void;
@@ -42,9 +43,9 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
     {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      'name': 'Toy və tədbir məkanları | DreamArt Events',
-      'description': 'DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
-      'url': 'https://dreamart.az/restoranlar'
+      'name': 'Toy və tədbir məkanları | DreamArt Weddings',
+      'description': 'DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
+      'url': `${PRIMARY_DOMAIN}/restoranlar`
     },
     {
       '@context': 'https://schema.org',
@@ -54,13 +55,13 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
           '@type': 'ListItem',
           'position': 1,
           'name': 'Ana səhifə',
-          'item': 'https://dreamart.az'
+          'item': PRIMARY_DOMAIN
         },
         {
           '@type': 'ListItem',
           'position': 2,
           'name': 'Restoranlar',
-          'item': 'https://dreamart.az/restoranlar'
+          'item': `${PRIMARY_DOMAIN}/restoranlar`
         }
       ]
     }
@@ -69,8 +70,8 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
   return (
     <>
       <SeoHead
-        title="Toy və Tədbir Məkanları | Restoran Dekoru | DreamArt Events"
-        description="DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur."
+        title="Şadlıq Sarayları və Məkan Dekoru | DreamArt Weddings"
+        description="DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur."
         canonicalPath="/restoranlar"
         jsonLd={jsonLd}
       />

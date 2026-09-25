@@ -51,7 +51,7 @@ export function getWhatsAppQuoteUrl(context?: string | WhatsAppQuoteContext): st
     if (context.customMessage) {
       message = context.customMessage;
     } else if (context.venueName) {
-      message = `Salam, DreamArt Weddings ilə ${context.venueName} məkanında dekor xidməti üçün qiymət təklifi almaq istəyirəm.`;
+      message = `Salam, ${context.venueName} məkanında dekor xidməti üçün qiymət təklifi almaq istəyirəm.`;
     } else if (context.isProject) {
       message = 'Salam, bu dekor layihəsi ilə bağlı qiymət təklifi almaq istəyirəm.';
     } else if (context.decorName) {
@@ -64,6 +64,12 @@ export function getWhatsAppQuoteUrl(context?: string | WhatsAppQuoteContext): st
       message = 'Salam, DreamArt Weddings xına dekoru xidməti ilə bağlı qiymət təklifi almaq istəyirəm.';
     } else if (context.categorySlug === 'xonca-xidmeti' || context.categoryName?.toLowerCase().includes('xonça')) {
       message = 'Salam, DreamArt Weddings xonça xidməti ilə bağlı qiymət təklifi almaq istəyirəm.';
+    } else if (context.categorySlug === 'korporativ-dekor' || context.categoryName?.toLowerCase().includes('korporativ')) {
+      message = 'Salam, DreamArt Weddings korporativ tədbir dekoru ilə bağlı qiymət təklifi almaq istəyirəm.';
+    } else if (context.categorySlug === 'zal-dekoru' || context.categoryName?.toLowerCase().includes('zal')) {
+      message = 'Salam, DreamArt Weddings zal dekoru xidməti ilə bağlı qiymət təklifi almaq istəyirəm.';
+    } else if (context.categorySlug === 'ad-gunu-dekoru' || context.categoryName?.toLowerCase().includes('ad günü')) {
+      message = 'Salam, DreamArt Weddings ad günü dekoru xidməti ilə bağlı qiymət təklifi almaq istəyirəm.';
     } else if (context.city) {
       message = `Salam, DreamArt Weddings ${context.city} üzrə dekor xidməti ilə bağlı qiymət təklifi almaq istəyirəm.`;
     }

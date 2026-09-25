@@ -8,6 +8,7 @@ import { store } from '../lib/store';
 import { ImageLightbox, LightboxImage } from '../components/common/ImageLightbox';
 import { TOY_DEKORU_COLLECTION } from '../data/toyDekoruImages';
 import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
+import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface ProjectDetailPageProps {
   slug: string;
@@ -109,9 +110,9 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const jsonLd = [
     getProjectDetailSchema(decor),
     getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: 'https://dreamart.az' },
-      { name: decor.categoryName, url: `https://dreamart.az/${decor.category}` },
-      { name: decor.name, url: `https://dreamart.az/dekorlar/${decor.slug}` }
+      { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
+      { name: decor.categoryName, url: `${PRIMARY_DOMAIN}/${decor.category}` },
+      { name: decor.name, url: `${PRIMARY_DOMAIN}/dekorlar/${decor.slug}` }
     ])
   ];
 
@@ -120,7 +121,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   return (
     <>
       <SeoHead
-        title={decor.seoTitle || `${decor.name} | DreamArt Events`}
+        title={decor.seoTitle ? decor.seoTitle.replace(/DreamArt Events/g, 'DreamArt Weddings') : `${decor.name} | DreamArt Weddings`}
         description={decor.metaDescription || decor.shortDescription}
         canonicalPath={`/dekorlar/${decor.slug}`}
         ogImage={decor.mainImage}
@@ -339,6 +340,59 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                   </div>
                 );
               })}
+            </div>
+          </div>
+
+          {/* Real Project Signals Connection Bar: Project -> Service -> City -> Portfolio -> WhatsApp */}
+          <div className="mt-14 p-6 sm:p-8 bg-[#121212] border border-[#C5A059]/30 rounded-sm flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl">
+            <div className="space-y-1">
+              <span className="text-[10px] uppercase font-mono text-[#C5A059] tracking-wider block font-semibold">
+                REAL TƏCRÜBƏ VƏ ƏLAQƏLİ BÖLMƏLƏR
+              </span>
+              <h3 className="font-serif text-lg sm:text-xl text-white">
+                Bu Layihə ilə Maraqlanırsınız?
+              </h3>
+              <p className="text-xs text-white/70 font-light max-w-xl">
+                Bu layihə DreamArt Weddings komandası tərəfindən icra edilmişdir. Oxşar konseptlər üçün əlaqəli xidmətlərimizə və ya şəhər səhifəsinə nəzər yetirə bilərsiniz:
+              </p>
+              <div className="flex flex-wrap items-center gap-2 pt-2 text-xs">
+                <button
+                  onClick={() => navigate(`/${decor.category}`)}
+                  className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer"
+                >
+                  {decor.categoryName} Xidməti
+                </button>
+                <button
+                  onClick={() => navigate(`/${decor.category}/${decor.city.toLowerCase()}`)}
+                  className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer"
+                >
+                  {decor.city} {decor.categoryName}
+                </button>
+                <button
+                  onClick={() => navigate('/portfolio')}
+                  className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer"
+                >
+                  Bütün Portfolio
+                </button>
+                <button
+                  onClick={() => navigate('/restoranlar')}
+                  className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer"
+                >
+                  Məkanlar Kataloqu
+                </button>
+              </div>
+            </div>
+
+            <div className="shrink-0 flex flex-col sm:flex-row gap-3">
+              <a
+                href={projectWhatsAppUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-6 py-3 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors inline-flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>WhatsApp: 050 231 17 28</span>
+              </a>
             </div>
           </div>
         </div>

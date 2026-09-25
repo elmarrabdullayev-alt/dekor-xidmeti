@@ -77,13 +77,13 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
     window.open(venueWhatsAppUrl, '_blank', 'noopener,noreferrer');
   };
 
-  const canonicalUrl = `https://dreamart.az/restoranlar/${venue.slug}`;
+  const canonicalUrl = `https://dreamartweddings.com/restoranlar/${venue.slug}`;
   const jsonLd = getVenueStructuredData(venue, canonicalUrl);
 
   return (
     <>
       <SeoHead
-        title={venue.seoTitle || `${venue.name} Toy Dekoru | DreamArt Events`}
+        title={venue.seoTitle ? venue.seoTitle.replace(/DreamArt Events/g, 'DreamArt Weddings') : `${venue.name} Toy Dekoru | DreamArt Weddings`}
         description={venue.metaDescription || venue.shortDescription}
         canonicalPath={`/restoranlar/${venue.slug}`}
         ogImage={venue.mainImage}
@@ -196,7 +196,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                 </section>
               )}
 
-              {/* Real DreamArt Events Projects */}
+              {/* Real DreamArt Weddings Projects */}
               <section className="space-y-6">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10">
                   <div>
@@ -204,7 +204,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                       {venue.name} məkanında real dekor layihələri
                     </h2>
                     <p className="text-xs text-white/50 mt-1">
-                      DreamArt Events komandası tərəfindən icra edilmiş faktiki tərtibatlar
+                      DreamArt Weddings komandası tərəfindən icra edilmiş faktiki tərtibatlar
                     </p>
                   </div>
                   {relatedDecors.length > 0 && (
@@ -268,6 +268,48 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                     </button>
                   </div>
                 )}
+              </section>
+
+              {/* Contextual Service Internal Links */}
+              <section className="p-6 bg-[#121212] border border-white/10 rounded-sm">
+                <h3 className="font-serif text-base text-white mb-2">
+                  {venue.name} üçün əlaqəli dekorasiya xidmətlərimiz
+                </h3>
+                <p className="text-xs text-white/60 font-light mb-4">
+                  Məkanın miqyasına və tədbir növünə uyğun olaraq ixtisaslaşmış xidmətlərimizlə tanış olun:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => navigate('/toy-dekoru')}
+                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
+                  >
+                    Toy Dekoru
+                  </button>
+                  <button
+                    onClick={() => navigate('/zal-dekoru')}
+                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
+                  >
+                    Zal Dekoru
+                  </button>
+                  <button
+                    onClick={() => navigate('/nisan-dekoru')}
+                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
+                  >
+                    Nişan Dekoru
+                  </button>
+                  <button
+                    onClick={() => navigate('/xonca-xidmeti')}
+                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
+                  >
+                    Xonça Xidməti
+                  </button>
+                  <button
+                    onClick={() => navigate('/korporativ-dekor')}
+                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
+                  >
+                    Korporativ Dekoru
+                  </button>
+                </div>
               </section>
 
               {/* Gallery Section */}

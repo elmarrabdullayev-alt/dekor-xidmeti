@@ -36,13 +36,13 @@ export function generateVenueSlug(name: string): string {
 export function generateVenueSeoTitle(name: string, city: string = 'Bakı'): string {
   const safeName = name.trim() || 'Məkan';
   const safeCity = city.trim() || 'Bakı';
-  return `${safeName} Toy Dekoru və Tədbir Tərtibatı | ${safeCity} | DreamArt Events`;
+  return `${safeName} Toy Dekoru və Tədbir Tərtibatı | ${safeCity} | DreamArt Weddings`;
 }
 
 export function generateVenueMetaDescription(name: string, city: string = 'Bakı', district?: string): string {
   const safeName = name.trim() || 'Məkan';
   const locStr = district ? `${city}, ${district} rayonu` : city;
-  return `${safeName} (${locStr}) üçün eksklüziv toy dekoru, gəlin masası və səhnə tərtibatı. DreamArt Events tərəfindən icra edilmiş real layihələr və fərdi dizayn həlləri.`;
+  return `${safeName} (${locStr}) üçün eksklüziv toy dekoru, gəlin masası və səhnə tərtibatı. DreamArt Weddings tərəfindən icra edilmiş real layihələr və fərdi dizayn həlləri.`;
 }
 
 /**
@@ -55,16 +55,24 @@ export function generateDefaultVenueFaqs(venueName: string, hasRealProject: bool
   if (hasRealProject) {
     return [
       {
-        question: `${safeName}-da toy dekoru üçün DreamArt Events ilə işləmək mümkündür?`,
-        answer: `Bəli. DreamArt Events ${safeName}-da real dekor layihələri həyata keçirib və məkanın quruluşuna uyğun toy və tədbir dekoru xidmətləri təqdim edir. Əlaqə və WhatsApp: ${phoneDisplay}.`
+        question: `${safeName}-da toy dekoru üçün DreamArt Weddings ilə işləmək mümkündür?`,
+        answer: `Bəli. DreamArt Weddings ${safeName} məkanında real toy və tədbir dekor layihələri həyata keçirib və zalın memarlıq quruluşuna uyğun fərdi dekor həlləri təqdim edir. Əlaqə və WhatsApp: ${phoneDisplay}.`
       },
       {
         question: `${safeName} üçün hansı dekor xidmətləri mümkündür?`,
-        answer: `Layihədən asılı olaraq toy dekoru, səhnə dekoru, masa dekoru, gül kompozisiyası, fotozona və digər fərdi dekor həlləri təqdim edilə bilər.`
+        answer: `Məkanın həcminə uyğun olaraq monumental səhnə tağı, bəy-gəlin masası, qonaq masaları üçün büllur şamdanlar və canlı gül kompozisiyaları, qarşılama fotozonası və xonça stendləri təmin edilir.`
       },
       {
-        question: `DreamArt Events ilə necə əlaqə saxlamaq olar?`,
-        answer: `Telefon və WhatsApp: ${phoneDisplay}. İstənilən vaxt məkanınız üçün xüsusi eskiz və qiymət təklifi əldə edə bilərsiniz.`
+        question: `${safeName} zalında quraşdırma və sökülmə necə təşkil olunur?`,
+        answer: `Peşəkar florist və montaj komandamız tədbirdən saatlar öncə məkana daxil olaraq quraşdırmanı tamamlayır, tədbir bitdikdən dərhal sonra isə məkanı səliqə ilə təhvil verərək sökülməni icra edir.`
+      },
+      {
+        question: `${safeName} üçün dekorasiya qiyməti necə hesablanır?`,
+        answer: `Qiymət seçilən çiçək növü (təbii və ya premium süni), arxa fon ölçüsü və masa sayına əsasən fərdi şəffaf smeta ilə müəyyən olunur.`
+      },
+      {
+        question: `DreamArt Weddings ilə necə əlaqə saxlamaq olar?`,
+        answer: `Telefon və rəsmi WhatsApp xəttimiz: ${phoneDisplay} (+994 50 231 17 28). Məkan üçün real foto nümunələrimizi və smetanı dərhal göndərə bilərik.`
       }
     ];
   }
@@ -72,11 +80,11 @@ export function generateDefaultVenueFaqs(venueName: string, hasRealProject: bool
   // If no real project yet
   return [
     {
-      question: `${safeName} məkanında DreamArt Events dekor xidməti sifariş etmək olarmı?`,
-      answer: `Bəli. DreamArt Events Azərbaycanın bütün şadlıq sarayları və restoranlarında olduğu kimi, ${safeName} məkanında da fərdi dekorasiya və floristika layihələrini həyata keçirməyə hazırdır. Əlaqə: ${phoneDisplay}.`
+      question: `${safeName} məkanında DreamArt Weddings dekor xidməti sifariş etmək olarmı?`,
+      answer: `Bəli. DreamArt Weddings Azərbaycanın bütün şadlıq sarayları və restoranlarında fərdi dekorasiya və floristika layihələrini həyata keçirməyə hazırdır. Əlaqə: ${phoneDisplay}.`
     },
     {
-      question: `DreamArt Events ilə necə əlaqə saxlamaq olar?`,
+      question: `DreamArt Weddings ilə necə əlaqə saxlamaq olar?`,
       answer: `Telefon və WhatsApp: ${phoneDisplay}.`
     }
   ];
@@ -94,9 +102,9 @@ export function getVenueStructuredData(venue: VenueItem, canonicalUrl: string) {
       'description': venue.shortDescription,
       'provider': {
         '@type': 'LocalBusiness',
-        'name': 'DreamArt Events',
+        'name': 'DreamArt Weddings',
         'telephone': '+994502311728',
-        'url': 'https://dreamart.az',
+        'url': 'https://dreamartweddings.com',
         'address': {
           '@type': 'PostalAddress',
           'addressLocality': venue.city || 'Bakı',
@@ -117,13 +125,13 @@ export function getVenueStructuredData(venue: VenueItem, canonicalUrl: string) {
           '@type': 'ListItem',
           'position': 1,
           'name': 'Ana səhifə',
-          'item': 'https://dreamart.az'
+          'item': 'https://dreamartweddings.com'
         },
         {
           '@type': 'ListItem',
           'position': 2,
           'name': 'Restoranlar',
-          'item': 'https://dreamart.az/restoranlar'
+          'item': 'https://dreamartweddings.com/restoranlar'
         },
         {
           '@type': 'ListItem',

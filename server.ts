@@ -18,6 +18,8 @@ import {
   reorderImagesRecord,
   deleteImageRecord,
 } from './server/persistentDiskService.ts';
+import { generateSitemapXml, generateRobotsTxt } from './src/data/seoRoutes.ts';
+import { injectSeoHtml } from './server/seoPrerender.ts';
 
 dotenv.config();
 
@@ -130,6 +132,28 @@ async function startServer() {
 
   // Recognize proxy headers from Cloud Run and Render load balancers
   app.set('trust proxy', 1);
+
+  // Canonical www to non-www 301 redirect
+  app.use((req, res, next) => {
+    const host = req.headers.host;
+    if (host && host.startsWith('www.')) {
+      const nonWwwHost = host.replace(/^www\./, '');
+      return res.redirect(301, `https://${nonWwwHost}${req.originalUrl}`);
+    }
+    next();
+  });
+
+  // Dynamic XML Sitemap backed by single SEO source of truth
+  app.get('/sitemap.xml', (_req, res) => {
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.send(generateSitemapXml());
+  });
+
+  // Dynamic robots.txt
+  app.get('/robots.txt', (_req, res) => {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.send(generateRobotsTxt());
+  });
 
   // CORS Middleware for cross-origin or iframe requests with credentials
   app.use((req, res, next) => {
@@ -377,14 +401,48 @@ async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: 'spa',
+      appType: 'custom',
     });
     app.use(vite.middlewares);
+
+    // Development Raw HTML SEO Prerender handler
+    app.get('*', async (req, res, next) => {
+      const url = req.originalUrl;
+      // Skip API, static images, uploads, or assets with extensions
+      if (url.startsWith('/api') || url.startsWith('/uploads') || url.startsWith('/images') || path.extname(url)) {
+        return next();
+      }
+
+      try {
+        const templatePath = path.join(process.cwd(), 'index.html');
+        let template = fs.readFileSync(templatePath, 'utf-8');
+        template = await vite.transformIndexHtml(url, template);
+        const html = injectSeoHtml(template, req.path);
+        res.status(200).set({ 'Content-Type': 'text/html; charset=utf-8' }).end(html);
+      } catch (e: any) {
+        vite.ssrFixStacktrace(e);
+        next(e);
+      }
+    });
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    app.use(express.static(distPath, { index: false }));
+
+    // Production Raw HTML SEO Prerender handler
+    app.get('*', (req, res, next) => {
+      const url = req.originalUrl;
+      if (url.startsWith('/api') || url.startsWith('/uploads') || url.startsWith('/images') || path.extname(url)) {
+        return next();
+      }
+
+      try {
+        const indexPath = path.join(distPath, 'index.html');
+        const template = fs.readFileSync(indexPath, 'utf-8');
+        const html = injectSeoHtml(template, req.path);
+        res.status(200).set({ 'Content-Type': 'text/html; charset=utf-8' }).end(html);
+      } catch (e) {
+        next(e);
+      }
     });
   }
 

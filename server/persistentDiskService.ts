@@ -8,13 +8,23 @@ import type { ManagedImage, ImageSection } from '../src/types';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 // 1. Validate & initialize PERSISTENT_DATA_DIR
+// Production strictly requires PERSISTENT_DATA_DIR (e.g. /var/data on Render Persistent Disk)
+// to avoid silent data loss on ephemeral containers.
+if (IS_PRODUCTION && (!process.env.PERSISTENT_DATA_DIR || !process.env.PERSISTENT_DATA_DIR.trim())) {
+  const criticalError = '[CRITICAL] PERSISTENT_DATA_DIR environment variable is missing in production! ' +
+    'Render Persistent Disk requires PERSISTENT_DATA_DIR (recommended: /var/data). ' +
+    'Refusing to start on ephemeral storage to prevent permanent data loss.';
+  console.error(criticalError);
+  throw new Error(criticalError);
+}
+
 export const PERSISTENT_DATA_DIR = 
   process.env.PERSISTENT_DATA_DIR?.trim() || 
   path.join(process.cwd(), 'data-dev');
 
 if (!process.env.PERSISTENT_DATA_DIR) {
   console.log(
-    `[Storage] PERSISTENT_DATA_DIR not explicitly set. Using directory: ${PERSISTENT_DATA_DIR}.`
+    `[Storage] Development mode: PERSISTENT_DATA_DIR not set. Using local directory: ${PERSISTENT_DATA_DIR}.`
   );
 }
 

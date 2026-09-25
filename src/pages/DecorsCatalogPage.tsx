@@ -4,6 +4,8 @@ import { DecorCategorySlug, DecorItem } from '../types';
 import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
+import { getBreadcrumbSchema } from '../lib/structuredData';
+import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface DecorsCatalogPageProps {
   decors: DecorItem[];
@@ -25,12 +27,20 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
     return matchCat && matchCity;
   });
 
+  const jsonLd = [
+    getBreadcrumbSchema([
+      { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
+      { name: 'Dekorlar', url: `${PRIMARY_DOMAIN}/dekorlar` }
+    ])
+  ];
+
   return (
     <>
       <SeoHead
-        title="Bütün Dekorlar və Xidmətlər | DreamArt Events"
-        description="Toy, nişan, xına, ad günü, zal dekorasiyası və xonça xidməti layihələri kataloqu. Bakı və regionlar üçün premium dekorasiya."
+        title="Dekor Layihələri Kataloqu | DreamArt Weddings"
+        description="DreamArt Weddings tərəfindən icra edilmiş toy, nişan, xına, zal və tədbir dekor layihələri kataloqu. Real fotoşəkillər və detallı kompozisiyalar."
         canonicalPath="/dekorlar"
+        jsonLd={jsonLd}
       />
 
       <div className="bg-[#0B0B0B] text-white py-14 sm:py-20 min-h-screen border-b border-white/10">
@@ -41,7 +51,7 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
               KOLLEKSİYA VƏ LAYİHƏLƏR
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-normal mb-3">
-              Dekorlar Kataloqu
+              Bütün Dekor Layihələri
             </h1>
             <p className="text-xs sm:text-sm text-white/70 font-light max-w-md mx-auto">
               Tədbirinizə uyğun ən zövqlü və unikal dekor konseptlərini kəşf edin.

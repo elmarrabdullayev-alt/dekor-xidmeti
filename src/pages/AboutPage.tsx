@@ -2,6 +2,8 @@ import React from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { Sparkles, Heart, Award } from 'lucide-react';
 import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
+import { getBreadcrumbSchema } from '../lib/structuredData';
+import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface AboutPageProps {
   navigate: (path: string) => void;
@@ -9,12 +11,20 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal }) => {
+  const jsonLd = [
+    getBreadcrumbSchema([
+      { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
+      { name: 'Haqqımızda', url: `${PRIMARY_DOMAIN}/haqqimizda` }
+    ])
+  ];
+
   return (
     <>
       <SeoHead
-        title="Haqqımızda | DreamArt Events"
-        description="DreamArt Events haqqında məlumat. Azərbaycan üzrə zövqlü və premium toy, nişan, xına, xonça və tədbir dekorasiyası fəlsəfəmiz."
+        title="Haqqımızda | DreamArt Weddings"
+        description="DreamArt Weddings haqqında məlumat. Azərbaycan üzrə zövqlü və premium toy, nişan, xına, xonça və tədbir dekorasiyası fəlsəfəmiz."
         canonicalPath="/haqqimizda"
+        jsonLd={jsonLd}
       />
 
       <div className="bg-[#0B0B0B] text-white py-16 sm:py-24 min-h-screen border-b border-white/10">
