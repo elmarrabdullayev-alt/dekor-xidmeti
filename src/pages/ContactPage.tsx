@@ -3,9 +3,6 @@ import { SeoHead } from '../components/layout/SeoHead';
 import { QuoteSection } from '../components/home/QuoteSection';
 import { store } from '../lib/store';
 import { MapPin, Phone, Mail, Instagram, MessageCircle } from 'lucide-react';
-import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
-import { getBreadcrumbSchema, getLocalBusinessSchema } from '../lib/structuredData';
-import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface ContactPageProps {
   onOpenQuoteModal: () => void;
@@ -14,21 +11,12 @@ interface ContactPageProps {
 export const ContactPage: React.FC<ContactPageProps> = () => {
   const settings = store.getSettings();
 
-  const jsonLd = [
-    getLocalBusinessSchema(),
-    getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
-      { name: 'Əlaqə', url: `${PRIMARY_DOMAIN}/elaqe` }
-    ])
-  ];
-
   return (
     <>
       <SeoHead
-        title="Əlaqə | DreamArt Weddings"
-        description="DreamArt Weddings ilə əlaqə. Toy və tədbir dekor sifarişləri üçün WhatsApp və telefon xətti: 050 231 17 28."
+        title="Əlaqə | DreamArt Events Bakı"
+        description="DreamArt Events ilə əlaqə. Ünvan, telefon, WhatsApp və tədbir dekorasiyası üçün sorğu göndərmə imkanı."
         canonicalPath="/elaqe"
-        jsonLd={jsonLd}
       />
 
       <div className="bg-[#0B0B0B] text-white min-h-screen border-b border-white/10">
@@ -38,7 +26,7 @@ export const ContactPage: React.FC<ContactPageProps> = () => {
               BİZİMLƏ ƏLAQƏ
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-normal mb-4">
-              Əlaqə və Fərdi Məsləhət
+              Əlaqə Məlumatları
             </h1>
             <p className="text-xs sm:text-sm md:text-base text-white/70 font-light max-w-xl mx-auto leading-relaxed">
               Tədbirinizin dekorasiyası və ya xonça xidmətləri ilə bağlı suallarınızı cavablandırmağa hər zaman hazırıq.
@@ -68,7 +56,7 @@ export const ContactPage: React.FC<ContactPageProps> = () => {
               <h3 className="text-xs uppercase tracking-wider text-white font-semibold mb-1">WhatsApp</h3>
               <p className="text-sm text-white/80 mb-2">Sürətli cavab</p>
               <a
-                href={getWhatsAppQuoteUrl()}
+                href={`https://wa.me/${settings.whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-[#25D366] hover:underline font-medium"

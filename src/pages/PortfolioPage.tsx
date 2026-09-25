@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { DecorItem } from '../types';
 import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
-import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
-import { getBreadcrumbSchema } from '../lib/structuredData';
-import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface PortfolioPageProps {
   decors: DecorItem[];
@@ -25,20 +22,12 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
     return true;
   });
 
-  const jsonLd = [
-    getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
-      { name: 'Portfolio', url: `${PRIMARY_DOMAIN}/portfolio` }
-    ])
-  ];
-
   return (
     <>
       <SeoHead
-        title="Portfolio və Lookbook | DreamArt Weddings"
-        description="Seçilmiş toy, nişan, böyük zal və xonça dekor işlərimizin vizual portfolio və lookbook təqdimatı."
+        title="Portfolio və Həyata Keçirilmiş İşlər | DreamArt Events"
+        description="Bakı və Azərbaycan regionlarında həyata keçirdiyimiz toy, nişan, xına və xonça dekorasiyalarının fotoları."
         canonicalPath="/portfolio"
-        jsonLd={jsonLd}
       />
 
       <div className="bg-[#0B0B0B] py-14 sm:py-20 text-white min-h-screen border-b border-white/10">
@@ -48,7 +37,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
               LOOKBOOK & PORTFOLİO
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-normal mb-3">
-              Seçilmiş İşlər və Lookbook
+              Portfoliomuz
             </h1>
             <p className="text-xs sm:text-sm text-white/70 font-light">
               Müxtəlif məkan və şəhərlərdə reallaşdırdığımız seçilmiş müəllif işlərimiz.
@@ -99,14 +88,12 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
           </div>
 
           <div className="mt-16 text-center">
-            <a
-              href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings portfoliodakı layihələr əsasında tədbirim üçün qiymət təklifi almaq istəyirəm.' })}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wider uppercase transition-colors cursor-pointer inline-block"
+            <button
+              onClick={() => onOpenQuoteModal('Portfoliodan Təklif')}
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wider uppercase transition-colors cursor-pointer"
             >
               Tədbiriniz üçün təklif alın
-            </a>
+            </button>
           </div>
         </div>
       </div>

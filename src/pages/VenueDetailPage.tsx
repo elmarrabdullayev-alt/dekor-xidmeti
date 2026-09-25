@@ -8,7 +8,6 @@ import { VenueItem, DecorItem } from '../types';
 import { SeoHead } from '../components/layout/SeoHead';
 import { store } from '../lib/store';
 import { isVenueIndexable, getVenueStructuredData } from '../lib/venueHelper';
-import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
 
 interface VenueDetailPageProps {
   slug: string;
@@ -71,19 +70,20 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
   const phoneDisplay = '050 231 17 28';
   const phoneRaw = '+994502311728';
   const whatsappNumber = '994502311728';
-  const venueWhatsAppUrl = getWhatsAppQuoteUrl({ venueName: venue.name });
 
   const handleWhatsApp = () => {
-    window.open(venueWhatsAppUrl, '_blank', 'noopener,noreferrer');
+    const text = `Salam, DreamArt Events! "${venue.name}" (${venue.city}) məkanında toy/tədbir dekorasiyası ilə bağlı məlumat və qiymət təklifi almaq istəyirəm.`;
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  const canonicalUrl = `https://dreamartweddings.com/restoranlar/${venue.slug}`;
+  const canonicalUrl = `https://dreamart.az/restoranlar/${venue.slug}`;
   const jsonLd = getVenueStructuredData(venue, canonicalUrl);
 
   return (
     <>
       <SeoHead
-        title={venue.seoTitle ? venue.seoTitle.replace(/DreamArt Events/g, 'DreamArt Weddings') : `${venue.name} Toy Dekoru | DreamArt Weddings`}
+        title={venue.seoTitle || `${venue.name} Toy Dekoru | DreamArt Events`}
         description={venue.metaDescription || venue.shortDescription}
         canonicalPath={`/restoranlar/${venue.slug}`}
         ogImage={venue.mainImage}
@@ -153,15 +153,13 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
 
                 {/* Direct Action Buttons */}
                 <div className="pt-3 flex flex-wrap items-center gap-3">
-                  <a
-                    href={venueWhatsAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3 rounded-sm flex items-center gap-2 transition-colors cursor-pointer shadow-lg inline-flex"
+                  <button
+                    onClick={handleWhatsApp}
+                    className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3 rounded-sm flex items-center gap-2 transition-colors cursor-pointer shadow-lg"
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>WhatsApp ilə sorğu göndərin</span>
-                  </a>
+                  </button>
 
                   <a
                     href={`tel:${phoneRaw}`}
@@ -196,7 +194,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                 </section>
               )}
 
-              {/* Real DreamArt Weddings Projects */}
+              {/* Real DreamArt Events Projects */}
               <section className="space-y-6">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10">
                   <div>
@@ -204,7 +202,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                       {venue.name} məkanında real dekor layihələri
                     </h2>
                     <p className="text-xs text-white/50 mt-1">
-                      DreamArt Weddings komandası tərəfindən icra edilmiş faktiki tərtibatlar
+                      DreamArt Events komandası tərəfindən icra edilmiş faktiki tərtibatlar
                     </p>
                   </div>
                   {relatedDecors.length > 0 && (
@@ -268,48 +266,6 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                     </button>
                   </div>
                 )}
-              </section>
-
-              {/* Contextual Service Internal Links */}
-              <section className="p-6 bg-[#121212] border border-white/10 rounded-sm">
-                <h3 className="font-serif text-base text-white mb-2">
-                  {venue.name} üçün əlaqəli dekorasiya xidmətlərimiz
-                </h3>
-                <p className="text-xs text-white/60 font-light mb-4">
-                  Məkanın miqyasına və tədbir növünə uyğun olaraq ixtisaslaşmış xidmətlərimizlə tanış olun:
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => navigate('/toy-dekoru')}
-                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
-                  >
-                    Toy Dekoru
-                  </button>
-                  <button
-                    onClick={() => navigate('/zal-dekoru')}
-                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
-                  >
-                    Zal Dekoru
-                  </button>
-                  <button
-                    onClick={() => navigate('/nisan-dekoru')}
-                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
-                  >
-                    Nişan Dekoru
-                  </button>
-                  <button
-                    onClick={() => navigate('/xonca-xidmeti')}
-                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
-                  >
-                    Xonça Xidməti
-                  </button>
-                  <button
-                    onClick={() => navigate('/korporativ-dekor')}
-                    className="px-3 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs rounded-sm transition-colors cursor-pointer"
-                  >
-                    Korporativ Dekoru
-                  </button>
-                </div>
               </section>
 
               {/* Gallery Section */}
@@ -418,24 +374,20 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                 </div>
 
                 <div className="space-y-2.5 pt-2">
-                  <a
-                    href={venueWhatsAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase py-3 rounded-sm transition-colors cursor-pointer block text-center"
+                  <button
+                    onClick={() => onOpenQuoteModal(`${venue.name} Dekoru`)}
+                    className="w-full bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase py-3 rounded-sm transition-colors cursor-pointer"
                   >
                     Qiymət Təklifi Alın
-                  </a>
+                  </button>
 
-                  <a
-                    href={venueWhatsAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={handleWhatsApp}
                     className="w-full bg-white/5 hover:bg-white/10 text-white border border-[#C5A059]/40 text-xs tracking-wider uppercase py-3 rounded-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4 text-[#C5A059]" />
                     <span>WhatsApp: {phoneDisplay}</span>
-                  </a>
+                  </button>
                 </div>
 
                 {/* Venue Details Snapshot */}

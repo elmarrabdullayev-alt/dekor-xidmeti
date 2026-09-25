@@ -20,7 +20,6 @@ import { DecorItem, DecorCategorySlug } from './types';
 import { CATEGORIES } from './data/categories';
 import { REGIONAL_LOCATIONS } from './data/regionalData';
 import { MessageCircle } from 'lucide-react';
-import { getWhatsAppQuoteUrl, openWhatsAppQuote } from './lib/whatsapp';
 
 export default function App() {
   // Client-side router state from window.location.pathname
@@ -61,7 +60,8 @@ export default function App() {
   };
 
   const handleOpenQuoteModal = (decorName?: string) => {
-    openWhatsAppQuote(decorName);
+    setQuoteDecorName(decorName);
+    setIsQuoteModalOpen(true);
   };
 
   const handleCloseQuoteModal = () => {
@@ -248,16 +248,16 @@ export default function App() {
       {/* Floating WhatsApp Action Button */}
       {!isAdmin && (
         <a
-          href={getWhatsAppQuoteUrl()}
+          href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Salam, DreamArt Events! Tədbir dekorasiyası ilə bağlı məlumat almaq istəyirəm.')}`}
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-6 right-6 z-40 bg-[#1C1C1C] hover:bg-[#C5A059] text-[#FAF9F6] p-3.5 border border-[#C5A059]/30 shadow-xl transition-all duration-300 flex items-center justify-center group"
-          aria-label="WhatsApp ilə qiymət təklifi al"
-          title="WhatsApp ilə qiymət təklifi al"
+          aria-label="WhatsApp ilə əlaqə"
+          title="WhatsApp ilə əlaqə"
         >
           <MessageCircle className="w-5 h-5 text-[#C5A059] group-hover:text-[#FAF9F6] transition-colors" />
           <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-2.5 transition-all duration-300 text-[10px] tracking-[0.2em] uppercase font-medium">
-            Qiymət təklifi al
+            WhatsApp ilə yazın
           </span>
         </a>
       )}

@@ -4,8 +4,6 @@ import { VenueItem, DecorItem } from '../types';
 import { SeoHead } from '../components/layout/SeoHead';
 import { store } from '../lib/store';
 import { isVenueIndexable } from '../lib/venueHelper';
-import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
-import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface VenuesCatalogPageProps {
   navigate: (path: string) => void;
@@ -43,9 +41,9 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
     {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      'name': 'Toy və tədbir məkanları | DreamArt Weddings',
-      'description': 'DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
-      'url': `${PRIMARY_DOMAIN}/restoranlar`
+      'name': 'Toy və tədbir məkanları | DreamArt Events',
+      'description': 'DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
+      'url': 'https://dreamart.az/restoranlar'
     },
     {
       '@context': 'https://schema.org',
@@ -55,13 +53,13 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
           '@type': 'ListItem',
           'position': 1,
           'name': 'Ana səhifə',
-          'item': PRIMARY_DOMAIN
+          'item': 'https://dreamart.az'
         },
         {
           '@type': 'ListItem',
           'position': 2,
           'name': 'Restoranlar',
-          'item': `${PRIMARY_DOMAIN}/restoranlar`
+          'item': 'https://dreamart.az/restoranlar'
         }
       ]
     }
@@ -70,8 +68,8 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
   return (
     <>
       <SeoHead
-        title="Şadlıq Sarayları və Məkan Dekoru | DreamArt Weddings"
-        description="DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur."
+        title="Toy və Tədbir Məkanları | Restoran Dekoru | DreamArt Events"
+        description="DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur."
         canonicalPath="/restoranlar"
         jsonLd={jsonLd}
       />
@@ -233,19 +231,17 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
               DreamArt Events Azərbaycanın istənilən restoran və ya şadlıq sarayında fərdi dekor konsepti hazırlayaraq quraşdırma həyata keçirir.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings ilə restoran və məkanlarda dekor xidməti üçün qiymət təklifi almaq istəyirəm.' })}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3 rounded-sm transition-colors cursor-pointer inline-block"
+              <button
+                onClick={() => onOpenQuoteModal('Ümumi Məkan Sorğusu')}
+                className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3 rounded-sm transition-colors cursor-pointer"
               >
                 Məkanınız üçün təklif alın
-              </a>
+              </button>
               <a
-                href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings ilə restoran və məkanlarda dekor xidməti üçün qiymət təklifi almaq istəyirəm.' })}
+                href="https://wa.me/994502311728?text=Salam%2C%20DreamArt%20Events!%20Restoran%20dekoru%20haqq%C4%B1nda%20m%C9%99lumat%20almaq%20ist%C9%99yir%C9%99m."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-[#C5A059]/50 hover:border-[#C5A059] text-white text-xs tracking-wider uppercase px-6 py-3 rounded-sm transition-colors inline-block"
+                className="border border-[#C5A059]/50 hover:border-[#C5A059] text-white text-xs tracking-wider uppercase px-6 py-3 rounded-sm transition-colors"
               >
                 WhatsApp ilə yazın
               </a>

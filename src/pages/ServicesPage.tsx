@@ -2,9 +2,6 @@ import React from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { ServicesSection } from '../components/home/ServicesSection';
 import { Sparkles, CheckCircle, Clock, ShieldCheck, HeartHandshake } from 'lucide-react';
-import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
-import { getBreadcrumbSchema } from '../lib/structuredData';
-import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface ServicesPageProps {
   navigate: (path: string) => void;
@@ -12,20 +9,12 @@ interface ServicesPageProps {
 }
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, onOpenQuoteModal }) => {
-  const jsonLd = [
-    getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
-      { name: 'Xidmətlər', url: `${PRIMARY_DOMAIN}/xidmetler` }
-    ])
-  ];
-
   return (
     <>
       <SeoHead
-        title="Dekorasiya Xidmətlərimiz | DreamArt Weddings"
-        description="Toy, nişan, xına, ad günü, korporativ tədbir, böyük zal və xonça dekorasiyası üzrə peşəkar xidmətlərimiz."
+        title="Dekor Xidmətlərimiz və İş Prosesi | DreamArt Events"
+        description="Fərdi dekor konsepti, floristik dizayn, çatdırılma, montaj, sökülmə və xonça xidmətləri. Bakı və regionlar üçün peşəkar servis."
         canonicalPath="/xidmetler"
-        jsonLd={jsonLd}
       />
 
       <div className="bg-[#0B0B0B] text-white min-h-screen border-b border-white/10">
@@ -36,7 +25,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, onOpenQuot
               PEŞƏKAR FLORİSTİKA VƏ DİZAYN
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-normal mb-4">
-              Zövqlü Dekorasiya Xidmətlərimiz
+              Dekorasiya Xidmətləri
             </h1>
             <p className="text-xs sm:text-sm md:text-base text-white/70 font-light max-w-2xl mx-auto leading-relaxed">
               Toy, nişan, xına, xonça və korporativ tədbirlərinizin hər bir detalını ilk eskizdən son quraşdırmaya qədər peşəkarlıqla idarə edirik.
@@ -93,14 +82,12 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, onOpenQuot
           </div>
 
           <div className="mt-12 text-center">
-            <a
-              href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings dekorasiya xidmətləri ilə bağlı qiymət təklifi almaq istəyirəm.' })}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer inline-block"
+            <button
+              onClick={() => onOpenQuoteModal('Xidmət Sifarişi')}
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer"
             >
               Layihəniz üçün təklif alın
-            </a>
+            </button>
           </div>
         </section>
       </div>

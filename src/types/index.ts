@@ -40,12 +40,6 @@ export interface FAQItem {
   answer: string;
 }
 
-export interface ServiceProcessStep {
-  step: string;
-  title: string;
-  desc: string;
-}
-
 export interface CategoryInfo {
   id: string;
   name: string;
@@ -58,11 +52,6 @@ export interface CategoryInfo {
   metaDescription: string;
   faqs: FAQItem[];
   canonicalSlug: string;
-  process?: ServiceProcessStep[];
-  suitableEvents?: string[];
-  serviceDeliverables?: string[];
-  directAnswers?: FAQItem[];
-  relatedVenueSlugs?: string[];
 }
 
 export interface InquiryRequest {

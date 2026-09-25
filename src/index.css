@@ -5,8 +5,6 @@
     --font-serif: 'Cormorant Garamond', Georgia, Cambria, serif;
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-display: 'Cinzel', serif;
-    --font-script: 'Pinyon Script', cursive;
-    --font-alex: 'Alex Brush', cursive;
   }
 
   body {
@@ -19,19 +17,6 @@
   h1, h2, h3, h4, .font-serif {
     font-family: var(--font-serif);
     font-weight: 300;
-    text-wrap: balance;
-  }
-
-  .font-script {
-    font-family: var(--font-script);
-  }
-
-  .font-alex {
-    font-family: var(--font-alex);
-  }
-
-  .font-cinzel {
-    font-family: var(--font-display);
   }
 }
 
@@ -64,23 +49,3 @@
 .border-luxury-gold {
   border-color: rgba(197, 160, 89, 0.25);
 }
-
-/* Luxury Editorial Accents */
-.gold-gradient-text {
-  background: linear-gradient(135deg, #FFF9ED 0%, #F5E6CA 40%, #C5A059 85%, #E5C378 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gold-gradient-subtle {
-  background: linear-gradient(180deg, rgba(197, 160, 89, 0.12) 0%, rgba(197, 160, 89, 0.02) 100%);
-}
-
-.gold-hairline {
-  border-color: rgba(197, 160, 89, 0.18);
-}
-
-.gold-hairline-hover:hover {
-  border-color: rgba(197, 160, 89, 0.55);
-}
-

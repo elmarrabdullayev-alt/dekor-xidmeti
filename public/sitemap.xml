@@ -1,188 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://dreamartweddings.com/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/dekorlar</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/dekorlar</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/portfolio</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/xidmetler</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/haqqimizda</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/elaqe</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/restoranlar</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/restoranlar</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/toy-dekoru</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/toy-dekoru</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/nisan-dekoru</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/nisan-dekoru</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/xina-dekoru</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/xina-dekoru</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/ad-gunu-dekoru</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/ad-gunu-dekoru</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/korporativ-dekor</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/korporativ-dekor</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/zal-dekoru</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/zal-dekoru</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/xonca-xidmeti</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/xonca-xidmeti</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/restoranlar/meridian</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/portfolio</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/restoranlar/by-meridian</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/xidmetler</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dreamart.az/haqqimizda</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dreamart.az/elaqe</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Curated High-Value Local SEO pages -->
+  <url>
+    <loc>https://dreamart.az/toy-dekoru/baki</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/restoranlar/bagcali-saray</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/toy-dekoru/qebele</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/restoranlar/boyuk-saray</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/nisan-dekoru/baki</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/toy-dekoru/baki</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/xina-dekoru/baki</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Canonical Published Real-Project Venues -->
+  <url>
+    <loc>https://dreamart.az/restoranlar/meridian</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/toy-dekoru/qebele</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/restoranlar/by-meridian</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/nisan-dekoru/baki</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/restoranlar/bagcali-saray</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dreamartweddings.com/xina-dekoru/baki</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/ag-qizilgul-ve-zerif-samli-toy-altari-baki</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/pudra-cehrayi-qizili-pastel-nisan-masasi-sumqayit</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/kraliyyet-mexmeri-sam-kompozisiyali-xina-dekoru-qebele</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/krem-qizili-isigli-estetik-ad-gunu-fotozonasi-baki</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/qala-sam-yemeyi-korporativ-tedbir-tertibati-baki</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/panoramik-sadliq-zali-tavan-isig-instalyasiyasi-baki</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/aciq-hava-dag-menzereli-toy-altari-qebele</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/klassik-gence-intim-nisan-ve-xonca-tertibati-gence</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dreamartweddings.com/dekorlar/ekskluziv-bullur-ve-qizili-xonca-kompozisiyasi-baki</loc>
-    <lastmod>2026-09-25</lastmod>
+    <loc>https://dreamart.az/restoranlar/boyuk-saray</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -44,8 +44,8 @@ export const HomePage: React.FC<HomePageProps> = ({ decors, navigate, onOpenQuot
   return (
     <>
       <SeoHead
-        title="DreamArt Weddings | Zövqlü Toy və Tədbir Dekoru Bakı"
-        description="Bakı və Azərbaycan üzrə zövqlü toy, nişan, xına, ad günü, zal və xonça dekor xidməti. Eksklüziv dizayn, təbii güllər və peşəkar quraşdırma."
+        title="DreamArt Events | Zövqlü və Premium Dekor Həlləri Bakı"
+        description="Toy, nişan, xına, ad günü, zal dekor və xonça xidmətləri. Bakı və Azərbaycanın bütün regionlarında zövqlü və peşəkar quraşdırma."
         canonicalPath="/"
         jsonLd={jsonLd}
       />
@@ -84,37 +84,29 @@ export const HomePage: React.FC<HomePageProps> = ({ decors, navigate, onOpenQuot
         <ServicesSection />
 
         {/* 6. Geo / Direct-Answer FAQ Section in Dark Luxury Styling */}
-        <section className="py-20 sm:py-28 bg-[#0E0E0C] border-b border-[#C5A059]/15 relative overflow-hidden">
-          <div className="absolute top-1/2 right-10 w-80 h-80 bg-[#C5A059]/3 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-            <div className="text-center mb-14">
-              <div className="flex items-center justify-center gap-3 mb-2.5">
-                <span className="w-8 h-px bg-gradient-to-r from-transparent to-[#C5A059]" />
-                <span className="font-script text-2xl sm:text-3xl text-[#E5C378] tracking-wide select-none">
-                  Məlumat & Cavablar
-                </span>
-                <span className="w-8 h-px bg-gradient-to-l from-transparent to-[#C5A059]" />
-              </div>
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-normal">
-                Tez-tez Verilən Suallar
+        <section className="py-16 sm:py-24 bg-[#0E0E0E] border-b border-white/10">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12">
+              <span className="text-[10px] uppercase tracking-[0.35em] text-[#C5A059] block mb-2 font-medium">
+                MƏLUMAT & CAVABLAR
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl text-white font-normal">
+                Tez-tez verilən suallar
               </h2>
-              <p className="text-xs sm:text-sm text-white/65 font-light mt-2 max-w-md mx-auto">
-                Dekor seçimi, büdcə, sifariş müddətləri və regionlara çatdırılma haqqında əsas məqamlar.
-              </p>
+              <div className="w-12 h-px bg-[#C5A059]/40 mx-auto mt-4" />
             </div>
 
             <div className="space-y-4">
               {homeFaqs.map((faq, index) => (
                 <div
                   key={index}
-                  className="bg-[#12110E] border border-[#C5A059]/20 hover:border-[#C5A059]/60 p-6 sm:p-7 rounded-sm transition-all duration-300 shadow-sm hover:shadow-[0_4px_20px_rgba(197,160,89,0.12)] group"
+                  className="bg-[#141414] border border-white/10 hover:border-[#C5A059]/50 p-6 rounded-sm transition-colors"
                 >
-                  <h3 className="font-serif text-lg sm:text-xl text-[#FAF8F5] group-hover:text-[#F5E6CA] font-normal mb-2.5 flex items-start gap-3.5 transition-colors">
-                    <span className="text-[#C5A059] font-mono text-xs mt-1 shrink-0 font-medium">0{index + 1}.</span>
+                  <h3 className="font-serif text-base sm:text-lg text-white font-normal mb-2 flex items-start gap-3">
+                    <span className="text-[#C5A059] font-mono text-xs mt-1">0{index + 1}.</span>
                     <span>{faq.question}</span>
                   </h3>
-                  <p className="text-xs sm:text-sm text-white/70 leading-relaxed pl-8 font-light">
+                  <p className="text-xs sm:text-sm text-white/70 leading-relaxed pl-7 font-light">
                     {faq.answer}
                   </p>
                 </div>

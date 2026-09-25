@@ -1,9 +1,6 @@
 import React from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { Sparkles, Heart, Award } from 'lucide-react';
-import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
-import { getBreadcrumbSchema } from '../lib/structuredData';
-import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface AboutPageProps {
   navigate: (path: string) => void;
@@ -11,20 +8,12 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal }) => {
-  const jsonLd = [
-    getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
-      { name: 'Haqqımızda', url: `${PRIMARY_DOMAIN}/haqqimizda` }
-    ])
-  ];
-
   return (
     <>
       <SeoHead
-        title="Haqqımızda | DreamArt Weddings"
-        description="DreamArt Weddings haqqında məlumat. Azərbaycan üzrə zövqlü və premium toy, nişan, xına, xonça və tədbir dekorasiyası fəlsəfəmiz."
+        title="Haqqımızda | DreamArt Events"
+        description="DreamArt Events haqqında məlumat. Azərbaycan üzrə zövqlü və premium toy, nişan, xına, xonça və tədbir dekorasiyası fəlsəfəmiz."
         canonicalPath="/haqqimizda"
-        jsonLd={jsonLd}
       />
 
       <div className="bg-[#0B0B0B] text-white py-16 sm:py-24 min-h-screen border-b border-white/10">
@@ -79,14 +68,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal
           </div>
 
           <div className="mt-16 text-center">
-            <a
-              href={getWhatsAppQuoteUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer inline-block"
+            <button
+              onClick={onOpenQuoteModal}
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors cursor-pointer"
             >
               Bizimlə əlaqə saxlayın
-            </a>
+            </button>
           </div>
         </div>
       </div>

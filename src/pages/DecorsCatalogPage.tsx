@@ -3,9 +3,6 @@ import { CATEGORIES } from '../data/categories';
 import { DecorCategorySlug, DecorItem } from '../types';
 import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
-import { getWhatsAppQuoteUrl } from '../lib/whatsapp';
-import { getBreadcrumbSchema } from '../lib/structuredData';
-import { PRIMARY_DOMAIN } from '../data/seoRoutes';
 
 interface DecorsCatalogPageProps {
   decors: DecorItem[];
@@ -27,20 +24,12 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
     return matchCat && matchCity;
   });
 
-  const jsonLd = [
-    getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
-      { name: 'Dekorlar', url: `${PRIMARY_DOMAIN}/dekorlar` }
-    ])
-  ];
-
   return (
     <>
       <SeoHead
-        title="Dekor Layihələri Kataloqu | DreamArt Weddings"
-        description="DreamArt Weddings tərəfindən icra edilmiş toy, nişan, xına, zal və tədbir dekor layihələri kataloqu. Real fotoşəkillər və detallı kompozisiyalar."
+        title="Bütün Dekorlar və Xidmətlər | DreamArt Events"
+        description="Toy, nişan, xına, ad günü, zal dekorasiyası və xonça xidməti layihələri kataloqu. Bakı və regionlar üçün premium dekorasiya."
         canonicalPath="/dekorlar"
-        jsonLd={jsonLd}
       />
 
       <div className="bg-[#0B0B0B] text-white py-14 sm:py-20 min-h-screen border-b border-white/10">
@@ -51,7 +40,7 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
               KOLLEKSİYA VƏ LAYİHƏLƏR
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-normal mb-3">
-              Bütün Dekor Layihələri
+              Dekorlar Kataloqu
             </h1>
             <p className="text-xs sm:text-sm text-white/70 font-light max-w-md mx-auto">
               Tədbirinizə uyğun ən zövqlü və unikal dekor konseptlərini kəşf edin.
@@ -119,14 +108,12 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
             <p className="text-xs sm:text-sm text-white/70 mb-6 max-w-lg mx-auto font-light leading-relaxed">
               Biz hər bir müştəri üçün unikal, təkrarolunmaz və fərdi eskiz əsasında dekorasiya hazırlayırıq.
             </p>
-            <a
-              href={getWhatsAppQuoteUrl({ customMessage: 'Salam, DreamArt Weddings fərdi dekor konsepti ilə bağlı qiymət təklifi almaq istəyirəm.' })}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-all duration-300 cursor-pointer inline-block"
+            <button
+              onClick={() => onOpenQuoteModal('Fərdi Dekor Sorğusu')}
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-all duration-300 cursor-pointer"
             >
               Fərdi konsept sifariş et
-            </a>
+            </button>
           </div>
         </div>
       </div>

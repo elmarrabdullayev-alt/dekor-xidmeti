@@ -55,7 +55,7 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
     ogImg.setAttribute('content', ogImage);
 
     // Canonical link
-    const BASE_CANONICAL_DOMAIN = 'https://dreamartweddings.com';
+    const BASE_CANONICAL_DOMAIN = 'https://dreamart.az';
     const fullCanonical = canonicalPath.startsWith('http')
       ? canonicalPath
       : `${BASE_CANONICAL_DOMAIN}${canonicalPath.startsWith('/') ? '' : '/'}${canonicalPath}`;

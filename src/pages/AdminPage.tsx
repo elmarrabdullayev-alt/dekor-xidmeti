@@ -2,21 +2,110 @@ import React, { useState, useEffect } from 'react';
 import {
   Lock, LogOut, Upload, RefreshCw, Trash2, Star, Check, ArrowUp, ArrowDown,
   Edit3, ExternalLink, Image as ImageIcon, Sparkles, AlertCircle, Eye,
-  ChevronRight
+  Building2, Flower2, Layers, Grid, MapPin, Gift, ChevronRight
 } from 'lucide-react';
 import { ImageSection, ManagedImage } from '../types';
 import { imageService } from '../lib/imageService';
-import { SECTION_CONFIG, TargetItem } from '../data/adminImageSections';
+import { CATEGORIES } from '../data/categories';
+import { INITIAL_DECORS } from '../data/initialDecors';
+import { INITIAL_VENUES } from '../data/initialVenues';
 import { ImageUploadModal } from '../components/admin/ImageUploadModal';
 import { ImageReplaceModal } from '../components/admin/ImageReplaceModal';
 import { ImageMetaModal } from '../components/admin/ImageMetaModal';
-import { ImageDeleteModal } from '../components/admin/ImageDeleteModal';
 import { SeoHead } from '../components/layout/SeoHead';
 
 interface AdminPageProps {
   navigate: (path: string) => void;
   currentPath?: string;
 }
+
+interface TargetItem {
+  id: string;
+  name: string;
+  subtitle?: string;
+}
+
+const SECTION_CONFIG: Array<{
+  id: ImageSection;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
+  getTargets: () => TargetItem[];
+}> = [
+  {
+    id: 'home_hero',
+    label: 'Ana Səhifə Hero',
+    icon: Sparkles,
+    description: 'Ana səhifənin ən yuxarı 16:9 böyük banner slaydları (mobil və masaüstü fokal nöqtə dəstəyi ilə).',
+    getTargets: () => [
+      { id: 'hero-slide-1', name: 'Slayd 1: Zövqlü Dekor Həlləri', subtitle: 'Əsas açılış slayd' },
+      { id: 'hero-slide-2', name: 'Slayd 2: Müasir Zəriflik', subtitle: 'İkinci zəriflik slayd' },
+      { id: 'hero-slide-3', name: 'Slayd 3: Böyük Zallar və İnstalyasiyalar', subtitle: 'Üçüncü genişmiqyaslı slayd' }
+    ]
+  },
+  {
+    id: 'category_cover',
+    label: 'Xidmət Kateqoriyaları',
+    icon: Layers,
+    description: 'Xidmətlər kataloqu və SEO səhifələrinin əsas təqdimat örtük şəkilləri.',
+    getTargets: () => CATEGORIES.map(c => ({
+      id: c.slug,
+      name: c.name,
+      subtitle: c.shortDescription
+    }))
+  },
+  {
+    id: 'decor_project',
+    label: 'Dekor Layihələri',
+    icon: Flower2,
+    description: 'Dekor layihələrinin kart örtük şəkli və ətraflı layihə foto qalereyası.',
+    getTargets: () => INITIAL_DECORS.map(d => ({
+      id: d.id,
+      name: d.name,
+      subtitle: `${d.city} • ${d.category}`
+    }))
+  },
+  {
+    id: 'venue_project',
+    label: 'Restoran / Məkanlar',
+    icon: Building2,
+    description: 'Məkanların örtük şəkli və DreamArt Events real layihə foto sübutları qalereyası.',
+    getTargets: () => INITIAL_VENUES.map(v => ({
+      id: v.slug,
+      name: v.name,
+      subtitle: `${v.city}${v.district ? ', ' + v.district : ''}`
+    }))
+  },
+  {
+    id: 'xonca_service',
+    label: 'Xonça Xidməti',
+    icon: Gift,
+    description: 'Xonça xidməti bölməsinin vitrin və təqdimat fotoşəkilləri.',
+    getTargets: () => [
+      { id: 'xonca-main', name: 'Əsas Xonça Vitrini', subtitle: 'Xonça bölməsi örtük şəkli' },
+      { id: 'xonca-nisan', name: 'Nişan Xonçaları', subtitle: 'Nişan üçün eksklüziv dəst' },
+      { id: 'xonca-xina', name: 'Xına Xonçaları', subtitle: 'Xına və şirniyyat kompozisiyası' }
+    ]
+  },
+  {
+    id: 'portfolio_lookbook',
+    label: 'Portfolio Vitrini',
+    icon: Grid,
+    description: 'Portfolio və Lookbook səhifəsində nümayiş olunan işlərin şəkilləri.',
+    getTargets: () => [
+      { id: 'portfolio-showcase', name: 'Əsas Lookbook Vitrini', subtitle: 'Bütün seçilmiş işlər' }
+    ]
+  },
+  {
+    id: 'regional_service',
+    label: 'Region Xidməti',
+    icon: MapPin,
+    description: 'Bölgələr və rayonlar tədbir loqistikası bölməsinin vizualı.',
+    getTargets: () => [
+      { id: 'regional-main', name: 'Azərbaycan Regionları Xidməti', subtitle: 'Bütün rayonlar üzrə dekor tərtibatı' }
+    ]
+  }
+];
 
 export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) => {
   // Auth state
@@ -53,7 +142,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [replacingImage, setReplacingImage] = useState<ManagedImage | null>(null);
   const [editingMetaImage, setEditingMetaImage] = useState<ManagedImage | null>(null);
-  const [deletingImage, setDeletingImage] = useState<ManagedImage | null>(null);
 
   // Verify server cookie session on mount
   useEffect(() => {
@@ -126,8 +214,17 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     }
   };
 
-  const handleDelete = (img: ManagedImage) => {
-    setDeletingImage(img);
+  const handleDelete = async (imgId: string) => {
+    if (!window.confirm('Bu şəkli silmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarılmır.')) {
+      return;
+    }
+
+    try {
+      await imageService.deleteImage(imgId);
+      showNotice('Şəkil uğurla silindi');
+    } catch (err: any) {
+      alert(err.message || 'Şəkil silinərkən xəta baş verdi');
+    }
   };
 
   // Render Login View if not authenticated
@@ -511,7 +608,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                             <button
                               id={`delete-img-btn-${img.id}`}
                               type="button"
-                              onClick={() => handleDelete(img)}
+                              onClick={() => handleDelete(img.id)}
                               title="Şəkli sil"
                               className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 hover:text-red-200 transition"
                             >
@@ -563,19 +660,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
           image={editingMetaImage}
           onSuccess={() => {
             showNotice('Şəkil təsviri və fayl adı yeniləndi!');
-          }}
-        />
-      )}
-
-      {/* Delete Modal */}
-      {deletingImage && (
-        <ImageDeleteModal
-          isOpen={!!deletingImage}
-          onClose={() => setDeletingImage(null)}
-          image={deletingImage}
-          sectionLabel={currentSectionConfig.label}
-          onSuccess={() => {
-            showNotice('Şəkil uğurla silindi');
           }}
         />
       )}
