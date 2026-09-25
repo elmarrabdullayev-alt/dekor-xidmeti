@@ -84,6 +84,7 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
   const isCuratedLocal = [
     'toy-dekoru/baki',
     'toy-dekoru/qebele',
+    'toy-dekoru/berde',
     'nisan-dekoru/baki',
     'xina-dekoru/baki'
   ].includes(`${category.slug}/${location.slug}`);

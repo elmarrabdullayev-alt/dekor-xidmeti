@@ -287,6 +287,74 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
     };
   }
 
+  // 10c. Bərdə Dedicated Regional Page (/toy-dekoru/berde)
+  if (cleanPath === '/toy-dekoru/berde') {
+    const berdeFaqs = [
+      {
+        question: 'DreamArt Weddings Bərdədə toy dekoru xidməti göstərir?',
+        answer: 'Bəli. DreamArt Weddings Bərdə şəhəri və ətraf ərazilərdəki şadlıq sarayları, banket zalları və fərdi villalar üçün tam həcmli premium toy dekorasiyası layihələri həyata keçirir. Bütün dekorativ kompozisiyalar Bakıdakı emalatxanamızda xüsusi hazırlanır və Bərdədə peşəkar heyətimiz tərəfindən quraşdırılır.'
+      },
+      {
+        question: 'Bakıdan Bərdəyə dekor aparılır?',
+        answer: 'Bəli. Orta və genişmiqyaslı toy dekorasiyası sifarişlərində xüsusi təchiz olunmuş yük nəqliyyatı və temperatur nəzarətli qablaşdırma vasitəsilə canlı çiçəklər, dekorativ konstruksiyalar və mebellər Bakıdan birbaşa Bərdədəki tədbir məkanına çatdırılır.'
+      },
+      {
+        question: 'Bərdədə böyük şadlıq sarayı üçün tam dekor mümkündür?',
+        answer: 'Bəli. Geniş qonaq tutumuna malik zallar üçün monumental gəlin-bəy səhnəsi, bütün qonaq masalarının büllur şamdanlar və güllərlə bəzədilməsi, tavan asma instalyasiyaları və giriş fotozonası daxil olmaqla tam zal konsepti icra edilir.'
+      },
+      {
+        question: 'Toy dekorunun qiyməti necə müəyyən olunur?',
+        answer: 'Qiymət zalın ölçüsünə, səhnə və masa sayına, çiçək kompozisiyalarının sıxlığına (təbii və ya premium süni floristika), işıqlandırma detallarına və Bakı–Bərdə logistika həcminə əsasən şəffaf fərdi smeta ilə hesablanır.'
+      },
+      {
+        question: 'Bərdədə fərdi konsept üzrə dekor hazırlamaq mümkündür?',
+        answer: 'Bəli. Standart şablonlardan fərqli olaraq, gəlin və bəyin zövqünə, geyim rənginə və zalın memarlıq quruluşuna uyğun fərdi 3D eskiz və floristika dizaynı hazırlanır.'
+      }
+    ];
+
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Bərdədə Premium Toy Dekoru',
+        'description': 'DreamArt Weddings Bərdədə premium toy dekoru, səhnə, zal, giriş, çiçək kompozisiyaları və fərdi dekor konseptləri təqdim edir. Qiymət təklifi üçün WhatsApp-la əlaqə saxlayın.',
+        'provider': {
+          '@type': 'LocalBusiness',
+          'name': 'DreamArt Weddings',
+          'telephone': '+994502311728',
+          'url': 'https://dreamartweddings.com',
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Bərdə',
+            'addressCountry': 'AZ'
+          }
+        },
+        'areaServed': {
+          '@type': 'City',
+          'name': 'Bərdə'
+        },
+        'serviceType': 'Toy Dekoru',
+        'url': `${PRIMARY_DOMAIN}/toy-dekoru/berde`
+      },
+      getBreadcrumbSchema([
+        { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
+        { name: 'Toy dekoru', url: `${PRIMARY_DOMAIN}/toy-dekoru` },
+        { name: 'Bərdədə Toy Dekoru', url: `${PRIMARY_DOMAIN}/toy-dekoru/berde` }
+      ]),
+      getFaqPageSchema(berdeFaqs)
+    ];
+
+    return {
+      title: 'Bərdədə Toy Dekoru | Premium Toy Dekorasiyası | DreamArt Weddings',
+      description: 'DreamArt Weddings Bərdədə premium toy dekoru, səhnə, zal, giriş, çiçək kompozisiyaları və fərdi dekor konseptləri təqdim edir. Qiymət təklifi üçün WhatsApp-la əlaqə saxlayın.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/toy-dekoru/berde`,
+      robots: 'index, follow',
+      ogImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      ogType: 'website',
+      jsonLd
+    };
+  }
+
   // 11. Category or Local SEO Routes
   const parts = cleanPath.split('/').filter(Boolean);
   if (parts.length === 1) {
@@ -342,6 +410,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
       const isCuratedLocal = [
         'toy-dekoru/baki',
         'toy-dekoru/qebele',
+        'toy-dekoru/berde',
         'nisan-dekoru/baki',
         'xina-dekoru/baki'
       ].includes(`${category.slug}/${location.slug}`);

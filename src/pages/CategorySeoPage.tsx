@@ -321,7 +321,7 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
                     onClick={() => navigate(`/${category.slug}/${locSlug}`)}
                     className="px-3.5 py-1.5 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white text-xs tracking-wide uppercase font-medium rounded-sm transition-colors cursor-pointer"
                   >
-                    {locSlug === 'baki' ? 'Bakı' : locSlug === 'qebele' ? 'Qəbələ' : locSlug.toUpperCase()}
+                    {locSlug === 'baki' ? 'Bakı' : locSlug === 'qebele' ? 'Qəbələ' : locSlug === 'berde' ? 'Bərdə' : locSlug.toUpperCase()}
                   </button>
                 ))}
               </div>

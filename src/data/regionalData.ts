@@ -54,6 +54,14 @@ export const REGIONAL_LOCATIONS: RegionalLocationInfo[] = [
     logisticsNotice: 'Şimal bölgəsi və dağ kurortları üçün həm qış, həm yay mövsümlərində dayanıqlı premium dekorasiya.',
     recommendedDecorTypes: ['Dağ kurortu toyu', 'Bağ evi nişan dekoru', 'Qala şam yeməyi'],
     sampleVenues: ['Quba Palace Hotel', 'Shahdag Mountain Resort', 'Macara Lake Park']
+  },
+  {
+    city: 'Bərdə',
+    slug: 'berde',
+    isMajorHub: false,
+    distanceFromBaku: '315 km',
+    logisticsNotice: 'Bərdə və Qarabağ bölgəsi üzrə böyük şadlıq sarayları və fərdi villalar üçün orta və premium toy dekorasiyası xidməti təklif olunur. Nəqliyyat, canlı çiçək soyuducu qutuları və peşəkar montaj heyəti Bakıdan təmin edilir.',
+    recommendedDecorTypes: ['Böyük şadlıq sarayı zal dekoru', 'Premium gəlin-bəy səhnəsi', 'Giriş fotozonası və büllur şamdanlar', 'Lüks xına gecəsi taxtı']
   }
 ];
 

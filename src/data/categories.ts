@@ -52,7 +52,7 @@ export const CATEGORIES: CategoryInfo[] = [
       answer: 'DreamArt Weddings Bakı şəhəri, Abşeron və Azərbaycanın bütün regionlarında (Qəbələ, Gəncə, Şəki, Quba və s.) peşəkar toy dekorasiyası təqdim edir. Fərdi eskiz və rəsmi smeta üçün birbaşa 050 231 17 28 nömrəsi və ya WhatsApp vasitəsilə əlaqə saxlaya bilərsiniz.'
     },
     relatedVenueSlugs: ['meridian', 'by-meridian', 'bagcali-saray', 'boyuk-saray'],
-    relatedCuratedLocalSlugs: ['baki', 'qebele'],
+    relatedCuratedLocalSlugs: ['baki', 'qebele', 'berde'],
     whatsappPrefill: 'Salam, toy dekoru xidməti üçün qiymət təklifi almaq istəyirəm.',
     faqs: [
       {

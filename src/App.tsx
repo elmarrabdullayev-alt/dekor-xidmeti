@@ -15,6 +15,7 @@ import { AdminPage } from './pages/AdminPage';
 import { VenuesCatalogPage } from './pages/VenuesCatalogPage';
 import { VenueDetailPage } from './pages/VenueDetailPage';
 import { IndianWeddingPage } from './pages/IndianWeddingPage';
+import { BerdeToyDekoruPage } from './pages/BerdeToyDekoruPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { store } from './lib/store';
 import { DecorItem, DecorCategorySlug } from './types';
@@ -189,6 +190,16 @@ export default function App() {
     if (path === '/indian-wedding-azerbaijan') {
       return (
         <IndianWeddingPage
+          navigate={navigate}
+          onOpenQuoteModal={handleOpenQuoteModal}
+        />
+      );
+    }
+
+    // 8c. Bərdə Dedicated Regional Page (/toy-dekoru/berde)
+    if (path === '/toy-dekoru/berde') {
+      return (
+        <BerdeToyDekoruPage
           navigate={navigate}
           onOpenQuoteModal={handleOpenQuoteModal}
         />
