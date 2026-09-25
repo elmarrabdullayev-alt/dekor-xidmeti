@@ -3,10 +3,11 @@ import { ArrowLeft, ArrowRight, MapPin, Check, MessageCircle, Sparkles, Building
 import { DecorItem } from '../types';
 import { RegionBadge } from '../components/decor/RegionBadge';
 import { SeoHead } from '../components/layout/SeoHead';
-import { getProjectDetailSchema, getBreadcrumbSchema } from '../lib/structuredData';
+import { getProjectDetailSchema, getProjectImageSchema, getBreadcrumbSchema } from '../lib/structuredData';
 import { store } from '../lib/store';
 import { INITIAL_VENUES } from '../data/initialVenues';
 import { isVenueIndexable } from '../lib/venueHelper';
+import { isProjectIndexable } from '../lib/seoHelper';
 
 interface ProjectDetailPageProps {
   slug: string;
@@ -42,17 +43,25 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const allImages = [decor.mainImage, ...(decor.galleryImages || [])];
 
   // Resolve linked verified venue if any
-  const linkedVenue = INITIAL_VENUES.find(v => v.relatedDecorIds?.includes(decor.id) && isVenueIndexable(v));
+  const linkedVenue = INITIAL_VENUES.find(v => (
+    v.slug === decor.venueSlug ||
+    v.relatedDecorIds?.includes(decor.id)
+  ) && isVenueIndexable(v));
+
+  const isIndexable = isProjectIndexable(decor);
 
   const handleWhatsApp = () => {
-    const venueMention = linkedVenue ? ` (${linkedVenue.name})` : '';
-    const text = `Salam, DreamArt Weddings! "${decor.name}"${venueMention} layihəsi üzrə qiymət təklifi və məlumat almaq istəyirəm.`;
+    let text = `Salam, "${decor.name}" layihəsinə bənzər ${decor.categoryName.toLowerCase()} üçün qiymət təklifi almaq istəyirəm.`;
+    if (linkedVenue) {
+      text = `Salam, ${linkedVenue.name} məkanındakı "${decor.name}" dekor layihəsinə bənzər dizayn üçün qiymət təklifi almaq istəyirəm.`;
+    }
     const url = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const jsonLd = [
     getProjectDetailSchema(decor),
+    getProjectImageSchema(decor),
     getBreadcrumbSchema([
       { name: 'Ana səhifə', url: 'https://dreamartweddings.com' },
       { name: decor.categoryName, url: `https://dreamartweddings.com/${decor.category}` },
@@ -68,6 +77,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         canonicalPath={`/dekorlar/${decor.slug}`}
         ogImage={decor.mainImage}
         jsonLd={jsonLd}
+        noIndex={!isIndexable}
       />
 
       <div className="bg-[#0B0B0B] text-white py-10 sm:py-16 min-h-screen border-b border-white/10">
@@ -96,7 +106,10 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
               <div className="relative aspect-4/3 sm:aspect-16/11 bg-[#161616] border border-white/10 overflow-hidden rounded-sm shadow-xl">
                 <img
                   src={currentMainImage}
-                  alt={decor.imageAltText || decor.name}
+                  alt={decor.imageAltText || `${decor.name} - ${decor.city}`}
+                  width={960}
+                  height={660}
+                  fetchPriority="high"
                   className="w-full h-full object-cover object-center transition-all duration-300"
                 />
                 <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/80 backdrop-blur-sm text-white text-[10px] tracking-wider uppercase px-3 py-1 border border-white/10">
@@ -120,7 +133,10 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                     >
                       <img
                         src={img}
-                        alt={`${decor.name} - ${idx + 1}`}
+                        alt={`${decor.name} - foto ${idx + 1}`}
+                        width={180}
+                        height={180}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                       />
                     </button>
@@ -154,10 +170,27 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                   <RegionBadge suitability={decor.regionalSuitability} isDetailed={true} />
                 </div>
 
+                {/* Key Visible Decor Elements */}
+                {decor.decorElements && decor.decorElements.length > 0 && (
+                  <div className="mb-6 pt-4 border-t border-white/10">
+                    <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium mb-3">
+                      Görünən Əsas Dekor Elementləri:
+                    </h3>
+                    <div className="grid grid-cols-1 gap-2">
+                      {decor.decorElements.map((elem, i) => (
+                        <div key={i} className="flex items-start gap-2.5 text-xs text-white/80 font-light">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059] shrink-0 mt-1.5" />
+                          <span>{elem}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Included Services List */}
                 <div className="mb-8 pt-4 border-t border-white/10">
                   <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium mb-3">
-                    Daxildir:
+                    Xidmət Paketinə Daxildir:
                   </h3>
                   <ul className="space-y-2 text-xs sm:text-sm text-white/80 font-light">
                     {decor.includedServices.map((item, i) => (
@@ -180,17 +213,21 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
                 {/* Linked Venue Connection */}
                 {linkedVenue && (
-                  <div className="mb-6 p-4 bg-[#141414] border border-[#C5A059]/30 rounded-sm flex items-center justify-between gap-3">
+                  <div className="mb-6 p-4 bg-[#141414] border border-[#C5A059]/40 rounded-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
                     <div className="flex items-center gap-3">
-                      <Building2 className="w-4 h-4 text-[#C5A059] shrink-0" />
+                      <Building2 className="w-5 h-5 text-[#C5A059] shrink-0" />
                       <div>
-                        <span className="text-[10px] uppercase tracking-wider text-white/50 block font-mono">İcra Edilmiş Məkan</span>
-                        <span className="font-serif text-sm text-white font-medium">{linkedVenue.name} ({linkedVenue.city})</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] uppercase tracking-wider text-[#C5A059] font-mono font-medium">DreamArt Weddings Layihəsi</span>
+                          <span className="text-[10px] text-white/40">•</span>
+                          <span className="text-[10px] text-white/60">Bu məkanda həyata keçirilmiş dekor işi</span>
+                        </div>
+                        <span className="font-serif text-base text-white font-medium block mt-0.5">{linkedVenue.name} ({linkedVenue.city})</span>
                       </div>
                     </div>
                     <button
                       onClick={() => navigate(`/restoranlar/${linkedVenue.slug}`)}
-                      className="text-xs text-[#C5A059] hover:underline inline-flex items-center gap-1 cursor-pointer font-medium shrink-0"
+                      className="text-xs text-[#E5C378] hover:underline inline-flex items-center gap-1 cursor-pointer font-medium shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5"
                     >
                       <span>Məkan detalları</span>
                       <ArrowRight className="w-3 h-3" />
@@ -211,10 +248,10 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
                 <button
                   onClick={handleWhatsApp}
-                  className="w-full flex items-center justify-center gap-2 border border-white/20 hover:border-[#25D366] text-white py-3 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 border border-white/20 hover:border-[#25D366] text-white py-3 text-xs font-medium tracking-wide uppercase transition-all duration-300 rounded-sm cursor-pointer shadow-lg"
                 >
                   <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                  <span>WhatsApp ilə soruş</span>
+                  <span>WhatsApp ilə sorğu göndərin</span>
                 </button>
 
                 {/* Contextual Entity Links */}
@@ -236,8 +273,37 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
               </div>
             </div>
           </div>
+
+          {/* GEO / AI Direct Answer Block */}
+          <div className="mt-14 bg-[#121212] border border-[#C5A059]/40 rounded-sm p-6 sm:p-8 shadow-xl">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium font-mono mb-4">
+              <Sparkles className="w-4 h-4" />
+              <span>LAYİHƏ HAQQINDA FAKTİKİ MƏLUMAT VƏ SUALLAR</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-1.5">
+                <h4 className="font-serif text-sm text-white font-medium">Bu dekor hansı məkanda hazırlanıb?</h4>
+                <p className="text-xs text-white/70 font-light leading-relaxed">
+                  Bu layihə DreamArt Weddings komandası tərəfindən {decor.city} şəhərində{linkedVenue ? ` (${linkedVenue.name} zalında)` : ''} tədbir üçün xüsusi dizayn edilmiş və quraşdırılmışdır.
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="font-serif text-sm text-white font-medium">Layihədə hansı dekor elementləri hazırlanıb?</h4>
+                <p className="text-xs text-white/70 font-light leading-relaxed">
+                  {decor.decorElements ? decor.decorElements.slice(0, 3).join(', ') : 'Arxa fon konstruksiyası, çiçək kompozisiyaları və məkana uyğun şam işıqlandırması'} tətbiq olunmuşdur.
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="font-serif text-sm text-white font-medium">Oxşar dekor sifariş etmək mümkündür?</h4>
+                <p className="text-xs text-white/70 font-light leading-relaxed">
+                  Bəli. DreamArt Weddings bu layihə əsasında məkanınızın ölçülərinə və zövqünüzə uyğun fərdi tərtibat hazırlayır. Əlaqə: 050 231 17 28.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
   );
 };
+

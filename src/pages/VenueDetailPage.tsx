@@ -259,6 +259,10 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
 
                         <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
                           <div>
+                            <div className="flex items-center gap-1.5 text-[10px] text-[#C5A059] font-mono mb-1.5">
+                              <Sparkles className="w-3 h-3 text-[#C5A059] shrink-0" />
+                              <span>DreamArt Weddings layihəsi • Bu məkanda həyata keçirilmiş dekor işi</span>
+                            </div>
                             <h3 className="font-serif text-base text-white group-hover:text-[#E5C378] transition-colors">
                               {decor.name}
                             </h3>
@@ -269,8 +273,8 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
 
                           <div className="pt-2 border-t border-white/5 flex items-center justify-between text-xs text-[#C5A059]">
                             <span className="text-[11px] text-white/40">{decor.style || 'Lüks konsept'}</span>
-                            <span className="inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                              Ətraflı bax <ArrowRight className="w-3 h-3" />
+                            <span className="inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform font-medium">
+                              <span>Layihəyə bax</span> <ArrowRight className="w-3 h-3" />
                             </span>
                           </div>
                         </div>

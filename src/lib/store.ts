@@ -4,10 +4,10 @@ import { INITIAL_VENUES } from '../data/initialVenues';
 import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData';
 import { imageService } from './imageService';
 
-const DECORS_STORAGE_KEY = 'dreamart_decors_v3';
+const DECORS_STORAGE_KEY = 'dreamart_decors_v4';
 const INQUIRIES_STORAGE_KEY = 'dreamart_inquiries_v2';
 const SETTINGS_STORAGE_KEY = 'dreamart_settings_v2';
-const VENUES_STORAGE_KEY = 'dreamart_venues_v3';
+const VENUES_STORAGE_KEY = 'dreamart_venues_v4';
 
 export const DEFAULT_SETTINGS: SiteSettings = {
   brandName: 'DreamArt Weddings',

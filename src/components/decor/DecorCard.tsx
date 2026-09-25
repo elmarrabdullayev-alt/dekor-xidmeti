@@ -23,6 +23,17 @@ export const DecorCard: React.FC<DecorCardProps> = ({ decor, onClick }) => {
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out brightness-90 contrast-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
+        
+        {/* Project Distinction Badge */}
+        {decor.isRealProject ? (
+          <span className="absolute top-2.5 left-2.5 bg-[#0B0B0B]/85 backdrop-blur-sm border border-[#C5A059]/40 text-[#E5C378] text-[9px] px-2 py-0.5 rounded-xs font-mono tracking-wider uppercase">
+            Real Layihə
+          </span>
+        ) : decor.indexStatus === 'noindex' ? (
+          <span className="absolute top-2.5 left-2.5 bg-black/85 backdrop-blur-sm border border-white/20 text-white/70 text-[9px] px-2 py-0.5 rounded-xs font-mono tracking-wider uppercase">
+            Dizayn Konsepti
+          </span>
+        ) : null}
       </div>
 
       {/* Content panel matching mockup */}

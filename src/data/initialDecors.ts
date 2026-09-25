@@ -35,6 +35,17 @@ export const INITIAL_DECORS: DecorItem[] = [
     imageAltText: 'DreamArt Weddings qızılı tağ və dəbdəbəli bəy-gəlin masası toy dekoru',
     status: 'published',
     isFeatured: true,
+    isRealProject: true,
+    indexStatus: 'index',
+    venueSlug: 'meridian',
+    venueName: 'Meridian',
+    decorElements: [
+      'Arxa fon dairəvi qızılı monumental tağ',
+      'Təbii ağ qızılgül və qortenziya kompozisiyaları',
+      'Pilləli italyan şüşə şamdanlar və təhlükəsiz şamlar',
+      'Gəlin və bəy masasının zərif çiçək bəzəyi',
+      'İsti arxitektur zal işıqlandırması'
+    ],
     createdAt: '2026-08-20T10:00:00Z'
   },
   {
@@ -68,6 +79,14 @@ export const INITIAL_DECORS: DecorItem[] = [
     imageAltText: 'DreamArt Weddings zərif bej parçalar və neon işıqlı nişan dekoru və fotozona',
     status: 'published',
     isFeatured: true,
+    isRealProject: true,
+    indexStatus: 'index',
+    decorElements: [
+      'Pudra çəhrayı və krem ipək toxumalar',
+      'Pastel pion və qızılgül tağı',
+      'İntim nişan və xonça masası',
+      'Güzgü aksesuarlar və şam işıqlandırması'
+    ],
     createdAt: '2026-08-22T14:30:00Z'
   },
   {
@@ -98,9 +117,11 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 2500,
     seoTitle: 'Qəbələdə Premium Xına Gecəsi Dekoru | DreamArt Weddings',
     metaDescription: 'Qəbələ və regionlar üçün dəbdəbəli qırmızı xına dekoru, gəlin taxtı və şam kompozisiyası.',
-    imageAltText: 'Qəbələdə qırmızı güllər, şamlar və taxt ilə bəzədilmiş dəbdəbəli xına dekoru',
+    imageAltText: 'Qəbələdə qırmızı güllər, şamlar və taxt ilə bəzədilmiş dəbdəbəli xına dekoru konsepti',
     status: 'published',
-    isFeatured: true,
+    isFeatured: false,
+    isRealProject: false,
+    indexStatus: 'noindex',
     createdAt: '2026-08-25T11:15:00Z'
   },
   {
@@ -130,9 +151,11 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 600,
     seoTitle: 'Ad Günü Fotozona Dekoru Bakı | DreamArt Weddings',
     metaDescription: 'Bakıda ad günləri üçün estetik şar fotozonası, neon işıqlar və zərif tort stendi tərtibatı.',
-    imageAltText: 'Bakıda krem və pudra tonlarında estetik ad günü fotozona dekoru',
+    imageAltText: 'Bakıda krem və pudra tonlarında estetik ad günü fotozona dekor konsepti',
     status: 'published',
-    isFeatured: true,
+    isFeatured: false,
+    isRealProject: false,
+    indexStatus: 'noindex',
     createdAt: '2026-08-27T16:40:00Z'
   },
   {
@@ -166,6 +189,16 @@ export const INITIAL_DECORS: DecorItem[] = [
     imageAltText: 'DreamArt Weddings büllur şamdanlar və zərif qab-qacaqla korporativ qala dekoru',
     status: 'published',
     isFeatured: true,
+    isRealProject: true,
+    indexStatus: 'index',
+    venueSlug: 'bagcali-saray',
+    venueName: 'Bağçalı Saray',
+    decorElements: [
+      'Geniş banket masası boyu uzanan təbii gül runneri',
+      'İtalyan büllur şamdanlar və incə şamlar',
+      'Brend qarşılama foto divarı',
+      'Banket zalı gecə işıq dizaynı'
+    ],
     createdAt: '2026-08-29T09:00:00Z'
   },
   {
@@ -199,6 +232,16 @@ export const INITIAL_DECORS: DecorItem[] = [
     imageAltText: 'DreamArt Weddings böyük şadlıq zalı tavan pərdələri və çilçıraq zal dekoru',
     status: 'published',
     isFeatured: true,
+    isRealProject: true,
+    indexStatus: 'index',
+    venueSlug: 'boyuk-saray',
+    venueName: 'Böyük Saray',
+    decorElements: [
+      'Zal tavanından asılan minlərlə işıq və gül saçağı',
+      'Mərkəzi rəqs meydançası asma instalyasiyası',
+      'Qonaq masaları üçün hündür şüşə vaza çiçəkləri',
+      'Giriş qarşılama tuneli və möhtəşəm podyum'
+    ],
     createdAt: '2026-08-30T13:20:00Z'
   },
   {
@@ -227,9 +270,11 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 2200,
     seoTitle: 'Qəbələdə Açıq Hava Toy Dekoru | DreamArt Weddings',
     metaDescription: 'Qəbələ dağ kurortları və villalar üçün açıq hava toy dekoru, nikah tağı və qonaq masaları.',
-    imageAltText: 'Qəbələdə dağ fonunda açıq hava toy altar tağı və çiçək bəzəkləri',
+    imageAltText: 'Qəbələdə dağ fonunda açıq hava toy altar tağı və çiçək bəzəkləri konsepti',
     status: 'published',
-    isFeatured: true,
+    isFeatured: false,
+    isRealProject: false,
+    indexStatus: 'noindex',
     createdAt: '2026-08-31T15:00:00Z'
   },
   {
@@ -261,7 +306,15 @@ export const INITIAL_DECORS: DecorItem[] = [
     metaDescription: 'Gəncə və qərb bölgəsi üçün zövqlü nişan dekoru, tağ və xonça stendləri xidməti.',
     imageAltText: 'DreamArt Weddings təbii budaqlardan hazırlanmış unikal ağac masa kompozisiyası',
     status: 'published',
-    isFeatured: false,
+    isFeatured: true,
+    isRealProject: true,
+    indexStatus: 'index',
+    decorElements: [
+      'Təbii ağac budaqlarından hazırlanmış unikal masa kompozisiyası',
+      'Zərif şamlar və büllur aksesuarlar',
+      'İntim nişan arxa fon pərdəsi',
+      'Pilləli xonça stendləri tərtibatı'
+    ],
     createdAt: '2026-09-01T12:00:00Z'
   },
   {
@@ -276,8 +329,8 @@ export const INITIAL_DECORS: DecorItem[] = [
     fullDescription: 'DreamArt Weddings tərəfindən təqdim edilən xüsusi büllur qapaqlı, qızılı metal çərçivəli və təbii gül kompozisiyaları ilə zənginləşdirilmiş xonça xidməti. Şirniyyat, nəsihət, kəllə qənd və hədiyyə xonçalarının fərdi zövqlə bəzədilməsi və təhlükəsiz çatdırılması.',
     mainImage: '/images/xonca-xidmeti-cover.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85',
-      'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-qala-gecesi-samdan-dekoru.webp',
+      '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp'
     ],
     includedServices: [
       '12-24 ədəd fərdi büllur və qızılı xonça qabları',
@@ -295,6 +348,13 @@ export const INITIAL_DECORS: DecorItem[] = [
     imageAltText: 'Bakıda toy və nişan üçün büllur və qızılı xonça dekorasiyası',
     status: 'published',
     isFeatured: true,
+    isRealProject: true,
+    indexStatus: 'index',
+    decorElements: [
+      '12-24 ədəd büllur qapaqlı və qızılı çərçivəli xonça dəstləri',
+      'Təbii çiçək və ipək lent toxumaları',
+      'Pilləli işıqlı xonça nümayiş stendləri'
+    ],
     createdAt: '2026-09-02T10:00:00Z'
   }
 ];

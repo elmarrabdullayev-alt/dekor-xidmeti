@@ -89,3 +89,27 @@ export function generateImageAltText(decorName: string, categoryName: string, ci
 export function generateSeoFileName(decorName: string, category: string, city: string = 'Bakı', extension: string = 'webp'): string {
   return generateSeoFilename(`${decorName}-${city}`, category, 1, extension);
 }
+
+/**
+ * Validates whether a project meets strict criteria to be indexed by search engines.
+ * Criteria:
+ * - Must be published
+ * - Must not be marked noindex
+ * - Must be a verified real project (not unverified inspiration/concept)
+ * - Must have genuine local verified media (no Unsplash stock placeholders)
+ */
+export function isProjectIndexable(decor: {
+  status?: string;
+  isPublished?: boolean;
+  indexStatus?: 'index' | 'noindex';
+  isRealProject?: boolean;
+  mainImage?: string;
+}): boolean {
+  if (decor.status === 'draft') return false;
+  if (decor.isPublished === false) return false;
+  if (decor.indexStatus === 'noindex') return false;
+  if (decor.isRealProject === false) return false;
+  if (!decor.mainImage) return false;
+  if (decor.mainImage.includes('unsplash.com')) return false;
+  return true;
+}

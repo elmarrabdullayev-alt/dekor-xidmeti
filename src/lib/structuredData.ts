@@ -87,20 +87,50 @@ export function getBreadcrumbSchema(items: Array<{ name: string; url: string }>)
   };
 }
 
-export function getProjectDetailSchema(decor: DecorItem) {
+export function getProjectDetailSchema(decor: DecorItem, canonicalUrl?: string) {
+  const url = canonicalUrl || `https://dreamartweddings.com/dekorlar/${decor.slug}`;
+  const imageUrl = decor.mainImage.startsWith('http')
+    ? decor.mainImage
+    : `https://dreamartweddings.com${decor.mainImage}`;
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'ImageObject',
-    'contentUrl': decor.mainImage,
+    '@type': 'CreativeWork',
+    '@id': `${url}#project`,
     'name': decor.name,
-    'description': decor.shortDescription,
-    'author': {
-      '@type': 'Organization',
-      'name': 'DreamArt Weddings'
+    'headline': decor.name,
+    'description': decor.metaDescription || decor.shortDescription,
+    'url': url,
+    'image': imageUrl,
+    'creator': {
+      '@type': 'LocalBusiness',
+      'name': 'DreamArt Weddings',
+      'telephone': '+994502311728',
+      'url': 'https://dreamartweddings.com'
     },
     'locationCreated': {
       '@type': 'Place',
       'name': `${decor.city}, Azərbaycan`
+    },
+    'genre': decor.categoryName,
+    'keywords': [decor.categoryName, decor.style, decor.city, 'DreamArt Weddings'].filter(Boolean).join(', ')
+  };
+}
+
+export function getProjectImageSchema(decor: DecorItem) {
+  const imageUrl = decor.mainImage.startsWith('http')
+    ? decor.mainImage
+    : `https://dreamartweddings.com${decor.mainImage}`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ImageObject',
+    'contentUrl': imageUrl,
+    'name': decor.name,
+    'description': decor.imageAltText || decor.shortDescription,
+    'author': {
+      '@type': 'Organization',
+      'name': 'DreamArt Weddings'
     }
   };
 }

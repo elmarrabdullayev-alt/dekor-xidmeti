@@ -7,9 +7,11 @@ import {
   getCategoryServiceSchema,
   getFaqPageSchema,
   getBreadcrumbSchema,
-  getProjectDetailSchema
+  getProjectDetailSchema,
+  getProjectImageSchema
 } from '../src/lib/structuredData';
 import { isVenueIndexable, getVenueStructuredData } from '../src/lib/venueHelper';
+import { isProjectIndexable } from '../src/lib/seoHelper';
 import { DecorCategorySlug } from '../src/types';
 
 export interface RouteSeoData {
@@ -151,20 +153,22 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
     const slug = cleanPath.replace('/dekorlar/', '');
     const decor = INITIAL_DECORS.find(d => d.slug === slug);
     if (decor) {
-      const isPublished = decor.status === 'published' || (decor as any).isPublished !== false;
+      const isIndexable = isProjectIndexable(decor);
+      const canonicalUrl = `${PRIMARY_DOMAIN}/dekorlar/${decor.slug}`;
       const jsonLd = [
-        getProjectDetailSchema(decor),
+        getProjectDetailSchema(decor, canonicalUrl),
+        getProjectImageSchema(decor),
         getBreadcrumbSchema([
           { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
           { name: decor.categoryName, url: `${PRIMARY_DOMAIN}/${decor.category}` },
-          { name: decor.name, url: `${PRIMARY_DOMAIN}/dekorlar/${decor.slug}` }
+          { name: decor.name, url: canonicalUrl }
         ])
       ];
       return {
         title: decor.seoTitle || `${decor.name} | DreamArt Weddings`,
         description: decor.metaDescription || decor.shortDescription,
-        canonicalUrl: `${PRIMARY_DOMAIN}/dekorlar/${decor.slug}`,
-        robots: isPublished ? 'index, follow' : 'noindex, follow',
+        canonicalUrl,
+        robots: isIndexable ? 'index, follow' : 'noindex, follow',
         ogImage: decor.mainImage || DEFAULT_IMAGE,
         ogType: 'article',
         jsonLd
@@ -287,6 +291,77 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
     };
   }
 
+  // 10bb. Destination Wedding in Azerbaijan Page (/destination-wedding-azerbaijan)
+  if (cleanPath === '/destination-wedding-azerbaijan') {
+    const destinationFaqs = [
+      {
+        question: 'Why choose Azerbaijan for a destination wedding?',
+        answer: 'Azerbaijan offers a unique convergence of Eastern hospitality and European architectural elegance. With world-class 5-star hotels in Baku, scenic Caucasus mountain resorts in Gabala and Guba, favorable climate, simplified e-visas, and exceptional culinary traditions, Azerbaijan has become one of Eurasia’s premier destination wedding hubs.'
+      },
+      {
+        question: 'Can DreamArt Weddings handle destination decor outside of Baku?',
+        answer: 'Absolutely. DreamArt Weddings manages full-scale logistics across Azerbaijan, including Gabala, Guba, Shamakhi, Lankaran, and Sheki. We operate climate-controlled transport vehicles to ensure fresh florals and bespoke architectural structures arrive in pristine condition.'
+      },
+      {
+        question: 'How do you coordinate with international couples and wedding planners?',
+        answer: 'We work seamlessly with couples, international destination wedding planners, and hospitality concierges worldwide. Our workflow includes virtual 3D floorplans, moodboards, scheduled video consultations via Zoom or WhatsApp, and detailed itemized transparent proposals.'
+      },
+      {
+        question: 'Do you design multi-day and cross-cultural weddings such as Indian weddings?',
+        answer: 'Yes. We specialize in multi-day celebrations including Indian destination weddings with distinct themes for Mehendi, Haldi, Sangeet, Mandap ceremonies, and gala receptions, as well as European, Middle Eastern, and Caucasian cultural fusions.'
+      },
+      {
+        question: 'What is the recommended timeline to book destination wedding decor in Azerbaijan?',
+        answer: 'For peak wedding seasons (May through October), we recommend securing your date 4 to 9 months in advance. However, our modular in-house production and floral sourcing capabilities allow us to accommodate shorter lead times whenever venue dates permit.'
+      },
+      {
+        question: 'What services are included in your destination wedding package?',
+        answer: 'Our turnkey decor services include ceremony altars and arches, floral styling with imported blossoms, bespoke guest table settings, crystal candelabras, customized stage architecture, atmospheric fairy lighting, personalized signage, dance floors, and full overnight setup and breakdown.'
+      }
+    ];
+
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Destination Wedding Decoration in Azerbaijan',
+        'description': 'Luxury destination wedding decor and production in Azerbaijan. Bespoke wedding styling in Baku, Gabala, Guba, and Shamakhi with fresh floral architecture, ceremony altars, and multi-day celebrations.',
+        'provider': {
+          '@type': 'LocalBusiness',
+          'name': 'DreamArt Weddings',
+          'telephone': '+994502311728',
+          'url': PRIMARY_DOMAIN,
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Baku',
+            'addressCountry': 'AZ'
+          }
+        },
+        'areaServed': {
+          '@type': 'Country',
+          'name': 'Azerbaijan'
+        },
+        'serviceType': 'Destination Wedding Decor and Production',
+        'url': `${PRIMARY_DOMAIN}/destination-wedding-azerbaijan`
+      },
+      getBreadcrumbSchema([
+        { name: 'Home', url: PRIMARY_DOMAIN },
+        { name: 'Destination Wedding in Azerbaijan', url: `${PRIMARY_DOMAIN}/destination-wedding-azerbaijan` }
+      ]),
+      getFaqPageSchema(destinationFaqs)
+    ];
+
+    return {
+      title: 'Destination Wedding in Azerbaijan | Luxury Decor by DreamArt Weddings',
+      description: 'Bespoke destination wedding decoration and styling in Azerbaijan. From Baku Caspian coastal venues to Gabala mountain resorts and multi-day celebrations.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/destination-wedding-azerbaijan`,
+      robots: 'index, follow',
+      ogImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      ogType: 'website',
+      jsonLd
+    };
+  }
+
   // 10c. Bərdə Dedicated Regional Page (/toy-dekoru/berde)
   if (cleanPath === '/toy-dekoru/berde') {
     const berdeFaqs = [
@@ -350,6 +425,85 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
       canonicalUrl: `${PRIMARY_DOMAIN}/toy-dekoru/berde`,
       robots: 'index, follow',
       ogImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      ogType: 'website',
+      jsonLd
+    };
+  }
+
+  // 10d. Qəbələ Dedicated Destination Wedding Page (/toy-dekoru/qebele)
+  if (cleanPath === '/toy-dekoru/qebele') {
+    const qebeleFaqs = [
+      {
+        question: 'DreamArt Weddings Qəbələdə toy dekoru xidməti göstərir?',
+        answer: 'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək arxitekturası və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
+      },
+      {
+        question: 'Qəbələdə destination wedding dekoru sifariş etmək mümkündür?',
+        answer: 'Bəli. Azərbaycanın digər şəhərlərindən və ya xaricdən gələn cütlüklər üçün Qəbələdə çoxgünlük destination wedding dekoru təşkil edilir. Mərasim tağı, axşam ziyafəti və qonaq zonaları vahid lüks üslubda tərtib olunur.'
+      },
+      {
+        question: 'Qəbələdə açıq hava toy dekoru hazırlamaq mümkündür?',
+        answer: 'Bəli. Dağ mənzərəli çəmənliklər və meşə kənarı açıq hava məkanları üçün küləyə davamlı möhkəm altar konstruksiyaları, çiçəkli nikah tağları, işıqlandırma çilçıraqları və xüsusi oturma zonaları qurulur.'
+      },
+      {
+        question: 'Bakıdan Qəbələyə dekor və quraşdırma komandası gəlir?',
+        answer: 'Bəli. Canlı çiçəklər və dekorasiya elementləri Bakıdakı emalatxanamızdan temperatur nəzarətli xüsusi yük maşınları ilə Qəbələyə daşınır. Peşəkar florist və montaj qrupumuz tədbirdən saatlar öncə məkanda tam quraşdırmanı həyata keçirir.'
+      },
+      {
+        question: 'Qəbələdə bir neçə günlük toy tədbiri üçün fərqli dekor konseptləri hazırlamaq mümkündür?',
+        answer: 'Bəli. Welcome dinner, nikah mərasimi, qala ziyafət və after-party kimi mərhələlər üçün hər günə uyğun fərqli rəng palitrası və dekorasiya çevrilməsi (turnaround) təmin edilir.'
+      },
+      {
+        question: 'Qəbələdə toy dekorunun qiyməti necə müəyyən olunur?',
+        answer: 'Qiymət seçilən məkanın növünə (açıq hava və ya qapalı zal), səhnə və masa sayına, çiçək kompozisiyalarının sıxlığına, xüsusi konstruksiya istehsalına və Bakı–Qəbələ logistika həcminə əsasən şəffaf fərdi smeta ilə hesablanır.'
+      }
+    ];
+
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Qəbələdə Premium Toy Dekoru və Destination Wedding Dekorasiyası',
+        'description': 'DreamArt Weddings Qəbələdə premium toy dekoru, destination wedding styling, açıq hava mərasimi, reception, səhnə və regional quraşdırma xidmətləri təqdim edir.',
+        'provider': {
+          '@type': 'LocalBusiness',
+          'name': 'DreamArt Weddings',
+          'telephone': '+994502311728',
+          'url': PRIMARY_DOMAIN,
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Qəbələ',
+            'addressCountry': 'AZ'
+          }
+        },
+        'areaServed': {
+          '@type': 'City',
+          'name': 'Qəbələ'
+        },
+        'serviceType': 'Destination Wedding Dekoru',
+        'url': `${PRIMARY_DOMAIN}/toy-dekoru/qebele`
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Qəbələdə Toy Dekoru | Destination Wedding Dekorasiyası | DreamArt Weddings',
+        'description': 'DreamArt Weddings Qəbələdə premium toy dekoru, destination wedding styling, açıq hava mərasimi, reception, səhnə və regional quraşdırma xidmətləri təqdim edir.',
+        'url': `${PRIMARY_DOMAIN}/toy-dekoru/qebele`
+      },
+      getBreadcrumbSchema([
+        { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
+        { name: 'Toy dekoru', url: `${PRIMARY_DOMAIN}/toy-dekoru` },
+        { name: 'Qəbələdə Toy Dekoru', url: `${PRIMARY_DOMAIN}/toy-dekoru/qebele` }
+      ]),
+      getFaqPageSchema(qebeleFaqs)
+    ];
+
+    return {
+      title: 'Qəbələdə Toy Dekoru | Destination Wedding Dekorasiyası | DreamArt Weddings',
+      description: 'DreamArt Weddings Qəbələdə premium toy dekoru, destination wedding styling, açıq hava mərasimi, reception, səhnə və regional quraşdırma xidmətləri təqdim edir.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/toy-dekoru/qebele`,
+      robots: 'index, follow',
+      ogImage: '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
       ogType: 'website',
       jsonLd
     };

@@ -33,6 +33,11 @@ export interface DecorItem {
   isPublished?: boolean;
   isFeatured: boolean;
   createdAt: string;
+  isRealProject?: boolean;
+  indexStatus?: 'index' | 'noindex';
+  venueSlug?: string;
+  venueName?: string;
+  decorElements?: string[];
 }
 
 export interface FAQItem {

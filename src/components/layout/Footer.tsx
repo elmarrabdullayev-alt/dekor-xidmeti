@@ -21,6 +21,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Xidmətlər', path: '/xidmetler' },
     { label: 'Indian Weddings', path: '/indian-wedding-azerbaijan' },
+    { label: 'Destination Weddings', path: '/destination-wedding-azerbaijan' },
     { label: 'Haqqımızda', path: '/haqqimizda' },
     { label: 'Əlaqə', path: '/elaqe' },
   ];

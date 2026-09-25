@@ -64,7 +64,7 @@ export const INITIAL_VENUES: VenueItem[] = [
       '/images/dreamart-qala-gecesi-samdan-dekoru.webp'
     ],
     hasRealProject: true,
-    relatedDecorIds: ['decor-1', 'decor-6'],
+    relatedDecorIds: ['decor-1', 'decor-5', 'decor-6'],
     relatedServices: ['Toy dekoru', 'Zal bəzəyi', 'Çilçıraq gülləri', 'Qarşılama zonası'],
     faqs: generateDefaultVenueFaqs('Bağçalı Saray', true, '050 231 17 28'),
     seoTitle: 'Bağçalı Saray Toy Dekoru və Şadlıq Sarayı Tərtibatı | Bakı | DreamArt Weddings',

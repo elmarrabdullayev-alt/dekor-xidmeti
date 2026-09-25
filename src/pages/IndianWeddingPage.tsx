@@ -463,6 +463,15 @@ export const IndianWeddingPage: React.FC<IndianWeddingPageProps> = ({
             <p className="text-xs sm:text-sm text-white/70 font-light mt-2">
               From the vibrant capital of Baku to majestic mountain resorts, our production logistics cover all prime wedding destinations.
             </p>
+            <div className="mt-4">
+              <button
+                onClick={() => navigate('/destination-wedding-azerbaijan')}
+                className="text-xs text-[#E5C378] hover:underline inline-flex items-center gap-1.5 cursor-pointer font-medium"
+              >
+                <span>Explore all Azerbaijan Destination Wedding options & Gabala resorts</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

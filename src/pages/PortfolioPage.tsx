@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DecorItem } from '../types';
 import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
+import { Sparkles, ShieldCheck } from 'lucide-react';
 
 interface PortfolioPageProps {
   decors: DecorItem[];
@@ -14,13 +15,18 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
   navigate,
   onOpenQuoteModal
 }) => {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'baki' | 'region'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'real' | 'concept' | 'baki' | 'region'>('all');
 
   const filtered = decors.filter(d => {
+    if (activeFilter === 'real') return d.isRealProject !== false && d.indexStatus !== 'noindex';
+    if (activeFilter === 'concept') return d.isRealProject === false || d.indexStatus === 'noindex';
     if (activeFilter === 'baki') return d.city.toLowerCase() === 'bakı';
     if (activeFilter === 'region') return d.city.toLowerCase() !== 'bakı';
     return true;
   });
+
+  const realCount = decors.filter(d => d.isRealProject !== false && d.indexStatus !== 'noindex').length;
+  const conceptCount = decors.filter(d => d.isRealProject === false || d.indexStatus === 'noindex').length;
 
   return (
     <>
@@ -40,11 +46,22 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
               Portfoliomuz
             </h1>
             <p className="text-xs sm:text-sm text-white/70 font-light">
-              Müxtəlif məkan və şəhərlərdə reallaşdırdığımız seçilmiş müəllif işlərimiz.
+              DreamArt Weddings tərəfindən müxtəlif məkan və şəhərlərdə reallaşdırılmış seçilmiş müəllif işləri və yaradıcı dizayn konseptləri.
             </p>
           </div>
 
-          <div className="flex justify-center gap-2 mb-10">
+          {/* Transparency & Credibility Notice */}
+          <div className="max-w-3xl mx-auto mb-8 p-4 bg-[#121212] border border-white/10 rounded-sm flex items-center justify-between gap-4 text-xs text-white/70">
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-4 h-4 text-[#C5A059] shrink-0" />
+              <span>
+                <strong className="text-white font-medium">Şəffaflıq:</strong> Şəkillərdə <span className="text-[#E5C378]">"Real Layihə"</span> nişanı ilə göstərilən işlər komandamız tərəfindən faktiki icra edilmiş layihələrdir.
+              </span>
+            </div>
+          </div>
+
+          {/* Filter Tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
             <button
               onClick={() => setActiveFilter('all')}
               className={`px-4 py-2 rounded-sm text-xs font-medium tracking-wider transition-all cursor-pointer ${
@@ -53,7 +70,27 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
                   : 'bg-[#161616] text-white/70 border border-white/10 hover:border-[#C5A059]'
               }`}
             >
-              Bütün Layihələr ({decors.length})
+              Bütün İşlər ({decors.length})
+            </button>
+            <button
+              onClick={() => setActiveFilter('real')}
+              className={`px-4 py-2 rounded-sm text-xs font-medium tracking-wider transition-all cursor-pointer ${
+                activeFilter === 'real'
+                  ? 'bg-[#C5A059] text-[#0B0B0B] font-semibold'
+                  : 'bg-[#161616] text-white/70 border border-white/10 hover:border-[#C5A059]'
+              }`}
+            >
+              İcra Edilmiş Real Layihələr ({realCount})
+            </button>
+            <button
+              onClick={() => setActiveFilter('concept')}
+              className={`px-4 py-2 rounded-sm text-xs font-medium tracking-wider transition-all cursor-pointer ${
+                activeFilter === 'concept'
+                  ? 'bg-[#C5A059] text-[#0B0B0B] font-semibold'
+                  : 'bg-[#161616] text-white/70 border border-white/10 hover:border-[#C5A059]'
+              }`}
+            >
+              Dizayn Konseptləri ({conceptCount})
             </button>
             <button
               onClick={() => setActiveFilter('baki')}
@@ -90,7 +127,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
           <div className="mt-16 text-center">
             <button
               onClick={() => onOpenQuoteModal('Portfoliodan Təklif')}
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wider uppercase transition-colors cursor-pointer"
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-8 py-3.5 rounded-sm text-xs font-medium tracking-wider uppercase transition-colors cursor-pointer shadow-xl"
             >
               Tədbiriniz üçün təklif alın
             </button>
