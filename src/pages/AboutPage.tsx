@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { Sparkles, Heart, Award } from 'lucide-react';
+import { imageService } from '../lib/imageService';
 
 interface AboutPageProps {
   navigate: (path: string) => void;
@@ -8,6 +9,22 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal }) => {
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
+
+  const aboutCover =
+    imageService.getCoverImage('about-main') ||
+    imageService.getCoverImage('portfolio-showcase', 'portfolio_lookbook') ||
+    'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85';
+
+  const aboutImgs = imageService.getImagesByTarget('about-main');
+  const aboutAlt = aboutImgs[0]?.altText || 'DreamArt Events Fəlsəfəsi';
   return (
     <>
       <SeoHead
@@ -31,8 +48,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center mb-16">
             <div className="md:col-span-6 relative aspect-4/3 sm:aspect-square overflow-hidden rounded-sm border border-white/10 bg-[#161616]">
               <img
-                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"
-                alt="DreamArt Events Fəlsəfəsi"
+                src={aboutCover}
+                alt={aboutAlt}
+                loading="lazy"
                 className="w-full h-full object-cover"
               />
             </div>

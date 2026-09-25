@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getBreadcrumbSchema, getFaqPageSchema } from '../lib/structuredData';
+import { imageService } from '../lib/imageService';
+import { store } from '../lib/store';
 import {
   Sparkles,
   MapPin,
@@ -183,26 +185,42 @@ export const BerdeToyDekoruPage: React.FC<BerdeToyDekoruPageProps> = ({
     }
   ];
 
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
+
+  const heroImage =
+    imageService.getCoverImage('berde-toy-dekoru') ||
+    imageService.getCoverImage('berde', 'regional_service') ||
+    imageService.getCoverImage('img-portfolio-4', 'portfolio_lookbook', '/images/dreamart-monumental-toy-sehnesi-dekoru.webp');
+  const heroImgs = imageService.getImagesByTarget('berde-toy-dekoru');
+  const heroAlt = heroImgs[0]?.altText || 'Bərdədə premium toy dekoru';
+
   const inspirationProjects = [
     {
       name: 'Ağ Qızılgül Toy Altarı Dekoru',
       category: 'Toy dekoru',
       slug: 'ag-qizilgul-ve-zerif-samli-toy-altari-baki',
-      image: '/images/dreamart-toy-dekoru-qizili-altar.webp',
+      image: store.getDecorBySlug('ag-qizilgul-ve-zerif-samli-toy-altari-baki')?.mainImage || imageService.getCoverImage('decor-1', 'decor_project', '/images/dreamart-toy-dekoru-qizili-altar.webp'),
       description: 'Klassik lüks toy altar dekoru, canlı ağ güllər, şam işıqlandırması və zərif bəy-gəlin masası.'
     },
     {
       name: 'Monumental Toy Səhnəsi Dekoru',
       category: 'Səhnə dekoru',
       slug: 'qizili-arkali-ve-monumental-toy-sehnesi-baki',
-      image: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      image: store.getDecorBySlug('qizili-arkali-ve-monumental-toy-sehnesi-baki')?.mainImage || imageService.getCoverImage('img-portfolio-4', 'portfolio_lookbook', '/images/dreamart-monumental-toy-sehnesi-dekoru.webp'),
       description: 'Geniş zallar üçün hündür qızılı tağlar, pilləli şam kompozisiyaları və zəngin gül arxitekturası.'
     },
     {
       name: 'Böyük Şadlıq Sarayı Zal Dekoru',
       category: 'Zal dekoru',
       slug: 'boyuk-sadliq-sarayi-zal-dekoru-baki',
-      image: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
+      image: store.getDecorBySlug('boyuk-sadliq-sarayi-zal-dekoru-baki')?.mainImage || imageService.getCoverImage('decor-6', 'decor_project', '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp'),
       description: 'Böyük ziyafət zalları üçün tavan pərdələri, asma çilçıraq gülləri və qonaq masası tərtibatı.'
     }
   ];
@@ -213,7 +231,7 @@ export const BerdeToyDekoruPage: React.FC<BerdeToyDekoruPageProps> = ({
         title="Bərdədə Toy Dekoru | Premium Toy Dekorasiyası | DreamArt Weddings"
         description="DreamArt Weddings Bərdədə premium toy dekoru, səhnə, zal, giriş, çiçək kompozisiyaları və fərdi dekor konseptləri təqdim edir. Qiymət təklifi üçün WhatsApp-la əlaqə saxlayın."
         canonicalPath="/toy-dekoru/berde"
-        ogImage="/images/dreamart-monumental-toy-sehnesi-dekoru.webp"
+        ogImage={heroImage}
         jsonLd={jsonLd}
       />
 
@@ -242,8 +260,8 @@ export const BerdeToyDekoruPage: React.FC<BerdeToyDekoruPageProps> = ({
         {/* Hero Section */}
         <section className="relative min-h-[460px] sm:min-h-[520px] flex items-center justify-center bg-[#0B0B0B] overflow-hidden border-b border-white/10">
           <img
-            src="/images/dreamart-monumental-toy-sehnesi-dekoru.webp"
-            alt="Bərdədə premium toy dekoru"
+            src={heroImage}
+            alt={heroAlt}
             className="absolute inset-0 w-full h-full object-cover object-center opacity-30 brightness-[0.55]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/60 to-black/40" />

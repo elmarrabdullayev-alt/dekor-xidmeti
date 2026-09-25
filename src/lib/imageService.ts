@@ -316,6 +316,27 @@ class ImageService {
     }
     await this.fetchImages();
   }
+
+  public async migrateToSupabase(): Promise<{
+    success: boolean;
+    total: number;
+    migrated: number;
+    skipped: number;
+    errors: Array<{ id: string; error: string }>;
+  }> {
+    const res = await fetch('/api/admin/migrate-to-supabase', {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Miqrasiya xətası' }));
+      throw new Error(err.error || 'Supabase miqrasiyası yerinə yetirilə bilmədi');
+    }
+    const result = await res.json();
+    await this.fetchImages();
+    return result;
+  }
 }
 
 export const imageService = new ImageService();

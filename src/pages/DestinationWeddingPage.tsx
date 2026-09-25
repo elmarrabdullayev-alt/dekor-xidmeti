@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getBreadcrumbSchema, getFaqPageSchema } from '../lib/structuredData';
+import { imageService } from '../lib/imageService';
 import {
   Sparkles,
   MapPin,
@@ -163,13 +164,34 @@ export const DestinationWeddingPage: React.FC<DestinationWeddingPageProps> = ({
     }
   ];
 
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
+
+  const heroImage =
+    imageService.getCoverImage('destination-wedding') ||
+    imageService.getCoverImage('img-portfolio-4', 'portfolio_lookbook', '/images/dreamart-monumental-toy-sehnesi-dekoru.webp');
+  const heroImgs = imageService.getImagesByTarget('destination-wedding');
+  const heroAlt = heroImgs[0]?.altText || 'Luxury Destination Wedding Decor in Azerbaijan';
+
+  const gabalaFeatureImage =
+    imageService.getCoverImage('qebele-wedding') ||
+    imageService.getCoverImage('img-portfolio-9', 'portfolio_lookbook', '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp');
+  const gabalaImgs = imageService.getImagesByTarget('qebele-wedding');
+  const gabalaAlt = gabalaImgs[0]?.altText || 'Gabala Outdoor Mountain Wedding Decor Setup';
+
   return (
     <>
       <SeoHead
         title="Destination Wedding in Azerbaijan | Luxury Decor by DreamArt Weddings"
         description="Bespoke destination wedding decoration and styling in Azerbaijan. From Baku Caspian coastal venues to Gabala mountain resorts and multi-day celebrations."
         canonicalPath="/destination-wedding-azerbaijan"
-        ogImage="/images/dreamart-monumental-toy-sehnesi-dekoru.webp"
+        ogImage={heroImage}
         jsonLd={jsonLd}
       />
 
@@ -177,8 +199,8 @@ export const DestinationWeddingPage: React.FC<DestinationWeddingPageProps> = ({
         {/* Hero Section */}
         <section className="relative min-h-[540px] lg:min-h-[620px] flex items-center justify-center bg-[#0B0B0B] overflow-hidden border-b border-white/10">
           <img
-            src="/images/dreamart-monumental-toy-sehnesi-dekoru.webp"
-            alt="Luxury Destination Wedding Decor in Azerbaijan"
+            src={heroImage}
+            alt={heroAlt}
             className="absolute inset-0 w-full h-full object-cover object-center opacity-30 scale-105 transition-transform duration-1000"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/75 to-transparent" />
@@ -328,8 +350,9 @@ export const DestinationWeddingPage: React.FC<DestinationWeddingPageProps> = ({
               <div className="lg:col-span-6 relative">
                 <div className="relative rounded-sm overflow-hidden border border-white/10 shadow-2xl">
                   <img
-                    src="/images/dreamart-tebii-budag-agac-kompozisiyasi.webp"
-                    alt="Gabala Outdoor Mountain Wedding Decor Setup"
+                    src={gabalaFeatureImage}
+                    alt={gabalaAlt}
+                    loading="lazy"
                     className="w-full h-[400px] sm:h-[480px] object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />

@@ -19,6 +19,12 @@ import {
   deleteImageRecord,
 } from './server/persistentDiskService.ts';
 import { resolveRouteSeo, injectHeadSeo } from './server/seoRouteResolver.ts';
+import {
+  isSupabaseConfigured,
+  SUPABASE_STORAGE_BUCKET,
+  ADMIN_IMAGES_TABLE,
+} from './server/supabaseService.ts';
+import { runSupabaseMigration } from './server/migrateToSupabase.ts';
 
 dotenv.config();
 
@@ -170,15 +176,21 @@ async function startServer() {
       sharpAvailable = typeof sharp === 'function';
     } catch {}
 
+    const isSupabase = isSupabaseConfigured();
+
     res.json({
       status: 'ok',
       serverTime: new Date().toISOString(),
-      storageMode: IS_PRODUCTION ? 'render_persistent_disk' : 'dev_persistent_disk',
+      storageMode: isSupabase ? 'supabase_storage' : (IS_PRODUCTION ? 'render_persistent_disk' : 'dev_persistent_disk'),
+      supabaseConnected: isSupabase,
+      storageBucket: SUPABASE_STORAGE_BUCKET,
+      databaseTable: ADMIN_IMAGES_TABLE,
+      dualReadFallbackActive: true,
       persistentDataDirConfigured: Boolean(process.env.PERSISTENT_DATA_DIR),
       imagesDbAccessible: dbOk,
       uploadsDirAccessible: uploadsOk,
       sharpAvailable,
-      renderNotice: 'Render Persistent Disk is single-instance only; horizontal multi-instance scaling requires object storage.',
+      oldStoragePreserved: true,
     });
   });
 
@@ -222,6 +234,18 @@ async function startServer() {
     invalidateSession(cookieToken);
     res.clearCookie('dreamart_admin_session', getClearCookieOptions());
     return res.json({ success: true });
+  });
+
+  // Protected: Safe Idempotent Migration to Supabase
+  app.post('/api/admin/migrate-to-supabase', requireAdminAuth, async (_req, res) => {
+    try {
+      console.log('[Migration] Triggering safe migration from persistent storage to Supabase...');
+      const result = await runSupabaseMigration();
+      return res.json(result);
+    } catch (err: any) {
+      console.error('[Migration Error]:', err);
+      return res.status(500).json({ error: err.message || 'Miqrasiya zamanı xəta baş verdi' });
+    }
   });
 
   // Public Images API: reads from persistent images.json

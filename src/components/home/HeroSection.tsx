@@ -3,6 +3,8 @@ import { ArrowRight, Gem, ShieldCheck, MapPin, ChevronLeft, ChevronRight } from 
 import heroImg1 from '../../1.webp';
 import heroImg2 from '../../2.webp';
 import heroImg3 from '../../3.webp';
+import { imageService } from '../../lib/imageService';
+import { ManagedImage } from '../../types';
 
 interface HeroSectionProps {
   onExplore: () => void;
@@ -48,10 +50,53 @@ const HERO_SLIDES: HeroSlide[] = [
 export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortfolio }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [cmsHeroImages, setCmsHeroImages] = useState<ManagedImage[]>(() =>
+    imageService.getImagesBySection('home_hero')
+  );
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  const totalSlides = HERO_SLIDES.length;
+  // Subscribe to CMS changes
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setCmsHeroImages(imageService.getImagesBySection('home_hero'));
+    });
+    return () => unsub();
+  }, []);
+
+  // Compute slides prioritizing CMS images and falling back to default bundled images
+  const activeSlides: HeroSlide[] = HERO_SLIDES.map((defaultSlide, idx) => {
+    const cmsMatch =
+      cmsHeroImages.find((img) => img.targetId === defaultSlide.id) ||
+      cmsHeroImages[idx];
+
+    if (cmsMatch) {
+      return {
+        ...defaultSlide,
+        image: cmsMatch.url,
+        fallbackUrl: defaultSlide.image || defaultSlide.fallbackUrl,
+        alt: cmsMatch.altText || defaultSlide.alt,
+      };
+    }
+    return defaultSlide;
+  });
+
+  // If CMS contains additional slides beyond the default 3
+  if (cmsHeroImages.length > HERO_SLIDES.length) {
+    for (let i = HERO_SLIDES.length; i < cmsHeroImages.length; i++) {
+      const extra = cmsHeroImages[i];
+      activeSlides.push({
+        id: extra.targetId || `hero-slide-${i + 1}`,
+        image: extra.url,
+        fallbackUrl: extra.url,
+        title: extra.targetName || 'Zövqlü Toy & Tədbir Dekoru',
+        subtitle: 'DreamArt Events Eksklüziv Kompozisiyası',
+        alt: extra.altText || 'DreamArt Events dekorasiyası',
+      });
+    }
+  }
+
+  const totalSlides = activeSlides.length;
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
@@ -113,7 +158,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
     >
       {/* 1. CAROUSEL BACKGROUND SLIDES WITH LUXURY TRANSITION */}
       <div className="absolute inset-0 z-0">
-        {HERO_SLIDES.map((slide, idx) => {
+        {activeSlides.map((slide, idx) => {
           const isActive = idx === currentSlide;
           return (
             <div
@@ -244,13 +289,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
           </span>
           <span className="w-1 h-1 rounded-full bg-white/30" />
           <span className="text-white/80 tracking-wide font-sans">
-            {HERO_SLIDES[currentSlide].title}
+            {activeSlides[currentSlide]?.title || ''}
           </span>
         </div>
 
-        {/* 3 Clickable Indicator Dots */}
+        {/* Clickable Indicator Dots */}
         <div className="flex items-center gap-2.5 pointer-events-auto bg-black/40 px-3.5 py-1.5 rounded-full border border-white/10 backdrop-blur-md">
-          {HERO_SLIDES.map((slide, idx) => {
+          {activeSlides.map((slide, idx) => {
             const isActive = idx === currentSlide;
             return (
               <button

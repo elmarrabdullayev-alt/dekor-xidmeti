@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, MapPin, Sparkles } from 'lucide-react';
+import { imageService } from '../../lib/imageService';
 
 interface RegionalSectionProps {
   onRequestRegionalQuote: () => void;
@@ -13,6 +14,22 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
   onViewXoncha,
   onViewMoreRegional
 }) => {
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
+
+  const regionalCover = imageService.getCoverImage('regional-main', 'regional_service', '/images/azerbaijan-regional-cover.jpg');
+  const regionalImgs = imageService.getImagesByTarget('regional-main', 'regional_service');
+  const regionalAlt = regionalImgs[0]?.altText || 'Azərbaycan üzrə dekor xidməti - Bakı və Regionlar';
+
+  const xoncaCover = imageService.getCoverImage('xonca-main', 'xonca_service', '/images/xonca-xidmeti-cover.jpg');
+  const xoncaImgs = imageService.getImagesByTarget('xonca-main', 'xonca_service');
+  const xoncaAlt = xoncaImgs[0]?.altText || 'Eksklüziv Xonça Dizaynı';
   return (
     <section id="spotlight-section" className="py-14 sm:py-20 bg-[#0B0B0B] border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,8 +60,9 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
             <div className="mt-8 pt-6 border-t border-white/5">
               <div className="h-44 sm:h-48 w-full rounded-sm overflow-hidden relative border border-white/5 group-hover:border-[#C5A059]/40 transition-colors">
                 <img
-                  src="/images/azerbaijan-regional-cover.jpg"
-                  alt="Azərbaycan üzrə dekor xidməti - Bakı və Regionlar"
+                  src={regionalCover}
+                  alt={regionalAlt}
+                  loading="lazy"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
@@ -87,8 +105,9 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
             <div className="mt-8 pt-6 border-t border-white/5">
               <div className="h-44 sm:h-48 w-full rounded-sm overflow-hidden relative border border-white/5 group-hover:border-[#C5A059]/40 transition-colors">
                 <img
-                  src="/images/xonca-xidmeti-cover.jpg"
-                  alt="Eksklüziv Xonça Dizaynı"
+                  src={xoncaCover}
+                  alt={xoncaAlt}
+                  loading="lazy"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />

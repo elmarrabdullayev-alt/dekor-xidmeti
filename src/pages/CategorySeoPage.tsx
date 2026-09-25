@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { CATEGORIES } from '../data/categories';
 import { INITIAL_VENUES } from '../data/initialVenues';
 import { DecorCategorySlug, DecorItem } from '../types';
@@ -6,6 +6,7 @@ import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getCategoryServiceSchema, getFaqPageSchema, getBreadcrumbSchema } from '../lib/structuredData';
 import { isVenueIndexable } from '../lib/venueHelper';
+import { imageService } from '../lib/imageService';
 import {
   Sparkles,
   MapPin,
@@ -59,6 +60,19 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
   };
 
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
+
+  const heroImage = imageService.getCoverImage(category.slug, 'category_cover', category.heroImage);
+  const cmsImgs = imageService.getImagesByTarget(category.slug, 'category_cover');
+  const heroAlt = cmsImgs[0]?.altText || category.name;
+
   const jsonLd = [
     getCategoryServiceSchema(category),
     getFaqPageSchema(category.faqs),
@@ -74,7 +88,7 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
         title={category.metaTitle}
         description={category.metaDescription}
         canonicalPath={`/${category.slug}`}
-        ogImage={category.heroImage}
+        ogImage={heroImage}
         jsonLd={jsonLd}
       />
 
@@ -82,8 +96,8 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
         {/* Category Hero Banner */}
         <section className="relative h-[46vh] min-h-[360px] max-h-[500px] flex items-center justify-center bg-[#0B0B0B] overflow-hidden border-b border-white/10">
           <img
-            src={category.heroImage}
-            alt={category.name}
+            src={heroImage}
+            alt={heroAlt}
             className="absolute inset-0 w-full h-full object-cover object-center opacity-30 brightness-[0.55]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/50 to-transparent" />

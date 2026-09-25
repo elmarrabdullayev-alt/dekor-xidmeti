@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getBreadcrumbSchema, getFaqPageSchema } from '../lib/structuredData';
+import { imageService } from '../lib/imageService';
+import { store } from '../lib/store';
 import {
   Sparkles,
   MapPin,
@@ -213,26 +215,42 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
     }
   ];
 
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
+
+  const heroImage =
+    imageService.getCoverImage('qebele-toy-dekoru') ||
+    imageService.getCoverImage('qebele', 'regional_service') ||
+    imageService.getCoverImage('img-portfolio-9', 'portfolio_lookbook', '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp');
+  const heroImgs = imageService.getImagesByTarget('qebele-toy-dekoru');
+  const heroAlt = heroImgs[0]?.altText || 'Qəbələdə toy dekoru və destination wedding dekorasiyası';
+
   const verifiedReferenceProjects = [
     {
       name: 'Ağ Qızılgül Toy Altarı Dekoru',
       category: 'Toy dekoru',
       slug: 'ag-qizilgul-ve-zerif-samli-toy-altari-baki',
-      image: '/images/dreamart-toy-dekoru-qizili-altar.webp',
+      image: store.getDecorBySlug('ag-qizilgul-ve-zerif-samli-toy-altari-baki')?.mainImage || imageService.getCoverImage('decor-1', 'decor_project', '/images/dreamart-toy-dekoru-qizili-altar.webp'),
       description: 'Klassik lüks toy altar dekoru, canlı ağ güllər, şam işıqlandırması və zərif bəy-gəlin masası.'
     },
     {
       name: 'Monumental Toy Səhnəsi Dekoru',
       category: 'Səhnə dekoru',
       slug: 'panoramik-sadliq-zali-tavan-isig-instalyasiyasi-baki',
-      image: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      image: store.getDecorBySlug('panoramik-sadliq-zali-tavan-isig-instalyasiyasi-baki')?.mainImage || imageService.getCoverImage('img-portfolio-4', 'portfolio_lookbook', '/images/dreamart-monumental-toy-sehnesi-dekoru.webp'),
       description: 'Geniş zallar üçün hündür tağlar, pilləli şam kompozisiyaları və zəngin gül arxitekturası.'
     },
     {
       name: 'Büllur və Qızılı Ziyafət Masası Tərtibatı',
       category: 'Qala dekoru',
       slug: 'qala-sam-yemeyi-korporativ-tedbir-tertibati-baki',
-      image: '/images/dreamart-qala-gecesi-samdan-dekoru.webp',
+      image: store.getDecorBySlug('qala-sam-yemeyi-korporativ-tedbir-tertibati-baki')?.mainImage || imageService.getCoverImage('decor-5', 'decor_project', '/images/dreamart-qala-gecesi-samdan-dekoru.webp'),
       description: 'Zərif şamdanlar, ziyafət runnerləri və büllur detallarla zənginləşdirilmiş ziyafət stili.'
     }
   ];
@@ -243,7 +261,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
         title="Qəbələdə Toy Dekoru | Destination Wedding Dekorasiyası | DreamArt Weddings"
         description="DreamArt Weddings Qəbələdə premium toy dekoru, destination wedding styling, açıq hava mərasimi, reception, səhnə və regional quraşdırma xidmətləri təqdim edir."
         canonicalPath="/toy-dekoru/qebele"
-        ogImage="/images/dreamart-tebii-budag-agac-kompozisiyasi.webp"
+        ogImage={heroImage}
         jsonLd={jsonLd}
       />
 
@@ -272,8 +290,8 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
         {/* Hero Section */}
         <section className="relative min-h-[480px] sm:min-h-[540px] flex items-center justify-center bg-[#0B0B0B] overflow-hidden border-b border-white/10">
           <img
-            src="/images/dreamart-tebii-budag-agac-kompozisiyasi.webp"
-            alt="Qəbələdə toy dekoru və destination wedding dekorasiyası"
+            src={heroImage}
+            alt={heroAlt}
             className="absolute inset-0 w-full h-full object-cover object-center opacity-30 brightness-[0.6]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/60 to-black/40" />

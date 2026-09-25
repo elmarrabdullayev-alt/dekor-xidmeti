@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Lock, LogOut, Upload, RefreshCw, Trash2, Star, Check, ArrowUp, ArrowDown,
   Edit3, ExternalLink, Image as ImageIcon, Sparkles, AlertCircle, Eye,
-  Building2, Flower2, Layers, Grid, MapPin, Gift, ChevronRight
+  Building2, Flower2, Layers, Grid, MapPin, Gift, ChevronRight, Database
 } from 'lucide-react';
 import { ImageSection, ManagedImage } from '../types';
 import { imageService } from '../lib/imageService';
@@ -12,6 +12,7 @@ import { INITIAL_VENUES } from '../data/initialVenues';
 import { ImageUploadModal } from '../components/admin/ImageUploadModal';
 import { ImageReplaceModal } from '../components/admin/ImageReplaceModal';
 import { ImageMetaModal } from '../components/admin/ImageMetaModal';
+import { ImageDeleteModal } from '../components/admin/ImageDeleteModal';
 import { SeoHead } from '../components/layout/SeoHead';
 
 interface AdminPageProps {
@@ -142,6 +143,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [replacingImage, setReplacingImage] = useState<ManagedImage | null>(null);
   const [editingMetaImage, setEditingMetaImage] = useState<ManagedImage | null>(null);
+  const [deletingImage, setDeletingImage] = useState<ManagedImage | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isMigrating, setIsMigrating] = useState(false);
 
   // Verify server cookie session on mount
   useEffect(() => {
@@ -214,16 +218,29 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     }
   };
 
-  const handleDelete = async (imgId: string) => {
-    if (!window.confirm('Bu şəkli silmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarılmır.')) {
-      return;
-    }
-
+  const handleConfirmDelete = async () => {
+    if (!deletingImage) return;
+    setIsDeleting(true);
     try {
-      await imageService.deleteImage(imgId);
+      await imageService.deleteImage(deletingImage.id);
       showNotice('Şəkil uğurla silindi');
+      setDeletingImage(null);
     } catch (err: any) {
-      alert(err.message || 'Şəkil silinərkən xəta baş verdi');
+      showNotice(err.message || 'Şəkil silinərkən xəta baş verdi');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleMigrateToSupabase = async () => {
+    setIsMigrating(true);
+    try {
+      const res = await imageService.migrateToSupabase();
+      showNotice(`Supabase miqrasiyası: ${res.migrated} köçürüldü, ${res.skipped} mövcud idi.`);
+    } catch (err: any) {
+      showNotice(err.message || 'Miqrasiya xətası baş verdi');
+    } finally {
+      setIsMigrating(false);
     }
   };
 
@@ -359,12 +376,33 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-3 sm:px-6 py-6 space-y-6">
 
-        {/* Security / Scope Reminder Notice */}
-        <div className="p-3.5 rounded-xl bg-[#1A1A1A] border border-[#2C2C2C] flex items-start gap-3">
-          <Sparkles className="w-4 h-4 text-[#C5A262] shrink-0 mt-0.5" />
-          <div className="text-xs text-neutral-300 space-y-0.5">
-            <span className="font-semibold text-[#F5F5F7]">Minimal Şəkil İdarəetmə Rejimi:</span> Bu paneldə yalnız saytın fotoşəkilləri idarə olunur. Mətnlər, SEO başlıqları, telefon nömrələri və strukturlaşdırılmış məlumatlar sabit kod təhlükəsizliyi altında qorunur.
+        {/* Security / Scope Reminder Notice & Supabase Storage Status */}
+        <div className="p-3.5 rounded-xl bg-[#1A1A1A] border border-[#2C2C2C] flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-start gap-3">
+            <Sparkles className="w-4 h-4 text-[#C5A262] shrink-0 mt-0.5" />
+            <div className="text-xs text-neutral-300 space-y-0.5">
+              <span className="font-semibold text-[#F5F5F7]">Şəkil İdarəetmə Rejimi:</span> Bu paneldə yalnız saytın fotoşəkilləri idarə olunur. Mətnlər, SEO başlıqları və strukturlaşdırılmış məlumatlar sabit kod təhlükəsizliyi altında qorunur.
+            </div>
           </div>
+          <button
+            id="admin-supabase-migration-btn"
+            onClick={handleMigrateToSupabase}
+            disabled={isMigrating}
+            className="px-3 py-1.5 rounded-lg bg-[#C5A262]/20 hover:bg-[#C5A262]/30 border border-[#C5A262]/40 text-[#C5A262] text-xs font-medium flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50 shrink-0"
+            title="Mövcud lokal faylları Supabase Storage və Postgres DB-yə təhlükəsiz köçür"
+          >
+            {isMigrating ? (
+              <>
+                <span className="inline-block w-3.5 h-3.5 border-2 border-[#C5A262]/30 border-t-[#C5A262] rounded-full animate-spin" />
+                <span>Supabase-ə Köçürülür...</span>
+              </>
+            ) : (
+              <>
+                <Database className="w-3.5 h-3.5" />
+                <span>Supabase-ə Köçür</span>
+              </>
+            )}
+          </button>
         </div>
 
         {/* 1. SECTION TABS (7 Image Groups) */}
@@ -608,9 +646,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                             <button
                               id={`delete-img-btn-${img.id}`}
                               type="button"
-                              onClick={() => handleDelete(img.id)}
+                              onClick={() => setDeletingImage(img)}
                               title="Şəkli sil"
-                              className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 hover:text-red-200 transition"
+                              className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 hover:text-red-200 transition cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -661,6 +699,17 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
           onSuccess={() => {
             showNotice('Şəkil təsviri və fayl adı yeniləndi!');
           }}
+        />
+      )}
+
+      {/* Delete Modal */}
+      {deletingImage && (
+        <ImageDeleteModal
+          isOpen={!!deletingImage}
+          onClose={() => setDeletingImage(null)}
+          image={deletingImage}
+          onConfirm={handleConfirmDelete}
+          isDeleting={isDeleting}
         />
       )}
     </div>

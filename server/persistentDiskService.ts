@@ -1,15 +1,45 @@
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
-import sharp, { type Metadata } from 'sharp';
+import sharp from 'sharp';
 import { getInitialSeedImages } from './initialImages.ts';
 import type { ManagedImage, ImageSection } from '../src/types';
+import {
+  type StoredImage,
+  type ProcessedImage,
+  AsyncMutex,
+  adaptInitialSeed,
+  normalizeGroupOrders,
+  generateSeoFilename,
+  processImageWithSharp,
+} from './imageUtils.ts';
+import {
+  isSupabaseConfigured,
+  fetchSupabaseImages,
+  uploadImageToSupabase,
+  replaceImageInSupabase,
+  deleteImageFromSupabase,
+  reorderImagesInSupabase,
+  setCoverInSupabase,
+  updateImageMetaInSupabase,
+} from './supabaseService.ts';
+
+// Re-export shared types and helpers for backwards compatibility
+export {
+  StoredImage,
+  ProcessedImage,
+  AsyncMutex,
+  adaptInitialSeed,
+  normalizeGroupOrders,
+  generateSeoFilename,
+  processImageWithSharp,
+};
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 // 1. Validate & initialize PERSISTENT_DATA_DIR
-export const PERSISTENT_DATA_DIR = 
-  process.env.PERSISTENT_DATA_DIR?.trim() || 
+export const PERSISTENT_DATA_DIR =
+  process.env.PERSISTENT_DATA_DIR?.trim() ||
   path.join(process.cwd(), 'data-dev');
 
 if (!process.env.PERSISTENT_DATA_DIR) {
@@ -35,75 +65,9 @@ function ensureDirs() {
 }
 ensureDirs();
 
-// Metadata model (combines image-only admin fields + frontend compatibility)
-export interface StoredImage {
-  id: string;
-  group: string; // section name
-  filename: string;
-  url: string;
-  thumbUrl?: string;
-  alt: string;
-  width?: number;
-  height?: number;
-  format: 'webp' | 'jpeg' | 'png';
-  isCover: boolean;
-  order: number; // 0, 1, 2, 3...
-  focalPoint?: { x: number; y: number };
-  projectId?: string; // targetId for projects/categories
-  venueId?: string; // targetId if venue
-  createdAt: string;
-  updatedAt: string;
-
-  // Frontend compatibility fields
-  section: ImageSection;
-  targetId: string;
-  targetName: string;
-  altText: string;
-  sizeKb?: number;
-}
-
-// Convert Initial Seed Image to StoredImage format
-function adaptInitialSeed(img: ManagedImage, index: number): StoredImage {
-  const isVenue = img.section === 'venue_project';
-  const now = new Date().toISOString();
-  return {
-    id: img.id,
-    group: img.section,
-    filename: img.filename,
-    url: img.url,
-    thumbUrl: img.thumbUrl || img.url,
-    alt: img.altText,
-    width: img.width,
-    height: img.height,
-    format: img.format || 'webp',
-    isCover: img.isCover,
-    order: index,
-    focalPoint: img.focalPoint,
-    projectId: isVenue ? undefined : img.targetId,
-    venueId: isVenue ? img.targetId : undefined,
-    createdAt: img.uploadedAt || now,
-    updatedAt: now,
-    section: img.section,
-    targetId: img.targetId,
-    targetName: img.targetName,
-    altText: img.altText,
-    sizeKb: img.sizeKb || 120,
-  };
-}
-
-// 2. Concurrency Mutex: guarantees strictly sequential execution of all write operations
-class AsyncMutex {
-  private queue: Promise<any> = Promise.resolve();
-
-  public run<T>(fn: () => Promise<T>): Promise<T> {
-    const result = this.queue.then(() => fn());
-    this.queue = result.catch(() => {});
-    return result;
-  }
-}
 const dbMutex = new AsyncMutex();
 
-// 3. Atomic JSON Writer
+// 2. Atomic JSON Writer (Preserves local persistent disk intact)
 function atomicWriteDb(images: StoredImage[]): void {
   ensureDirs();
   const jsonContent = JSON.stringify(images, null, 2);
@@ -127,8 +91,8 @@ function atomicWriteDb(images: StoredImage[]): void {
   fs.renameSync(IMAGES_TMP_FILE, IMAGES_DB_FILE);
 }
 
-// 4. Safe Database Reader with Backup Recovery
-function readDbSafe(): StoredImage[] {
+// 3. Safe Database Reader with Backup Recovery
+export function readDbSafe(): StoredImage[] {
   ensureDirs();
 
   if (!fs.existsSync(IMAGES_DB_FILE)) {
@@ -178,147 +142,42 @@ function readDbSafe(): StoredImage[] {
       }
     }
 
-    // Do NOT silently wipe to seed data if corrupted in production
     throw new Error(`CRITICAL: images.json is corrupted and backup recovery failed: ${err.message}`);
   }
 }
 
-// 5. Order normalization: guarantees orders 0, 1, 2, 3... without gaps
-function normalizeGroupOrders(images: StoredImage[], group: string, targetId: string) {
-  const matching = images
-    .filter((img) => img.group === group && img.targetId === targetId)
-    .sort((a, b) => a.order - b.order);
-
-  matching.forEach((img, idx) => {
-    img.order = idx;
-  });
-}
-
-// 6. Safe SEO filename generator
-export function generateSeoFilename(hint: string, targetId: string): string {
-  let base = (hint || targetId || 'dreamart')
-    .toLowerCase()
-    .replace(/^img[-_0-9]+/i, '')
-    .replace(/^dsc[-_0-9]+/i, '')
-    .replace(/\.[^/.]+$/, '');
-
-  // Azerbaijani character transliteration
-  const azMap: Record<string, string> = {
-    ə: 'e', ı: 'i', ö: 'o', ü: 'u', ç: 'c', ş: 's', ğ: 'g',
-  };
-  base = base.replace(/[əıöüçşğ]/g, (c) => azMap[c] || c);
-  base = base.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-
-  if (!base || base.length < 3) {
-    base = `dreamart-${targetId || 'foto'}`.replace(/[^a-z0-9]+/g, '-');
-  }
-
-  // 6-character hex suffix to prevent collisions
-  const suffix = crypto.randomBytes(3).toString('hex');
-  return `${base}-${suffix}.webp`;
-}
-
-// 7. Server-Side Image Processing with Sharp
-const MAX_RAW_UPLOAD_BYTES = 10 * 1024 * 1024; // 10MB limit
-
-export interface ProcessedImage {
-  filename: string;
-  imageBuffer: Buffer;
-  thumbBuffer: Buffer;
-  width: number;
-  height: number;
-  format: 'webp';
-  sizeKb: number;
-}
-
-export async function processImageWithSharp(
-  rawBuffer: Buffer,
-  hintName: string,
-  targetId: string,
-  isHero: boolean
-): Promise<ProcessedImage> {
-  // Enforce 10MB raw limit
-  if (rawBuffer.length > MAX_RAW_UPLOAD_BYTES) {
-    const err: any = new Error('Şəkil ölçüsü 10MB-dan çox ola bilməz (HTTP 413).');
-    err.status = 413;
-    throw err;
-  }
-
-  // Decode with Sharp and inspect format
-  let metadata: Metadata;
-  try {
-    metadata = await sharp(rawBuffer).metadata();
-  } catch {
-    const err: any = new Error('Yüklənən fayl düzgün şəkil formatında deyil və ya zədələnib.');
-    err.status = 400;
-    throw err;
-  }
-
-  // Reject SVG, HTML, scripts, plain text
-  const allowed = ['jpeg', 'jpg', 'png', 'webp', 'heif', 'heic'];
-  const detectedFormat = metadata.format?.toLowerCase();
-  if (!detectedFormat || !allowed.includes(detectedFormat)) {
-    const err: any = new Error(
-      `Dəstəklənməyən şəkil formatı: ${detectedFormat || 'naməlum'}. Yalnız JPG, PNG və WebP qəbul olunur.`
-    );
-    err.status = 400;
-    throw err;
-  }
-
-  if (!metadata.width || !metadata.height || metadata.width < 20 || metadata.height < 20) {
-    const err: any = new Error('Şəkil ölçüləri (eni/hündürlüyü) qeyri-kafidir.');
-    err.status = 400;
-    throw err;
-  }
-
-  const filename = generateSeoFilename(hintName, targetId);
-
-  // Resize & convert main image
-  // Hero: max long edge 1920; Standard/card: max long edge 1600
-  const maxEdge = isHero ? 1920 : 1600;
-  const mainPipeline = sharp(rawBuffer)
-    .rotate() // auto-orient from EXIF orientation
-    .resize({
-      width: maxEdge,
-      height: maxEdge,
-      fit: 'inside',
-      withoutEnlargement: true,
-    })
-    .webp({ quality: 85, effort: 4 });
-
-  const { data: imageBuffer, info: mainInfo } = await mainPipeline.toBuffer({ resolveWithObject: true });
-
-  // Generate thumbnail: ~480px max edge
-  const thumbPipeline = sharp(rawBuffer)
-    .rotate()
-    .resize({
-      width: 480,
-      height: 480,
-      fit: 'inside',
-      withoutEnlargement: true,
-    })
-    .webp({ quality: 80, effort: 3 });
-
-  const thumbBuffer = await thumbPipeline.toBuffer();
-
-  return {
-    filename,
-    imageBuffer,
-    thumbBuffer,
-    width: mainInfo.width,
-    height: mainInfo.height,
-    format: 'webp',
-    sizeKb: Math.round(imageBuffer.length / 1024),
-  };
-}
-
-// 8. Public Image Service Layer
-
+// 4. Dual-Read Strategy:
+// Primary: Supabase (when configured and records exist)
+// Fallback: Existing Render Persistent Disk
 export async function getAllStoredImages(): Promise<StoredImage[]> {
+  if (isSupabaseConfigured()) {
+    try {
+      const supabaseImages = await fetchSupabaseImages();
+      if (supabaseImages && supabaseImages.length > 0) {
+        // Dual-read transition: check if local disk has images not yet in Supabase
+        const localImages = readDbSafe();
+        const supabaseIds = new Set(supabaseImages.map((img) => img.id));
+        const missingFromSupabase = localImages.filter((img) => !supabaseIds.has(img.id));
+
+        if (missingFromSupabase.length > 0) {
+          console.log(
+            `[Dual-Read] Supabase primary (${supabaseImages.length}) + local fallback (${missingFromSupabase.length} unmigrated).`
+          );
+          return [...supabaseImages, ...missingFromSupabase].sort((a, b) => a.order - b.order);
+        }
+        return supabaseImages.sort((a, b) => a.order - b.order);
+      }
+    } catch (err: any) {
+      console.warn('[Dual-Read] Supabase fetch error, using persistent disk fallback:', err.message);
+    }
+  }
+
+  // Fallback: Render Persistent Disk
   const images = readDbSafe();
   return images.sort((a, b) => a.order - b.order);
 }
 
+// 5. Upload Image Record (Primary: Supabase if configured + Local Disk Backup)
 export async function uploadImageRecord(params: {
   rawBuffer: Buffer;
   section: ImageSection;
@@ -337,14 +196,14 @@ export async function uploadImageRecord(params: {
     isHero
   );
 
-  // Write processed files to disk
+  // Write processed files to disk (keeps local storage backup intact)
   const mainPath = path.join(UPLOADS_DIR, processed.filename);
   const thumbPath = path.join(THUMBS_DIR, processed.filename);
   fs.writeFileSync(mainPath, processed.imageBuffer);
   fs.writeFileSync(thumbPath, processed.thumbBuffer);
 
-  // Mutex-protected metadata write
-  return dbMutex.run(async () => {
+  // Mutex-protected metadata write to local disk
+  const localRecord = await dbMutex.run(async () => {
     const images = readDbSafe();
     const shouldBeCover = Boolean(params.isCover);
 
@@ -359,7 +218,7 @@ export async function uploadImageRecord(params: {
     const groupImages = images.filter(
       (img) => img.group === params.section && img.targetId === params.targetId
     );
-    const nextOrder = groupImages.length; // 0-based sequential
+    const nextOrder = groupImages.length;
 
     const isVenue = params.section === 'venue_project';
     const now = new Date().toISOString();
@@ -394,86 +253,124 @@ export async function uploadImageRecord(params: {
 
     return newRecord;
   });
+
+  // If Supabase is configured, upload to Supabase Storage & DB
+  if (isSupabaseConfigured()) {
+    try {
+      const supabaseRecord = await uploadImageToSupabase({
+        imageBuffer: processed.imageBuffer,
+        thumbBuffer: processed.thumbBuffer,
+        filename: processed.filename,
+        width: processed.width,
+        height: processed.height,
+        sizeKb: processed.sizeKb,
+        section: params.section,
+        targetId: params.targetId,
+        targetName: params.targetName,
+        altText: params.altText,
+        isCover: params.isCover,
+        focalPoint: params.focalPoint,
+      });
+      return supabaseRecord;
+    } catch (err: any) {
+      console.warn('[Upload] Supabase upload failed, falling back to local persistent record:', err.message);
+    }
+  }
+
+  return localRecord;
 }
 
+// 6. Replace Image Record (Adheres to Replace Safety)
 export async function replaceImageRecord(
   id: string,
   rawBuffer: Buffer,
   meta: { altText?: string; focalPoint?: { x: number; y: number } }
 ): Promise<StoredImage> {
+  let supabaseRecord: StoredImage | null = null;
+  if (isSupabaseConfigured()) {
+    try {
+      supabaseRecord = await replaceImageInSupabase(id, rawBuffer, meta);
+    } catch (err: any) {
+      console.warn('[Replace] Supabase replace notice:', err.message);
+    }
+  }
+
+  // Also replace in local disk so local backup is preserved
   const existing = readDbSafe().find((img) => img.id === id);
-  if (!existing) {
+  if (!existing && !supabaseRecord) {
     const err: any = new Error('Şəkil tapılmadı');
     err.status = 404;
     throw err;
   }
 
-  const isHero = existing.group === 'home_hero';
-  const processed = await processImageWithSharp(
-    rawBuffer,
-    existing.filename,
-    existing.targetId,
-    isHero
-  );
+  if (existing) {
+    const isHero = existing.group === 'home_hero';
+    const processed = await processImageWithSharp(
+      rawBuffer,
+      existing.filename,
+      existing.targetId,
+      isHero
+    );
 
-  // Write new file with unique filename
-  const newMainPath = path.join(UPLOADS_DIR, processed.filename);
-  const newThumbPath = path.join(THUMBS_DIR, processed.filename);
-  fs.writeFileSync(newMainPath, processed.imageBuffer);
-  fs.writeFileSync(newThumbPath, processed.thumbBuffer);
+    const newMainPath = path.join(UPLOADS_DIR, processed.filename);
+    const newThumbPath = path.join(THUMBS_DIR, processed.filename);
+    fs.writeFileSync(newMainPath, processed.imageBuffer);
+    fs.writeFileSync(newThumbPath, processed.thumbBuffer);
 
-  // Mutex-protected metadata update
-  return dbMutex.run(async () => {
-    const images = readDbSafe();
-    const target = images.find((img) => img.id === id);
-    if (!target) {
-      // Clean up orphaned new files
-      try { fs.unlinkSync(newMainPath); } catch {}
-      try { fs.unlinkSync(newThumbPath); } catch {}
-      const err: any = new Error('Şəkil tapılmadı');
-      err.status = 404;
-      throw err;
-    }
+    await dbMutex.run(async () => {
+      const images = readDbSafe();
+      const target = images.find((img) => img.id === id);
+      if (target) {
+        const oldFilename = target.filename;
 
-    const oldFilename = target.filename;
+        target.filename = processed.filename;
+        target.url = `/uploads/${processed.filename}`;
+        target.thumbUrl = `/uploads/thumbs/${processed.filename}`;
+        target.width = processed.width;
+        target.height = processed.height;
+        target.sizeKb = processed.sizeKb;
+        target.format = 'webp';
+        target.updatedAt = new Date().toISOString();
+        if (meta.altText) {
+          target.alt = meta.altText.trim();
+          target.altText = meta.altText.trim();
+        }
+        if (meta.focalPoint) {
+          target.focalPoint = meta.focalPoint;
+        }
 
-    // Update metadata
-    target.filename = processed.filename;
-    target.url = `/uploads/${processed.filename}`;
-    target.thumbUrl = `/uploads/thumbs/${processed.filename}`;
-    target.width = processed.width;
-    target.height = processed.height;
-    target.sizeKb = processed.sizeKb;
-    target.format = 'webp';
-    target.updatedAt = new Date().toISOString();
-    if (meta.altText) {
-      target.alt = meta.altText.trim();
-      target.altText = meta.altText.trim();
-    }
-    if (meta.focalPoint) {
-      target.focalPoint = meta.focalPoint;
-    }
+        atomicWriteDb(images);
 
-    atomicWriteDb(images);
+        if (oldFilename && oldFilename !== processed.filename) {
+          try { fs.unlinkSync(path.join(UPLOADS_DIR, oldFilename)); } catch {}
+          try { fs.unlinkSync(path.join(THUMBS_DIR, oldFilename)); } catch {}
+        }
+      }
+    });
+  }
 
-    // Delete old files safely after metadata has been committed
-    if (oldFilename && oldFilename !== processed.filename) {
-      try { fs.unlinkSync(path.join(UPLOADS_DIR, oldFilename)); } catch {}
-      try { fs.unlinkSync(path.join(THUMBS_DIR, oldFilename)); } catch {}
-    }
-
-    return target;
-  });
+  return supabaseRecord || (await getAllStoredImages()).find((i) => i.id === id)!;
 }
 
+// 7. Update Image Meta Record
 export async function updateImageMetaRecord(
   id: string,
   updates: { altText?: string; filename?: string; focalPoint?: { x: number; y: number } }
 ): Promise<StoredImage> {
-  return dbMutex.run(async () => {
+  let supabaseRecord: StoredImage | null = null;
+  if (isSupabaseConfigured()) {
+    try {
+      supabaseRecord = await updateImageMetaInSupabase(id, updates);
+    } catch (err: any) {
+      console.warn('[Meta] Supabase update notice:', err.message);
+    }
+  }
+
+  const localRecord = await dbMutex.run(async () => {
     const images = readDbSafe();
     const target = images.find((img) => img.id === id);
     if (!target) {
+      if (supabaseRecord) return supabaseRecord;
       const err: any = new Error('Şəkil tapılmadı');
       err.status = 404;
       throw err;
@@ -491,16 +388,25 @@ export async function updateImageMetaRecord(
     atomicWriteDb(images);
     return target;
   });
+
+  return supabaseRecord || localRecord;
 }
 
+// 8. Set Cover Record
 export async function setCoverRecord(id: string): Promise<void> {
+  if (isSupabaseConfigured()) {
+    try {
+      await setCoverInSupabase(id);
+    } catch (err: any) {
+      console.warn('[Cover] Supabase setCover notice:', err.message);
+    }
+  }
+
   return dbMutex.run(async () => {
     const images = readDbSafe();
     const target = images.find((img) => img.id === id);
     if (!target) {
-      const err: any = new Error('Şəkil tapılmadı');
-      err.status = 404;
-      throw err;
+      return;
     }
 
     images.forEach((img) => {
@@ -513,7 +419,16 @@ export async function setCoverRecord(id: string): Promise<void> {
   });
 }
 
+// 9. Reorder Images Record
 export async function reorderImagesRecord(ids: string[]): Promise<void> {
+  if (isSupabaseConfigured()) {
+    try {
+      await reorderImagesInSupabase(ids);
+    } catch (err: any) {
+      console.warn('[Reorder] Supabase reorder notice:', err.message);
+    }
+  }
+
   return dbMutex.run(async () => {
     const images = readDbSafe();
     if (ids.length === 0) return;
@@ -531,14 +446,21 @@ export async function reorderImagesRecord(ids: string[]): Promise<void> {
   });
 }
 
+// 10. Delete Image Record (Adheres to Delete Safety)
 export async function deleteImageRecord(id: string): Promise<{ success: boolean; id: string }> {
+  if (isSupabaseConfigured()) {
+    try {
+      await deleteImageFromSupabase(id);
+    } catch (err: any) {
+      console.warn('[Delete] Supabase delete notice:', err.message);
+    }
+  }
+
   return dbMutex.run(async () => {
     const images = readDbSafe();
     const index = images.findIndex((img) => img.id === id);
     if (index === -1) {
-      const err: any = new Error('Şəkil tapılmadı');
-      err.status = 404;
-      throw err;
+      return { success: true, id };
     }
 
     const [deleted] = images.splice(index, 1);

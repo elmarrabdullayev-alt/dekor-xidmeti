@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getBreadcrumbSchema, getFaqPageSchema } from '../lib/structuredData';
+import { imageService } from '../lib/imageService';
 import {
   Sparkles,
   Calendar,
@@ -248,13 +249,28 @@ export const IndianWeddingPage: React.FC<IndianWeddingPageProps> = ({
     }
   ];
 
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
+
+  const heroImage =
+    imageService.getCoverImage('indian-wedding') ||
+    imageService.getCoverImage('img-portfolio-4', 'portfolio_lookbook', '/images/dreamart-monumental-toy-sehnesi-dekoru.webp');
+  const heroImgs = imageService.getImagesByTarget('indian-wedding');
+  const heroAlt = heroImgs[0]?.altText || 'Indian wedding decoration in Azerbaijan';
+
   return (
     <>
       <SeoHead
         title="Indian Wedding Decoration in Azerbaijan | DreamArt Weddings"
         description="Luxury Indian wedding decoration in Azerbaijan for Mehendi, Sangeet, ceremony and reception events. DreamArt Weddings provides custom multi-day decor across Baku and regions."
         canonicalPath="/indian-wedding-azerbaijan"
-        ogImage="/images/dreamart-monumental-toy-sehnesi-dekoru.webp"
+        ogImage={heroImage}
         jsonLd={jsonLd}
       />
 
@@ -262,8 +278,8 @@ export const IndianWeddingPage: React.FC<IndianWeddingPageProps> = ({
         {/* Hero Section */}
         <section className="relative min-h-[520px] lg:min-h-[580px] flex items-center justify-center bg-[#0B0B0B] overflow-hidden border-b border-white/10">
           <img
-            src="/images/dreamart-monumental-toy-sehnesi-dekoru.webp"
-            alt="Indian wedding decoration in Azerbaijan"
+            src={heroImage}
+            alt={heroAlt}
             className="absolute inset-0 w-full h-full object-cover object-center opacity-30 brightness-[0.55]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/60 to-black/40" />

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { ServicesSection } from '../components/home/ServicesSection';
 import { Sparkles, CheckCircle, Clock, ShieldCheck, HeartHandshake, ArrowRight } from 'lucide-react';
+import { imageService } from '../lib/imageService';
 
 interface ServicesPageProps {
   navigate: (path: string) => void;
@@ -9,6 +10,19 @@ interface ServicesPageProps {
 }
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, onOpenQuoteModal }) => {
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
+
+  const serviceHeaderCover =
+    imageService.getCoverImage('toy-dekoru', 'category_cover') ||
+    '/images/dreamart-toy-dekoru-qizili-altar.webp';
+
   return (
     <>
       <SeoHead
@@ -19,8 +33,15 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, onOpenQuot
 
       <div className="bg-[#0B0B0B] text-white min-h-screen border-b border-white/10">
         {/* Header Banner */}
-        <section className="py-16 sm:py-20 bg-[#121212] border-b border-white/10 text-center">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <section className="relative py-16 sm:py-20 bg-[#121212] border-b border-white/10 text-center overflow-hidden">
+          <img
+            src={serviceHeaderCover}
+            alt="Dekorasiya Xidmətləri"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/80 to-transparent pointer-events-none" />
+
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
             <span className="text-[10px] uppercase tracking-[0.35em] text-[#C5A059] block mb-2 font-medium">
               PEŞƏKAR FLORİSTİKA VƏ DİZAYN
             </span>
