@@ -48,9 +48,9 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const jsonLd = [
     getProjectDetailSchema(decor),
     getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: 'https://dreamart.az' },
-      { name: decor.categoryName, url: `https://dreamart.az/${decor.category}` },
-      { name: decor.name, url: `https://dreamart.az/dekorlar/${decor.slug}` }
+      { name: 'Ana səhifə', url: 'https://dreamartweddings.com' },
+      { name: decor.categoryName, url: `https://dreamartweddings.com/${decor.category}` },
+      { name: decor.name, url: `https://dreamartweddings.com/dekorlar/${decor.slug}` }
     ])
   ];
 

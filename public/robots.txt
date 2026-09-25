@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/*
+Disallow: /api
+Disallow: /api/*
 
-Sitemap: https://dreamart.az/sitemap.xml
+Sitemap: https://dreamartweddings.com/sitemap.xml

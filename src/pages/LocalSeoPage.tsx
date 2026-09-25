@@ -63,11 +63,18 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
     }
   ];
 
+  const isCuratedLocal = [
+    'toy-dekoru/baki',
+    'toy-dekoru/qebele',
+    'nisan-dekoru/baki',
+    'xina-dekoru/baki'
+  ].includes(`${category.slug}/${location.slug}`);
+
   const jsonLd = [
     getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: 'https://dreamart.az' },
-      { name: category.name, url: `https://dreamart.az/${category.slug}` },
-      { name: `${location.city} ${category.name}`, url: `https://dreamart.az/${category.slug}/${location.slug}` }
+      { name: 'Ana səhifə', url: 'https://dreamartweddings.com' },
+      { name: category.name, url: `https://dreamartweddings.com/${category.slug}` },
+      { name: `${location.city} ${category.name}`, url: `https://dreamartweddings.com/${category.slug}/${location.slug}` }
     ]),
     getFaqPageSchema(localFaqs)
   ];
@@ -79,6 +86,7 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
         description={`${location.city} şəhərində peşəkar ${category.name.toLowerCase()} xidməti. Quraşdırma, unikal çiçək dizaynı və etibarlı logistika.`}
         canonicalPath={`/${category.slug}/${location.slug}`}
         jsonLd={jsonLd}
+        noIndex={!isCuratedLocal}
       />
 
       <div className="bg-[#0B0B0B] text-white min-h-screen">

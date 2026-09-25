@@ -96,7 +96,7 @@ export function getVenueStructuredData(venue: VenueItem, canonicalUrl: string) {
         '@type': 'LocalBusiness',
         'name': 'DreamArt Events',
         'telephone': '+994502311728',
-        'url': 'https://dreamart.az',
+        'url': 'https://dreamartweddings.com',
         'address': {
           '@type': 'PostalAddress',
           'addressLocality': venue.city || 'Bakı',
@@ -117,13 +117,13 @@ export function getVenueStructuredData(venue: VenueItem, canonicalUrl: string) {
           '@type': 'ListItem',
           'position': 1,
           'name': 'Ana səhifə',
-          'item': 'https://dreamart.az'
+          'item': 'https://dreamartweddings.com'
         },
         {
           '@type': 'ListItem',
           'position': 2,
           'name': 'Restoranlar',
-          'item': 'https://dreamart.az/restoranlar'
+          'item': 'https://dreamartweddings.com/restoranlar'
         },
         {
           '@type': 'ListItem',

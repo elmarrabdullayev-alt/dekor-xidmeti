@@ -77,7 +77,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  const canonicalUrl = `https://dreamart.az/restoranlar/${venue.slug}`;
+  const canonicalUrl = `https://dreamartweddings.com/restoranlar/${venue.slug}`;
   const jsonLd = getVenueStructuredData(venue, canonicalUrl);
 
   return (

@@ -36,8 +36,8 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
     getCategoryServiceSchema(category),
     getFaqPageSchema(category.faqs),
     getBreadcrumbSchema([
-      { name: 'Ana səhifə', url: 'https://dreamart.az' },
-      { name: category.name, url: `https://dreamart.az/${category.slug}` }
+      { name: 'Ana səhifə', url: 'https://dreamartweddings.com' },
+      { name: category.name, url: `https://dreamartweddings.com/${category.slug}` }
     ])
   ];
 

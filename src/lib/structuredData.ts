@@ -4,7 +4,7 @@ export function getLocalBusinessSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    '@id': 'https://dreamart.az/#business',
+    '@id': 'https://dreamartweddings.com/#business',
     'name': 'DreamArt Events',
     'image': 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85',
     'telephone': '+994 50 231 17 28',
@@ -21,7 +21,7 @@ export function getLocalBusinessSchema() {
       'latitude': '40.4093',
       'longitude': '49.8671'
     },
-    'url': 'https://dreamart.az',
+    'url': 'https://dreamartweddings.com',
     'openingHoursSpecification': [
       {
         '@type': 'OpeningHoursSpecification',
@@ -55,7 +55,7 @@ export function getCategoryServiceSchema(category: CategoryInfo) {
     },
     'areaServed': 'Azerbaijan',
     'serviceType': category.name,
-    'url': `https://dreamart.az/${category.slug}`
+    'url': `https://dreamartweddings.com/${category.slug}`
   };
 }
 

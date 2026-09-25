@@ -18,6 +18,7 @@ import {
   reorderImagesRecord,
   deleteImageRecord,
 } from './server/persistentDiskService.ts';
+import { resolveRouteSeo, injectHeadSeo } from './server/seoRouteResolver.ts';
 
 dotenv.config();
 
@@ -369,14 +370,40 @@ async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: 'spa',
+      appType: 'custom',
     });
     app.use(vite.middlewares);
+
+    app.get('*', async (req, res, next) => {
+      const url = req.originalUrl;
+      if (url.startsWith('/api/')) {
+        return next();
+      }
+      try {
+        let template = fs.readFileSync(path.resolve(process.cwd(), 'index.html'), 'utf-8');
+        template = await vite.transformIndexHtml(url, template);
+        const seoData = resolveRouteSeo(url);
+        const html = injectHeadSeo(template, seoData);
+        res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+      } catch (e: any) {
+        vite.ssrFixStacktrace(e);
+        next(e);
+      }
+    });
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    app.use(express.static(distPath, { index: false }));
+    app.get('*', (req, res, next) => {
+      const url = req.originalUrl;
+      if (url.startsWith('/api/')) return next();
+      try {
+        const template = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
+        const seoData = resolveRouteSeo(url);
+        const html = injectHeadSeo(template, seoData);
+        res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+      } catch (e) {
+        next(e);
+      }
     });
   }
 

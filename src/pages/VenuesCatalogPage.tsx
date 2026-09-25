@@ -43,7 +43,7 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
       '@type': 'WebPage',
       'name': 'Toy və tədbir məkanları | DreamArt Events',
       'description': 'DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri.',
-      'url': 'https://dreamart.az/restoranlar'
+      'url': 'https://dreamartweddings.com/restoranlar'
     },
     {
       '@context': 'https://schema.org',
@@ -53,13 +53,13 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
           '@type': 'ListItem',
           'position': 1,
           'name': 'Ana səhifə',
-          'item': 'https://dreamart.az'
+          'item': 'https://dreamartweddings.com'
         },
         {
           '@type': 'ListItem',
           'position': 2,
           'name': 'Restoranlar',
-          'item': 'https://dreamart.az/restoranlar'
+          'item': 'https://dreamartweddings.com/restoranlar'
         }
       ]
     }
