@@ -16,6 +16,8 @@ interface ImageUploadModalProps {
   section: ImageSection;
   targetId: string;
   targetName: string;
+  maxAllowed?: number;
+  currentCount?: number;
   onSuccess: (newImage: ManagedImage) => void;
 }
 
@@ -25,6 +27,8 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
   section,
   targetId,
   targetName,
+  maxAllowed,
+  currentCount = 0,
   onSuccess
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -56,6 +60,19 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
     if (!fileList || fileList.length === 0) return;
 
     setError(null);
+
+    const isIndianWedding = section === 'indian_wedding' || targetId === 'indian-wedding';
+    const effectiveLimit = maxAllowed || (isIndianWedding ? 2 : undefined);
+    if (effectiveLimit !== undefined) {
+      if (currentCount >= effectiveLimit) {
+        setError(`Maksimum ${effectiveLimit} şəkil həddi dolub (${currentCount}/${effectiveLimit}).`);
+        return;
+      }
+      if (fileList.length > (effectiveLimit - currentCount)) {
+        setError(`Bu bölmə üçün yalnız ${effectiveLimit - currentCount} əlavə şəkil yükləyə bilərsiniz (maksimum ${effectiveLimit}).`);
+        return;
+      }
+    }
 
     // If user selected multiple files
     if (fileList.length > 1) {

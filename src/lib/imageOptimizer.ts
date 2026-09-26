@@ -48,6 +48,8 @@ export function generateSuggestedFilename(
       return `dreamart-portfolio-${cleanTarget}-${pad}.webp`;
     case 'regional_service':
       return `azerbaijan-regional-dekor-${pad}.webp`;
+    case 'indian_wedding':
+      return `dreamart-indian-wedding-azerbaijan-${pad}.webp`;
     default:
       return `dreamart-dekor-${cleanTarget}-${pad}.webp`;
   }
@@ -80,6 +82,8 @@ export function generateSuggestedAltText(
       return `DreamArt Events zövqlü dekorasiya vitrini - ${name}`;
     case 'regional_service':
       return `Azərbaycan regionları üçün DreamArt Events peşəkar dekor xidməti`;
+    case 'indian_wedding':
+      return `Luxury Indian Wedding decoration in Azerbaijan - ${name}`;
     default:
       return `DreamArt Events ${name} dekorasiyası`;
   }

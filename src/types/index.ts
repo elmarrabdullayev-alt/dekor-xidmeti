@@ -147,7 +147,8 @@ export type ImageSection =
   | 'venue_project'
   | 'xonca_service'
   | 'portfolio_lookbook'
-  | 'regional_service';
+  | 'regional_service'
+  | 'indian_wedding';
 
 export interface ManagedImage {
   id: string;

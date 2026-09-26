@@ -40,9 +40,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   const [authError, setAuthError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Top Admin View Tabs: 'decors' (Default & Unified Category -> Project -> Images) | 'venues' | 'hero'
-  const [activeAdminTab, setActiveAdminTab] = useState<'decors' | 'venues' | 'hero'>(() => {
+  // Top Admin View Tabs: 'decors' (Default & Unified Category -> Project -> Images) | 'venues' | 'hero' | 'indian_wedding'
+  const [activeAdminTab, setActiveAdminTab] = useState<'decors' | 'venues' | 'hero' | 'indian_wedding'>(() => {
     if (currentPath?.includes('restoranlar')) return 'venues';
+    if (currentPath?.includes('indian-wedding')) return 'indian_wedding';
     return 'decors';
   });
 

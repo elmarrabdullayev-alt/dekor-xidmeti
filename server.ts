@@ -280,6 +280,19 @@ async function startServer() {
         return res.status(400).json({ error: 'Bütün vacib parametrlər (section, targetId, imageBase64) tələb olunur.' });
       }
 
+      // Enforce max 2 images for Indian Wedding top section
+      if (section === 'indian_wedding' || targetId === 'indian-wedding') {
+        const allStored = await getAllStoredImages();
+        const existingCount = allStored.filter(
+          (img) => img.section === 'indian_wedding' || img.targetId === 'indian-wedding'
+        ).length;
+        if (existingCount >= 2) {
+          return res.status(400).json({
+            error: 'Indian Wedding bölməsi üçün maksimum 2 şəkil yüklənə bilər (2/2 həddi dolub).'
+          });
+        }
+      }
+
       // Extract raw buffer from base64
       const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
       const rawBuffer = Buffer.from(base64Data, 'base64');
