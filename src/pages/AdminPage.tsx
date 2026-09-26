@@ -15,6 +15,7 @@ import { ImageReplaceModal } from '../components/admin/ImageReplaceModal';
 import { ImageMetaModal } from '../components/admin/ImageMetaModal';
 import { ImageDeleteModal } from '../components/admin/ImageDeleteModal';
 import { SeoHead } from '../components/layout/SeoHead';
+import { isProjectStrictlyLinkedToVenue } from '../lib/venueHelper';
 
 interface AdminPageProps {
   navigate: (path: string) => void;
@@ -186,7 +187,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     const v = INITIAL_VENUES.find(item => item.slug === activeVenueSlug);
     uploadTargetName = v?.name || activeVenueSlug;
     activeImages = images
-      .filter(img => img.section === 'venue_project' && img.targetId === activeVenueSlug)
+      .filter(img => img.section === 'venue_project' && (img.targetId === activeVenueSlug || (v && img.targetId === v.id)))
       .sort((a, b) => a.order - b.order);
   } else if (activeAdminTab === 'hero') {
     uploadSection = 'home_hero';
@@ -781,91 +782,261 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
         {/* ============================================================== */}
         {/* VIEW B: VENUES MANAGEMENT                                       */}
         {/* ============================================================== */}
-        {activeAdminTab === 'venues' && (
-          <div className="space-y-6">
-            <div className="bg-[#141414] border border-[#242424] rounded-2xl p-4 sm:p-5 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222]">
-                <div>
-                  <h2 className="text-sm font-semibold text-[#F5F5F7]">Restoran / Məkan Seçin</h2>
-                  <p className="text-xs text-neutral-400 mt-0.5">DreamArt Events real məkan dekorasiyası fotoları</p>
-                </div>
-                <button
-                  onClick={() => setIsUploadOpen(true)}
-                  className="px-4 py-2.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-2 transition shadow-md cursor-pointer self-start sm:self-auto"
-                >
-                  <Upload className="w-4 h-4" />
-                  <span>Yeni Şəkil Əlavə Et</span>
-                </button>
-              </div>
+        {activeAdminTab === 'venues' && (() => {
+          const activeVenue = store.getVenueBySlug(activeVenueSlug) || INITIAL_VENUES.find(v => v.slug === activeVenueSlug) || INITIAL_VENUES[0];
+          const venueLinkedProjects = decors.filter(d => isProjectStrictlyLinkedToVenue(d, activeVenue));
 
-              <div className="flex flex-wrap gap-2 pt-1">
-                {INITIAL_VENUES.map(v => {
-                  const isSelected = v.slug === activeVenueSlug;
-                  const count = images.filter(img => img.section === 'venue_project' && img.targetId === v.slug).length;
-
-                  return (
-                    <button
-                      key={v.slug}
-                      onClick={() => setActiveVenueSlug(v.slug)}
-                      className={`px-3 py-1.5 rounded-lg text-xs transition border flex items-center gap-1.5 cursor-pointer ${
-                        isSelected
-                          ? 'bg-white/15 text-white border-[#C5A262] font-medium'
-                          : 'bg-[#1E1E1E] text-neutral-400 border-[#2E2E2E] hover:text-white hover:bg-[#252525]'
-                      }`}
-                    >
-                      <span>{v.name}</span>
-                      <span className="text-[10px] text-neutral-500 font-mono">({count})</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Venue Images Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {activeImages.map((img, idx) => (
-                <div
-                  key={img.id}
-                  className={`relative rounded-2xl overflow-hidden bg-[#161616] border transition flex flex-col ${
-                    img.isCover ? 'border-[#C5A262] ring-1 ring-[#C5A262]/50 shadow-lg' : 'border-[#262626]'
-                  }`}
-                >
-                  <div className="relative aspect-video w-full overflow-hidden bg-black/60">
-                    <img src={img.thumbUrl || img.url} alt={img.altText} className="w-full h-full object-cover" />
-                    {img.isCover && (
-                      <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md bg-[#C5A262] text-black font-bold text-[10px] tracking-wider uppercase flex items-center gap-1">
-                        <Star className="w-3 h-3 fill-black" />
-                        Əsas Qapaq
-                      </div>
-                    )}
+          return (
+            <div className="space-y-6">
+              {/* Venue Selector Card */}
+              <div className="bg-[#141414] border border-[#242424] rounded-2xl p-4 sm:p-5 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222]">
+                  <div>
+                    <h2 className="text-sm font-semibold text-[#F5F5F7]">Restoran / Məkan Seçin</h2>
+                    <p className="text-xs text-neutral-400 mt-0.5">DreamArt Events real məkan dekorasiyası fotoları</p>
                   </div>
-                  <div className="p-3.5 space-y-2">
-                    <div className="text-xs font-mono text-neutral-200 truncate">{img.filename}</div>
-                    <div className="grid grid-cols-2 gap-2">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => navigate(`/restoranlar/${activeVenueSlug}`)}
+                      className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 text-xs flex items-center gap-1.5 transition cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5 text-[#C5A262]" />
+                      <span>Saytda Məkana Bax</span>
+                    </button>
+                    <button
+                      onClick={() => setIsUploadOpen(true)}
+                      className="px-4 py-2 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-2 transition shadow-md cursor-pointer shrink-0"
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>Yeni Şəkil Əlavə Et</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {INITIAL_VENUES.map(v => {
+                    const isSelected = v.slug === activeVenueSlug;
+                    const count = images.filter(img => img.section === 'venue_project' && (img.targetId === v.slug || img.targetId === v.id)).length;
+
+                    return (
                       <button
-                        onClick={() => handleSetCover(img.id)}
-                        disabled={img.isCover}
-                        className={`py-1.5 px-2 text-[11px] rounded-lg border font-medium flex items-center justify-center gap-1 ${
-                          img.isCover ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/40' : 'bg-white/5 text-neutral-200 border-white/10 hover:bg-[#C5A262] hover:text-black cursor-pointer'
+                        key={v.slug}
+                        onClick={() => setActiveVenueSlug(v.slug)}
+                        className={`px-3 py-1.5 rounded-lg text-xs transition border flex items-center gap-1.5 cursor-pointer ${
+                          isSelected
+                            ? 'bg-white/15 text-white border-[#C5A262] font-medium'
+                            : 'bg-[#1E1E1E] text-neutral-400 border-[#2E2E2E] hover:text-white hover:bg-[#252525]'
                         }`}
                       >
-                        <Star className="w-3 h-3" />
-                        <span>{img.isCover ? 'Qapaqdır' : 'Qapaq et'}</span>
+                        <span>{v.name}</span>
+                        <span className="text-[10px] text-neutral-500 font-mono">({count})</span>
                       </button>
-                      <button
-                        onClick={() => setReplacingImage(img)}
-                        className="py-1.5 px-2 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 font-medium flex items-center justify-center gap-1 cursor-pointer"
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Read-Only Linked Projects Panel */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#141414] border border-[#242424] space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b border-[#222]">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#C5A262]" />
+                    <h3 className="text-xs font-semibold text-[#F5F5F7] uppercase tracking-wider">
+                      {activeVenue?.name} üçün Təsdiqlənmiş Real Layihələr ({venueLinkedProjects.length})
+                    </h3>
+                  </div>
+                  <span className="text-[11px] text-neutral-400 font-light">
+                    Layihə səhifəsində yalnız explicit venueSlug/venueId təyin edilmiş layihələr göstərilir
+                  </span>
+                </div>
+
+                {venueLinkedProjects.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+                    {venueLinkedProjects.map(proj => (
+                      <div
+                        key={proj.id}
+                        className="flex items-center gap-3 p-3 rounded-xl bg-[#1A1A1A] border border-white/5 hover:border-[#C5A262]/50 transition group cursor-pointer"
+                        onClick={() => navigate(`/dekorlar/${proj.slug}`)}
                       >
-                        <RefreshCw className="w-3 h-3 text-[#C5A262]" />
-                        <span>Dəyiş</span>
-                      </button>
-                    </div>
+                        <img
+                          src={proj.mainImage}
+                          alt={proj.name}
+                          className="w-12 h-12 rounded-lg object-cover border border-white/10 shrink-0"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs text-white font-medium truncate group-hover:text-[#E5C378] transition-colors">
+                            {proj.name}
+                          </div>
+                          <div className="text-[10px] text-[#C5A262] font-mono mt-0.5">
+                            {proj.categoryName} • {proj.city}
+                          </div>
+                        </div>
+                        <ExternalLink className="w-3.5 h-3.5 text-neutral-500 group-hover:text-white shrink-0 mr-1" />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-3.5 rounded-xl bg-black/40 border border-white/5 text-xs text-neutral-400 font-light">
+                    Bu məkana aid təsdiqlənmiş layihə əlaqələndirilməyib. Saytda təmiz "Bu məkana aid təsdiqlənmiş layihələr hazırda əlavə edilməyib" mesajı göstərilir.
+                  </div>
+                )}
+              </div>
+
+              {/* Unified Venue Images Grid (Cover + Gallery) */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
+                      {activeVenue?.name} Şəkilləri ({activeImages.length}) - 1 Əsas Qapaq + Qalereya
+                    </h3>
+                    <p className="text-[11px] text-neutral-500 mt-0.5">
+                      Qapaq şəkli məkanın əsas örtüyü, qalan şəkillər isə məkan qalereyası kimi nümayiş olunur.
+                    </p>
                   </div>
                 </div>
-              ))}
+
+                {activeImages.length === 0 ? (
+                  <div className="py-12 text-center border-2 border-dashed border-[#262626] rounded-2xl bg-[#141414]/50 p-6 space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto text-neutral-500">
+                      <ImageIcon className="w-6 h-6" />
+                    </div>
+                    <p className="text-sm font-medium text-neutral-300">
+                      Bu məkan üçün hələ fərdi CMS şəkli yüklənməyib
+                    </p>
+                    <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                      İlk şəkli yükləyərək onu dərhal məkanın əsas qapaq şəkli edə bilərsiniz.
+                    </p>
+                    <button
+                      onClick={() => setIsUploadOpen(true)}
+                      className="px-4 py-2 rounded-xl bg-[#C5A262] text-black font-semibold text-xs inline-flex items-center gap-1.5 mt-2 cursor-pointer hover:bg-[#b08d4f] transition"
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>İlk Şəkli Yüklə</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {activeImages.map((img, idx) => {
+                      const isCover = img.isCover;
+
+                      return (
+                        <div
+                          key={img.id}
+                          id={`venue-img-${img.id}`}
+                          className={`relative rounded-2xl overflow-hidden bg-[#161616] border transition flex flex-col shadow-lg ${
+                            isCover ? 'border-[#C5A262] ring-2 ring-[#C5A262]/50 shadow-xl' : 'border-[#262626]'
+                          }`}
+                        >
+                          <div className="relative aspect-video w-full overflow-hidden bg-black/60">
+                            <img
+                              src={img.thumbUrl || img.url}
+                              alt={img.altText}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
+                            {isCover ? (
+                              <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md bg-[#C5A262] text-black font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-md">
+                                <Star className="w-3 h-3 fill-black" />
+                                Əsas Qapaq
+                              </div>
+                            ) : (
+                              <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/75 border border-white/10 text-neutral-300 text-[10px] font-mono">
+                                Qalereya Şəkli
+                              </div>
+                            )}
+
+                            <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/70 border border-white/10 text-white text-[10px] font-mono">
+                              #{idx + 1}
+                            </div>
+                          </div>
+
+                          <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div className="space-y-1">
+                              <div className="text-xs font-mono text-neutral-200 truncate" title={img.filename}>
+                                {img.filename}
+                              </div>
+                              <div className="text-[11px] text-neutral-400 line-clamp-2" title={img.altText}>
+                                {img.altText}
+                              </div>
+                            </div>
+
+                            <div className="pt-2 border-t border-[#242424] space-y-2">
+                              <div className="grid grid-cols-2 gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleSetCover(img.id)}
+                                  disabled={isCover}
+                                  className={`py-1.5 px-2 text-[11px] rounded-lg border font-medium flex items-center justify-center gap-1 transition ${
+                                    isCover
+                                      ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/40 cursor-default'
+                                      : 'bg-white/5 text-neutral-200 border-white/10 hover:bg-[#C5A262] hover:text-black hover:border-[#C5A262] cursor-pointer'
+                                  }`}
+                                >
+                                  <Star className="w-3 h-3" />
+                                  <span>{isCover ? 'Qapaqdır' : 'Qapaq et'}</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setReplacingImage(img)}
+                                  className="py-1.5 px-2 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 font-medium flex items-center justify-center gap-1 transition cursor-pointer"
+                                >
+                                  <RefreshCw className="w-3 h-3 text-[#C5A262]" />
+                                  <span>Şəkil dəyiş</span>
+                                </button>
+                              </div>
+
+                              <div className="flex items-center justify-between gap-1">
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleMove(img.id, 'up')}
+                                    disabled={idx === 0}
+                                    title="Əvvələ çək"
+                                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                                  >
+                                    <ArrowUp className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleMove(img.id, 'down')}
+                                    disabled={idx === activeImages.length - 1}
+                                    title="Sonraya çək"
+                                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                                  >
+                                    <ArrowDown className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => setEditingMetaImage(img)}
+                                    title="Fayl adı və Alt mətnini redaktə et"
+                                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-[#C5A262] transition cursor-pointer"
+                                  >
+                                    <Edit3 className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setDeletingImage(img)}
+                                    title="Şəkli sil"
+                                    className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 hover:text-red-200 transition cursor-pointer"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* ============================================================== */}
         {/* VIEW C: HOME HERO SLIDES                                        */}

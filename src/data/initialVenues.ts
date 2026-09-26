@@ -17,7 +17,7 @@ export const INITIAL_VENUES: VenueItem[] = [
       '/images/dreamart-banket-zali-goy-isiq-dekoru.webp'
     ],
     hasRealProject: true,
-    relatedDecorIds: ['decor-1', 'decor-6'],
+    relatedDecorIds: ['decor-1'],
     relatedServices: ['Toy dekoru', 'Səhnə dekoru', 'Gəlin-bəy masası', 'Masa kompozisiyaları', 'Giriş fotozonası'],
     faqs: generateDefaultVenueFaqs('Meridian', true, '050 231 17 28'),
     seoTitle: 'Meridian Toy Dekoru və Restoran Tərtibatı | Bakı | DreamArt Weddings',
@@ -40,10 +40,10 @@ export const INITIAL_VENUES: VenueItem[] = [
       '/images/dreamart-nisan-dekoru-fotozona.webp',
       '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp'
     ],
-    hasRealProject: true,
-    relatedDecorIds: ['decor-1'],
+    hasRealProject: false,
+    relatedDecorIds: [],
     relatedServices: ['Toy dekoru', 'Nişan masası', 'Gül tağı', 'Fotozona'],
-    faqs: generateDefaultVenueFaqs('By Meridian', true, '050 231 17 28'),
+    faqs: generateDefaultVenueFaqs('By Meridian', false, '050 231 17 28'),
     seoTitle: 'By Meridian Toy Dekoru və Ziyafət Tərtibatı | Bakı | DreamArt Weddings',
     metaDescription: 'By Meridian zalında unudulmaz toy və nişan mərasimləri üçün eksklüziv dekorasiya xidməti. Peşəkar floristika, gəlin masası və montaj.',
     status: 'published',
@@ -64,7 +64,7 @@ export const INITIAL_VENUES: VenueItem[] = [
       '/images/dreamart-qala-gecesi-samdan-dekoru.webp'
     ],
     hasRealProject: true,
-    relatedDecorIds: ['decor-1', 'decor-5', 'decor-6'],
+    relatedDecorIds: ['decor-5'],
     relatedServices: ['Toy dekoru', 'Zal bəzəyi', 'Çilçıraq gülləri', 'Qarşılama zonası'],
     faqs: generateDefaultVenueFaqs('Bağçalı Saray', true, '050 231 17 28'),
     seoTitle: 'Bağçalı Saray Toy Dekoru və Şadlıq Sarayı Tərtibatı | Bakı | DreamArt Weddings',

@@ -1,4 +1,4 @@
-import { DecorItem, InquiryRequest, SiteSettings, DecorCategorySlug, VenueItem } from '../types';
+import { DecorItem, InquiryRequest, SiteSettings, DecorCategorySlug, VenueItem, ManagedImage } from '../types';
 import { INITIAL_DECORS } from '../data/initialDecors';
 import { INITIAL_VENUES } from '../data/initialVenues';
 import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData';
@@ -79,16 +79,25 @@ class DecorStore {
   }
 
   private hydrateVenue(v: VenueItem): VenueItem {
-    const coverUrl = imageService.getCoverImage(v.slug, 'venue_project') ||
-                     imageService.getCoverImage(v.id, 'venue_project', v.mainImage);
     const managedImgs = [
       ...imageService.getImagesByTarget(v.slug, 'venue_project'),
       ...imageService.getImagesByTarget(v.id, 'venue_project')
     ];
     // deduplicate by id
-    const uniqueMap = new Map<string, string>();
-    managedImgs.forEach(img => uniqueMap.set(img.id, img.url));
-    const gallery = uniqueMap.size > 0 ? Array.from(uniqueMap.values()) : v.galleryImages;
+    const uniqueMap = new Map<string, ManagedImage>();
+    managedImgs.forEach(img => uniqueMap.set(img.id, img));
+    const allManaged = Array.from(uniqueMap.values()).sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    // Cover image: image with isCover=true, or first image, or fallback
+    const coverObj = allManaged.find(img => img.isCover) || allManaged[0];
+    const coverUrl = coverObj?.url ||
+                     imageService.getCoverImage(v.slug, 'venue_project') ||
+                     imageService.getCoverImage(v.id, 'venue_project', v.mainImage);
+
+    // Gallery images: all remaining images where !isCover and id !== coverObj?.id
+    const gallery = allManaged.length > 0
+      ? allManaged.filter(img => img.id !== coverObj?.id && !img.isCover).map(i => i.url)
+      : (v.galleryImages || []).filter(url => url !== coverUrl);
 
     return {
       ...v,

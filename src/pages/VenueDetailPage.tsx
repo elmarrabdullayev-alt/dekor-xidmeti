@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowLeft, MapPin, Check, Phone, MessageCircle, Sparkles,
   ChevronDown, ChevronUp, Image as ImageIcon, Calendar, CheckCircle2,
-  Share2, ShieldCheck, ArrowRight
+  Share2, ShieldCheck, ArrowRight, X
 } from 'lucide-react';
-import { VenueItem, DecorItem } from '../types';
+import { VenueItem, DecorItem, ManagedImage } from '../types';
 import { SeoHead } from '../components/layout/SeoHead';
 import { store } from '../lib/store';
-import { isVenueIndexable, getVenueStructuredData } from '../lib/venueHelper';
+import { imageService } from '../lib/imageService';
+import { isVenueIndexable, getVenueStructuredData, isProjectStrictlyLinkedToVenue } from '../lib/venueHelper';
 
 interface VenueDetailPageProps {
   slug: string;
@@ -20,6 +21,17 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
   navigate,
   onOpenQuoteModal
 }) => {
+  // Subscribe to live store and imageService updates
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const unsubStore = store.subscribe(() => setTick(t => t + 1));
+    const unsubImg = imageService.subscribe(() => setTick(t => t + 1));
+    return () => {
+      unsubStore();
+      unsubImg();
+    };
+  }, []);
+
   const venue = store.getVenueBySlug(slug);
   const allVenues = store.getVenues(true);
   const allDecors = store.getDecors(false);
@@ -27,6 +39,19 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
 
   const [activeFaqIndex, setActiveFaqIndex] = useState<number | null>(0);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
+
+  // Close lightbox modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedGalleryImage(null);
+      }
+    };
+    if (selectedGalleryImage) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [selectedGalleryImage]);
 
   if (!venue) {
     return (
@@ -46,10 +71,43 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
     );
   }
 
-  // Linked real decors
-  const relatedDecors: DecorItem[] = (venue.relatedDecorIds || [])
-    .map(id => allDecors.find(d => d.id === id))
-    .filter((d): d is DecorItem => Boolean(d));
+  // ==============================================================
+  // 1. VENUE IMAGE LOGIC (Single Source of Truth: Supabase / CMS)
+  // ==============================================================
+  const managedVenueImages = [
+    ...imageService.getImagesByTarget(venue.slug, 'venue_project'),
+    ...imageService.getImagesByTarget(venue.id, 'venue_project')
+  ];
+  const uniqueMap = new Map<string, ManagedImage>();
+  managedVenueImages.forEach(img => uniqueMap.set(img.id, img));
+  const allVenueImages = Array.from(uniqueMap.values()).sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  // Cover image: explicit isCover === true, or first image, or fallback
+  const coverImageObj = allVenueImages.find(img => img.isCover) || allVenueImages[0];
+  const heroCoverUrl = coverImageObj?.url || venue.mainImage;
+  const heroCoverAlt = coverImageObj?.altText || venue.seoTitle || `${venue.name} toy dekoru`;
+
+  // Venue Gallery: ALL remaining venue_project images (where !isCover and id !== coverImageObj?.id)
+  const venueGalleryPhotos: Array<{ url: string; altText: string; id?: string }> = allVenueImages.length > 0
+    ? allVenueImages
+        .filter(img => img.id !== coverImageObj?.id && !img.isCover)
+        .map(img => ({
+          url: img.url,
+          altText: img.altText || `${venue.name} dekorasiya`,
+          id: img.id
+        }))
+    : (venue.galleryImages || [])
+        .filter(url => url !== heroCoverUrl)
+        .map((url, idx) => ({
+          url,
+          altText: `${venue.name} dekorasiya ${idx + 1}`
+        }));
+
+  // ==============================================================
+  // 2. STRICT PROJECT ASSOCIATION
+  // ONLY projects where venueId / venueSlug explicitly matches this venue
+  // ==============================================================
+  const verifiedProjects: DecorItem[] = allDecors.filter(d => isProjectStrictlyLinkedToVenue(d, venue));
 
   // Related other venues
   const otherVenues = allVenues
@@ -58,13 +116,6 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
 
   // Indexability check
   const isIndexable = isVenueIndexable(venue, allDecors);
-
-  // All gallery photos
-  const allPhotos = [
-    venue.mainImage,
-    ...(venue.galleryImages || []),
-    ...relatedDecors.flatMap(d => [d.mainImage, ...(d.galleryImages || [])])
-  ].filter((img, idx, arr) => arr.indexOf(img) === idx);
 
   // Phone and WhatsApp links
   const phoneDisplay = '050 231 17 28';
@@ -86,7 +137,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
         title={venue.seoTitle || `${venue.name} Toy Dekoru | DreamArt Weddings`}
         description={venue.metaDescription || venue.shortDescription}
         canonicalPath={`/restoranlar/${venue.slug}`}
-        ogImage={venue.mainImage}
+        ogImage={heroCoverUrl}
         jsonLd={jsonLd}
         noIndex={!isIndexable}
       />
@@ -113,11 +164,11 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
           </div>
         </div>
 
-        {/* Hero Section */}
+        {/* 1. Venue Hero Cover */}
         <section className="relative h-[380px] sm:h-[460px] lg:h-[500px] w-full overflow-hidden">
           <img
-            src={venue.mainImage}
-            alt={`${venue.name} toy dekoru`}
+            src={heroCoverUrl}
+            alt={heroCoverAlt}
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/60 to-black/40" />
@@ -135,7 +186,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                     <span>{venue.city}{venue.district ? `, ${venue.district}` : ''}{venue.address ? ` (${venue.address})` : ''}</span>
                   </div>
 
-                  {venue.hasRealProject && (
+                  {verifiedProjects.length > 0 && (
                     <span className="flex items-center gap-1 bg-[#C5A059] text-[#0B0B0B] font-semibold text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-xs">
                       <CheckCircle2 className="w-3 h-3" />
                       İcra edilmiş real layihə
@@ -179,7 +230,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             {/* Left Main Content (8 cols) */}
             <div className="lg:col-span-8 space-y-12">
-              {/* AI & GEO Direct-Answer Block */}
+              {/* 2. Venue Description & Direct Info Block */}
               <div className="bg-[#121212] border border-[#C5A059]/40 rounded-sm p-5 sm:p-6 shadow-xl">
                 <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium font-mono mb-2">
                   <Sparkles className="w-3.5 h-3.5" />
@@ -219,7 +270,40 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                 </section>
               )}
 
-              {/* Real DreamArt Weddings Projects */}
+              {/* 3. Venue Gallery (All Remaining venue_project Images) */}
+              {venueGalleryPhotos.length > 0 && (
+                <section className="space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                    <div>
+                      <h2 className="font-serif text-2xl text-white">Məkan Qalereyası</h2>
+                      <p className="text-xs text-white/50 mt-1">
+                        {venue.name} üçün xüsusi dekorasiya və məkan görüntüləri
+                      </p>
+                    </div>
+                    <span className="text-xs text-[#C5A059] font-mono">{venueGalleryPhotos.length} foto</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                    {venueGalleryPhotos.map((photo, idx) => (
+                      <div
+                        key={photo.id || idx}
+                        className="relative h-36 sm:h-44 rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059]/60 cursor-pointer group shadow-md"
+                        onClick={() => setSelectedGalleryImage(photo.url)}
+                      >
+                        <img
+                          src={photo.url}
+                          alt={photo.altText}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity" />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* 4. Verified Real Projects (Strictly associated with this venue only) */}
               <section className="space-y-6">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10">
                   <div>
@@ -230,16 +314,16 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                       DreamArt Weddings komandası tərəfindən icra edilmiş faktiki tərtibatlar
                     </p>
                   </div>
-                  {relatedDecors.length > 0 && (
+                  {verifiedProjects.length > 0 && (
                     <span className="text-xs text-[#C5A059] font-mono">
-                      {relatedDecors.length} layihə
+                      {verifiedProjects.length} layihə
                     </span>
                   )}
                 </div>
 
-                {relatedDecors.length > 0 ? (
+                {verifiedProjects.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {relatedDecors.map((decor) => (
+                    {verifiedProjects.map((decor) => (
                       <div
                         key={decor.id}
                         className="group bg-[#141414] border border-white/10 hover:border-[#C5A059]/40 rounded-sm overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
@@ -282,47 +366,47 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                     ))}
                   </div>
                 ) : (
-                  <div className="bg-white/[0.02] border border-white/5 p-6 rounded-sm text-center">
-                    <p className="text-xs text-white/60">
-                      Bu məkan üçün yeni layihələr arxivə əlavə olunur. Məkana uyğun xüsusi dizayn və foto portfoliomuzu WhatsApp vasitəsilə dərhal əldə edə bilərsiniz.
+                  <div className="bg-white/[0.02] border border-white/10 p-6 sm:p-8 rounded-sm text-center space-y-3">
+                    <p className="text-sm text-white/80 font-light">
+                      Bu məkana aid təsdiqlənmiş layihələr hazırda əlavə edilməyib.
+                    </p>
+                    <p className="text-xs text-white/50 max-w-md mx-auto">
+                      DreamArt Weddings {venue.name} məkanının memarlığına uyğun fərdi dekor konseptlərini sifarişlə hazırlayır.
                     </p>
                     <button
                       onClick={handleWhatsApp}
-                      className="mt-4 inline-flex items-center gap-2 text-xs text-[#C5A059] hover:underline"
+                      className="mt-2 inline-flex items-center gap-2 text-xs text-[#C5A059] hover:underline cursor-pointer"
                     >
-                      <MessageCircle className="w-3.5 h-3.5" />
-                      <span>WhatsApp ilə şəkilləri istəyin</span>
+                      <MessageCircle className="w-4 h-4" />
+                      <span>WhatsApp ilə fərdi təklif alın</span>
                     </button>
                   </div>
                 )}
               </section>
 
-              {/* Gallery Section */}
-              {allPhotos.length > 0 && (
-                <section className="space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                    <h2 className="font-serif text-2xl text-white">Qalereya və Vizual Nümunələr</h2>
-                    <span className="text-xs text-white/50">{allPhotos.length} foto</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {allPhotos.map((photo, idx) => (
-                      <div
-                        key={idx}
-                        className="relative h-32 sm:h-40 rounded-sm overflow-hidden border border-white/5 hover:border-[#C5A059]/40 cursor-pointer group"
-                        onClick={() => setSelectedGalleryImage(photo)}
-                      >
-                        <img
-                          src={photo}
-                          alt={`${venue.name} dekorasiya ${idx + 1}`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
+              {/* 5. Contextual WhatsApp CTA Banner */}
+              <div className="bg-gradient-to-r from-[#181611] via-[#121212] to-[#181611] border border-[#C5A059]/30 rounded-sm p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xl">
+                <div className="space-y-1.5 max-w-xl">
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-mono font-medium block">
+                    FƏRDİ SMETA VƏ DİZAYN TƏKLİFİ
+                  </span>
+                  <h3 className="font-serif text-xl sm:text-2xl text-[#FAF8F5]">
+                    {venue.name} məkanında dekor planlaşdırırsınız?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
+                    Məkanın memarlıq xüsusiyyətlərinə və zalın ölçülərinə uyğun fərdi 3D vizuallaşdırma, floristika və smeta üçün dərhal bizimlə əlaqə saxlayın.
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                  <button
+                    onClick={handleWhatsApp}
+                    className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] font-medium text-xs tracking-wider uppercase px-6 py-3.5 rounded-sm flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-lg"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp ilə əlaqə saxlayın</span>
+                  </button>
+                </div>
+              </div>
 
               {/* GEO / AI Search Direct-Answer FAQ Section */}
               {venue.faqs && venue.faqs.length > 0 && (
@@ -484,17 +568,18 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
           onClick={() => setSelectedGalleryImage(null)}
         >
-          <div className="relative max-w-4xl max-h-[85vh] w-full" onClick={(e) => e.stopPropagation()}>
+          <div className="relative max-w-4xl max-h-[85vh] w-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
             <img
               src={selectedGalleryImage}
               alt="Məkan foto"
-              className="w-full h-auto max-h-[85vh] object-contain rounded-sm"
+              className="w-full h-auto max-h-[85vh] object-contain rounded-sm shadow-2xl"
             />
             <button
               onClick={() => setSelectedGalleryImage(null)}
-              className="absolute -top-10 right-0 text-white hover:text-[#C5A059] text-sm cursor-pointer"
+              className="absolute -top-10 right-0 text-white hover:text-[#C5A059] text-sm flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-sm border border-white/10 cursor-pointer"
             >
-              Bağla ✕
+              <X className="w-4 h-4" />
+              <span>Bağla</span>
             </button>
           </div>
         </div>
@@ -502,3 +587,4 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
     </>
   );
 };
+

@@ -35,6 +35,7 @@ export interface DecorItem {
   createdAt: string;
   isRealProject?: boolean;
   indexStatus?: 'index' | 'noindex';
+  venueId?: string;
   venueSlug?: string;
   venueName?: string;
   decorElements?: string[];

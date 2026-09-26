@@ -99,6 +99,7 @@ class ImageService {
 
   // Images fetching & getters
   public async fetchImages(): Promise<ManagedImage[]> {
+    if (typeof window === 'undefined') return this.images;
     try {
       const res = await fetch('/api/images', {
         credentials: 'include'

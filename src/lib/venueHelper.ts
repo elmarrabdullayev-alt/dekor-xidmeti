@@ -29,6 +29,34 @@ export function isVenueIndexable(venue: VenueItem, decors?: DecorItem[]): boolea
   return true;
 }
 
+/**
+ * Strict verification that a project belongs to a given venue.
+ * A project may appear on a venue page ONLY if its stored venueId / venueSlug explicitly matches that venue.
+ * Never infer relationships from category, city, visual similarity, or generic metadata.
+ */
+export function isProjectStrictlyLinkedToVenue(
+  decor: DecorItem,
+  venue: { id: string; slug: string }
+): boolean {
+  if (!decor || !venue) return false;
+
+  const targetSlug = venue.slug.toLowerCase().trim();
+  const targetId = venue.id.toLowerCase().trim();
+
+  const decorVenueSlug = (decor.venueSlug || '').toLowerCase().trim();
+  const decorVenueId = (decor.venueId || '').toLowerCase().trim();
+
+  // Explicit non-empty exact match only
+  if (decorVenueSlug && (decorVenueSlug === targetSlug || decorVenueSlug === targetId)) {
+    return true;
+  }
+  if (decorVenueId && (decorVenueId === targetId || decorVenueId === targetSlug)) {
+    return true;
+  }
+
+  return false;
+}
+
 export function generateVenueSlug(name: string): string {
   return generateSlug(name);
 }

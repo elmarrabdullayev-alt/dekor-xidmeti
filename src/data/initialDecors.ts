@@ -37,6 +37,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     isFeatured: true,
     isRealProject: true,
     indexStatus: 'index',
+    venueId: 'venue-1',
     venueSlug: 'meridian',
     venueName: 'Meridian',
     decorElements: [
@@ -191,6 +192,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     isFeatured: true,
     isRealProject: true,
     indexStatus: 'index',
+    venueId: 'venue-3',
     venueSlug: 'bagcali-saray',
     venueName: 'Bağçalı Saray',
     decorElements: [
@@ -234,6 +236,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     isFeatured: true,
     isRealProject: true,
     indexStatus: 'index',
+    venueId: 'venue-4',
     venueSlug: 'boyuk-saray',
     venueName: 'Böyük Saray',
     decorElements: [
