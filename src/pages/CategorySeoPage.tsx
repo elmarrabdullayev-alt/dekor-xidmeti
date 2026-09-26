@@ -69,9 +69,10 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
     return () => unsub();
   }, []);
 
-  const heroImage = imageService.getCoverImage(category.slug, 'category_cover', category.heroImage);
+  const firstProjectCover = categoryProjects[0]?.mainImage;
+  const heroImage = imageService.getCoverImage(category.slug, 'category_cover') || firstProjectCover || category.heroImage;
   const cmsImgs = imageService.getImagesByTarget(category.slug, 'category_cover');
-  const heroAlt = cmsImgs[0]?.altText || category.name;
+  const heroAlt = cmsImgs[0]?.altText || categoryProjects[0]?.imageAltText || category.name;
 
   const jsonLd = [
     getCategoryServiceSchema(category),

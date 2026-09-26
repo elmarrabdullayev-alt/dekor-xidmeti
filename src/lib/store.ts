@@ -65,7 +65,10 @@ class DecorStore {
     const coverUrl = imageService.getCoverImage(d.id, 'decor_project', d.mainImage);
     const managedImgs = imageService.getImagesByTarget(d.id, 'decor_project');
     const coverObj = managedImgs.find(img => img.isCover);
-    const gallery = managedImgs.length > 0 ? managedImgs.map(i => i.url) : d.galleryImages;
+    const nonCoverImgs = managedImgs.filter(img => !img.isCover).map(i => i.url);
+    const gallery = managedImgs.length > 0
+      ? (nonCoverImgs.length > 0 ? nonCoverImgs : [coverUrl])
+      : d.galleryImages;
 
     return {
       ...d,

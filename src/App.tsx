@@ -232,12 +232,12 @@ export default function App() {
     // Format: /:categorySlug or /:categorySlug/:citySlug
     const parts = path.split('/').filter(Boolean);
     if (parts.length === 1) {
-      const potentialCatSlug = parts[0] as DecorCategorySlug;
-      const matchedCat = CATEGORIES.find(c => c.slug === potentialCatSlug);
+      const rawCatSlug = parts[0];
+      const matchedCat = CATEGORIES.find(c => c.slug === rawCatSlug || (rawCatSlug === 'xonca' && c.slug === 'xonca-xidmeti'));
       if (matchedCat) {
         return (
           <CategorySeoPage
-            categorySlug={potentialCatSlug}
+            categorySlug={matchedCat.slug}
             decors={publishedDecors}
             navigate={navigate}
             onOpenQuoteModal={handleOpenQuoteModal}
@@ -245,14 +245,14 @@ export default function App() {
         );
       }
     } else if (parts.length === 2) {
-      const potentialCatSlug = parts[0] as DecorCategorySlug;
+      const rawCatSlug = parts[0];
       const citySlug = parts[1];
-      const matchedCat = CATEGORIES.find(c => c.slug === potentialCatSlug);
+      const matchedCat = CATEGORIES.find(c => c.slug === rawCatSlug || (rawCatSlug === 'xonca' && c.slug === 'xonca-xidmeti'));
       const matchedLoc = REGIONAL_LOCATIONS.find(l => l.slug.toLowerCase() === citySlug.toLowerCase());
       if (matchedCat && matchedLoc) {
         return (
           <LocalSeoPage
-            categorySlug={potentialCatSlug}
+            categorySlug={matchedCat.slug}
             citySlug={matchedLoc.slug}
             decors={publishedDecors}
             navigate={navigate}

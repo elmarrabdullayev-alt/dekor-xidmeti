@@ -40,7 +40,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   }
 
   const currentMainImage = selectedImage || decor.mainImage;
-  const allImages = [decor.mainImage, ...(decor.galleryImages || [])];
+  const allImages = Array.from(new Set([decor.mainImage, ...(decor.galleryImages || [])])).filter(Boolean);
 
   // Resolve linked verified venue if any
   const linkedVenue = INITIAL_VENUES.find(v => (

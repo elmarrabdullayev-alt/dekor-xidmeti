@@ -37,19 +37,22 @@ export const DecorCard: React.FC<DecorCardProps> = ({ decor, onClick }) => {
       </div>
 
       {/* Content panel matching mockup */}
-      <div className="p-4 bg-[#121212] border-t border-white/5 flex items-center justify-between">
-        <div>
-          <h3 className="font-serif text-sm sm:text-base text-white/95 group-hover:text-[#E5C378] transition-colors leading-snug">
-            {decor.categoryName || decor.name}
+      <div className="p-4 bg-[#121212] border-t border-white/5 flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="font-serif text-sm sm:text-base text-white/95 group-hover:text-[#E5C378] transition-colors leading-snug truncate" title={decor.name}>
+            {decor.name}
           </h3>
-          <div className="flex items-center gap-1 text-[11px] text-[#C5A059]/90 mt-1">
-            <MapPin className="w-3 h-3 text-[#C5A059]" />
-            <span>{decor.city}</span>
+          <div className="flex items-center gap-1.5 text-[11px] text-[#C5A059]/90 mt-1 truncate">
+            <MapPin className="w-3 h-3 text-[#C5A059] shrink-0" />
+            <span className="truncate">{decor.city}{decor.venueName ? ` • ${decor.venueName}` : ''}</span>
           </div>
         </div>
 
-        <div className="w-8 h-8 rounded-full border border-white/10 group-hover:border-[#C5A059] flex items-center justify-center text-white/60 group-hover:text-[#C5A059] transition-colors">
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+        <div className="flex items-center gap-1.5 text-xs text-[#C5A059] font-medium shrink-0 group-hover:translate-x-0.5 transition-transform">
+          <span className="hidden sm:inline text-[11px] uppercase tracking-wider font-sans">Layihəyə bax</span>
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-white/10 group-hover:border-[#C5A059] flex items-center justify-center text-white/60 group-hover:text-[#C5A059] transition-colors">
+            <ArrowRight className="w-3.5 h-3.5" />
+          </div>
         </div>
       </div>
     </div>
