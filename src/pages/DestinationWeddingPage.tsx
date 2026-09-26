@@ -173,10 +173,16 @@ export const DestinationWeddingPage: React.FC<DestinationWeddingPageProps> = ({
     return () => unsub();
   }, []);
 
+  const heroImgs = (() => {
+    const byTarget = imageService.getImagesByTarget('destination-wedding');
+    if (byTarget.length > 0) return byTarget;
+    return imageService.getImagesBySection('destination_wedding');
+  })();
+
   const heroImage =
+    (heroImgs.length > 0 && (heroImgs.find(i => i.isCover)?.url || heroImgs[0].url)) ||
     imageService.getCoverImage('destination-wedding') ||
     imageService.getCoverImage('img-portfolio-4', 'portfolio_lookbook', '/images/dreamart-monumental-toy-sehnesi-dekoru.webp');
-  const heroImgs = imageService.getImagesByTarget('destination-wedding');
   const heroAlt = heroImgs[0]?.altText || 'Luxury Destination Wedding Decor in Azerbaijan';
 
   const gabalaFeatureImage =
@@ -245,6 +251,41 @@ export const DestinationWeddingPage: React.FC<DestinationWeddingPageProps> = ({
                 View Lookbook
               </button>
             </div>
+
+            {/* Top Admin Showcase: 1 or 2 images near the top/hero */}
+            {heroImgs.length > 0 && (
+              <div className="mt-10 pt-8 border-t border-white/10 max-w-5xl mx-auto">
+                <div
+                  className={`grid gap-4 sm:gap-6 ${
+                    heroImgs.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' : 'grid-cols-1 sm:grid-cols-2'
+                  }`}
+                >
+                  {heroImgs.slice(0, 2).map((img, idx) => (
+                    <div
+                      key={img.id || idx}
+                      className="group relative rounded-xl overflow-hidden border border-[#C5A059]/35 bg-[#141414] shadow-2xl aspect-[16/10]"
+                    >
+                      <img
+                        src={img.url}
+                        alt={img.altText || img.alt || `DreamArt Destination Wedding Decor ${idx + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        loading={idx === 0 ? 'eager' : 'lazy'}
+                      />
+                      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex items-end justify-between gap-2">
+                        <p className="text-xs sm:text-sm text-white/95 font-medium truncate drop-shadow text-left">
+                          {img.altText || (img.isCover ? 'Əsas Qapaq Dekoru' : 'Toy və Tədbir Tərtibatı')}
+                        </p>
+                        {img.isCover && (
+                          <span className="shrink-0 px-2 py-0.5 rounded text-[10px] bg-[#C5A059] text-black font-semibold uppercase tracking-wider">
+                            Qapaq
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 

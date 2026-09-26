@@ -148,7 +148,8 @@ export type ImageSection =
   | 'xonca_service'
   | 'portfolio_lookbook'
   | 'regional_service'
-  | 'indian_wedding';
+  | 'indian_wedding'
+  | 'destination_wedding';
 
 export interface ManagedImage {
   id: string;

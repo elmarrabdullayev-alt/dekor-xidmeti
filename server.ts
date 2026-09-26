@@ -293,6 +293,19 @@ async function startServer() {
         }
       }
 
+      // Enforce max 2 images for Destination Wedding top section
+      if (section === 'destination_wedding' || targetId === 'destination-wedding') {
+        const allStored = await getAllStoredImages();
+        const existingCount = allStored.filter(
+          (img) => img.section === 'destination_wedding' || img.targetId === 'destination-wedding'
+        ).length;
+        if (existingCount >= 2) {
+          return res.status(400).json({
+            error: 'Destination Wedding bölməsi üçün maksimum 2 şəkil yüklənə bilər (2/2 həddi dolub).'
+          });
+        }
+      }
+
       // Extract raw buffer from base64
       const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
       const rawBuffer = Buffer.from(base64Data, 'base64');

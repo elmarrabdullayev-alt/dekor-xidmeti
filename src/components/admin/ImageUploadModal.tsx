@@ -62,7 +62,8 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
     setError(null);
 
     const isIndianWedding = section === 'indian_wedding' || targetId === 'indian-wedding';
-    const effectiveLimit = maxAllowed || (isIndianWedding ? 2 : undefined);
+    const isDestinationWedding = section === 'destination_wedding' || targetId === 'destination-wedding';
+    const effectiveLimit = maxAllowed || (isIndianWedding || isDestinationWedding ? 2 : undefined);
     if (effectiveLimit !== undefined) {
       if (currentCount >= effectiveLimit) {
         setError(`Maksimum ${effectiveLimit} şəkil həddi dolub (${currentCount}/${effectiveLimit}).`);

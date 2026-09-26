@@ -198,11 +198,13 @@ export function mapDbRowToStoredImage(row: any): StoredImage {
   if (group === 'venue' || group === 'venues') group = 'venue_project';
   if (group === 'hero') group = 'home_hero';
   if (group === 'indian_wedding' || group === 'indian-wedding') group = 'indian_wedding';
+  if (group === 'destination_wedding' || group === 'destination-wedding') group = 'destination_wedding';
 
   let targetId = row.target_id || row.targetId || row.projectId || row.venueId || 'general';
   if (targetId === 'xina') targetId = 'xina-dekoru';
   if (targetId === 'adgunu' || targetId === 'ad-gunu') targetId = 'ad-gunu-dekoru';
   if (targetId === 'indian_wedding') targetId = 'indian-wedding';
+  if (targetId === 'destination_wedding') targetId = 'destination-wedding';
 
   const isVenue = group === 'venue_project';
 

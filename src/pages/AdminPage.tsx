@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   Lock, LogOut, Upload, RefreshCw, Trash2, Star, Check, ArrowUp, ArrowDown,
   Edit3, ExternalLink, Image as ImageIcon, Sparkles, AlertCircle, Eye,
-  Building2, ChevronLeft, ArrowRight, MapPin, Database, FolderOpen, Layers
+  Building2, ChevronLeft, ArrowRight, MapPin, Database, FolderOpen, Layers,
+  Compass, X
 } from 'lucide-react';
 import { ImageSection, ManagedImage } from '../types';
 import { imageService } from '../lib/imageService';
@@ -40,10 +41,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   const [authError, setAuthError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Top Admin View Tabs: 'decors' (Default & Unified Category -> Project -> Images) | 'venues' | 'hero' | 'indian_wedding'
-  const [activeAdminTab, setActiveAdminTab] = useState<'decors' | 'venues' | 'hero' | 'indian_wedding'>(() => {
+  // Top Admin View Tabs: 'decors' (Default & Unified Category -> Project -> Images) | 'venues' | 'hero' | 'indian_wedding' | 'destination_wedding'
+  const [activeAdminTab, setActiveAdminTab] = useState<'decors' | 'venues' | 'hero' | 'indian_wedding' | 'destination_wedding'>(() => {
     if (currentPath?.includes('restoranlar')) return 'venues';
     if (currentPath?.includes('indian-wedding')) return 'indian_wedding';
+    if (currentPath?.includes('destination-wedding')) return 'destination_wedding';
     return 'decors';
   });
 
@@ -70,6 +72,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   const [replacingImage, setReplacingImage] = useState<ManagedImage | null>(null);
   const [editingMetaImage, setEditingMetaImage] = useState<ManagedImage | null>(null);
   const [deletingImage, setDeletingImage] = useState<ManagedImage | null>(null);
+  const [previewImage, setPreviewImage] = useState<ManagedImage | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isMigrating, setIsMigrating] = useState(false);
 
@@ -203,6 +206,20 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     activeImages = images
       .filter(img => img.section === 'home_hero' && img.targetId === activeHeroTargetId)
       .sort((a, b) => a.order - b.order);
+  } else if (activeAdminTab === 'indian_wedding') {
+    uploadSection = 'indian_wedding';
+    uploadTargetId = 'indian-wedding';
+    uploadTargetName = 'Indian Wedding in Azerbaijan';
+    activeImages = images
+      .filter(img => img.section === 'indian_wedding' || img.targetId === 'indian-wedding')
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+  } else if (activeAdminTab === 'destination_wedding') {
+    uploadSection = 'destination_wedding';
+    uploadTargetId = 'destination-wedding';
+    uploadTargetName = 'Destination Wedding in Azerbaijan';
+    activeImages = images
+      .filter(img => img.section === 'destination_wedding' || img.targetId === 'destination-wedding')
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
   }
 
   // Render Login View if not authenticated
@@ -367,13 +384,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
         </div>
 
         {/* 1. TOP MODE SWITCHER */}
-        <div className="flex border-b border-[#242424] gap-2 pb-2">
+        <div className="flex border-b border-[#242424] gap-2 pb-2 overflow-x-auto scrollbar-thin">
           <button
             onClick={() => {
               setActiveAdminTab('decors');
               setSelectedProjectId(null);
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
               activeAdminTab === 'decors'
                 ? 'bg-[#C5A262] text-black shadow-md'
                 : 'bg-[#161616] text-neutral-300 hover:bg-[#202020] border border-[#262626]'
@@ -385,7 +402,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
 
           <button
             onClick={() => setActiveAdminTab('venues')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
               activeAdminTab === 'venues'
                 ? 'bg-[#C5A262] text-black shadow-md'
                 : 'bg-[#161616] text-neutral-300 hover:bg-[#202020] border border-[#262626]'
@@ -397,7 +414,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
 
           <button
             onClick={() => setActiveAdminTab('hero')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
               activeAdminTab === 'hero'
                 ? 'bg-[#C5A262] text-black shadow-md'
                 : 'bg-[#161616] text-neutral-300 hover:bg-[#202020] border border-[#262626]'
@@ -405,6 +422,30 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
           >
             <Sparkles className="w-4 h-4" />
             <span>Ana Səhifə Hero</span>
+          </button>
+
+          <button
+            onClick={() => setActiveAdminTab('indian_wedding')}
+            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+              activeAdminTab === 'indian_wedding'
+                ? 'bg-[#C5A262] text-black shadow-md'
+                : 'bg-[#161616] text-neutral-300 hover:bg-[#202020] border border-[#262626]'
+            }`}
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Indian Wedding (Top 2)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveAdminTab('destination_wedding')}
+            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+              activeAdminTab === 'destination_wedding'
+                ? 'bg-[#C5A262] text-black shadow-md'
+                : 'bg-[#161616] text-neutral-300 hover:bg-[#202020] border border-[#262626]'
+            }`}
+          >
+            <Compass className="w-4 h-4" />
+            <span>Destination Wedding (Top 2)</span>
           </button>
         </div>
 
@@ -1116,6 +1157,222 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
             </div>
           </div>
         )}
+
+        {/* ============================================================== */}
+        {/* VIEW D: INDIAN WEDDING & DESTINATION WEDDING TOP IMAGES (MAX 2) */}
+        {/* ============================================================== */}
+        {(activeAdminTab === 'indian_wedding' || activeAdminTab === 'destination_wedding') && (() => {
+          const isIndian = activeAdminTab === 'indian_wedding';
+          const title = isIndian
+            ? 'Indian Wedding in Azerbaijan'
+            : 'Destination Wedding in Azerbaijan';
+          const pagePath = isIndian
+            ? '/indian-wedding-azerbaijan'
+            : '/destination-wedding-azerbaijan';
+          const isAtLimit = activeImages.length >= 2;
+
+          return (
+            <div className="space-y-6 animate-fade-in">
+              {/* Header Box */}
+              <div className="bg-[#141414] border border-[#242424] rounded-2xl p-4 sm:p-5 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222]">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-base font-semibold text-[#F5F5F7]">
+                        {title} — Yuxarı (Top) Şəkillər
+                      </h2>
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                          isAtLimit
+                            ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                            : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                        }`}
+                      >
+                        {activeImages.length} / 2 şəkil yüklənib
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-400 mt-1">
+                      Bu səhifə üçün maksimum 2 şəkil icazə verilir. Yüklənən şəkillər saytın yuxarı/hero bölməsində nümayiş etdirilir.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                    <button
+                      onClick={() => navigate(pagePath)}
+                      className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 text-xs flex items-center gap-1.5 transition cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5 text-[#C5A262]" />
+                      <span>Saytda Canlı Bax</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        if (!isAtLimit) {
+                          setIsUploadOpen(true);
+                        }
+                      }}
+                      disabled={isAtLimit}
+                      title={isAtLimit ? 'Maksimum 2 şəkil həddi dolub (2/2)' : 'Yeni şəkil əlavə et'}
+                      className={`px-4 py-2 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition shadow-md cursor-pointer ${
+                        isAtLimit
+                          ? 'bg-[#222] text-neutral-500 cursor-not-allowed border border-[#333]'
+                          : 'bg-[#C5A262] hover:bg-[#b08d4f] text-black cursor-pointer'
+                      }`}
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>{isAtLimit ? 'Limit Dolub (2/2)' : 'Yeni Şəkil Əlavə Et'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Info Alert */}
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-start gap-2.5 text-xs text-neutral-300">
+                  <Sparkles className="w-4 h-4 text-[#C5A262] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white font-medium">Qayda və Yaddaş:</strong> Bütün şəkillər birbaşa Supabase Storage və Verilənlər Bazasında təhlükəsiz saxlanılır. Əgər heç bir şəkil yüklənməyibsə, saytda avtomatik olaraq ehtiyat (fallback) şəkli göstərilir. Şəkillərin sırasını dəyişmək üçün ox düymələrindən, qapaq etmək üçün ulduzdan istifadə edin.
+                  </div>
+                </div>
+              </div>
+
+              {/* Images Grid or Empty State */}
+              {activeImages.length === 0 ? (
+                <div className="bg-[#141414] border border-[#242424] rounded-2xl p-10 text-center space-y-4">
+                  <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#C5A262] mx-auto">
+                    <ImageIcon className="w-7 h-7" />
+                  </div>
+                  <div className="max-w-md mx-auto space-y-1">
+                    <h3 className="text-sm font-semibold text-white">Hələ heç bir xüsusi şəkil yüklənməyib</h3>
+                    <p className="text-xs text-neutral-400">
+                      Hal-hazırda ictimai səhifədə varsayılan ehtiyat (fallback) şəkli nümayiş olunur. Saytın yuxarı hissəsinə 1 və ya 2 şəkil əlavə etmək üçün aşağıdakı düyməyə klikləyin.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setIsUploadOpen(true)}
+                    className="px-5 py-2.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs inline-flex items-center gap-2 transition cursor-pointer shadow-lg"
+                  >
+                    <Upload className="w-4 h-4" />
+                    <span>İlk Şəkli Yüklə (Maksimum 2)</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {activeImages.map((img, idx) => (
+                    <div
+                      key={img.id}
+                      className="bg-[#161616] border border-[#262626] hover:border-[#C5A262]/80 rounded-2xl overflow-hidden transition flex flex-col group shadow-xl"
+                    >
+                      {/* Image Preview & Badges */}
+                      <div className="relative aspect-[16/10] w-full bg-black/70 overflow-hidden">
+                        <img
+                          src={img.thumbUrl || img.url}
+                          alt={img.altText || img.filename}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
+                          onClick={() => setPreviewImage(img)}
+                        />
+
+                        {/* Top Badges */}
+                        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                          <span className="px-2 py-0.5 rounded-md bg-black/80 border border-white/20 text-white font-mono text-[11px] font-bold">
+                            #{idx + 1}
+                          </span>
+                          {img.isCover ? (
+                            <span className="px-2 py-0.5 rounded-md bg-[#C5A262] text-black font-bold text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-md">
+                              <Star className="w-3 h-3 fill-black" />
+                              Əsas Qapaq
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() => handleSetCover(img.id)}
+                              className="px-2 py-0.5 rounded-md bg-black/70 hover:bg-[#C5A262] hover:text-black border border-white/10 text-white text-[10px] flex items-center gap-1 transition cursor-pointer"
+                              title="Bu şəkli əsas qapaq təyin et"
+                            >
+                              <Star className="w-3 h-3" />
+                              <span>Qapaq et</span>
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Quick View Button */}
+                        <button
+                          onClick={() => setPreviewImage(img)}
+                          className="absolute bottom-2.5 right-2.5 p-2 rounded-lg bg-black/70 hover:bg-black text-white text-xs border border-white/10 transition cursor-pointer flex items-center gap-1"
+                          title="Böyük ölçüdə bax"
+                        >
+                          <Eye className="w-3.5 h-3.5 text-[#C5A262]" />
+                          <span className="text-[10px]">Baxış</span>
+                        </button>
+                      </div>
+
+                      {/* Info & Action Controls */}
+                      <div className="p-4 flex-1 flex flex-col justify-between space-y-3.5">
+                        <div className="space-y-1.5">
+                          <div className="text-xs font-mono text-neutral-200 truncate" title={img.filename}>
+                            {img.filename}
+                          </div>
+                          <div className="text-xs text-neutral-400 font-light line-clamp-2 bg-[#1B1B1B] p-2 rounded-lg border border-[#282828]">
+                            <strong className="text-white/80 font-medium">Alt Mətni:</strong> {img.altText || <span className="italic text-neutral-500">Təyin edilməyib</span>}
+                          </div>
+                        </div>
+
+                        {/* Action Buttons Toolbar */}
+                        <div className="pt-3 border-t border-[#242424] flex items-center justify-between gap-2 flex-wrap">
+                          {/* Reorder Buttons */}
+                          <div className="flex items-center gap-1 bg-[#1E1E1E] p-1 rounded-xl border border-[#2E2E2E]">
+                            <button
+                              disabled={idx === 0}
+                              onClick={() => handleMove(img.id, 'up')}
+                              className="p-1.5 rounded-lg hover:bg-white/10 text-neutral-300 disabled:opacity-20 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed transition"
+                              title="Əvvələ çək (Sıranı yüksəlt)"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              disabled={idx === activeImages.length - 1}
+                              onClick={() => handleMove(img.id, 'down')}
+                              className="p-1.5 rounded-lg hover:bg-white/10 text-neutral-300 disabled:opacity-20 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed transition"
+                              title="Sonraya çək (Sıranı endir)"
+                            >
+                              <ArrowDown className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          {/* Replace & Edit Alt Buttons */}
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => setReplacingImage(img)}
+                              className="py-1.5 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 text-xs font-medium flex items-center gap-1.5 transition cursor-pointer"
+                              title="Şəkli yenisi ilə əvəzlə"
+                            >
+                              <RefreshCw className="w-3.5 h-3.5 text-[#C5A262]" />
+                              <span>Dəyiş</span>
+                            </button>
+
+                            <button
+                              onClick={() => setEditingMetaImage(img)}
+                              className="py-1.5 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 text-xs font-medium flex items-center gap-1.5 transition cursor-pointer"
+                              title="Alt mətni və adı redaktə et"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                              <span>Alt Mətni</span>
+                            </button>
+
+                            <button
+                              onClick={() => setDeletingImage(img)}
+                              className="p-2 rounded-xl bg-red-950/40 hover:bg-red-900/60 border border-red-800/40 text-red-300 transition cursor-pointer"
+                              title="Şəkli sil"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })()}
       </main>
 
       {/* Upload Modal */}
@@ -1126,6 +1383,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
           section={uploadSection}
           targetId={uploadTargetId}
           targetName={uploadTargetName}
+          maxAllowed={uploadSection === 'indian_wedding' || uploadSection === 'destination_wedding' ? 2 : undefined}
+          currentCount={activeImages.length}
           onSuccess={() => {
             showNotice('Yeni şəkil uğurla yükləndi və optimallaşdırıldı!');
           }}
@@ -1165,6 +1424,43 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
           onConfirm={handleConfirmDelete}
           isDeleting={isDeleting}
         />
+      )}
+
+      {/* Image Preview Lightbox Modal */}
+      {previewImage && (
+        <div
+          onClick={() => setPreviewImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-4xl w-full bg-[#141414] border border-[#2C2C2C] rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+          >
+            <div className="p-3.5 bg-[#1A1A1A] border-b border-[#2A2A2A] flex items-center justify-between">
+              <span className="text-xs font-mono text-neutral-300 truncate max-w-md">
+                {previewImage.filename}
+              </span>
+              <button
+                onClick={() => setPreviewImage(null)}
+                className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="max-h-[70vh] bg-black/90 flex items-center justify-center p-2 overflow-hidden">
+              <img
+                src={previewImage.url}
+                alt={previewImage.altText || previewImage.filename}
+                className="max-h-[68vh] max-w-full object-contain"
+              />
+            </div>
+            <div className="p-4 bg-[#141414] border-t border-[#242424] space-y-1">
+              <div className="text-xs text-neutral-400">
+                <strong className="text-white">Alt Mətni:</strong> {previewImage.altText || 'Qeyd olunmayıb'}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
