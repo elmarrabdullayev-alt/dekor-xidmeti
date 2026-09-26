@@ -100,10 +100,10 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Qəbələ',
     shortDescription: 'Dərin yaqut qırmızısı güllər, antik mis şamdanlar və dəbdəbəli xına taxtı kompleksi.',
     fullDescription: 'Qəbələnin füsunkar təbiətində yerləşən villalar və zallar üçün tərtib edilmiş eksklüziv xına dekoru. Dəbdəbəli qırmızı məxmər parça toxumaları, yüzlərlə canlı şam, milli buta elementlərinin modern estetikası və xüsusi xına mərasimi atributları.',
-    mainImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1600&q=85',
+    mainImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85',
-      'https://images.unsplash.com/photo-1522413452208-996ff3f3e740?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-qala-gecesi-samdan-dekoru.webp',
+      '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp'
     ],
     includedServices: [
       'Eksklüziv gəlin xına taxtı və zərli xalça',
@@ -135,9 +135,10 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Bakı',
     shortDescription: 'Pastel şar instalyasiyası, parlaq neon yazı və canlı güllərlə tamamlanan şık fotozona.',
     fullDescription: 'Yubiley və ad günləri üçün qonaqların heyran qalacağı foto və video fonu. Həcmli pastel şarlar, fərdi neon yazı lövhəsi, zərif tort stendi və müasir podyum dizaynı.',
-    mainImage: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=85',
+    mainImage: '/images/dreamart-nisan-dekoru-fotozona.webp',
     galleryImages: [
-      'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=85'
+      '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
+      '/images/dreamart-banket-zali-goy-isiq-dekoru.webp'
     ],
     includedServices: [
       'Arxa fon panelinin montajı',

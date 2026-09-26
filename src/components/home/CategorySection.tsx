@@ -2,11 +2,107 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { CATEGORIES } from '../../data/categories';
 import { imageService } from '../../lib/imageService';
+import { store } from '../../lib/store';
+import { CategoryInfo } from '../../types';
 
 interface CategorySectionProps {
   onSelectCategory: (slug: string) => void;
   onViewAll?: () => void;
 }
+
+/**
+ * Resolves the real Supabase admin-managed cover image for each category.
+ * Guaranteed to match desktop and mobile seamlessly without static unsplash fallback overriding Supabase.
+ */
+export const getCategoryCoverImage = (cat: CategoryInfo): string => {
+  // 1. Direct match by slug, canonicalSlug, or id for category_cover
+  const directCover =
+    imageService.getCoverImage(cat.slug, 'category_cover') ||
+    imageService.getCoverImage(cat.canonicalSlug, 'category_cover') ||
+    imageService.getCoverImage(cat.id, 'category_cover');
+
+  if (directCover && !directCover.includes('unsplash.com')) {
+    return directCover;
+  }
+
+  // 2. Direct match across any section by slug or canonicalSlug
+  const anySectionCover =
+    imageService.getCoverImage(cat.slug) ||
+    imageService.getCoverImage(cat.canonicalSlug) ||
+    imageService.getCoverImage(cat.id);
+
+  if (anySectionCover && !anySectionCover.includes('unsplash.com')) {
+    return anySectionCover;
+  }
+
+  // 3. Decor projects belonging to this category from store (hydrated with real Supabase images)
+  const categoryProjects = store.getDecorsByCategory(cat.slug as any);
+  if (categoryProjects && categoryProjects.length > 0) {
+    for (const proj of categoryProjects) {
+      const projCover =
+        imageService.getCoverImage(proj.id, 'decor_project') ||
+        imageService.getCoverImage(proj.slug, 'decor_project') ||
+        imageService.getCoverImage(proj.id) ||
+        imageService.getCoverImage(proj.slug);
+
+      if (projCover && !projCover.includes('unsplash.com')) {
+        return projCover;
+      }
+      if (proj.mainImage && !proj.mainImage.includes('unsplash.com')) {
+        return proj.mainImage;
+      }
+    }
+  }
+
+  // 4. Default decor ID mapping for admin-managed projects (decor-3 for xina, decor-4 for adgunu, etc.)
+  const categoryDecorMap: Record<string, string> = {
+    'toy-dekoru': 'decor-1',
+    'nisan-dekoru': 'decor-2',
+    'xina-dekoru': 'decor-3',
+    'ad-gunu-dekoru': 'decor-4',
+    'korporativ-dekor': 'decor-5',
+    'zal-dekoru': 'decor-6',
+    'xonca-xidmeti': 'decor-7',
+  };
+  const mappedId = categoryDecorMap[cat.slug];
+  if (mappedId) {
+    const mappedCover =
+      imageService.getCoverImage(mappedId, 'decor_project') ||
+      imageService.getCoverImage(mappedId);
+    if (mappedCover && !mappedCover.includes('unsplash.com')) {
+      return mappedCover;
+    }
+  }
+
+  // 5. Look for any managed Supabase image matching category slug or keywords
+  const allImages = imageService.getAllImages();
+  const slugClean = cat.slug.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const match = allImages.find((img) => {
+    if (!img.url || img.url.includes('unsplash.com')) return false;
+    const targetClean = (img.targetId || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const nameClean = (img.targetName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const altClean = (img.altText || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    return (
+      targetClean.includes(slugClean) ||
+      nameClean.includes(slugClean) ||
+      altClean.includes(slugClean)
+    );
+  });
+  if (match && match.url) {
+    return match.url;
+  }
+
+  // 6. Direct cover if found
+  if (directCover) return directCover;
+
+  // 7. Project main image if present
+  if (categoryProjects && categoryProjects[0]?.mainImage) {
+    return categoryProjects[0].mainImage;
+  }
+
+  // 8. Category heroImage
+  return cat.heroImage;
+};
 
 export const CategorySection: React.FC<CategorySectionProps> = ({ onSelectCategory, onViewAll }) => {
   const [, setVersion] = useState(0);
@@ -44,7 +140,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({ onSelectCatego
         {/* 7 Category Cards Grid matching mockup */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
           {CATEGORIES.map((cat) => {
-            const cmsCoverUrl = imageService.getCoverImage(cat.slug, 'category_cover', cat.heroImage);
+            const cmsCoverUrl = getCategoryCoverImage(cat);
             const targetImages = imageService.getImagesByTarget(cat.slug, 'category_cover');
             const altText = targetImages[0]?.altText || cat.name;
 
@@ -58,6 +154,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({ onSelectCatego
                 {/* Image container */}
                 <div className="aspect-3/4 overflow-hidden bg-[#1A1A1A] relative">
                   <img
+                    key={cmsCoverUrl}
                     src={cmsCoverUrl}
                     alt={altText}
                     loading="lazy"

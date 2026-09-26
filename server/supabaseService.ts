@@ -192,8 +192,16 @@ export function getPublicStorageUrl(storageKey: string): string {
  * Map raw database row from Supabase admin_images table to StoredImage
  */
 export function mapDbRowToStoredImage(row: any): StoredImage {
-  const group = row.group_name || row.group || row.section || 'general';
-  const targetId = row.target_id || row.targetId || row.projectId || row.venueId || 'general';
+  let group = row.group_name || row.group || row.section || 'general';
+  if (group === 'category' || group === 'categories') group = 'category_cover';
+  if (group === 'decor' || group === 'decors') group = 'decor_project';
+  if (group === 'venue' || group === 'venues') group = 'venue_project';
+  if (group === 'hero') group = 'home_hero';
+
+  let targetId = row.target_id || row.targetId || row.projectId || row.venueId || 'general';
+  if (targetId === 'xina') targetId = 'xina-dekoru';
+  if (targetId === 'adgunu' || targetId === 'ad-gunu') targetId = 'ad-gunu-dekoru';
+
   const isVenue = group === 'venue_project';
 
   let url = row.public_url || row.url || '';

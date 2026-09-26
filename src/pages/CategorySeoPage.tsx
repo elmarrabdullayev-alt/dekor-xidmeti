@@ -7,6 +7,7 @@ import { SeoHead } from '../components/layout/SeoHead';
 import { getCategoryServiceSchema, getFaqPageSchema, getBreadcrumbSchema } from '../lib/structuredData';
 import { isVenueIndexable } from '../lib/venueHelper';
 import { imageService } from '../lib/imageService';
+import { getCategoryCoverImage } from '../components/home/CategorySection';
 import {
   Sparkles,
   MapPin,
@@ -69,8 +70,7 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
     return () => unsub();
   }, []);
 
-  const firstProjectCover = categoryProjects[0]?.mainImage;
-  const heroImage = imageService.getCoverImage(category.slug, 'category_cover') || firstProjectCover || category.heroImage;
+  const heroImage = getCategoryCoverImage(category);
   const cmsImgs = imageService.getImagesByTarget(category.slug, 'category_cover');
   const heroAlt = cmsImgs[0]?.altText || categoryProjects[0]?.imageAltText || category.name;
 

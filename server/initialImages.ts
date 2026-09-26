@@ -74,7 +74,7 @@ export function getInitialSeedImages(): ManagedImage[] {
     },
     {
       id: 'img-cat-xina',
-      url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1600&q=85',
+      url: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
       filename: 'dreamart-xina-dekoru-qapaq.webp',
       altText: 'DreamArt Events xına mərasimi dekoru örtük şəkli',
       section: 'category_cover',
@@ -87,7 +87,7 @@ export function getInitialSeedImages(): ManagedImage[] {
     },
     {
       id: 'img-cat-adgunu',
-      url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=85',
+      url: '/images/dreamart-nisan-dekoru-fotozona.webp',
       filename: 'dreamart-ad-gunu-dekoru-qapaq.webp',
       altText: 'DreamArt Events ad günü və yubiley fotozonası örtük şəkli',
       section: 'category_cover',
@@ -206,7 +206,7 @@ export function getInitialSeedImages(): ManagedImage[] {
     },
     {
       id: 'img-decor-3-cover',
-      url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1600&q=85',
+      url: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
       filename: 'kraliyyet-mexmeri-xina-dekoru-main.webp',
       altText: 'Kraliyyət məxməri və şam kompozisiyalı xına dekoru',
       section: 'decor_project',
@@ -219,7 +219,7 @@ export function getInitialSeedImages(): ManagedImage[] {
     },
     {
       id: 'img-decor-4-cover',
-      url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=85',
+      url: '/images/dreamart-nisan-dekoru-fotozona.webp',
       filename: 'krem-qizili-ad-gunu-fotozona-main.webp',
       altText: 'Krem və qızılı işıqlı estetik ad günü fotozonası',
       section: 'decor_project',
