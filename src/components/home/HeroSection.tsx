@@ -160,50 +160,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
       <div className="absolute inset-0 z-0">
         {activeSlides.map((slide, idx) => {
           const isActive = idx === currentSlide;
-          const isSlide2 = slide.id === 'hero-slide-2' || idx === 1;
-
-          if (isSlide2) {
-            return (
-              <div
-                key={slide.id}
-                className={`absolute inset-0 transition-all duration-1000 ease-out ${
-                  isActive
-                    ? 'opacity-100 scale-100 pointer-events-auto z-10'
-                    : 'opacity-0 scale-105 pointer-events-none z-0'
-                }`}
-                aria-hidden={!isActive}
-              >
-                {/* Full-size edge-to-edge background layer covering the full hero container with zero side gutters */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-                  <img
-                    src={slide.image || slide.fallbackUrl}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute -inset-10 w-[calc(100%+5rem)] h-[calc(100%+5rem)] max-w-none object-cover object-center blur-2xl sm:blur-3xl brightness-95 opacity-100"
-                  />
-                  <div className="absolute inset-0 bg-black/10 pointer-events-none" />
-                </div>
-
-                {/* Main foreground image: sharp, centered, undistorted, fully visible with object-contain */}
-                <div className="relative z-10 w-full h-full flex items-center justify-center pointer-events-none">
-                  <img
-                    src={slide.image || slide.fallbackUrl}
-                    alt={slide.alt}
-                    loading={idx === 0 ? 'eager' : 'lazy'}
-                    fetchPriority={idx === 0 ? 'high' : 'auto'}
-                    className="w-full h-full object-contain object-center max-w-full max-h-full"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (target.src !== slide.fallbackUrl) {
-                        target.src = slide.fallbackUrl;
-                      }
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          }
-
           return (
             <div
               key={slide.id}
