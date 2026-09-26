@@ -160,6 +160,50 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
       <div className="absolute inset-0 z-0">
         {activeSlides.map((slide, idx) => {
           const isActive = idx === currentSlide;
+          const isSlide2 = slide.id === 'hero-slide-2' || idx === 1;
+
+          if (isSlide2) {
+            return (
+              <div
+                key={slide.id}
+                className={`absolute inset-0 transition-all duration-1000 ease-out ${
+                  isActive
+                    ? 'opacity-100 scale-100 pointer-events-auto z-10'
+                    : 'opacity-0 scale-105 pointer-events-none z-0'
+                }`}
+                aria-hidden={!isActive}
+              >
+                {/* Subtle dark/blurred background fill from the same image instead of zooming */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <img
+                    src={slide.image || slide.fallbackUrl}
+                    alt=""
+                    aria-hidden="true"
+                    className="w-full h-full object-cover object-center scale-110 blur-2xl opacity-40 brightness-50"
+                  />
+                  <div className="absolute inset-0 bg-black/40" />
+                </div>
+
+                {/* Main full image: object-contain, centered, preserving aspect ratio without cropping */}
+                <div className="relative z-10 w-full h-full flex items-center justify-center pointer-events-none">
+                  <img
+                    src={slide.image || slide.fallbackUrl}
+                    alt={slide.alt}
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={idx === 0 ? 'high' : 'auto'}
+                    className="w-full h-full object-contain object-center max-w-full max-h-full"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src !== slide.fallbackUrl) {
+                        target.src = slide.fallbackUrl;
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          }
+
           return (
             <div
               key={slide.id}
