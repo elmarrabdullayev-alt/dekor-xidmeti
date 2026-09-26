@@ -155,6 +155,7 @@ export interface ManagedImage {
   thumbUrl?: string;
   filename: string;
   altText: string;
+  alt?: string;
   section: ImageSection;
   targetId: string;
   targetName: string;
@@ -166,6 +167,7 @@ export interface ManagedImage {
   sizeKb?: number;
   format: 'webp' | 'jpeg' | 'png';
   uploadedAt: string;
+  updatedAt?: string;
 }
 
 

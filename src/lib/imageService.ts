@@ -1,5 +1,32 @@
 import { ManagedImage, ImageSection } from '../types';
 
+/**
+ * Appends safe cache-busting query parameter based on updatedAt timestamp/version
+ * without mutating database or storage records. Bypasses aggressive mobile browser disk cache.
+ */
+export function withCacheBuster(url: string, updatedAt?: string): string {
+  if (!url || typeof url !== 'string' || url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+  if (!updatedAt) return url;
+
+  const ver = new Date(updatedAt).getTime();
+  const vStr = isNaN(ver) ? encodeURIComponent(updatedAt) : String(ver);
+
+  const [base, hash] = url.split('#');
+  const hashPart = hash ? `#${hash}` : '';
+
+  if (base.includes('?')) {
+    if (/[?&]v=[^&]*/.test(base)) {
+      return base.replace(/([?&])v=[^&]*/, `$1v=${vStr}`) + hashPart;
+    }
+    return `${base}&v=${vStr}${hashPart}`;
+  }
+  return `${base}?v=${vStr}${hashPart}`;
+}
+
+const IMAGES_CACHE_KEY = 'dreamart_managed_images_cache_v2';
+
 class ImageService {
   private images: ManagedImage[] = [];
   private listeners: Array<() => void> = [];
@@ -11,6 +38,24 @@ class ImageService {
   }
 
   private async init() {
+    // Immediately load pre-cached image records on mobile/desktop so initial paint doesn't fallback
+    try {
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem(IMAGES_CACHE_KEY) || sessionStorage.getItem(IMAGES_CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            this.images = parsed.map((img: ManagedImage) => ({
+              ...img,
+              url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
+              thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
+            }));
+            this.isLoaded = true;
+          }
+        }
+      }
+    } catch {}
+
     await this.fetchImages();
   }
 
@@ -97,7 +142,7 @@ class ImageService {
     this.isAuthenticated = false;
   }
 
-  // Images fetching & getters
+  // Images fetching & getters with reliable cache-busting
   public async fetchImages(): Promise<ManagedImage[]> {
     if (typeof window === 'undefined') return this.images;
     try {
@@ -106,11 +151,22 @@ class ImageService {
         cache: 'no-store'
       });
       if (res.ok) {
-        const data = await res.json();
-        this.images = data;
-        this.isLoaded = true;
-        this.notify();
-        return this.images;
+        const data: ManagedImage[] = await res.json();
+        if (Array.isArray(data)) {
+          this.images = data.map((img) => ({
+            ...img,
+            url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
+            thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
+          }));
+          this.isLoaded = true;
+          try {
+            if (typeof window !== 'undefined') {
+              localStorage.setItem(IMAGES_CACHE_KEY, JSON.stringify(data));
+            }
+          } catch {}
+          this.notify();
+          return this.images;
+        }
       }
     } catch (e) {
       console.warn('Could not fetch images from server, using existing cache:', e);
@@ -119,37 +175,51 @@ class ImageService {
   }
 
   public getAllImages(): ManagedImage[] {
-    return [...this.images];
+    return this.images.map((img) => ({
+      ...img,
+      url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
+      thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
+    }));
   }
 
   public getImages(): ManagedImage[] {
-    return [...this.images];
+    return this.getAllImages();
   }
 
   public getImagesBySection(section: ImageSection): ManagedImage[] {
     return this.images
       .filter((img) => img.section === section)
+      .map((img) => ({
+        ...img,
+        url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
+        thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
+      }))
       .sort((a, b) => (a.order || 0) - (b.order || 0));
   }
 
   public getImagesByTarget(targetId: string, section?: ImageSection): ManagedImage[] {
     return this.images
       .filter((img) => img.targetId === targetId && (!section || img.section === section))
+      .map((img) => ({
+        ...img,
+        url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
+        thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
+      }))
       .sort((a, b) => (a.order || 0) - (b.order || 0));
   }
 
   public getCoverImage(targetId: string, section?: ImageSection, fallbackUrl: string = ''): string {
     const targetImages = this.getImagesByTarget(targetId, section);
     const cover = targetImages.find((img) => img.isCover);
-    if (cover) return cover.url;
-    if (targetImages.length > 0) return targetImages[0].url;
+    if (cover) return withCacheBuster(cover.url, cover.updatedAt || cover.uploadedAt);
+    if (targetImages.length > 0) return withCacheBuster(targetImages[0].url, targetImages[0].updatedAt || targetImages[0].uploadedAt);
     return fallbackUrl;
   }
 
   public getGalleryImages(targetId: string, section?: ImageSection, fallbackUrls: string[] = []): string[] {
     const targetImages = this.getImagesByTarget(targetId, section);
     if (targetImages.length > 0) {
-      return targetImages.map((img) => img.url);
+      return targetImages.map((img) => withCacheBuster(img.url, img.updatedAt || img.uploadedAt));
     }
     return fallbackUrls;
   }

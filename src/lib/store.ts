@@ -63,11 +63,22 @@ class DecorStore {
   }
 
   private hydrateDecor(d: DecorItem): DecorItem {
-    const coverUrl = imageService.getCoverImage(d.id, 'decor_project', d.mainImage);
-    const managedImgs = imageService.getImagesByTarget(d.id, 'decor_project');
-    const coverObj = managedImgs.find(img => img.isCover);
-    const nonCoverImgs = managedImgs.filter(img => !img.isCover).map(i => i.url);
-    const gallery = managedImgs.length > 0
+    const managedImgs = [
+      ...imageService.getImagesByTarget(d.id, 'decor_project'),
+      ...imageService.getImagesByTarget(d.slug, 'decor_project')
+    ];
+    const uniqueMap = new Map<string, ManagedImage>();
+    managedImgs.forEach(img => uniqueMap.set(img.id, img));
+    const allManaged = Array.from(uniqueMap.values()).sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    const coverObj = allManaged.find(img => img.isCover) || allManaged[0];
+    const coverUrl = coverObj?.url ||
+                     imageService.getCoverImage(d.id, 'decor_project') ||
+                     imageService.getCoverImage(d.slug, 'decor_project') ||
+                     d.mainImage;
+
+    const nonCoverImgs = allManaged.filter(img => img.id !== coverObj?.id).map(i => i.url);
+    const gallery = allManaged.length > 0
       ? (nonCoverImgs.length > 0 ? nonCoverImgs : [coverUrl])
       : d.galleryImages;
 

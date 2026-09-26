@@ -91,8 +91,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
       return {
         ...defaultSlide,
         image: resolvedUrl,
-        fallbackUrl: defaultSlide.image || defaultSlide.fallbackUrl,
-        alt: cmsMatch.altText || defaultSlide.alt,
+        fallbackUrl: resolvedUrl,
+        alt: cmsMatch.altText || cmsMatch.alt || defaultSlide.alt,
       };
     }
     return defaultSlide;
@@ -195,13 +195,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
                 loading={idx === 0 ? 'eager' : 'lazy'}
                 fetchPriority={idx === 0 ? 'high' : 'auto'}
                 className="w-full h-full object-cover object-center"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  // Only fallback if the current src failed and fallback is different
-                  if (slide.fallbackUrl && !target.src.includes(slide.fallbackUrl)) {
-                    target.src = slide.fallbackUrl;
-                  }
-                }}
               />
             </div>
           );

@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
           <button
             id="brand-logo-button"
             onClick={() => handleNav('/')}
-            className="flex items-center gap-2.5 sm:gap-3 text-left group focus:outline-hidden cursor-pointer shrink-0"
+            className="flex items-center gap-2.5 sm:gap-3 text-left group focus:outline-hidden cursor-pointer shrink-0 lg:mr-8 xl:mr-12"
           >
             {/* Elegant Monogram DA */}
             <div className="w-8.5 h-8.5 sm:w-9.5 sm:h-9.5 rounded-sm border border-[#C5A059]/40 bg-[#141414] flex items-center justify-center shrink-0 shadow-xs group-hover:border-[#C5A059] transition-colors">
@@ -68,10 +68,10 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
             </div>
 
             <div className="flex flex-col justify-center">
-              <span className="font-serif text-[13.5px] sm:text-[14.5px] xl:text-[15px] tracking-[0.18em] text-[#FAF8F5] uppercase font-semibold group-hover:text-[#E5C378] transition-colors whitespace-nowrap leading-tight">
+              <span className="font-serif text-[13.5px] sm:text-[12.5px] lg:text-[13px] xl:text-[13.2px] tracking-[0.18em] sm:tracking-[0.16em] text-[#FAF8F5] uppercase font-semibold group-hover:text-[#E5C378] transition-colors whitespace-nowrap leading-tight">
                 DREAMART
               </span>
-              <span className="font-serif text-[10.5px] sm:text-[11.5px] xl:text-[12px] tracking-[0.24em] text-[#EAE6DF]/90 uppercase font-medium group-hover:text-[#E5C378] transition-colors whitespace-nowrap leading-tight">
+              <span className="font-serif text-[10.5px] sm:text-[9.8px] lg:text-[10.2px] xl:text-[10.5px] tracking-[0.24em] sm:tracking-[0.22em] text-[#EAE6DF]/90 uppercase font-medium group-hover:text-[#E5C378] transition-colors whitespace-nowrap leading-tight">
                 WEDDINGS
               </span>
             </div>
