@@ -88,7 +88,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs sm:text-[13px] font-normal tracking-wide">
+          <nav className="hidden lg:flex items-center space-x-5 xl:space-x-7 text-[14px] xl:text-[15px] font-sans font-medium tracking-[0.02em]">
             {navLinks.map((link) => {
               const active = isCurrentActive(link.path);
               return (
@@ -96,10 +96,10 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
                   key={link.path}
                   id={`nav-link-${link.path.replace(/[^a-z0-9]/g, '') || 'home'}`}
                   onClick={() => handleNav(link.path)}
-                  className={`relative transition-colors duration-200 py-1.5 cursor-pointer ${
+                  className={`relative transition-colors duration-200 py-1.5 whitespace-nowrap cursor-pointer ${
                     active
-                      ? 'text-[#E5C378] font-medium'
-                      : 'text-white/80 hover:text-white'
+                      ? 'text-[#E5C378] font-semibold'
+                      : 'text-[#EAE6DF]/85 hover:text-white'
                   }`}
                 >
                   {link.label}
@@ -111,38 +111,50 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
             })}
           </nav>
 
-          {/* Header Action CTA: Phone Pill + Golden Button */}
-          <div className="hidden sm:flex items-center space-x-3">
+          {/* Header Action CTA: Desktop (Phone Pill + Golden Button with dedicated spacing from "Əlaqə") */}
+          <div className="hidden lg:flex items-center shrink-0 ml-6 xl:ml-10 pl-5 xl:pl-8 border-l border-white/15 space-x-3 xl:space-x-4">
             <a
               href={`tel:${settings.phoneRaw}`}
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-sm bg-[#161616] border border-[#C5A059]/30 text-white/90 hover:border-[#C5A059] text-xs font-mono transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-sm bg-[#161616] border border-[#C5A059]/35 hover:border-[#C5A059] text-white/95 text-[13px] font-sans font-medium whitespace-nowrap shrink-0 transition-colors leading-none"
             >
-              <Phone className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>{settings.phoneDisplay}</span>
+              <Phone className="w-3.5 h-3.5 text-[#C5A059] shrink-0" />
+              <span className="whitespace-nowrap tracking-wide leading-none">{settings.phoneDisplay}</span>
             </a>
 
             <button
               id="header-cta-quote-button"
               onClick={onOpenQuoteModal}
-              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-5 sm:px-6 py-2 rounded-sm text-xs sm:text-[13px] font-medium tracking-wide shadow-sm hover:shadow transition-all duration-300 cursor-pointer"
+              className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-5 xl:px-6 py-2.5 rounded-sm text-xs xl:text-[13px] font-medium tracking-wide uppercase shadow-sm hover:shadow transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 leading-none"
             >
               Qiymət təklifi al
             </button>
           </div>
 
-          {/* Mobile hamburger button */}
-          <div className="flex items-center space-x-2 lg:hidden">
+          {/* Tablet & Mobile Header Right Actions (Prevents overlap across breakpoints) */}
+          <div className="flex items-center space-x-2.5 lg:hidden shrink-0">
+            {/* Tablet phone link (hidden on small mobile, visible on sm and md) */}
+            <a
+              href={`tel:${settings.phoneRaw}`}
+              className="hidden sm:inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm bg-[#161616] border border-[#C5A059]/30 text-white/90 text-xs font-sans font-medium whitespace-nowrap leading-none shrink-0"
+            >
+              <Phone className="w-3.5 h-3.5 text-[#C5A059] shrink-0" />
+              <span className="whitespace-nowrap leading-none">{settings.phoneDisplay}</span>
+            </a>
+
+            {/* Quick quote button */}
             <button
               id="mobile-quote-btn"
               onClick={onOpenQuoteModal}
-              className="bg-[#C5A059] text-[#0B0B0B] px-3 py-1.5 rounded-sm text-xs font-medium hover:bg-[#D4AF37] sm:hidden"
+              className="bg-[#C5A059] text-[#0B0B0B] px-3.5 py-2 rounded-sm text-xs font-medium hover:bg-[#D4AF37] whitespace-nowrap shrink-0 leading-none"
             >
               Təklif al
             </button>
+
+            {/* Hamburger menu button */}
             <button
               id="mobile-menu-toggle"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-white/80 hover:text-white focus:outline-hidden"
+              className="p-2 text-white/80 hover:text-white focus:outline-hidden shrink-0"
               aria-label="Menyu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

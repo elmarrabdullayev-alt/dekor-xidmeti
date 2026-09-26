@@ -56,24 +56,41 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  // Subscribe to CMS changes
+  // Subscribe to CMS changes and proactively fetch fresh data from server
   useEffect(() => {
+    // Sync with memory cache immediately
+    setCmsHeroImages(imageService.getImagesBySection('home_hero'));
+
+    // Proactively fetch latest records from server (Supabase / disk) with cache-busting
+    imageService.fetchImages().then((imgs) => {
+      if (imgs && imgs.length > 0) {
+        setCmsHeroImages(imageService.getImagesBySection('home_hero'));
+      }
+    });
+
     const unsub = imageService.subscribe(() => {
       setCmsHeroImages(imageService.getImagesBySection('home_hero'));
     });
     return () => unsub();
   }, []);
 
-  // Compute slides prioritizing CMS images and falling back to default bundled images
+  // Compute slides prioritizing CMS images with cache-busting timestamp to prevent stale browser cache
   const activeSlides: HeroSlide[] = HERO_SLIDES.map((defaultSlide, idx) => {
     const cmsMatch =
       cmsHeroImages.find((img) => img.targetId === defaultSlide.id) ||
       cmsHeroImages[idx];
 
-    if (cmsMatch) {
+    if (cmsMatch && cmsMatch.url) {
+      // Append cache-buster timestamp query param to image URL if updatedAt exists
+      // to prevent browser/CDN from serving stale cached image when replaced
+      const timestamp = cmsMatch.updatedAt ? new Date(cmsMatch.updatedAt).getTime() : '';
+      const resolvedUrl = timestamp
+        ? (cmsMatch.url.includes('?') ? `${cmsMatch.url}&_t=${timestamp}` : `${cmsMatch.url}?_t=${timestamp}`)
+        : cmsMatch.url;
+
       return {
         ...defaultSlide,
-        image: cmsMatch.url,
+        image: resolvedUrl,
         fallbackUrl: defaultSlide.image || defaultSlide.fallbackUrl,
         alt: cmsMatch.altText || defaultSlide.alt,
       };
@@ -85,9 +102,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
   if (cmsHeroImages.length > HERO_SLIDES.length) {
     for (let i = HERO_SLIDES.length; i < cmsHeroImages.length; i++) {
       const extra = cmsHeroImages[i];
+      const timestamp = extra.updatedAt ? new Date(extra.updatedAt).getTime() : '';
+      const resolvedUrl = timestamp
+        ? (extra.url.includes('?') ? `${extra.url}&_t=${timestamp}` : `${extra.url}?_t=${timestamp}`)
+        : extra.url;
+
       activeSlides.push({
         id: extra.targetId || `hero-slide-${i + 1}`,
-        image: extra.url,
+        image: resolvedUrl,
         fallbackUrl: extra.url,
         title: extra.targetName || 'Zövqlü Toy & Tədbir Dekoru',
         subtitle: 'DreamArt Events Eksklüziv Kompozisiyası',

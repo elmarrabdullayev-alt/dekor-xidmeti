@@ -248,9 +248,12 @@ async function startServer() {
     }
   });
 
-  // Public Images API: reads from persistent images.json
+  // Public Images API: reads from persistent images.json / Supabase
   app.get('/api/images', async (_req, res) => {
     try {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
       const images = await getAllStoredImages();
       res.json(images);
     } catch (err: any) {

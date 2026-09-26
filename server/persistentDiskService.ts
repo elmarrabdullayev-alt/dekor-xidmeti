@@ -351,6 +351,10 @@ export async function replaceImageRecord(
         if (meta.focalPoint) {
           target.focalPoint = meta.focalPoint;
         }
+        if (supabaseRecord) {
+          target.url = supabaseRecord.url;
+          target.thumbUrl = supabaseRecord.thumbUrl;
+        }
 
         atomicWriteDb(images);
 
