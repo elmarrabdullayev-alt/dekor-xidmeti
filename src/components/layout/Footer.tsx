@@ -17,7 +17,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
   const navLinks = [
     { label: 'Ana səhifə', path: '/' },
     { label: 'Dekorlar', path: '/dekorlar' },
-    { label: 'Restoranlar', path: '/restoranlar' },
+    { label: 'İşlədiyimiz Məkanlar', path: '/restoranlar' },
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Xidmətlər', path: '/xidmetler' },
     { label: 'Indian Weddings', path: '/indian-wedding-azerbaijan' },
@@ -63,7 +63,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
           {/* Social Icons matching mockup: Instagram, Facebook, YouTube, WhatsApp */}
           <div className="flex items-center space-x-4">
             <a
-              href={`https://instagram.com/${settings.instagram}`}
+              href="https://www.instagram.com/dreamartevents?stkn=M2Z2dTZuZDJmOW0y"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full border border-white/15 hover:border-[#C5A059] text-white/80 hover:text-[#E5C378] flex items-center justify-center transition-all bg-[#121212]"

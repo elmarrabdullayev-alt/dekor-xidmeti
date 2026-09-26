@@ -58,7 +58,7 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
         {
           '@type': 'ListItem',
           'position': 2,
-          'name': 'Restoranlar',
+          'name': 'İşlədiyimiz Məkanlar',
           'item': 'https://dreamartweddings.com/restoranlar'
         }
       ]
@@ -68,8 +68,8 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
   return (
     <>
       <SeoHead
-        title="Toy və Tədbir Məkanları | Restoran Dekoru | DreamArt Weddings"
-        description="DreamArt Weddings müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur."
+        title="İşlədiyimiz Məkanlar | Toy və Tədbir Məkanları | DreamArt Weddings"
+        description="DreamArt Weddings Bakı və regionların aparıcı restoran və tədbir məkanlarında dekor layihələri həyata keçirir. İşlədiyimiz məkanlar və dekor nümunələri."
         canonicalPath="/restoranlar"
         jsonLd={jsonLd}
       />
@@ -81,10 +81,10 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             <span className="text-[#C5A059] text-xs uppercase tracking-[0.3em] font-sans block mb-3 font-medium">
-              RESTORANLAR VƏ ŞADLIQ SARAYLARI
+              İŞLƏDİYİMİZ MƏKANLAR
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#FAF8F5] tracking-tight mb-4">
-              Toy və tədbir məkanları
+              İşlədiyimiz Məkanlar
             </h1>
             <p className="text-white/70 max-w-3xl mx-auto text-sm sm:text-base leading-relaxed font-light">
               DreamArt Events müxtəlif restoran və tədbir məkanlarında dekor layihələri həyata keçirir. Məkanlara uyğun real işlər və dekor nümunələri bu bölmədə təqdim olunur.

@@ -113,6 +113,7 @@ export interface SiteSettings {
   email: string;
   address: string;
   instagram: string;
+  instagramUrl?: string;
   regionalLogisticsNotice: string;
 }
 

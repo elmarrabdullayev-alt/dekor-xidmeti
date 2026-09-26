@@ -151,13 +151,13 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
               className="inline-flex items-center gap-2 hover:text-[#C5A059] transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Bütün Restoranlar</span>
+              <span>İşlədiyimiz Məkanlar</span>
             </button>
 
             <div className="flex items-center gap-2 text-[11px]">
               <span className="cursor-pointer hover:text-white" onClick={() => navigate('/')}>Ana səhifə</span>
               <span>/</span>
-              <span className="cursor-pointer hover:text-white" onClick={() => navigate('/restoranlar')}>Restoranlar</span>
+              <span className="cursor-pointer hover:text-white" onClick={() => navigate('/restoranlar')}>İşlədiyimiz Məkanlar</span>
               <span>/</span>
               <span className="text-[#C5A059] truncate max-w-[140px] sm:max-w-xs">{venue.name}</span>
             </div>
@@ -178,7 +178,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
               <div className="max-w-3xl space-y-3">
                 <div className="flex flex-wrap items-center gap-2.5">
                   <span className="bg-[#0B0B0B]/80 backdrop-blur-md border border-[#C5A059]/40 text-[#C5A059] text-[11px] px-3 py-1 rounded-sm uppercase tracking-wider font-mono">
-                    Restoran / Məkan Dekoru
+                    İşlədiyimiz Məkan
                   </span>
 
                   <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/60 px-3 py-1 rounded-sm border border-white/10">
@@ -230,7 +230,40 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             {/* Left Main Content (8 cols) */}
             <div className="lg:col-span-8 space-y-12">
-              {/* 2. Venue Description & Direct Info Block */}
+              {/* 2. Venue Gallery (Moved higher immediately after hero intro) */}
+              {venueGalleryPhotos.length > 0 && (
+                <section className="space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                    <div>
+                      <h2 className="font-serif text-2xl text-white">Məkan Qalereyası</h2>
+                      <p className="text-xs text-white/50 mt-1">
+                        {venue.name} üçün xüsusi dekorasiya və məkan görüntüləri
+                      </p>
+                    </div>
+                    <span className="text-xs text-[#C5A059] font-mono">{venueGalleryPhotos.length} foto</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                    {venueGalleryPhotos.map((photo, idx) => (
+                      <div
+                        key={photo.id || idx}
+                        className="relative h-36 sm:h-44 rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059]/60 cursor-pointer group shadow-md"
+                        onClick={() => setSelectedGalleryImage(photo.url)}
+                      >
+                        <img
+                          src={photo.url}
+                          alt={photo.altText}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity" />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* 3. Venue Description & Direct Info Block */}
               <div className="bg-[#121212] border border-[#C5A059]/40 rounded-sm p-5 sm:p-6 shadow-xl">
                 <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium font-mono mb-2">
                   <Sparkles className="w-3.5 h-3.5" />
@@ -267,39 +300,6 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                   <p className="text-sm text-white/70 leading-relaxed whitespace-pre-line font-light">
                     {venue.venueNotes}
                   </p>
-                </section>
-              )}
-
-              {/* 3. Venue Gallery (All Remaining venue_project Images) */}
-              {venueGalleryPhotos.length > 0 && (
-                <section className="space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                    <div>
-                      <h2 className="font-serif text-2xl text-white">Məkan Qalereyası</h2>
-                      <p className="text-xs text-white/50 mt-1">
-                        {venue.name} üçün xüsusi dekorasiya və məkan görüntüləri
-                      </p>
-                    </div>
-                    <span className="text-xs text-[#C5A059] font-mono">{venueGalleryPhotos.length} foto</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                    {venueGalleryPhotos.map((photo, idx) => (
-                      <div
-                        key={photo.id || idx}
-                        className="relative h-36 sm:h-44 rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059]/60 cursor-pointer group shadow-md"
-                        onClick={() => setSelectedGalleryImage(photo.url)}
-                      >
-                        <img
-                          src={photo.url}
-                          alt={photo.altText}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity" />
-                      </div>
-                    ))}
-                  </div>
                 </section>
               )}
 

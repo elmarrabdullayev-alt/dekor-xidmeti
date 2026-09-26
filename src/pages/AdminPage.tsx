@@ -61,6 +61,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   // Images reactive state from imageService
   const [images, setImages] = useState<ManagedImage[]>(() => imageService.getImages());
   const [decors, setDecors] = useState(() => store.getDecors());
+  const [venues, setVenues] = useState(() => store.getVenues(false));
   const [actionNotice, setActionNotice] = useState<string | null>(null);
 
   // Modals state
@@ -83,6 +84,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     const unsub = imageService.subscribe(() => {
       setImages(imageService.getImages());
       setDecors(store.getDecors());
+      setVenues(store.getVenues(false));
     });
     return () => unsub();
   }, []);
@@ -184,7 +186,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   } else if (activeAdminTab === 'venues') {
     uploadSection = 'venue_project';
     uploadTargetId = activeVenueSlug;
-    const v = INITIAL_VENUES.find(item => item.slug === activeVenueSlug);
+    const v = venues.find(item => item.slug === activeVenueSlug) || INITIAL_VENUES.find(item => item.slug === activeVenueSlug);
     uploadTargetName = v?.name || activeVenueSlug;
     activeImages = images
       .filter(img => img.section === 'venue_project' && (img.targetId === activeVenueSlug || (v && img.targetId === v.id)))
@@ -389,7 +391,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
             }`}
           >
             <Building2 className="w-4 h-4" />
-            <span>Restoran / Məkanlar ({INITIAL_VENUES.length})</span>
+            <span>İşlədiyimiz Məkanlar ({venues.length})</span>
           </button>
 
           <button
@@ -783,7 +785,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
         {/* VIEW B: VENUES MANAGEMENT                                       */}
         {/* ============================================================== */}
         {activeAdminTab === 'venues' && (() => {
-          const activeVenue = store.getVenueBySlug(activeVenueSlug) || INITIAL_VENUES.find(v => v.slug === activeVenueSlug) || INITIAL_VENUES[0];
+          const activeVenue = venues.find(v => v.slug === activeVenueSlug) || store.getVenueBySlug(activeVenueSlug) || INITIAL_VENUES[0];
           const venueLinkedProjects = decors.filter(d => isProjectStrictlyLinkedToVenue(d, activeVenue));
 
           return (
@@ -792,7 +794,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
               <div className="bg-[#141414] border border-[#242424] rounded-2xl p-4 sm:p-5 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222]">
                   <div>
-                    <h2 className="text-sm font-semibold text-[#F5F5F7]">Restoran / Məkan Seçin</h2>
+                    <h2 className="text-sm font-semibold text-[#F5F5F7]">İşlədiyimiz Məkan Seçin</h2>
                     <p className="text-xs text-neutral-400 mt-0.5">DreamArt Events real məkan dekorasiyası fotoları</p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -814,7 +816,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                 </div>
 
                 <div className="flex flex-wrap gap-2 pt-1">
-                  {INITIAL_VENUES.map(v => {
+                  {venues.map(v => {
                     const isSelected = v.slug === activeVenueSlug;
                     const count = images.filter(img => img.section === 'venue_project' && (img.targetId === v.slug || img.targetId === v.id)).length;
 

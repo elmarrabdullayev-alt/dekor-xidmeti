@@ -77,9 +77,9 @@ export const ContactPage: React.FC<ContactPageProps> = () => {
             <div className="bg-[#121212] p-6 border border-white/10 hover:border-[#C5A059]/50 rounded-sm transition-colors">
               <Instagram className="w-5 h-5 text-[#C5A059] mb-3" />
               <h3 className="text-xs uppercase tracking-wider text-white font-semibold mb-1">Instagram</h3>
-              <p className="text-sm text-white/80 mb-2">@{settings.instagram}</p>
+              <p className="text-sm text-white/80 mb-2">@dreamartevents</p>
               <a
-                href={`https://instagram.com/${settings.instagram}`}
+                href="https://www.instagram.com/dreamartevents?stkn=M2Z2dTZuZDJmOW0y"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-[#C5A059] hover:underline font-medium"

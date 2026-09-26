@@ -7,7 +7,7 @@ import { imageService } from './imageService';
 const DECORS_STORAGE_KEY = 'dreamart_decors_v4';
 const INQUIRIES_STORAGE_KEY = 'dreamart_inquiries_v2';
 const SETTINGS_STORAGE_KEY = 'dreamart_settings_v2';
-const VENUES_STORAGE_KEY = 'dreamart_venues_v4';
+const VENUES_STORAGE_KEY = 'dreamart_venues_v5';
 
 export const DEFAULT_SETTINGS: SiteSettings = {
   brandName: 'DreamArt Weddings',
@@ -17,7 +17,8 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   whatsappNumber: '994502311728',
   email: 'info@dreamart-events.az',
   address: 'Bakı şəhəri, Azərbaycan',
-  instagram: 'dreamart.events',
+  instagram: 'dreamartevents',
+  instagramUrl: 'https://www.instagram.com/dreamartevents?stkn=M2Z2dTZuZDJmOW0y',
   regionalLogisticsNotice: REGIONAL_POLICY_STATEMENT
 };
 
@@ -124,7 +125,13 @@ class DecorStore {
     try {
       const savedVenues = localStorage.getItem(VENUES_STORAGE_KEY);
       if (savedVenues) {
-        this.venues = JSON.parse(savedVenues);
+        const parsed: VenueItem[] = JSON.parse(savedVenues);
+        const existingSlugs = new Set(parsed.map(v => v.slug));
+        const missing = INITIAL_VENUES.filter(v => !existingSlugs.has(v.slug));
+        this.venues = [...parsed, ...missing];
+        if (missing.length > 0) {
+          this.persistVenues();
+        }
       } else {
         this.venues = [...INITIAL_VENUES];
         this.persistVenues();

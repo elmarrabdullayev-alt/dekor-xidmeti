@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, MessageCircle, ShieldCheck, Search } from 'lucide-react';
+import { Menu, X, Phone, MessageCircle, ShieldCheck, Search, Instagram } from 'lucide-react';
 import { store } from '../../lib/store';
 
 interface HeaderProps {
@@ -26,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
   const navLinks = [
     { label: 'Ana səhifə', path: '/' },
     { label: 'Dekorlar', path: '/dekorlar' },
-    { label: 'Restoranlar', path: '/restoranlar' },
+    { label: 'İşlədiyimiz Məkanlar', path: '/restoranlar' },
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Xidmətlər', path: '/xidmetler' },
     { label: 'Haqqımızda', path: '/haqqimizda' },
@@ -232,12 +232,22 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
                 <Phone className="w-3.5 h-3.5 text-[#C5A059]" />
                 <span className="font-mono">{settings.phoneDisplay}</span>
               </a>
+              <a
+                href="https://www.instagram.com/dreamartevents?stkn=M2Z2dTZuZDJmOW0y"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-1.5 text-white/80 hover:text-[#E5C378] transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>Instagram</span>
+              </a>
               <button
                 onClick={() => handleNav('/admin')}
                 className="flex items-center space-x-1 text-white/60 hover:text-[#C5A059]"
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Admin Panel</span>
+                <span>Admin</span>
               </button>
             </div>
           </div>
