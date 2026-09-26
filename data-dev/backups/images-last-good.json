@@ -5,7 +5,7 @@
     "filename": "dreamart-events-hero-slide-01.webp",
     "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2200&q=90",
     "thumbUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2200&q=90",
-    "alt": "DreamArt Events toy və ziyafət dekorasiyası əsas banner",
+    "alt": "Qara-qızılı fonda parıltılı monoqram, qızılı heykəllər və ağ gül kaskadı ilə bəy-gəlin toy səhnəsi",
     "format": "webp",
     "isCover": true,
     "order": 0,
@@ -14,8 +14,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "home_hero",
     "targetId": "hero-slide-1",
-    "targetName": "Əsas Slayd 1 - Zövqlü Dekor Həlləri",
-    "altText": "DreamArt Events toy və ziyafət dekorasiyası əsas banner",
+    "targetName": "Əsas Slayd 1 - Dəbdəbəli Toy Səhnəsi",
+    "altText": "Qara-qızılı fonda parıltılı monoqram, qızılı heykəllər və ağ gül kaskadı ilə bəy-gəlin toy səhnəsi",
     "sizeKb": 120
   },
   {
@@ -24,7 +24,7 @@
     "filename": "dreamart-events-hero-slide-02.webp",
     "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=2200&q=90",
     "thumbUrl": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=2200&q=90",
-    "alt": "DreamArt Events fərdi və emosional məkanlar",
+    "alt": "Bej drapaj pərdələr, parlaq işıqlı hərflər, ağ qızılgüllər və şamlarla nişan fotozonası",
     "format": "webp",
     "isCover": false,
     "order": 1,
@@ -33,8 +33,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "home_hero",
     "targetId": "hero-slide-2",
-    "targetName": "Əsas Slayd 2 - Müasir Zəriflik",
-    "altText": "DreamArt Events fərdi və emosional məkanlar",
+    "targetName": "Əsas Slayd 2 - Romantik Nişan Fotozonası",
+    "altText": "Bej drapaj pərdələr, parlaq işıqlı hərflər, ağ qızılgüllər və şamlarla nişan fotozonası",
     "sizeKb": 120
   },
   {
@@ -43,7 +43,7 @@
     "filename": "dreamart-events-hero-slide-03.webp",
     "url": "/images/boyuk-zal-dekor.jpg",
     "thumbUrl": "/images/boyuk-zal-dekor.jpg",
-    "alt": "DreamArt Events böyük şadlıq zalları və tavan instalyasiyaları",
+    "alt": "Asma dalğalı ağ tül tavan örtükləri və böyük kristal çilçıraqlarla monumental zal dekoru",
     "format": "webp",
     "isCover": false,
     "order": 2,
@@ -52,8 +52,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "home_hero",
     "targetId": "hero-slide-3",
-    "targetName": "Əsas Slayd 3 - Böyük Zallar və İnstalyasiyalar",
-    "altText": "DreamArt Events böyük şadlıq zalları və tavan instalyasiyaları",
+    "targetName": "Əsas Slayd 3 - Monumental Zal İnstalyasiyası",
+    "altText": "Asma dalğalı ağ tül tavan örtükləri və böyük kristal çilçıraqlarla monumental zal dekoru",
     "sizeKb": 120
   },
   {
@@ -62,7 +62,7 @@
     "filename": "dreamart-toy-dekoru-qapaq.webp",
     "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85",
-    "alt": "DreamArt Events toy dekoru örtük şəkli",
+    "alt": "Qara-qızılı fon, qızılı heykəllər və ağ qızılgüllərlə toy dekoru örtük şəkli",
     "format": "webp",
     "isCover": true,
     "order": 3,
@@ -72,7 +72,7 @@
     "section": "category_cover",
     "targetId": "toy-dekoru",
     "targetName": "Toy dekoru",
-    "altText": "DreamArt Events toy dekoru örtük şəkli",
+    "altText": "Qara-qızılı fon, qızılı heykəllər və ağ qızılgüllərlə toy dekoru örtük şəkli",
     "sizeKb": 120
   },
   {
@@ -81,7 +81,7 @@
     "filename": "dreamart-nisan-dekoru-qapaq.webp",
     "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85",
-    "alt": "DreamArt Events nişan dekoru örtük şəkli",
+    "alt": "Bej drapaj pərdələr və işıqlı hərflərlə nişan dekoru örtük şəkli",
     "format": "webp",
     "isCover": true,
     "order": 4,
@@ -91,7 +91,7 @@
     "section": "category_cover",
     "targetId": "nisan-dekoru",
     "targetName": "Nişan dekoru",
-    "altText": "DreamArt Events nişan dekoru örtük şəkli",
+    "altText": "Bej drapaj pərdələr və işıqlı hərflərlə nişan dekoru örtük şəkli",
     "sizeKb": 120
   },
   {
@@ -100,7 +100,7 @@
     "filename": "dreamart-xina-dekoru-qapaq.webp",
     "url": "https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1200&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1200&q=85",
-    "alt": "DreamArt Events xına mərasimi dekoru örtük şəkli",
+    "alt": "Qızılı tağlar və kristal çilçıraqlarla xına mərasimi dekoru örtük şəkli",
     "format": "webp",
     "isCover": true,
     "order": 5,
@@ -110,7 +110,7 @@
     "section": "category_cover",
     "targetId": "xina-dekoru",
     "targetName": "Xına dekoru",
-    "altText": "DreamArt Events xına mərasimi dekoru örtük şəkli",
+    "altText": "Qızılı tağlar və kristal çilçıraqlarla xına mərasimi dekoru örtük şəkli",
     "sizeKb": 120
   },
   {
@@ -119,7 +119,7 @@
     "filename": "dreamart-ad-gunu-dekoru-qapaq.webp",
     "url": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=85",
-    "alt": "DreamArt Events ad günü və yubiley fotozonası örtük şəkli",
+    "alt": "Krem drapaj parçalar və işıqlı hərflərlə ad günü fotozonası örtük şəkli",
     "format": "webp",
     "isCover": true,
     "order": 6,
@@ -129,7 +129,7 @@
     "section": "category_cover",
     "targetId": "ad-gunu-dekoru",
     "targetName": "Ad günü dekoru",
-    "altText": "DreamArt Events ad günü və yubiley fotozonası örtük şəkli",
+    "altText": "Krem drapaj parçalar və işıqlı hərflərlə ad günü fotozonası örtük şəkli",
     "sizeKb": 120
   },
   {
@@ -138,7 +138,7 @@
     "filename": "dreamart-korporativ-dekor-qapaq.webp",
     "url": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=85",
-    "alt": "DreamArt Events korporativ tədbir və qala gecəsi dekoru örtük şəkli",
+    "alt": "Büllur şamdanlar və qara süfrəli korporativ qala gecəsi dekoru örtük şəkli",
     "format": "webp",
     "isCover": true,
     "order": 7,
@@ -148,7 +148,7 @@
     "section": "category_cover",
     "targetId": "korporativ-dekor",
     "targetName": "Korporativ dekor",
-    "altText": "DreamArt Events korporativ tədbir və qala gecəsi dekoru örtük şəkli",
+    "altText": "Büllur şamdanlar və qara süfrəli korporativ qala gecəsi dekoru örtük şəkli",
     "sizeKb": 120
   },
   {
@@ -157,7 +157,7 @@
     "filename": "dreamart-zal-dekoru-qapaq.webp",
     "url": "/images/boyuk-zal-dekor.jpg",
     "thumbUrl": "/images/boyuk-zal-dekor.jpg",
-    "alt": "DreamArt Events böyük şadlıq sarayı və zal dekorasiyası örtük şəkli",
+    "alt": "Dalğalı ağ tül və kristal çilçıraqlarla böyük şadlıq sarayı və zal dekorasiyası örtük şəkli",
     "format": "webp",
     "isCover": true,
     "order": 8,
@@ -167,7 +167,7 @@
     "section": "category_cover",
     "targetId": "zal-dekoru",
     "targetName": "Zal dekoru",
-    "altText": "DreamArt Events böyük şadlıq sarayı və zal dekorasiyası örtük şəkli",
+    "altText": "Dalğalı ağ tül və kristal çilçıraqlarla böyük şadlıq sarayı və zal dekorasiyası örtük şəkli",
     "sizeKb": 120
   },
   {
@@ -176,7 +176,7 @@
     "filename": "dreamart-xonca-xidmeti-qapaq.webp",
     "url": "/images/xonca-xidmeti-cover.jpg",
     "thumbUrl": "/images/xonca-xidmeti-cover.jpg",
-    "alt": "DreamArt Events milli və müasir xonça xidməti örtük şəkli",
+    "alt": "Oymalı qızılı sini, ağ-çəhrayı qızılgüllər və şamlarla milli və müasir xonça xidməti örtük şəkli",
     "format": "webp",
     "isCover": true,
     "order": 9,
@@ -186,7 +186,7 @@
     "section": "category_cover",
     "targetId": "xonca-xidmeti",
     "targetName": "Xonça xidməti",
-    "altText": "DreamArt Events milli və müasir xonça xidməti örtük şəkli",
+    "altText": "Oymalı qızılı sini, ağ-çəhrayı qızılgüllər və şamlarla milli və müasir xonça xidməti örtük şəkli",
     "sizeKb": 120
   },
   {
@@ -195,7 +195,7 @@
     "filename": "ag-qizilgul-toy-altari-main.webp",
     "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85",
-    "alt": "Ağ qızılgül və zərif şamlı toy altarı örtük şəkli",
+    "alt": "Qara-qızılı fon, parıltılı monoqram, iki qızılı əl heykəli, ağ gül kaskadı və şüşə şamdanlarla bəy-gəlin toy səhnəsi",
     "format": "webp",
     "isCover": true,
     "order": 10,
@@ -204,8 +204,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-1",
-    "targetName": "Ağ Qızılgül və Zərif Şamlı Toy Altarı",
-    "altText": "Ağ qızılgül və zərif şamlı toy altarı örtük şəkli",
+    "targetName": "Qızılı Heykəllər və Ağ Güllərlə Dəbdəbəli Toy Səhnəsi",
+    "altText": "Qara-qızılı fon, parıltılı monoqram, iki qızılı əl heykəli, ağ gül kaskadı və şüşə şamdanlarla bəy-gəlin toy səhnəsi",
     "sizeKb": 120
   },
   {
@@ -214,7 +214,7 @@
     "filename": "ag-qizilgul-toy-altari-gal-1.webp",
     "url": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85",
-    "alt": "Ağ qızılgül toy altarı yaxından baxış",
+    "alt": "Qızılı tağlar, kristal çilçıraqlar və pilləli şamlarla monumental toy səhnəsi",
     "format": "webp",
     "isCover": false,
     "order": 11,
@@ -223,8 +223,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-1",
-    "targetName": "Ağ Qızılgül və Zərif Şamlı Toy Altarı",
-    "altText": "Ağ qızılgül toy altarı yaxından baxış",
+    "targetName": "Qızılı Heykəllər və Ağ Güllərlə Dəbdəbəli Toy Səhnəsi",
+    "altText": "Qızılı tağlar, kristal çilçıraqlar və pilləli şamlarla monumental toy səhnəsi",
     "sizeKb": 120
   },
   {
@@ -233,7 +233,7 @@
     "filename": "pudra-cehrayi-nisan-masasi-main.webp",
     "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=85",
-    "alt": "Pudra çəhrayı və qızılı pastel nişan masası örtük şəkli",
+    "alt": "Bej drapaj pərdələr, işıqlı neon hərflər, ağ qızılgüllər və gümüşü şamdanlarla nişan fotozonası",
     "format": "webp",
     "isCover": true,
     "order": 12,
@@ -242,8 +242,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-2",
-    "targetName": "Pudra Çəhrayı və Qızılı Pastel Nişan Masası",
-    "altText": "Pudra çəhrayı və qızılı pastel nişan masası örtük şəkli",
+    "targetName": "Şampan-Bej Drapaj və İşıqlı Hərflərlə Nişan Fotozonası",
+    "altText": "Bej drapaj pərdələr, işıqlı neon hərflər, ağ qızılgüllər və gümüşü şamdanlarla nişan fotozonası",
     "sizeKb": 120
   },
   {
@@ -252,7 +252,7 @@
     "filename": "kraliyyet-mexmeri-xina-dekoru-main.webp",
     "url": "https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1600&q=85",
-    "alt": "Kraliyyət məxməri və şam kompozisiyalı xına dekoru",
+    "alt": "Qızılı tağlar, kristal çilçıraqlar, ağ taxt kreslolar və çoxsaylı şamlarla tərtib edilmiş xına səhnəsi",
     "format": "webp",
     "isCover": true,
     "order": 13,
@@ -261,8 +261,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-3",
-    "targetName": "Kraliyyət Məxməri və Şam Kompozisiyalı Xına Dekoru",
-    "altText": "Kraliyyət məxməri və şam kompozisiyalı xına dekoru",
+    "targetName": "Qızılı Tağlar və Kristal Çilçıraqlı Dəbdəbəli Xına Səhnəsi",
+    "altText": "Qızılı tağlar, kristal çilçıraqlar, ağ taxt kreslolar və çoxsaylı şamlarla tərtib edilmiş xına səhnəsi",
     "sizeKb": 120
   },
   {
@@ -271,7 +271,7 @@
     "filename": "krem-qizili-ad-gunu-fotozona-main.webp",
     "url": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1600&q=85",
-    "alt": "Krem və qızılı işıqlı estetik ad günü fotozonası",
+    "alt": "Bej parçalar, işıqlı hərflər, ağ güllər və şamlarla işlənmiş ad günü fotozona dekoru",
     "format": "webp",
     "isCover": true,
     "order": 14,
@@ -280,8 +280,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-4",
-    "targetName": "Krem Və Qızılı İşıqlı Estetik Ad Günü Fotozonası",
-    "altText": "Krem və qızılı işıqlı estetik ad günü fotozonası",
+    "targetName": "Krem-Qızılı Drapaj və İşıqlı Hərflərlə Ad Günü Guşəsi",
+    "altText": "Bej parçalar, işıqlı hərflər, ağ güllər və şamlarla işlənmiş ad günü fotozona dekoru",
     "sizeKb": 120
   },
   {
@@ -290,7 +290,7 @@
     "filename": "qala-sam-yemeyi-korporativ-main.webp",
     "url": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=85",
-    "alt": "Qala şam yeməyi və korporativ tədbir tərtibatı",
+    "alt": "Qara süfrə, hündür büllur şamdanlar, zərif qablar və ağ güllərlə tərtib olunmuş qala masası dekoru",
     "format": "webp",
     "isCover": true,
     "order": 15,
@@ -299,8 +299,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-5",
-    "targetName": "Qala Şam Yeməyi və Korporativ Tədbir Tərtibatı",
-    "altText": "Qala şam yeməyi və korporativ tədbir tərtibatı",
+    "targetName": "Büllur Şamdanlar və Qara Süfrəli Qala Ziyafət Masası",
+    "altText": "Qara süfrə, hündür büllur şamdanlar, zərif qablar və ağ güllərlə tərtib olunmuş qala masası dekoru",
     "sizeKb": 120
   },
   {
@@ -309,7 +309,7 @@
     "filename": "panoramik-sadliq-zali-tavan-main.webp",
     "url": "/images/boyuk-zal-dekor.jpg",
     "thumbUrl": "/images/boyuk-zal-dekor.jpg",
-    "alt": "Panoramik şadlıq zalı və tavan işıq instalyasiyası",
+    "alt": "Asma ağ tül tavan örtükləri, böyük kristal çilçıraqlar və şəffaf stullarla bəzədilmiş ziyafət zalı dekoru",
     "format": "webp",
     "isCover": true,
     "order": 16,
@@ -318,8 +318,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-6",
-    "targetName": "Panoramik Şadlıq Zalı və Tavan İşıq İnstalyasiyası",
-    "altText": "Panoramik şadlıq zalı və tavan işıq instalyasiyası",
+    "targetName": "Dalğalı Ağ Tül və Kristal Çilçıraqlı Monumental Zal Dekoru",
+    "altText": "Asma ağ tül tavan örtükləri, böyük kristal çilçıraqlar və şəffaf stullarla bəzədilmiş ziyafət zalı dekoru",
     "sizeKb": 120
   },
   {
@@ -347,7 +347,7 @@
     "filename": "klassik-gence-nisan-masasi-main.webp",
     "url": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=85",
-    "alt": "Klassik Gəncə intim nişan və xonça tərtibatı",
+    "alt": "Təbii ağac budaqları, sıx ağ qızılgüllər və klassik stullarla tərtib edilmiş intim mərasim masası dekoru",
     "format": "webp",
     "isCover": true,
     "order": 18,
@@ -356,8 +356,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-8",
-    "targetName": "Klassik Gəncə İntim Nişan və Xonça Tərtibatı",
-    "altText": "Klassik Gəncə intim nişan və xonça tərtibatı",
+    "targetName": "Təbii Ağac Budaqları və Sıx Ağ Güllərlə İntim Masa Dekoru",
+    "altText": "Təbii ağac budaqları, sıx ağ qızılgüllər və klassik stullarla tərtib edilmiş intim mərasim masası dekoru",
     "sizeKb": 120
   },
   {
@@ -366,7 +366,7 @@
     "filename": "ekskluziv-bullur-qizili-xonca-main.webp",
     "url": "/images/xonca-xidmeti-cover.jpg",
     "thumbUrl": "/images/xonca-xidmeti-cover.jpg",
-    "alt": "Eksklüziv büllur və qızılı xonça kompozisiyası",
+    "alt": "Oymalı qızılı sini, ağ-çəhrayı təbii qızılgüllər və yanan şamlarla tərtib edilmiş toy və nişan xonçası",
     "format": "webp",
     "isCover": true,
     "order": 19,
@@ -375,8 +375,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "decor_project",
     "targetId": "decor-9",
-    "targetName": "Eksklüziv Büllur və Qızılı Xonça Kompozisiyası",
-    "altText": "Eksklüziv büllur və qızılı xonça kompozisiyası",
+    "targetName": "Oymalı Qızılı Sini və Canlı Güllərlə Dəbdəbəli Xonça Tərtibatı",
+    "altText": "Oymalı qızılı sini, ağ-çəhrayı təbii qızılgüllər və yanan şamlarla tərtib edilmiş toy və nişan xonçası",
     "sizeKb": 120
   },
   {
@@ -385,7 +385,7 @@
     "filename": "meridian-sadliq-sarayi-cover.webp",
     "url": "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1600&q=85",
-    "alt": "Meridian şadlıq sarayı zal dekoru örtük şəkli",
+    "alt": "Meridian məkanında qızılı tağlar, kristal çilçıraqlar və pilləli şamlarla monumental toy səhnəsi",
     "format": "webp",
     "isCover": true,
     "order": 20,
@@ -395,7 +395,7 @@
     "section": "venue_project",
     "targetId": "meridian",
     "targetName": "Meridian Şadlıq Sarayı",
-    "altText": "Meridian şadlıq sarayı zal dekoru örtük şəkli",
+    "altText": "Meridian məkanında qızılı tağlar, kristal çilçıraqlar və pilləli şamlarla monumental toy səhnəsi",
     "sizeKb": 120
   },
   {
@@ -404,7 +404,7 @@
     "filename": "by-meridian-dekoru-cover.webp",
     "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85",
-    "alt": "By Meridian məkanında toy və ziyafət dekoru",
+    "alt": "By Meridian məkanında dairəvi ağ-çəhrayı çiçək tağları və büllur çilçıraqlı bəy-gəlin masası",
     "format": "webp",
     "isCover": true,
     "order": 21,
@@ -414,7 +414,7 @@
     "section": "venue_project",
     "targetId": "by-meridian",
     "targetName": "By Meridian",
-    "altText": "By Meridian məkanında toy və ziyafət dekoru",
+    "altText": "By Meridian məkanında dairəvi ağ-çəhrayı çiçək tağları və büllur çilçıraqlı bəy-gəlin masası",
     "sizeKb": 120
   },
   {
@@ -423,7 +423,7 @@
     "filename": "bagcali-saray-dekoru-cover.webp",
     "url": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=85",
-    "alt": "Bağçalı Saray zal tərtibatı örtük şəkli",
+    "alt": "Bağçalı Sarayda zümrüd yaşıl məxmər süfrə və hündür gül vazalı qonaq masası tərtibatı",
     "format": "webp",
     "isCover": true,
     "order": 22,
@@ -433,7 +433,7 @@
     "section": "venue_project",
     "targetId": "bagcali-saray",
     "targetName": "Bağçalı Saray",
-    "altText": "Bağçalı Saray zal tərtibatı örtük şəkli",
+    "altText": "Bağçalı Sarayda zümrüd yaşıl məxmər süfrə və hündür gül vazalı qonaq masası tərtibatı",
     "sizeKb": 120
   },
   {
@@ -442,7 +442,7 @@
     "filename": "boyuk-saray-dekoru-cover.webp",
     "url": "/images/boyuk-zal-dekor.jpg",
     "thumbUrl": "/images/boyuk-zal-dekor.jpg",
-    "alt": "Böyük Saray şadlıq sarayı tavan və səhnə dekoru",
+    "alt": "Böyük Saray şadlıq sarayında asma ağ tül tavan örtükləri və böyük kristal çilçıraqlar",
     "format": "webp",
     "isCover": true,
     "order": 23,
@@ -452,7 +452,7 @@
     "section": "venue_project",
     "targetId": "boyuk-saray",
     "targetName": "Böyük Saray",
-    "altText": "Böyük Saray şadlıq sarayı tavan və səhnə dekoru",
+    "altText": "Böyük Saray şadlıq sarayında asma ağ tül tavan örtükləri və böyük kristal çilçıraqlar",
     "sizeKb": 120
   },
   {
@@ -499,7 +499,7 @@
     "filename": "premium-xonca-xidmeti-main.webp",
     "url": "/images/xonca-xidmeti-cover.jpg",
     "thumbUrl": "/images/xonca-xidmeti-cover.jpg",
-    "alt": "Eksklüziv xonça kompozisiyası və tərtibatı",
+    "alt": "Qara mərmər masa üzərində oymalı qızılı sini, günbəz qapaqlı qab, milli şirniyyatlar və ağ-çəhrayı qızılgüllərlə dəbdəbəli xonça",
     "format": "webp",
     "isCover": true,
     "order": 26,
@@ -508,8 +508,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "xonca_service",
     "targetId": "xonca-main",
-    "targetName": "Əsas Xonça Təqdimatı",
-    "altText": "Eksklüziv xonça kompozisiyası və tərtibatı",
+    "targetName": "Oymalı Qızılı Sini və Canlı Güllərlə Dəbdəbəli Xonça",
+    "altText": "Qara mərmər masa üzərində oymalı qızılı sini, günbəz qapaqlı qab, milli şirniyyatlar və ağ-çəhrayı qızılgüllərlə dəbdəbəli xonça",
     "sizeKb": 120
   },
   {
@@ -518,7 +518,7 @@
     "filename": "nisan-xoncalari-dest.webp",
     "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85",
-    "alt": "Zərif lentli və güllü nişan xonçaları dəsti",
+    "alt": "Təbii ağac budaqları, sıx ağ qızılgüllər və zərif stendlərlə xonça guşəsi",
     "format": "webp",
     "isCover": false,
     "order": 27,
@@ -527,8 +527,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "xonca_service",
     "targetId": "xonca-main",
-    "targetName": "Əsas Xonça Təqdimatı",
-    "altText": "Zərif lentli və güllü nişan xonçaları dəsti",
+    "targetName": "Təbii Ağac Budaqları və Sıx Ağ Güllərlə Masa Dekoru",
+    "altText": "Təbii ağac budaqları, sıx ağ qızılgüllər və zərif stendlərlə xonça guşəsi",
     "sizeKb": 120
   },
   {
@@ -537,7 +537,7 @@
     "filename": "portfolio-toy-altari-01.webp",
     "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85",
-    "alt": "DreamArt Events toy altarı və zərif şam kompozisiyası",
+    "alt": "Qara fon üzərində qızılı saplı pərdələr, parıltılı monoqram, iki qızılı əl heykəli, ağ gül kaskadı və hündür şüşə şamdanlarla dəbdəbəli bəy-gəlin toy səhnəsi",
     "format": "webp",
     "isCover": true,
     "order": 28,
@@ -546,8 +546,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "portfolio_lookbook",
     "targetId": "portfolio-showcase",
-    "targetName": "Toy Altarı Vitrini",
-    "altText": "DreamArt Events toy altarı və zərif şam kompozisiyası",
+    "targetName": "Qızılı Heykəllər və Ağ Güllərlə Dəbdəbəli Toy Səhnəsi",
+    "altText": "Qara fon üzərində qızılı saplı pərdələr, parıltılı monoqram, iki qızılı əl heykəli, ağ gül kaskadı və hündür şüşə şamdanlarla dəbdəbəli bəy-gəlin toy səhnəsi",
     "sizeKb": 120
   },
   {
@@ -556,7 +556,7 @@
     "filename": "portfolio-zal-tavan-02.webp",
     "url": "/images/boyuk-zal-dekor.jpg",
     "thumbUrl": "/images/boyuk-zal-dekor.jpg",
-    "alt": "DreamArt Events böyük zal tavan instalyasiyası vitrini",
+    "alt": "Bej və şampan tonlarında zərif drapaj pərdələr, parıldayan işıqlı hərflər, hündür sütunlarda ağ qızılgüllər və pilləli şamlarla romantik nişan fotozonası",
     "format": "webp",
     "isCover": false,
     "order": 29,
@@ -565,8 +565,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "portfolio_lookbook",
     "targetId": "portfolio-showcase",
-    "targetName": "Zal Tavan İnstalyasiyası",
-    "altText": "DreamArt Events böyük zal tavan instalyasiyası vitrini",
+    "targetName": "Şampan-Bej Drapaj və İşıqlı Hərflərlə Nişan Fotozonası",
+    "altText": "Bej və şampan tonlarında zərif drapaj pərdələr, parıldayan işıqlı hərflər, hündür sütunlarda ağ qızılgüllər və pilləli şamlarla romantik nişan fotozonası",
     "sizeKb": 120
   },
   {
@@ -575,7 +575,7 @@
     "filename": "portfolio-nisan-masasi-03.webp",
     "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=85",
     "thumbUrl": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=85",
-    "alt": "DreamArt Events pastel nişan masası vitrini",
+    "alt": "Zal tavanından dalğavari asılmış ağ tül örtüklər, böyük kristal çilçıraqlar, şəffaf stullar və ağ gül buketləri ilə bəzədilmiş geniş ziyafət zalı",
     "format": "webp",
     "isCover": false,
     "order": 30,
@@ -584,8 +584,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "portfolio_lookbook",
     "targetId": "portfolio-showcase",
-    "targetName": "Nişan Masası Vitrini",
-    "altText": "DreamArt Events pastel nişan masası vitrini",
+    "targetName": "Dalğalı Ağ Tül və Kristal Çilçıraqlı Monumental Zal Dekoru",
+    "altText": "Zal tavanından dalğavari asılmış ağ tül örtüklər, böyük kristal çilçıraqlar, şəffaf stullar və ağ gül buketləri ilə bəzədilmiş geniş ziyafət zalı",
     "sizeKb": 120
   },
   {
@@ -594,7 +594,7 @@
     "filename": "portfolio-xonca-kompozisiya-04.webp",
     "url": "/images/xonca-xidmeti-cover.jpg",
     "thumbUrl": "/images/xonca-xidmeti-cover.jpg",
-    "alt": "DreamArt Events xonça tərtibatı vitrini",
+    "alt": "Qızılı pərdə fonu, dörd işıqlı tağ konstruksiyası, kristal çilçıraqlar, ağ taxt kreslolar və pillələrdə çoxsaylı yanan şamlarla möhtəşəm səhnə",
     "format": "webp",
     "isCover": false,
     "order": 31,
@@ -603,8 +603,8 @@
     "updatedAt": "2026-09-05T11:31:49.983Z",
     "section": "portfolio_lookbook",
     "targetId": "portfolio-showcase",
-    "targetName": "Xonça Tərtibatı Vitrini",
-    "altText": "DreamArt Events xonça tərtibatı vitrini",
+    "targetName": "Qızılı Tağlar və Kristal Çilçıraqlı Dəbdəbəli Səhnə",
+    "altText": "Qızılı pərdə fonu, dörd işıqlı tağ konstruksiyası, kristal çilçıraqlar, ağ taxt kreslolar və pillələrdə çoxsaylı yanan şamlarla möhtəşəm səhnə",
     "sizeKb": 120
   },
   {

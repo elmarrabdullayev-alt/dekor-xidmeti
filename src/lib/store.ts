@@ -4,7 +4,7 @@ import { INITIAL_VENUES } from '../data/initialVenues';
 import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData';
 import { imageService } from './imageService';
 
-const DECORS_STORAGE_KEY = 'dreamart_decors_v4';
+const DECORS_STORAGE_KEY = 'dreamart_decors_v6';
 const INQUIRIES_STORAGE_KEY = 'dreamart_inquiries_v2';
 const SETTINGS_STORAGE_KEY = 'dreamart_settings_v2';
 const VENUES_STORAGE_KEY = 'dreamart_venues_v5';
@@ -31,7 +31,7 @@ const INITIAL_SAMPLE_INQUIRIES: InquiryRequest[] = [
     date: '2026-10-15',
     location: 'Bakı (Boutique 19)',
     notes: 'Ağ qızılgül və şam kompozisiyalı altar tağı və 15 masa üçün mərkəz gülləri lazımdır.',
-    decorName: 'Ağ Qızılgül və Zərif Şamlı Toy Altarı',
+    decorName: 'Qızılı Heykəllər və Ağ Güllərlə Dəbdəbəli Toy Səhnəsi',
     createdAt: '2026-09-02T11:30:00Z',
     status: 'new'
   },
