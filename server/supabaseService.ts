@@ -18,7 +18,7 @@ let bucketVerified = false;
  * Dynamically read and sanitize Supabase URL from environment
  */
 export function getSupabaseUrl(): string {
-  const raw = process.env.SUPABASE_URL || '';
+  const raw = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
   return raw.trim().replace(/^["']|["']$/g, '');
 }
 
@@ -30,6 +30,7 @@ export function getSupabaseKey(): string {
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
     process.env.SUPABASE_KEY ||
     process.env.SUPABASE_ANON_KEY ||
+    process.env.VITE_SUPABASE_ANON_KEY ||
     '';
   return raw.trim().replace(/^["']|["']$/g, '');
 }
@@ -38,7 +39,7 @@ export function getSupabaseKey(): string {
  * Dynamically read and sanitize Supabase Storage Bucket name
  */
 export function getSupabaseBucket(): string {
-  const raw = process.env.SUPABASE_STORAGE_BUCKET || 'dreamart-images';
+  const raw = process.env.SUPABASE_STORAGE_BUCKET || process.env.VITE_SUPABASE_STORAGE_BUCKET || 'dreamart-images';
   return raw.trim().replace(/^["']|["']$/g, '') || 'dreamart-images';
 }
 
@@ -191,32 +192,42 @@ export function getPublicStorageUrl(storageKey: string): string {
  * Map raw database row from Supabase admin_images table to StoredImage
  */
 export function mapDbRowToStoredImage(row: any): StoredImage {
-  const group = row.group_name || row.group || 'general';
-  const targetId = row.target_id || row.projectId || row.venueId || 'general';
+  const group = row.group_name || row.group || row.section || 'general';
+  const targetId = row.target_id || row.targetId || row.projectId || row.venueId || 'general';
   const isVenue = group === 'venue_project';
 
+  let url = row.public_url || row.url || '';
+  if (!url && row.storage_key) {
+    url = getPublicStorageUrl(row.storage_key);
+  }
+
+  let thumbUrl = row.thumb_public_url || row.thumbUrl || url;
+  if (!thumbUrl && row.thumb_storage_key) {
+    thumbUrl = getPublicStorageUrl(row.thumb_storage_key);
+  }
+
   return {
-    id: row.id,
+    id: String(row.id),
     group,
-    filename: path.basename(row.storage_key || row.public_url || 'image.webp'),
-    url: row.public_url,
-    thumbUrl: row.thumb_public_url || row.public_url,
-    alt: row.alt_text || '',
+    filename: path.basename(row.storage_key || url || 'image.webp'),
+    url: url || '',
+    thumbUrl: thumbUrl || url || '',
+    alt: row.alt_text || row.alt || '',
     width: row.width,
     height: row.height,
     format: row.format || 'webp',
-    isCover: Boolean(row.is_cover),
-    order: typeof row.sort_order === 'number' ? row.sort_order : 0,
-    focalPoint: row.focal_point || undefined,
+    isCover: Boolean(row.is_cover ?? row.isCover),
+    order: typeof (row.sort_order ?? row.order) === 'number' ? (row.sort_order ?? row.order) : 0,
+    focalPoint: row.focal_point || row.focalPoint || undefined,
     projectId: isVenue ? undefined : targetId,
     venueId: isVenue ? targetId : undefined,
-    createdAt: row.created_at || new Date().toISOString(),
-    updatedAt: row.updated_at || new Date().toISOString(),
+    createdAt: row.created_at || row.createdAt || new Date().toISOString(),
+    updatedAt: row.updated_at || row.updatedAt || new Date().toISOString(),
     section: group as ImageSection,
     targetId,
-    targetName: row.target_name || targetId,
-    altText: row.alt_text || '',
-    sizeKb: row.size_kb,
+    targetName: row.target_name || row.targetName || targetId,
+    altText: row.alt_text || row.alt || '',
+    sizeKb: row.size_kb || row.sizeKb,
   };
 }
 
@@ -279,19 +290,25 @@ export async function fetchSupabaseImages(): Promise<StoredImage[] | null> {
   if (!client) return null;
 
   try {
-    const { data, error } = await client
+    let { data, error } = await client
       .from(ADMIN_IMAGES_TABLE)
       .select('*')
       .order('sort_order', { ascending: true });
 
     if (error) {
-      console.warn('[Supabase DB] Query admin_images error:', error.message);
-      return null;
+      console.warn('[Supabase DB] Query with sort_order error, falling back to select(*):', error.message);
+      const fallbackQuery = await client.from(ADMIN_IMAGES_TABLE).select('*');
+      if (fallbackQuery.error) {
+        console.warn('[Supabase DB] Query admin_images error:', fallbackQuery.error.message);
+        return null;
+      }
+      data = fallbackQuery.data;
     }
 
-    if (!Array.isArray(data)) return null;
+    if (!Array.isArray(data) || data.length === 0) return null;
 
-    return data.map(mapDbRowToStoredImage);
+    const mapped = data.map(mapDbRowToStoredImage);
+    return mapped.sort((a, b) => a.order - b.order);
   } catch (err: any) {
     console.warn('[Supabase DB] fetchSupabaseImages exception:', err.message);
     return null;

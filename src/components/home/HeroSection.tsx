@@ -49,7 +49,6 @@ const HERO_SLIDES: HeroSlide[] = [
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortfolio }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const [cmsHeroImages, setCmsHeroImages] = useState<ManagedImage[]>(() =>
     imageService.getImagesBySection('home_hero')
   );
@@ -78,6 +77,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
   const activeSlides: HeroSlide[] = HERO_SLIDES.map((defaultSlide, idx) => {
     const cmsMatch =
       cmsHeroImages.find((img) => img.targetId === defaultSlide.id) ||
+      cmsHeroImages.find((img) => img.order === idx) ||
       cmsHeroImages[idx];
 
     if (cmsMatch && cmsMatch.url) {
@@ -128,18 +128,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   }, [totalSlides]);
 
-  const goToSlide = (idx: number) => {
+  const goToSlide = useCallback((idx: number) => {
     setCurrentSlide(idx);
-  };
+  }, []);
 
-  // Auto-advance carousel every 5.5 seconds (paused on hover)
+  // Reliable Auto-advance carousel: rotates every 5 seconds, resets upon slide change
   useEffect(() => {
-    if (isPaused) return;
+    if (totalSlides <= 1) return;
     const timer = setInterval(() => {
-      nextSlide();
-    }, 5500);
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    }, 5000);
     return () => clearInterval(timer);
-  }, [isPaused, nextSlide]);
+  }, [totalSlides, currentSlide]);
 
   // Touch swipe support for mobile devices
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -156,10 +156,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
     const minSwipeDistance = 50;
 
     if (distance > minSwipeDistance) {
-      // Swiped left -> next slide
       nextSlide();
     } else if (distance < -minSwipeDistance) {
-      // Swiped right -> prev slide
       prevSlide();
     }
 
@@ -171,8 +169,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
     <section
       id="hero-section"
       className="relative w-full min-h-[580px] sm:min-h-[640px] md:min-h-[700px] lg:min-h-[750px] flex items-center overflow-hidden bg-[#0A0A0A] select-none border-b border-[#C5A059]/20"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -185,23 +181,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
           return (
             <div
               key={slide.id}
-              className={`absolute inset-0 transition-all duration-1000 ease-out ${
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
                 isActive
-                  ? 'opacity-100 scale-100 pointer-events-auto z-10'
-                  : 'opacity-0 scale-105 pointer-events-none z-0'
+                  ? 'opacity-100 pointer-events-auto z-10'
+                  : 'opacity-0 pointer-events-none z-0'
               }`}
               aria-hidden={!isActive}
             >
               <img
+                key={slide.image}
                 src={slide.image || slide.fallbackUrl}
                 alt={slide.alt}
                 loading={idx === 0 ? 'eager' : 'lazy'}
                 fetchPriority={idx === 0 ? 'high' : 'auto'}
                 className="w-full h-full object-cover object-center"
                 onError={(e) => {
-                  // Fallback if bundled asset path differs
                   const target = e.currentTarget;
-                  if (target.src !== slide.fallbackUrl) {
+                  // Only fallback if the current src failed and fallback is different
+                  if (slide.fallbackUrl && !target.src.includes(slide.fallbackUrl)) {
                     target.src = slide.fallbackUrl;
                   }
                 }}
@@ -287,7 +284,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
 
       {/* 3. NAVIGATION ARROWS (LEFT / RIGHT) */}
       <button
-        onClick={prevSlide}
+        type="button"
+        id="hero-prev-arrow"
+        onClick={(e) => {
+          e.stopPropagation();
+          prevSlide();
+        }}
         aria-label="Əvvəlki slayd"
         className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/45 hover:bg-black/80 text-white/80 hover:text-white border border-white/15 hover:border-[#C5A059] backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer shadow-lg group"
       >
@@ -295,7 +297,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
       </button>
 
       <button
-        onClick={nextSlide}
+        type="button"
+        id="hero-next-arrow"
+        onClick={(e) => {
+          e.stopPropagation();
+          nextSlide();
+        }}
         aria-label="Növbəti slayd"
         className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/45 hover:bg-black/80 text-white/80 hover:text-white border border-white/15 hover:border-[#C5A059] backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer shadow-lg group"
       >
@@ -322,7 +329,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
             return (
               <button
                 key={slide.id}
-                onClick={() => goToSlide(idx)}
+                type="button"
+                id={`hero-dot-${idx + 1}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goToSlide(idx);
+                }}
                 aria-label={`Slayd ${idx + 1}: ${slide.title}`}
                 className={`transition-all duration-500 rounded-full cursor-pointer h-2 ${
                   isActive
