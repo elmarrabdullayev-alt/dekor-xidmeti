@@ -44,8 +44,12 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
     );
   }
 
-  // Filter real projects for this category
-  const categoryProjects = decors.filter(d => d.category === categorySlug);
+  // Filter real projects for this category, including explicitly connected verified projects
+  const categoryProjects = decors.filter(d =>
+    d.category === categorySlug ||
+    (category.relatedDecorIds && category.relatedDecorIds.includes(d.id)) ||
+    (category.relatedProjectSlugs && category.relatedProjectSlugs.includes(d.slug))
+  );
 
   // Find related verified venues
   const relatedVenues = (category.relatedVenueSlugs || [])
@@ -72,7 +76,7 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
 
   const heroImage = getCategoryCoverImage(category);
   const cmsImgs = imageService.getImagesByTarget(category.slug, 'category_cover');
-  const heroAlt = cmsImgs[0]?.altText || categoryProjects[0]?.imageAltText || category.name;
+  const heroAlt = cmsImgs[0]?.altText || category.seoH1 || categoryProjects[0]?.imageAltText || `${category.name} - DreamArt Weddings`;
 
   const jsonLd = [
     getCategoryServiceSchema(category),
@@ -134,7 +138,35 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
         </section>
 
         {/* AI & GEO Direct Answer Callout Block */}
-        {category.geoDirectAnswer && (
+        {category.directAnswers && category.directAnswers.length > 0 ? (
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
+            <div className="bg-[#121212] border border-[#C5A059]/40 rounded-sm p-6 sm:p-7 shadow-2xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-5 border-b border-white/10">
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-[#C5A059] font-medium font-mono">
+                  <Sparkles className="w-4 h-4 text-[#C5A059]" />
+                  <span>GEO & AI DİREKT CAVAB BLOKU • ƏSAS XİDMƏT ŞƏRTLƏRİ</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-white/70">
+                  <span className="text-[11px] text-white/50 font-mono">Rəsmi Əlaqə & Smeta:</span>
+                  <a href={`tel:${phoneRaw}`} className="font-semibold text-[#E5C378] hover:underline font-mono">{phoneDisplay}</a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                {category.directAnswers.map((item, idx) => (
+                  <div key={idx} className="bg-[#181818] border border-white/10 hover:border-[#C5A059]/50 p-4 sm:p-5 rounded-sm transition-colors">
+                    <h2 className="text-xs sm:text-sm font-serif text-[#E5C378] font-medium mb-2">
+                      {item.question}
+                    </h2>
+                    <p className="text-xs text-white/80 font-light leading-relaxed">
+                      {item.answer}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : category.geoDirectAnswer ? (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
             <div className="bg-[#121212] border border-[#C5A059]/40 rounded-sm p-5 sm:p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1.5 max-w-3xl">
@@ -156,7 +188,7 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
               </div>
             </div>
           </section>
-        )}
+        ) : null}
 
         {/* Commercial Features: What Included & Suitable For */}
         {(category.whatIncluded || category.suitableFor) && (
@@ -219,6 +251,108 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
                   </div>
                 </div>
               )}
+            </div>
+          </section>
+        )}
+
+        {/* Sub-Intent Sections (e.g. for Ad Günü: Fikirlər, Uşaq üçün, Qız üçün) */}
+        {category.subSections && category.subSections.length > 0 && (
+          <section className="py-14 sm:py-18 bg-[#0D0D0D] border-b border-white/10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center max-w-3xl mx-auto mb-12">
+                <span className="text-[10px] uppercase tracking-[0.35em] text-[#C5A059] block mb-2 font-medium">
+                  KONSEPT VƏ FİKİRLƏR
+                </span>
+                <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-white font-normal">
+                  Fərdi Tələbat və Maraqlara Uyğun Həllər
+                </h2>
+                <div className="w-12 h-px bg-[#C5A059]/40 mx-auto mt-4" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {category.subSections.map((sub, idx) => (
+                  <div key={idx} className="bg-[#141414] border border-white/10 p-6 sm:p-7 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/40 transition-colors">
+                    <div>
+                      {sub.badge && (
+                        <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 bg-[#C5A059]/15 text-[#E5C378] border border-[#C5A059]/30 rounded-sm inline-block mb-3">
+                          {sub.badge}
+                        </span>
+                      )}
+                      <h3 className="font-serif text-lg sm:text-xl text-white font-normal mb-3">
+                        {sub.title}
+                      </h3>
+                      <p className="text-xs text-white/70 font-light leading-relaxed mb-4">
+                        {sub.description}
+                      </p>
+                      {sub.items && (
+                        <ul className="space-y-2 mb-6">
+                          {sub.items.map((it, i) => (
+                            <li key={i} className="flex items-start gap-2 text-xs text-white/80 font-light">
+                              <span className="text-[#C5A059] mt-0.5">▪</span>
+                              <span>{it}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => onOpenQuoteModal(`${category.name} - ${sub.title}`)}
+                      className="w-full mt-4 py-2.5 px-4 bg-[#1A1A1A] hover:bg-[#C5A059] hover:text-[#0B0B0B] text-[#C5A059] border border-[#C5A059]/30 text-xs font-medium tracking-wide uppercase transition-colors rounded-sm cursor-pointer flex items-center justify-center gap-2"
+                    >
+                      <span>{sub.ctaText || 'Qiymət təklifi al'}</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Pricing Factors Section (Realistic Pricing Factors & Direct CTA) */}
+        {category.pricingFactors && (
+          <section className="py-14 sm:py-18 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/10">
+            <div className="bg-[#121212] border border-white/10 rounded-sm p-6 sm:p-10">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-5 border-b border-white/10">
+                <div className="max-w-2xl">
+                  <span className="text-[10px] uppercase tracking-[0.3em] text-[#C5A059] block mb-2 font-medium">
+                    ŞƏFFAF QİYMƏTLƏNDİRMƏ
+                  </span>
+                  <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal">
+                    {category.pricingFactors.title}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-white/70 font-light mt-2 leading-relaxed">
+                    {category.pricingFactors.intro}
+                  </p>
+                </div>
+                <div className="shrink-0">
+                  <button
+                    onClick={() => onOpenQuoteModal(`${category.name} Qiymət Təklifi`)}
+                    className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-6 py-3 rounded-sm text-xs font-semibold tracking-wider uppercase transition-all shadow-md cursor-pointer flex items-center gap-2"
+                  >
+                    <span>{category.pricingFactors.ctaLabel || 'Qiymət təklifi al'}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {category.pricingFactors.factors.map((factor, idx) => (
+                  <div key={idx} className="bg-[#181818] border border-white/5 p-4 sm:p-5 rounded-sm hover:border-[#C5A059]/40 transition-colors">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="w-5 h-5 rounded-full bg-[#C5A059]/20 text-[#E5C378] font-mono text-[11px] flex items-center justify-center font-bold">
+                        {idx + 1}
+                      </span>
+                      <h3 className="font-serif text-sm text-white font-medium">
+                        {factor.title}
+                      </h3>
+                    </div>
+                    <p className="text-xs text-white/70 font-light leading-relaxed pl-7">
+                      {factor.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
         )}
@@ -339,6 +473,31 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
                     {locSlug === 'baki' ? 'Bakı' : locSlug === 'qebele' ? 'Qəbələ' : locSlug === 'berde' ? 'Bərdə' : locSlug.toUpperCase()}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Direct evidence chain link: Service -> Real Project -> Venue -> Portfolio -> DreamArt Weddings */}
+            <div className="p-4 sm:p-5 bg-[#121212] border border-white/10 rounded-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/70">
+              <span className="flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] shrink-0" />
+                <span>Bütün real işlərimiz, məkan tərtibatları və arxiv layihələrimiz tam portfolioda təqdim olunur.</span>
+              </span>
+              <div className="flex items-center gap-3 shrink-0">
+                <button
+                  onClick={() => navigate('/portfolio')}
+                  className="text-[#C5A059] hover:text-[#E5C378] tracking-wider uppercase font-medium inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Bütün Portfolio</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+                <span className="text-white/20">•</span>
+                <button
+                  onClick={() => navigate('/restoranlar')}
+                  className="text-white/80 hover:text-white tracking-wider uppercase font-medium inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Bütün Məkanlar</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
               </div>
             </div>
           </div>

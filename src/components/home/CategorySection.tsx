@@ -62,7 +62,11 @@ export const getCategoryCoverImage = (cat: CategoryInfo): string => {
     'ad-gunu-dekoru': 'decor-4',
     'korporativ-dekor': 'decor-5',
     'zal-dekoru': 'decor-6',
-    'xonca-xidmeti': 'decor-7',
+    'xonca-xidmeti': 'decor-9',
+    'heri-sufresi': 'decor-8',
+    'yubiley-dekoru': 'decor-5',
+    'ozel-gunler-dekoru': 'decor-2',
+    'magaza-acilis-dekoru': 'decor-2',
   };
   const mappedId = categoryDecorMap[cat.slug];
   if (mappedId) {
@@ -137,8 +141,8 @@ export const CategorySection: React.FC<CategorySectionProps> = ({ onSelectCatego
           </button>
         </div>
 
-        {/* 7 Category Cards Grid matching mockup */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
+        {/* Category Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
           {CATEGORIES.map((cat) => {
             const cmsCoverUrl = getCategoryCoverImage(cat);
             const targetImages = imageService.getImagesByTarget(cat.slug, 'category_cover');

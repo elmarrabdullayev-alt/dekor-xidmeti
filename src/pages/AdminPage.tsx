@@ -23,14 +23,18 @@ interface AdminPageProps {
   currentPath?: string;
 }
 
-// 7 Dedicated Decor Categories for Admin
+// 10 Dedicated Decor Categories for Admin
 const DECOR_CATEGORIES = [
   { slug: 'toy-dekoru', name: 'Toy dekoru', icon: '💍', desc: 'Arxa fon tağları, bəy-gəlin masası və monumental toy zalları' },
   { slug: 'nisan-dekoru', name: 'Nişan dekoru', icon: '🌸', desc: 'Romantik pastel nişan masası, xonça stendləri və fotozonalar' },
   { slug: 'xina-dekoru', name: 'Xına dekoru', icon: '🌺', desc: 'Kraliyyət xına taxtı, antik mis şamdanlar və şərq estetikası' },
-  { slug: 'ad-gunu-dekoru', name: 'Ad günü dekoru', icon: '🎂', desc: 'Yubiley və ad günü zövqlü fotozonaları və stendləri' },
+  { slug: 'ad-gunu-dekoru', name: 'Ad günü dekoru', icon: '🎂', desc: 'Ad günü zövqlü fotozonaları və stendləri' },
+  { slug: 'heri-sufresi', name: 'Həri süfrəsi', icon: '☕', desc: 'Zərif həri süfrəsi tərtibatı, canlı güllər və xonça stendləri' },
+  { slug: 'yubiley-dekoru', name: 'Yubiley dekoru', icon: '🏆', desc: '50, 60 illik yubileylər üçün səhnə, zal və qala masası dekoru' },
+  { slug: 'ozel-gunler-dekoru', name: 'Özəl günlər', icon: '✨', desc: 'Evlilik təklifi, ildönümü və fərdi romantik sürpriz dekoru' },
   { slug: 'korporativ-dekor', name: 'Korporativ dekor', icon: '🏢', desc: 'Qala gecələri, rəsmi banketlər və şirkət tədbir tərtibatı' },
   { slug: 'zal-dekoru', name: 'Zal dekoru', icon: '🏛️', desc: 'Böyük şadlıq sarayları, tavan instalyasiyaları və çilçıraqlar' },
+  { slug: 'magaza-acilis-dekoru', name: 'Mağaza açılış', icon: '✂️', desc: 'Giriş tağları, qırmızı lent kəsimi və brend fotozonalar' },
   { slug: 'xonca-xidmeti', name: 'Xonça', icon: '🎁', desc: 'Eksklüziv büllur, məxmər və qızılı xonça kompozisiyaları' },
 ];
 

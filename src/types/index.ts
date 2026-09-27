@@ -5,7 +5,11 @@ export type DecorCategorySlug =
   | 'ad-gunu-dekoru'
   | 'korporativ-dekor'
   | 'zal-dekoru'
-  | 'xonca-xidmeti';
+  | 'xonca-xidmeti'
+  | 'heri-sufresi'
+  | 'yubiley-dekoru'
+  | 'ozel-gunler-dekoru'
+  | 'magaza-acilis-dekoru';
 
 export type RegionalSuitability = 'local' | 'regional' | 'premiumRegional';
 
@@ -57,6 +61,21 @@ export interface GeoDirectAnswer {
   answer: string;
 }
 
+export interface CategorySubSection {
+  title: string;
+  badge?: string;
+  description: string;
+  items?: string[];
+  ctaText?: string;
+}
+
+export interface CategoryPricingFactorInfo {
+  title: string;
+  intro: string;
+  factors: { title: string; description: string }[];
+  ctaLabel?: string;
+}
+
 export interface CategoryInfo {
   id: string;
   name: string;
@@ -73,6 +92,11 @@ export interface CategoryInfo {
   suitableFor?: string[];
   planningProcess?: CategoryProcessStep[];
   geoDirectAnswer?: GeoDirectAnswer;
+  directAnswers?: GeoDirectAnswer[];
+  subSections?: CategorySubSection[];
+  pricingFactors?: CategoryPricingFactorInfo;
+  relatedDecorIds?: string[];
+  relatedProjectSlugs?: string[];
   relatedVenueSlugs?: string[];
   relatedCuratedLocalSlugs?: string[];
   whatsappPrefill?: string;
