@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, MapPin, Sparkles } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 import { imageService } from '../../lib/imageService';
+import { getOptimizedImageUrl, getSrcSet } from '../../lib/responsiveImage';
 
 interface RegionalSectionProps {
   onRequestRegionalQuote: () => void;
@@ -40,15 +41,16 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
               <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-[#C5A059] font-medium font-sans block mb-2">
                 AZƏRBAYCANIN HƏR BİR BÖLGƏSİ
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl text-white font-normal mb-3">
+              <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal mb-3">
                 Azərbaycan üzrə dekor xidməti
-              </h3>
-              <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed mb-6 max-w-md">
+              </h2>
+              <p className="text-xs sm:text-sm text-white/85 font-light leading-relaxed mb-6 max-w-md">
                 Böyük və premium layihələr üçün regionlarda quraşdırma xüsusilə uyğundur. Azərbaycanın bütün bölgələrində dekor xidmətlərimizi peşəkar komandamızla həyata keçiririk.
               </p>
 
               <button
                 onClick={onViewMoreRegional || onRequestRegionalQuote}
+                aria-label="Azərbaycan üzrə dekor xidməti haqqında daha ətraflı məlumat"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border border-[#C5A059]/50 hover:border-[#C5A059] text-white hover:text-[#E5C378] text-xs font-medium tracking-wide transition-colors cursor-pointer group/btn"
               >
                 <span>Daha ətraflı</span>
@@ -60,9 +62,14 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
             <div className="mt-8 pt-6 border-t border-white/5">
               <div className="h-44 sm:h-48 w-full rounded-sm overflow-hidden relative border border-white/5 group-hover:border-[#C5A059]/40 transition-colors">
                 <img
-                  src={regionalCover}
+                  src={getOptimizedImageUrl(regionalCover, 800)}
+                  srcSet={getSrcSet(regionalCover, [480, 640, 800, 1200])}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  width={800}
+                  height={400}
                   alt={regionalAlt}
                   loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
@@ -85,15 +92,16 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
               <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-[#C5A059] font-medium font-sans block mb-2">
                 EKSKLÜZİV DİZAYNLAR
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl text-white font-normal mb-3">
+              <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal mb-3">
                 Xonça xidməti
-              </h3>
-              <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed mb-6 max-w-md">
+              </h2>
+              <p className="text-xs sm:text-sm text-white/85 font-light leading-relaxed mb-6 max-w-md">
                 Ənənəvi dəyərləri müasir zövqlə birləşdirən xonça dizaynları. Nişan, xına və digər xüsusi günləriniz üçün zərif və fərqli həllər.
               </p>
 
               <button
                 onClick={onViewXoncha}
+                aria-label="Xonça modelləri və bəzədilmə xidmətinə bax"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border border-[#C5A059]/50 hover:border-[#C5A059] text-white hover:text-[#E5C378] text-xs font-medium tracking-wide transition-colors cursor-pointer group/btn"
               >
                 <span>Xonça modellərinə bax</span>
@@ -105,9 +113,14 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
             <div className="mt-8 pt-6 border-t border-white/5">
               <div className="h-44 sm:h-48 w-full rounded-sm overflow-hidden relative border border-white/5 group-hover:border-[#C5A059]/40 transition-colors">
                 <img
-                  src={xoncaCover}
+                  src={getOptimizedImageUrl(xoncaCover, 800)}
+                  srcSet={getSrcSet(xoncaCover, [480, 640, 800, 1200])}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  width={800}
+                  height={400}
                   alt={xoncaAlt}
                   loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />

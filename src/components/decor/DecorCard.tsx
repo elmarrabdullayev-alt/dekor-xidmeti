@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { DecorItem } from '../../types';
+import { getOptimizedImageUrl, getSrcSet } from '../../lib/responsiveImage';
 
 interface DecorCardProps {
   decor: DecorItem;
@@ -11,15 +12,29 @@ export const DecorCard: React.FC<DecorCardProps> = ({ decor, onClick }) => {
   return (
     <div
       id={`decor-card-${decor.id}`}
+      role="button"
+      tabIndex={0}
+      aria-label={`${decor.name} layihəsinə bax`}
       onClick={() => onClick(decor.slug)}
-      className="group cursor-pointer flex flex-col bg-[#141414] rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059] shadow-md hover:shadow-2xl transition-all duration-300"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick(decor.slug);
+        }
+      }}
+      className="group cursor-pointer flex flex-col bg-[#141414] rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059] shadow-md hover:shadow-2xl transition-all duration-300 focus:outline-hidden focus:ring-1 focus:ring-[#C5A059]"
     >
       {/* Image container */}
       <div className="relative aspect-4/3 sm:aspect-16/11 overflow-hidden bg-[#1A1A1A]">
         <img
-          src={decor.mainImage}
+          src={getOptimizedImageUrl(decor.mainImage, 600)}
+          srcSet={getSrcSet(decor.mainImage, [480, 640, 800, 1200])}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          width={600}
+          height={450}
           alt={decor.imageAltText || `${decor.name} - ${decor.city}`}
           loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out brightness-90 contrast-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />

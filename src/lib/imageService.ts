@@ -38,24 +38,36 @@ class ImageService {
   }
 
   private async init() {
-    // Immediately load pre-cached image records on mobile/desktop so initial paint doesn't fallback
+    // 1. Immediately hydrate from server-embedded window.__INITIAL_IMAGES__
     try {
       if (typeof window !== 'undefined') {
-        const cached = localStorage.getItem(IMAGES_CACHE_KEY) || sessionStorage.getItem(IMAGES_CACHE_KEY);
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            this.images = parsed.map((img: ManagedImage) => ({
-              ...img,
-              url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
-              thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
-            }));
-            this.isLoaded = true;
+        const serverInjected = (window as any).__INITIAL_IMAGES__;
+        if (Array.isArray(serverInjected) && serverInjected.length > 0) {
+          this.images = serverInjected.map((img: ManagedImage) => ({
+            ...img,
+            url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
+            thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
+          }));
+          this.isLoaded = true;
+        } else {
+          // 2. Fallback to localStorage / sessionStorage cache
+          const cached = localStorage.getItem(IMAGES_CACHE_KEY) || sessionStorage.getItem(IMAGES_CACHE_KEY);
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              this.images = parsed.map((img: ManagedImage) => ({
+                ...img,
+                url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
+                thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
+              }));
+              this.isLoaded = true;
+            }
           }
         }
       }
     } catch {}
 
+    // 3. Asynchronously refresh latest records from server
     await this.fetchImages();
   }
 

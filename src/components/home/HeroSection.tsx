@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowRight, Gem, ShieldCheck, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
-import heroImg1 from '../../1.webp';
-import heroImg2 from '../../2.webp';
-import heroImg3 from '../../3.webp';
 import { imageService } from '../../lib/imageService';
+import { getOptimizedImageUrl, getSrcSet } from '../../lib/responsiveImage';
 import { ManagedImage } from '../../types';
 
 interface HeroSectionProps {
@@ -23,24 +21,24 @@ interface HeroSlide {
 const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'hero-slide-1',
-    image: heroImg1,
-    fallbackUrl: '/1.webp',
+    image: '/images/dreamart-toy-dekoru-qizili-altar.webp',
+    fallbackUrl: '/images/dreamart-toy-dekoru-qizili-altar.webp',
     title: 'Eksklüziv Toy Altarı & Masası',
     subtitle: 'Zövqlü Qızılı Çiçək Kompozisiyaları',
     alt: 'DreamArt Events lüks toy və məclis dekorasiyası, zövqlü dekor həlləri',
   },
   {
     id: 'hero-slide-2',
-    image: heroImg2,
-    fallbackUrl: '/2.webp',
+    image: '/images/dreamart-nisan-dekoru-fotozona.webp',
+    fallbackUrl: '/images/dreamart-nisan-dekoru-fotozona.webp',
     title: 'Zərif Nişan & Fotozona Tərtibatı',
     subtitle: 'Müasir İşıqlandırma və Estetik Dizayn',
     alt: 'DreamArt Events eksklüziv tədbir və nişan dizaynı, fotozona və konsept bəzədilməsi',
   },
   {
     id: 'hero-slide-3',
-    image: heroImg3,
-    fallbackUrl: '/3.webp',
+    image: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
+    fallbackUrl: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
     title: 'Panoramik Şadlıq Zalı & Banket',
     subtitle: 'Möhtəşəm Tavan Pərdələri və İnstalyasiya',
     alt: 'DreamArt Events premium banket və korporativ zal dekorasiyası Bakı Azərbaycan',
@@ -52,6 +50,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
   const [cmsHeroImages, setCmsHeroImages] = useState<ManagedImage[]>(() =>
     imageService.getImagesBySection('home_hero')
   );
+  // Track loaded slide indices to ensure only active hero slide loads initially (saving network payload)
+  const [loadedSlideIndices, setLoadedSlideIndices] = useState<Set<number>>(() => new Set([0]));
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
@@ -81,8 +81,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
       cmsHeroImages[idx];
 
     if (cmsMatch && cmsMatch.url) {
-      // Append cache-buster timestamp query param to image URL if updatedAt exists
-      // to prevent browser/CDN from serving stale cached image when replaced
       const timestamp = cmsMatch.updatedAt ? new Date(cmsMatch.updatedAt).getTime() : '';
       const resolvedUrl = timestamp
         ? (cmsMatch.url.includes('?') ? `${cmsMatch.url}&_t=${timestamp}` : `${cmsMatch.url}?_t=${timestamp}`)
@@ -121,29 +119,57 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
   const totalSlides = activeSlides.length;
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    setCurrentSlide((prev) => {
+      const next = (prev + 1) % totalSlides;
+      setLoadedSlideIndices((loaded) => new Set(loaded).add(next).add((next + 1) % totalSlides));
+      return next;
+    });
   }, [totalSlides]);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    setCurrentSlide((prev) => {
+      const prevIdx = (prev - 1 + totalSlides) % totalSlides;
+      setLoadedSlideIndices((loaded) => new Set(loaded).add(prevIdx));
+      return prevIdx;
+    });
   }, [totalSlides]);
 
   const goToSlide = useCallback((idx: number) => {
+    setLoadedSlideIndices((loaded) => new Set(loaded).add(idx));
     setCurrentSlide(idx);
+  }, []);
+
+  // Defer loading inactive slider images until after initial paint / LCP measurement (2.5s)
+  useEffect(() => {
+    const idleTimer = setTimeout(() => {
+      setLoadedSlideIndices((prev) => {
+        const next = new Set(prev);
+        next.add(1);
+        return next;
+      });
+    }, 2500);
+    return () => clearTimeout(idleTimer);
   }, []);
 
   // Reliable Auto-advance carousel: rotates every 5 seconds, resets upon slide change
   useEffect(() => {
     if (totalSlides <= 1) return;
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+      nextSlide();
     }, 5000);
     return () => clearInterval(timer);
-  }, [totalSlides, currentSlide]);
+  }, [totalSlides, nextSlide]);
 
   // Touch swipe support for mobile devices
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    // Preload next/prev slides on touch start
+    setLoadedSlideIndices((loaded) => {
+      const next = new Set(loaded);
+      next.add((currentSlide + 1) % totalSlides);
+      next.add((currentSlide - 1 + totalSlides) % totalSlides);
+      return next;
+    });
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -178,6 +204,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
       <div className="absolute inset-0 z-0">
         {activeSlides.map((slide, idx) => {
           const isActive = idx === currentSlide;
+          const isLoaded = loadedSlideIndices.has(idx);
+          const slideImg = slide.image || slide.fallbackUrl;
+
           return (
             <div
               key={slide.id}
@@ -188,14 +217,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
               }`}
               aria-hidden={!isActive}
             >
-              <img
-                key={slide.image}
-                src={slide.image || slide.fallbackUrl}
-                alt={slide.alt}
-                loading={idx === 0 ? 'eager' : 'lazy'}
-                fetchPriority={idx === 0 ? 'high' : 'auto'}
-                className="w-full h-full object-cover object-center"
-              />
+              {isLoaded ? (
+                <img
+                  key={slideImg}
+                  src={getOptimizedImageUrl(slideImg, idx === 0 ? 1200 : 1024)}
+                  srcSet={getSrcSet(slideImg, [640, 1024, 1440, 1920])}
+                  sizes="100vw"
+                  width={1920}
+                  height={1080}
+                  alt={slide.alt}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={idx === 0 ? 'high' : 'low'}
+                  decoding={idx === 0 ? 'sync' : 'async'}
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : (
+                <div className="w-full h-full bg-[#0A0A0A]" />
+              )}
             </div>
           );
         })}

@@ -101,23 +101,24 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
           </div>
 
           {/* Emotional Tagline from mockup */}
-          <p className="font-serif italic text-sm text-white/60">
+          <p className="font-serif italic text-sm text-white/80">
             Xüsusi günlər həmişə daha gözəldir ♡
           </p>
         </div>
 
         {/* Bottom Bar matching mockup */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/50 space-y-3 sm:space-y-0 font-light">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/75 space-y-3 sm:space-y-0 font-light">
           <p>© {new Date().getFullYear()} DreamArt Events. Bütün hüquqlar qorunur.</p>
 
-          <div className="flex items-center gap-1.5 text-white/70">
+          <div className="flex items-center gap-1.5 text-white/85">
             <MapPin className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>Azərbaycanın hər yerində sizinləyik.</span>
           </div>
 
           <button
             onClick={() => handleNav('/admin')}
-            className="flex items-center gap-1 text-white/40 hover:text-[#C5A059] transition-colors"
+            aria-label="Admin panelə keçid"
+            className="flex items-center gap-1 text-white/70 hover:text-[#C5A059] transition-colors"
           >
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>Admin</span>

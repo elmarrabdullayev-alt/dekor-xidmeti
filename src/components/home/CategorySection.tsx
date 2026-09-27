@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { CATEGORIES } from '../../data/categories';
 import { imageService } from '../../lib/imageService';
+import { getOptimizedImageUrl, getSrcSet } from '../../lib/responsiveImage';
 import { store } from '../../lib/store';
 import { CategoryInfo } from '../../types';
 
@@ -152,16 +153,30 @@ export const CategorySection: React.FC<CategorySectionProps> = ({ onSelectCatego
               <div
                 key={cat.id}
                 id={`category-card-${cat.slug}`}
+                role="button"
+                tabIndex={0}
+                aria-label={`${cat.name} dekorasiyası kateqoriyasına bax`}
                 onClick={() => onSelectCategory(cat.slug)}
-                className="bg-[#141414] rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059]/80 shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSelectCategory(cat.slug);
+                  }
+                }}
+                className="bg-[#141414] rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059]/80 shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col focus:outline-hidden focus:ring-1 focus:ring-[#C5A059]"
               >
                 {/* Image container */}
                 <div className="aspect-3/4 overflow-hidden bg-[#1A1A1A] relative">
                   <img
                     key={cmsCoverUrl}
-                    src={cmsCoverUrl}
+                    src={getOptimizedImageUrl(cmsCoverUrl, 480)}
+                    srcSet={getSrcSet(cmsCoverUrl, [360, 480, 640])}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    width={400}
+                    height={533}
                     alt={altText}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out brightness-90 contrast-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />

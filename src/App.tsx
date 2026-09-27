@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { QuoteModal } from './components/common/QuoteModal';
 import { HomePage } from './pages/HomePage';
-import { DecorsCatalogPage } from './pages/DecorsCatalogPage';
-import { ProjectDetailPage } from './pages/ProjectDetailPage';
-import { CategorySeoPage } from './pages/CategorySeoPage';
-import { LocalSeoPage } from './pages/LocalSeoPage';
-import { PortfolioPage } from './pages/PortfolioPage';
-import { ServicesPage } from './pages/ServicesPage';
-import { AboutPage } from './pages/AboutPage';
-import { ContactPage } from './pages/ContactPage';
-import { AdminPage } from './pages/AdminPage';
-import { VenuesCatalogPage } from './pages/VenuesCatalogPage';
-import { VenueDetailPage } from './pages/VenueDetailPage';
-import { IndianWeddingPage } from './pages/IndianWeddingPage';
-import { DestinationWeddingPage } from './pages/DestinationWeddingPage';
-import { BerdeToyDekoruPage } from './pages/BerdeToyDekoruPage';
-import { QebeleToyDekoruPage } from './pages/QebeleToyDekoruPage';
-import { NotFoundPage } from './pages/NotFoundPage';
+
+// Code-split subpages to minimize mobile initial JavaScript bundle while preserving routes and admin functionality
+const DecorsCatalogPage = lazy(() => import('./pages/DecorsCatalogPage').then(m => ({ default: m.DecorsCatalogPage })));
+const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage').then(m => ({ default: m.ProjectDetailPage })));
+const CategorySeoPage = lazy(() => import('./pages/CategorySeoPage').then(m => ({ default: m.CategorySeoPage })));
+const LocalSeoPage = lazy(() => import('./pages/LocalSeoPage').then(m => ({ default: m.LocalSeoPage })));
+const PortfolioPage = lazy(() => import('./pages/PortfolioPage').then(m => ({ default: m.PortfolioPage })));
+const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
+const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const AdminPage = lazy(() => import('./pages/AdminPage').then(m => ({ default: m.AdminPage })));
+const VenuesCatalogPage = lazy(() => import('./pages/VenuesCatalogPage').then(m => ({ default: m.VenuesCatalogPage })));
+const VenueDetailPage = lazy(() => import('./pages/VenueDetailPage').then(m => ({ default: m.VenueDetailPage })));
+const IndianWeddingPage = lazy(() => import('./pages/IndianWeddingPage').then(m => ({ default: m.IndianWeddingPage })));
+const DestinationWeddingPage = lazy(() => import('./pages/DestinationWeddingPage').then(m => ({ default: m.DestinationWeddingPage })));
+const BerdeToyDekoruPage = lazy(() => import('./pages/BerdeToyDekoruPage').then(m => ({ default: m.BerdeToyDekoruPage })));
+const QebeleToyDekoruPage = lazy(() => import('./pages/QebeleToyDekoruPage').then(m => ({ default: m.QebeleToyDekoruPage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 import { store } from './lib/store';
 import { DecorItem, DecorCategorySlug } from './types';
 import { CATEGORIES } from './data/categories';
@@ -281,7 +283,9 @@ export default function App() {
 
       {/* Main Dynamic View */}
       <main className="flex-1">
-        {renderRoute()}
+        <Suspense fallback={null}>
+          {renderRoute()}
+        </Suspense>
       </main>
 
       {/* Global Footer (Hidden on Admin page) */}

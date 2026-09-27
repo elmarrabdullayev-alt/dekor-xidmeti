@@ -105,6 +105,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
           <div className="hidden lg:flex items-center shrink-0 ml-4 xl:ml-7 pl-4 xl:pl-7 border-l border-white/10 space-x-3 xl:space-x-3.5">
             <a
               href={`tel:${settings.phoneRaw}`}
+              aria-label={`Əlaqə telefonu: ${settings.phoneDisplay}`}
               className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-sm bg-[#141414] border border-[#C5A059]/30 hover:border-[#C5A059] text-white/90 hover:text-white text-xs xl:text-[12.5px] font-mono tracking-wide whitespace-nowrap shrink-0 transition-colors leading-none"
             >
               <Phone className="w-3.5 h-3.5 text-[#C5A059] shrink-0" />
@@ -125,6 +126,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
             {/* Tablet phone link (visible on sm and md screens) */}
             <a
               href={`tel:${settings.phoneRaw}`}
+              aria-label={`Əlaqə telefonu: ${settings.phoneDisplay}`}
               className="hidden sm:inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm bg-[#141414] border border-[#C5A059]/30 text-white/90 text-xs font-mono whitespace-nowrap leading-none shrink-0"
             >
               <Phone className="w-3.5 h-3.5 text-[#C5A059] shrink-0" />
@@ -145,7 +147,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenQuo
               id="mobile-menu-toggle"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-white/80 hover:text-white focus:outline-hidden shrink-0 cursor-pointer"
-              aria-label="Menyu"
+              aria-label={mobileMenuOpen ? 'Menyunu bağlayın' : 'Menyunu açın'}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>

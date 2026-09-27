@@ -167,6 +167,115 @@ async function startServer() {
     })
   );
 
+  // Dynamic Responsive Image Optimizer Endpoint (/api/img)
+  // Safely resizes and compresses any local or remote image to WebP with persistent disk caching
+  app.get('/api/img', async (req: Request, res: Response) => {
+    try {
+      const rawUrl = req.query.url as string;
+      const widthParam = parseInt(req.query.w as string, 10);
+      const qualityParam = parseInt(req.query.q as string, 10);
+
+      if (!rawUrl || typeof rawUrl !== 'string') {
+        return res.status(400).send('Image URL is required');
+      }
+
+      const targetWidth = !isNaN(widthParam) && widthParam > 0 ? Math.min(widthParam, 2560) : 1200;
+      const quality = !isNaN(qualityParam) && qualityParam >= 10 && qualityParam <= 100 ? qualityParam : 80;
+
+      const cacheDir = path.join(PERSISTENT_DATA_DIR, 'cache', 'opt');
+      if (!fs.existsSync(cacheDir)) {
+        fs.mkdirSync(cacheDir, { recursive: true });
+      }
+
+      const hashKey = crypto.createHash('md5').update(`${rawUrl}_w${targetWidth}_q${quality}`).digest('hex');
+      const cachedFilePath = path.join(cacheDir, `${hashKey}.webp`);
+
+      if (fs.existsSync(cachedFilePath)) {
+        res.setHeader('Content-Type', 'image/webp');
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        res.setHeader('Vary', 'Accept');
+        return fs.createReadStream(cachedFilePath).pipe(res);
+      }
+
+      let inputBuffer: Buffer | null = null;
+
+      if (rawUrl.startsWith('http://') || rawUrl.startsWith('https://')) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+        try {
+          const fetchRes = await fetch(rawUrl, { signal: controller.signal });
+          clearTimeout(timeout);
+          if (!fetchRes.ok) {
+            return res.redirect(rawUrl);
+          }
+          const arrayBuf = await fetchRes.arrayBuffer();
+          inputBuffer = Buffer.from(arrayBuf);
+        } catch {
+          clearTimeout(timeout);
+          return res.redirect(rawUrl);
+        }
+      } else {
+        const cleanPath = rawUrl.split('?')[0];
+        let localPath = '';
+        if (cleanPath.startsWith('/uploads/')) {
+          const filename = cleanPath.replace('/uploads/', '');
+          localPath = path.join(UPLOADS_DIR, filename);
+        } else if (cleanPath.startsWith('/images/')) {
+          const filename = cleanPath.replace('/images/', '');
+          localPath = path.join(process.cwd(), 'public', 'images', filename);
+        } else {
+          const filename = cleanPath.replace(/^\//, '');
+          localPath = path.join(process.cwd(), 'public', filename);
+        }
+
+        if (fs.existsSync(localPath)) {
+          inputBuffer = fs.readFileSync(localPath);
+        } else {
+          const altUploads = path.join(UPLOADS_DIR, path.basename(cleanPath));
+          const altPublic = path.join(process.cwd(), 'public', 'images', path.basename(cleanPath));
+          const altRoot = path.join(process.cwd(), 'public', path.basename(cleanPath));
+          if (fs.existsSync(altUploads)) {
+            inputBuffer = fs.readFileSync(altUploads);
+          } else if (fs.existsSync(altPublic)) {
+            inputBuffer = fs.readFileSync(altPublic);
+          } else if (fs.existsSync(altRoot)) {
+            inputBuffer = fs.readFileSync(altRoot);
+          }
+        }
+      }
+
+      if (!inputBuffer) {
+        return res.status(404).send('Image not found');
+      }
+
+      const optimizedBuffer = await sharp(inputBuffer)
+        .rotate()
+        .resize({
+          width: targetWidth,
+          fit: 'inside',
+          withoutEnlargement: true,
+        })
+        .webp({ quality, effort: 4 })
+        .toBuffer();
+
+      try {
+        fs.writeFileSync(cachedFilePath, optimizedBuffer);
+      } catch {}
+
+      res.setHeader('Content-Type', 'image/webp');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('Vary', 'Accept');
+      return res.end(optimizedBuffer);
+    } catch (err: any) {
+      console.warn('[Image Optimizer Error]:', err.message);
+      const rawUrl = req.query.url as string;
+      if (rawUrl && (rawUrl.startsWith('http://') || rawUrl.startsWith('https://'))) {
+        return res.redirect(rawUrl);
+      }
+      return res.status(500).send('Optimization error');
+    }
+  });
+
   // Health check
   app.get('/api/health', (_req, res) => {
     const dbOk = fs.existsSync(IMAGES_DB_FILE);
@@ -419,6 +528,33 @@ async function startServer() {
     }
   });
 
+  // Helper to inject LCP image preload and synchronous initial images
+  async function enrichHtmlWithPerformance(template: string, url: string, seoData: any): Promise<string> {
+    let html = injectHeadSeo(template, seoData);
+    try {
+      const allStored = await getAllStoredImages();
+      const isHome = url === '/' || url === '' || url.startsWith('/?');
+      if (isHome) {
+        const heroSlide1 = allStored.find((img) => img.section === 'home_hero' && (img.targetId === 'hero-slide-1' || img.isCover))
+          || allStored.find((img) => img.section === 'home_hero');
+        const rawHeroUrl = heroSlide1?.url || '/images/dreamart-toy-dekoru-qizili-altar.webp';
+        const cleanHeroUrl = rawHeroUrl.split('#')[0];
+        const heroMobileUrl = `/api/img?url=${encodeURIComponent(cleanHeroUrl)}&w=640&q=80`;
+        const heroTabletUrl = `/api/img?url=${encodeURIComponent(cleanHeroUrl)}&w=1024&q=82`;
+        const heroDesktopUrl = `/api/img?url=${encodeURIComponent(cleanHeroUrl)}&w=1920&q=85`;
+        const preloadTag = `  <link rel="preload" as="image" href="${heroMobileUrl}" imagesrcset="${heroMobileUrl} 640w, ${heroTabletUrl} 1024w, ${heroDesktopUrl} 1920w" imagesizes="100vw" fetchpriority="high" type="image/webp">\n`;
+        html = html.replace('</head>', `${preloadTag}</head>`);
+      }
+
+      // Embed initial managed images into HTML so client does not delay LCP with /api/images fetch
+      const initialDataTag = `<script id="__DREAMART_INIT__">window.__INITIAL_IMAGES__=${JSON.stringify(allStored)};</script>`;
+      html = html.replace('<div id="root"></div>', `${initialDataTag}<div id="root"></div>`);
+    } catch (err: any) {
+      console.warn('[HTML Enrich Error]:', err.message);
+    }
+    return html;
+  }
+
   // Vite middleware for development vs static build for production
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
@@ -436,7 +572,7 @@ async function startServer() {
         let template = fs.readFileSync(path.resolve(process.cwd(), 'index.html'), 'utf-8');
         template = await vite.transformIndexHtml(url, template);
         const seoData = resolveRouteSeo(url);
-        const html = injectHeadSeo(template, seoData);
+        const html = await enrichHtmlWithPerformance(template, url, seoData);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       } catch (e: any) {
         vite.ssrFixStacktrace(e);
@@ -446,13 +582,13 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath, { index: false }));
-    app.get('*', (req, res, next) => {
+    app.get('*', async (req, res, next) => {
       const url = req.originalUrl;
       if (url.startsWith('/api/')) return next();
       try {
         const template = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
         const seoData = resolveRouteSeo(url);
-        const html = injectHeadSeo(template, seoData);
+        const html = await enrichHtmlWithPerformance(template, url, seoData);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       } catch (e) {
         next(e);
