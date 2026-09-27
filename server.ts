@@ -167,6 +167,25 @@ async function startServer() {
     })
   );
 
+  // Static AI discovery endpoints (fast static delivery, application/json and text/plain)
+  app.get('/ai-catalog.json', (_req: Request, res: Response) => {
+    const publicPath = path.join(process.cwd(), 'public', 'ai-catalog.json');
+    const distPath = path.join(process.cwd(), 'dist', 'ai-catalog.json');
+    const targetPath = fs.existsSync(publicPath) ? publicPath : distPath;
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.sendFile(targetPath);
+  });
+
+  app.get('/llms.txt', (_req: Request, res: Response) => {
+    const publicPath = path.join(process.cwd(), 'public', 'llms.txt');
+    const distPath = path.join(process.cwd(), 'dist', 'llms.txt');
+    const targetPath = fs.existsSync(publicPath) ? publicPath : distPath;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.sendFile(targetPath);
+  });
+
   // Dynamic Responsive Image Optimizer Endpoint (/api/img)
   // Safely resizes and compresses any local or remote image to WebP with persistent disk caching
   app.get('/api/img', async (req: Request, res: Response) => {

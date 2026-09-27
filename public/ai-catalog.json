@@ -1,0 +1,112 @@
+{
+  "name": "DreamArt Events",
+  "legalName": "DreamArt Weddings & Events",
+  "url": "https://dreamartweddings.com",
+  "description": "Bakı və Azərbaycanın bütün regionları üçün zövqlü və premium toy, nişan, xına, ad günü, korporativ, zal və xonça dekor xidmətləri.",
+  "inLanguage": "az",
+  "contact": {
+    "phone": "+994 50 123 45 67",
+    "whatsapp": "https://wa.me/994501234567",
+    "instagram": "https://www.instagram.com/dreamartevents",
+    "areaServed": "Azərbaycan (Bakı və bütün regionlar)"
+  },
+  "services": [
+    {
+      "id": "toy-dekoru",
+      "name": "Toy Dekoru",
+      "description": "Premium toy zallarının və açıq hava toylarının bəzədilməsi, fərdi konsept dizaynı.",
+      "url": "https://dreamartweddings.com/toy-dekoru"
+    },
+    {
+      "id": "nisan-dekoru",
+      "name": "Nişan Dekoru",
+      "description": "Zövqlü nişan mərasimləri, fotozonalar və masaların bəzədilməsi.",
+      "url": "https://dreamartweddings.com/nisan-dekoru"
+    },
+    {
+      "id": "xina-dekoru",
+      "name": "Xına Dekoru",
+      "description": "Milli və müasir üslubda xına yaxdı mərasimlərinin təşkili və dekorasiyası.",
+      "url": "https://dreamartweddings.com/xina-dekoru"
+    },
+    {
+      "id": "ad-gunu-dekoru",
+      "name": "Ad Günü Dekoru",
+      "description": "Böyüklər və uşaqlar üçün tematik ad günü partiləri və dekorasiyası.",
+      "url": "https://dreamartweddings.com/ad-gunu-dekoru"
+    },
+    {
+      "id": "korporativ-dekor",
+      "name": "Korporativ Dekor",
+      "description": "Şirkət tədbirləri, qala gecələr, konfrans və açılış mərasimləri üçün dekorasiya.",
+      "url": "https://dreamartweddings.com/korporativ-dekor"
+    },
+    {
+      "id": "zal-dekoru",
+      "name": "Zal Dekoru",
+      "description": "Şadlıq sarayları və zalların tavan, səhnə və işıqlandırma həlləri.",
+      "url": "https://dreamartweddings.com/zal-dekoru"
+    },
+    {
+      "id": "xonca-xidmeti",
+      "name": "Xonça Xidməti",
+      "description": "Toy və nişan xonçalarının zövqlə bəzədilməsi və icarəsi.",
+      "url": "https://dreamartweddings.com/xonca-xidmeti"
+    },
+    {
+      "id": "indian-wedding-azerbaijan",
+      "name": "Indian Weddings in Azerbaijan",
+      "description": "Hindistan toylarının Azərbaycanda təşkili və tematik dekorasiyası.",
+      "url": "https://dreamartweddings.com/indian-wedding-azerbaijan"
+    },
+    {
+      "id": "destination-wedding-azerbaijan",
+      "name": "Destination Weddings in Azerbaijan",
+      "description": "Xarici qonaqlar və xüsusi məkanlar üçün toy və tədbir təşkili.",
+      "url": "https://dreamartweddings.com/destination-wedding-azerbaijan"
+    }
+  ],
+  "venues": [
+    {
+      "name": "Böyük Saray",
+      "location": "Bakı",
+      "url": "https://dreamartweddings.com/restoranlar/boyuk-saray"
+    },
+    {
+      "name": "Gülüstan Sarayı",
+      "location": "Bakı",
+      "url": "https://dreamartweddings.com/restoranlar/gulustan-sarayi"
+    },
+    {
+      "name": "Buta Palace",
+      "location": "Bakı",
+      "url": "https://dreamartweddings.com/restoranlar/buta-palace"
+    },
+    {
+      "name": "Four Seasons Hotel Baku",
+      "location": "Bakı",
+      "url": "https://dreamartweddings.com/restoranlar/four-seasons-hotel-baku"
+    },
+    {
+      "name": "Bilgah Beach Hotel",
+      "location": "Bilgəh, Bakı",
+      "url": "https://dreamartweddings.com/restoranlar/bilgah-beach-hotel"
+    },
+    {
+      "name": "JW Marriott Absheron Baku",
+      "location": "Bakı",
+      "url": "https://dreamartweddings.com/restoranlar/jw-marriott-absheron-baku"
+    }
+  ],
+  "regionsServed": [
+    "Bakı",
+    "Gəncə",
+    "Sumqayıt",
+    "Qəbələ",
+    "Şəki",
+    "Quba",
+    "Lənkəran",
+    "Naxçıvan",
+    "Bütün Azərbaycan"
+  ]
+}
