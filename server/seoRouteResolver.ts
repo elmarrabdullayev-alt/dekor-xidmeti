@@ -123,7 +123,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
     if (venue) {
       const isIndexable = isVenueIndexable(venue, INITIAL_DECORS);
       const canonicalUrl = `${PRIMARY_DOMAIN}/restoranlar/${venue.slug}`;
-      const jsonLd = getVenueStructuredData(venue, canonicalUrl);
+      const jsonLd = getVenueStructuredData(venue, canonicalUrl, INITIAL_DECORS);
       return {
         title: venue.seoTitle || `${venue.name} Toy Dekoru | DreamArt Weddings`,
         description: venue.metaDescription || venue.shortDescription,

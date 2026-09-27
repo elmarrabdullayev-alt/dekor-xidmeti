@@ -19,7 +19,12 @@ export const INITIAL_VENUES: VenueItem[] = [
     hasRealProject: true,
     relatedDecorIds: ['decor-1'],
     relatedServices: ['Toy dekoru', 'Səhnə dekoru', 'Gəlin-bəy masası', 'Masa kompozisiyaları', 'Giriş fotozonası'],
-    faqs: generateDefaultVenueFaqs('Meridian', true, '050 231 17 28'),
+    faqs: generateDefaultVenueFaqs('Meridian', true, '050 231 17 28', {
+      name: 'Qızılı Heykəllər və Ağ Güllərlə Dəbdəbəli Toy Səhnəsi',
+      slug: 'ag-qizilgul-ve-zerif-samli-toy-altari-baki',
+      serviceName: 'Toy dekoru',
+      serviceSlug: 'toy-dekoru'
+    }),
     seoTitle: 'Meridian Toy Dekoru və Restoran Tərtibatı | Bakı | DreamArt Weddings',
     metaDescription: 'Meridian restoranında toy dekoru, zərif gəlin masası və möhtəşəm səhnə tərtibatı. DreamArt Weddings tərəfindən icra edilmiş real layihələr və əlaqə: 050 231 17 28.',
     status: 'published',
@@ -66,7 +71,12 @@ export const INITIAL_VENUES: VenueItem[] = [
     hasRealProject: true,
     relatedDecorIds: ['decor-5'],
     relatedServices: ['Toy dekoru', 'Zal bəzəyi', 'Çilçıraq gülləri', 'Qarşılama zonası'],
-    faqs: generateDefaultVenueFaqs('Bağçalı Saray', true, '050 231 17 28'),
+    faqs: generateDefaultVenueFaqs('Bağçalı Saray', true, '050 231 17 28', {
+      name: 'Büllur Şamdanlar və Qara Süfrəli Qala Ziyafət Masası',
+      slug: 'qala-sam-yemeyi-korporativ-tedbir-tertibati-baki',
+      serviceName: 'Korporativ tədbir və qala masası dekoru',
+      serviceSlug: 'korporativ-dekor'
+    }),
     seoTitle: 'Bağçalı Saray Toy Dekoru və Şadlıq Sarayı Tərtibatı | Bakı | DreamArt Weddings',
     metaDescription: 'Bağçalı Saray üçün premium toy dekorasiyası, gəlin masası və zal bəzəyi. DreamArt Weddings real işləri və sifariş: 050 231 17 28.',
     status: 'published',
@@ -89,7 +99,12 @@ export const INITIAL_VENUES: VenueItem[] = [
     hasRealProject: true,
     relatedDecorIds: ['decor-6'],
     relatedServices: ['Böyük zal dekoru', 'Tavan instalyasiyası', 'Səhnə arxitekturası', 'Qala gecəsi'],
-    faqs: generateDefaultVenueFaqs('Böyük Saray', true, '050 231 17 28'),
+    faqs: generateDefaultVenueFaqs('Böyük Saray', true, '050 231 17 28', {
+      name: 'Dalğalı Ağ Tül və Kristal Çilçıraqlı Monumental Zal Dekoru',
+      slug: 'panoramik-sadliq-zali-tavan-isig-instalyasiyasi-baki',
+      serviceName: 'Böyük zal dekoru',
+      serviceSlug: 'zal-dekoru'
+    }),
     seoTitle: 'Böyük Saray Toy Dekoru və Zal Tərtibatı | Bakı | DreamArt Weddings',
     metaDescription: 'Böyük Saray şadlıq sarayında monumental toy və zal dekorasiyası. Tavan gül instalyasiyaları, səhnə dizaynı və əlaqə: 050 231 17 28.',
     status: 'published',

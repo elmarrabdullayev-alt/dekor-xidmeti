@@ -77,35 +77,60 @@ export function generateVenueMetaDescription(name: string, city: string = 'Bakı
  * Generates concise direct-answer GEO / AI search optimization FAQ blocks
  * adhering strictly to the user specification.
  */
-export function generateDefaultVenueFaqs(venueName: string, hasRealProject: boolean, phoneDisplay: string = '050 231 17 28'): FAQItem[] {
+export function generateDefaultVenueFaqs(
+  venueName: string,
+  hasRealProject: boolean,
+  phoneDisplay: string = '050 231 17 28',
+  verifiedProject?: { name: string; slug: string; serviceName?: string; serviceSlug?: string }
+): FAQItem[] {
   const safeName = venueName.trim() || 'Bu restoranda';
 
   if (hasRealProject) {
+    const projectAnswerPart = verifiedProject
+      ? ` Bu məkanda icra edilmiş real layihəmizlə "${verifiedProject.name}" (https://dreamartweddings.com/dekorlar/${verifiedProject.slug}) layihə səhifəsində tanış ola bilərsiniz.`
+      : ` Bu məkanda icra edilmiş real dekor layihələrimizlə portfolio və layihə səhifələrimizdə tanış ola bilərsiniz.`;
+
+    const servicePart = verifiedProject?.serviceName
+      ? `${verifiedProject.serviceName}, `
+      : '';
+
     return [
       {
-        question: `${safeName}-da toy və tədbir dekoru üçün DreamArt Weddings ilə işləmək mümkündür?`,
-        answer: `Bəli. DreamArt Weddings ${safeName}-da real dekor layihələri həyata keçirib və məkanın daxili memarlığına uyğun toy, nişan və zal dekoru xidmətləri təqdim edir. Əlaqə və WhatsApp: ${phoneDisplay}.`
+        question: `DreamArt Weddings bu məkanda dekor işi həyata keçirib?`,
+        answer: `Bəli. DreamArt Weddings ${safeName} məkanında real dekor layihəsi həyata keçirib.${projectAnswerPart}`
       },
       {
-        question: `${safeName} üçün hansı dekor xidmətləri mümkündür?`,
-        answer: `Layihəyə əsasən gəlin-bəy masası, monumental arxa fon altar tağı, qonaq masaları üçün hündür gül kompozisiyaları, şam işıqlandırması və qarşılama fotozonası təqdim olunur.`
+        question: `Bu məkanda toy dekorunu kimə sifariş etmək olar?`,
+        answer: `${safeName} məkanında toy və ziyafət dekorasiyasını birbaşa DreamArt Weddings komandasına sifariş etmək olar. Məkanın daxili memarlığına uyğun fərdi floristika, bəy-gəlin masası və səhnə tərtibatı təqdim edilir. Əlaqə və operativ konsultasiya üçün WhatsApp: ${phoneDisplay}.`
+      },
+      {
+        question: `Bu məkanda hansı dekor xidmətləri mümkündür?`,
+        answer: `${safeName} məkanında DreamArt Weddings tərəfindən ${servicePart}toy dekoru, bəy-gəlin masası, monumental arxa fon tağı, qonaq masaları üçün hündür gül kompozisiyaları, zərif şam işıqlandırması və qarşılama fotozonası xidmətləri mümkündür. Bütün nümunələr DreamArt Weddings portfoliosunda təqdim olunur.`
       },
       {
         question: `Bu məkanda dekorasiya quraşdırılması necə təşkil olunur?`,
-        answer: `DreamArt Weddings komandası məkan rəhbərliyi ilə montaj saatlarını və logistikanı öncədən tənzimləyir, tədbir başlamazdan saatlar öncə hər detalı hazır edir.`
+        answer: `DreamArt Weddings komandası ${safeName} rəhbərliyi ilə montaj saatlarını və logistikanı öncədən tənzimləyir, tədbir başlamazdan saatlar öncə hər detalı tam hazır edir.`
       },
       {
         question: `DreamArt Weddings ilə necə əlaqə saxlamaq olar?`,
-        answer: `Telefon və WhatsApp: ${phoneDisplay}. İstənilən vaxt ${safeName} üçün xüsusi eskiz və qiymət təklifi əldə edə bilərsiniz.`
+        answer: `Telefon və WhatsApp: ${phoneDisplay}. İstənilən vaxt ${safeName} üçün fərdi eskiz, smeta və dizayn təklifi əldə edə bilərsiniz.`
       }
     ];
   }
 
-  // If no real project yet
+  // If no real project yet - strictly informational without recommendation claims (Rule 8)
   return [
     {
-      question: `${safeName} məkanında DreamArt Weddings dekor xidməti sifariş etmək olarmı?`,
-      answer: `Bəli. DreamArt Weddings Azərbaycanın bütün şadlıq sarayları və restoranlarında olduğu kimi, ${safeName} məkanında da fərdi dekorasiya və floristika layihələrini həyata keçirməyə hazırdır. Əlaqə: ${phoneDisplay}.`
+      question: `DreamArt Weddings bu məkanda dekor işi həyata keçirib?`,
+      answer: `Hazırda portfoliomuzda ${safeName} məkanına aid tamamlanmış layihə qeyd olunmayıb. Bununla belə, DreamArt Weddings bu məkanın memarlıq xüsusiyyətlərinə və zal parametrlərinə uyğun fərdi toy və tədbir dekor layihələrini sifarişlə hazırlayır.`
+    },
+    {
+      question: `Bu məkanda toy dekorunu kimə sifariş etmək olar?`,
+      answer: `${safeName} məkanında toy, nişan və ya ziyafət dekorasiyasını DreamArt Weddings komandasına sifariş edə bilərsiniz. Əlaqə və WhatsApp: ${phoneDisplay}.`
+    },
+    {
+      question: `Bu məkanda hansı dekor xidmətləri mümkündür?`,
+      answer: `${safeName} üçün toy dekoru, nişan masası, zal bəzədilməsi, fotozona və floristika xidmətləri sifariş verilə bilər.`
     },
     {
       question: `DreamArt Weddings ilə necə əlaqə saxlamaq olar?`,
@@ -115,32 +140,60 @@ export function generateDefaultVenueFaqs(venueName: string, hasRealProject: bool
 }
 
 /**
- * Valid structured data for venue page
+ * Valid structured data for venue page strengthening entity relationships:
+ * Venue → Project → Service → Portfolio → DreamArt Weddings
  */
-export function getVenueStructuredData(venue: VenueItem, canonicalUrl: string) {
-  const schemas: object[] = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      'name': `${venue.name} Toy və Tədbir Dekoru`,
-      'description': venue.shortDescription,
-      'provider': {
-        '@type': 'LocalBusiness',
-        'name': 'DreamArt Weddings',
-        'telephone': '+994502311728',
-        'url': 'https://dreamartweddings.com',
-        'address': {
-          '@type': 'PostalAddress',
-          'addressLocality': venue.city || 'Bakı',
-          'addressCountry': 'AZ'
-        }
-      },
-      'areaServed': {
-        '@type': 'AdministrativeArea',
-        'name': venue.city || 'Azərbaycan'
-      },
-      'url': canonicalUrl
+export function getVenueStructuredData(venue: VenueItem, canonicalUrl: string, decors?: DecorItem[]) {
+  const verifiedProjects = (decors || []).filter(d => isProjectStrictlyLinkedToVenue(d, venue));
+
+  const serviceSchema: any = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    'name': `${venue.name} Toy və Tədbir Dekoru`,
+    'serviceType': 'Toy və Tədbir Dekorasiyası',
+    'description': venue.shortDescription,
+    'provider': {
+      '@type': 'LocalBusiness',
+      'name': 'DreamArt Weddings',
+      'telephone': '+994502311728',
+      'url': 'https://dreamartweddings.com',
+      'image': 'https://dreamartweddings.com/images/dreamart-toy-dekoru-qizili-altar.webp',
+      'address': {
+        '@type': 'PostalAddress',
+        'addressLocality': venue.city || 'Bakı',
+        'addressCountry': 'AZ'
+      }
     },
+    'areaServed': {
+      '@type': 'Place',
+      'name': venue.name,
+      'address': {
+        '@type': 'PostalAddress',
+        'streetAddress': venue.address || '',
+        'addressLocality': venue.city || 'Bakı',
+        'addressCountry': 'AZ'
+      }
+    },
+    'url': canonicalUrl
+  };
+
+  if (verifiedProjects.length > 0) {
+    serviceSchema.hasPart = verifiedProjects.map(p => ({
+      '@type': 'CreativeWork',
+      'name': p.name,
+      'headline': p.name,
+      'url': `https://dreamartweddings.com/dekorlar/${p.slug}`,
+      'image': p.mainImage.startsWith('http') ? p.mainImage : `https://dreamartweddings.com${p.mainImage}`,
+      'creator': {
+        '@type': 'Organization',
+        'name': 'DreamArt Weddings',
+        'url': 'https://dreamartweddings.com'
+      }
+    }));
+  }
+
+  const schemas: object[] = [
+    serviceSchema,
     {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',

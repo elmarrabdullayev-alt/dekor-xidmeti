@@ -129,7 +129,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
   };
 
   const canonicalUrl = `https://dreamartweddings.com/restoranlar/${venue.slug}`;
-  const jsonLd = getVenueStructuredData(venue, canonicalUrl);
+  const jsonLd = getVenueStructuredData(venue, canonicalUrl, allDecors);
 
   return (
     <>
@@ -237,7 +237,9 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                     <div>
                       <h2 className="font-serif text-2xl text-white">Məkan Qalereyası</h2>
                       <p className="text-xs text-white/50 mt-1">
-                        {venue.name} üçün xüsusi dekorasiya və məkan görüntüləri
+                        {verifiedProjects.length > 0
+                          ? `${venue.name} məkanında icra edilmiş faktiki dekorasiya və məkan görüntüləri`
+                          : `${venue.name} üçün məkan görüntüləri və tərtibat konseptləri`}
                       </p>
                     </div>
                     <span className="text-xs text-[#C5A059] font-mono">{venueGalleryPhotos.length} foto</span>
@@ -263,30 +265,173 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                 </section>
               )}
 
-              {/* 3. Venue Description & Direct Info Block */}
-              <div className="bg-[#121212] border border-[#C5A059]/40 rounded-sm p-5 sm:p-6 shadow-xl">
-                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium font-mono mb-2">
+              {/* 3. Concise Direct-Answer Section & Entity Relationships for GEO / AI SEO */}
+              <section className="bg-[#121212] border border-[#C5A059]/40 rounded-sm p-6 sm:p-7 shadow-xl space-y-6">
+                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium font-mono pb-2 border-b border-white/10">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>DİREKT MƏLUMAT VƏ MƏKAN XİDMƏTLƏRİ</span>
+                  <span>DİREKT CAVABLAR VƏ AI SEO HƏLLƏRİ</span>
                 </div>
-                <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
-                  DreamArt Weddings <strong>{venue.name}</strong> məkanında toy, nikah və böyük zal dekorasiyası layihələri həyata keçirir. Məkanın daxili memarlığına uyğun fərdi floristika, şam işıqlandırması və altar dizaynı təqdim edilir. Sifariş və eskiz üçün: <strong className="text-[#C5A059]">{phoneDisplay}</strong> (WhatsApp aktivdir).
-                </p>
-                <div className="mt-4 pt-3 border-t border-white/10 flex flex-wrap gap-2 text-xs">
-                  <button onClick={() => navigate('/toy-dekoru')} className="px-3 py-1 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer">
-                    Toy Dekoru
-                  </button>
-                  <button onClick={() => navigate('/zal-dekoru')} className="px-3 py-1 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer">
-                    Zal Dekoru
-                  </button>
-                  <button onClick={() => navigate('/nisan-dekoru')} className="px-3 py-1 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer">
-                    Nişan Dekoru
-                  </button>
-                  <button onClick={() => navigate('/portfolio')} className="px-3 py-1 bg-[#181818] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer">
-                    Portfolio
-                  </button>
+
+                {/* Question 1 */}
+                <div className="space-y-2">
+                  <h3 className="font-serif text-lg sm:text-xl text-[#FAF8F5] flex items-center gap-2">
+                    <span className="text-[#C5A059] font-mono text-sm font-semibold">1.</span>
+                    <span>DreamArt Weddings bu məkanda dekor işi həyata keçirib?</span>
+                  </h3>
+                  {verifiedProjects.length > 0 ? (
+                    <div className="space-y-3 pl-5 border-l-2 border-[#C5A059]/50">
+                      <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+                        Bəli. DreamArt Weddings <strong>{venue.name}</strong> məkanında real dekor layihəsi həyata keçirib. Məkanda icra edilmiş real işimiz:
+                      </p>
+                      {verifiedProjects.map((p) => (
+                        <div
+                          key={p.id}
+                          onClick={() => navigate(`/dekorlar/${p.slug}`)}
+                          className="flex items-center justify-between p-3.5 bg-[#171717] border border-white/10 hover:border-[#C5A059] rounded-sm transition-all cursor-pointer group"
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <img
+                              src={p.mainImage}
+                              alt={p.name}
+                              className="w-12 h-12 object-cover rounded-xs border border-white/10 shrink-0"
+                            />
+                            <div className="min-w-0">
+                              <span className="text-[10px] text-[#C5A059] font-mono uppercase block">{p.categoryName}</span>
+                              <h4 className="font-serif text-sm text-white group-hover:text-[#E5C378] transition-colors truncate">
+                                {p.name}
+                              </h4>
+                            </div>
+                          </div>
+                          <span className="text-xs text-[#C5A059] font-mono flex items-center gap-1 group-hover:translate-x-1 transition-transform shrink-0 ml-2">
+                            <span>Layihəyə bax</span>
+                            <ArrowRight className="w-3 h-3" />
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed pl-5 border-l-2 border-white/20">
+                      Hazırda portfoliomuzda <strong>{venue.name}</strong> məkanına aid tamamlanmış layihə qeyd olunmayıb. Bununla belə, DreamArt Weddings bu məkanın memarlıq planına və zal parametrlərinə uyğun fərdi toy və tədbir dekor layihələrini sifarişlə hazırlayır və quraşdırır.
+                    </p>
+                  )}
                 </div>
-              </div>
+
+                {/* Question 2 */}
+                <div className="space-y-2 pt-2 border-t border-white/5">
+                  <h3 className="font-serif text-lg sm:text-xl text-[#FAF8F5] flex items-center gap-2">
+                    <span className="text-[#C5A059] font-mono text-sm font-semibold">2.</span>
+                    <span>Bu məkanda toy dekorunu kimə sifariş etmək olar?</span>
+                  </h3>
+                  <div className="pl-5 border-l-2 border-[#C5A059]/50 space-y-3">
+                    <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+                      <strong>{venue.name}</strong> məkanında toy və ziyafət dekorasiyasını birbaşa DreamArt Weddings komandasına sifariş etmək olar. Məkanın daxili memarlığına uyğun fərdi floristika, bəy-gəlin masası, arxa fon tağı və işıqlandırma tərtibatı təqdim edilir. Operativ smeta və konsultasiya üçün WhatsApp ilə əlaqə saxlaya və ya{' '}
+                      <button
+                        onClick={() => navigate('/elaqe')}
+                        className="text-[#C5A059] hover:underline font-medium cursor-pointer"
+                      >
+                        Əlaqə
+                      </button>{' '}
+                      səhifəmizdən zəng sifariş edə bilərsiniz.
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <button
+                        onClick={() => {
+                          const text = `Salam, DreamArt Weddings! ${venue.name} məkanında toy dekoru sifarişi və smeta barədə məlumat almaq istəyirəm.`;
+                          const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+                          window.open(url, '_blank', 'noopener,noreferrer');
+                        }}
+                        className="bg-[#C5A059] hover:bg-[#D4B26F] text-[#0B0B0B] text-xs font-medium px-4 py-2 rounded-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>{venue.name} üçün WhatsApp ilə sorğu göndərin</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Question 3 */}
+                <div className="space-y-2 pt-2 border-t border-white/5">
+                  <h3 className="font-serif text-lg sm:text-xl text-[#FAF8F5] flex items-center gap-2">
+                    <span className="text-[#C5A059] font-mono text-sm font-semibold">3.</span>
+                    <span>Bu məkanda hansı dekor xidmətləri mümkündür?</span>
+                  </h3>
+                  <div className="pl-5 border-l-2 border-[#C5A059]/50 space-y-3">
+                    <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+                      <strong>{venue.name}</strong> məkanında DreamArt Weddings tərəfindən bəy-gəlin masası, monumental səhnə tağı, qonaq masası kompozisiyaları, zal bəzəyi, şam işıqlandırması və qarşılama fotozonası xidmətləri mümkündür. Müvafiq xidmət səhifələrimizə keçid edə bilərsiniz:
+                    </p>
+                    <div className="flex flex-wrap gap-2 text-xs">
+                      <button
+                        onClick={() => navigate('/toy-dekoru')}
+                        className="px-3 py-1.5 bg-[#171717] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer"
+                      >
+                        Toy Dekoru
+                      </button>
+                      <button
+                        onClick={() => navigate('/zal-dekoru')}
+                        className="px-3 py-1.5 bg-[#171717] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer"
+                      >
+                        Zal Dekoru
+                      </button>
+                      <button
+                        onClick={() => navigate('/nisan-dekoru')}
+                        className="px-3 py-1.5 bg-[#171717] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer"
+                      >
+                        Nişan Dekoru
+                      </button>
+                      <button
+                        onClick={() => navigate('/korporativ-dekor')}
+                        className="px-3 py-1.5 bg-[#171717] border border-white/10 hover:border-[#C5A059] text-white rounded-xs transition-colors cursor-pointer"
+                      >
+                        Korporativ Tədbir
+                      </button>
+                      <button
+                        onClick={() => navigate('/portfolio')}
+                        className="px-3 py-1.5 bg-[#C5A059]/10 border border-[#C5A059]/40 hover:border-[#C5A059] text-[#C5A059] rounded-xs transition-colors cursor-pointer"
+                      >
+                        Bütün Portfolioya Bax
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Entity Relationships Pathway */}
+                <div className="mt-5 pt-4 border-t border-white/10 bg-[#0E0E0E] p-3.5 rounded-xs">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-[#C5A059] mb-2 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" />
+                    <span>ENTİTY ƏLAQƏSİ: MƏKAN → LAYİHƏ → XİDMƏT → PORTFOLİO → DREAMART WEDDINGS</span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs text-white/70">
+                    <span className="text-white font-medium">{venue.name}</span>
+                    <span className="text-[#C5A059]">→</span>
+                    {verifiedProjects.length > 0 ? (
+                      <button
+                        onClick={() => navigate(`/dekorlar/${verifiedProjects[0].slug}`)}
+                        className="text-[#C5A059] hover:underline cursor-pointer"
+                      >
+                        {verifiedProjects[0].name}
+                      </button>
+                    ) : (
+                      <span className="text-white/50">Fərdi dekor konsepti</span>
+                    )}
+                    <span className="text-[#C5A059]">→</span>
+                    <button
+                      onClick={() => navigate(verifiedProjects.length > 0 ? `/${verifiedProjects[0].category}` : '/toy-dekoru')}
+                      className="text-[#C5A059] hover:underline cursor-pointer"
+                    >
+                      {verifiedProjects.length > 0 ? verifiedProjects[0].categoryName : 'Toy Dekoru'}
+                    </button>
+                    <span className="text-[#C5A059]">→</span>
+                    <button
+                      onClick={() => navigate('/portfolio')}
+                      className="text-[#C5A059] hover:underline cursor-pointer"
+                    >
+                      Portfolio
+                    </button>
+                    <span className="text-[#C5A059]">→</span>
+                    <span className="text-[#C5A059] font-medium">DreamArt Weddings</span>
+                  </div>
+                </div>
+              </section>
 
               {/* Venue-Specific Notes */}
               {venue.venueNotes && (
