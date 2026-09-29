@@ -7,6 +7,7 @@ interface SeoHeadProps {
   ogImage?: string;
   jsonLd?: object | object[];
   noIndex?: boolean;
+  lang?: string;
 }
 
 export const SeoHead: React.FC<SeoHeadProps> = ({
@@ -15,9 +16,15 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
   canonicalPath = '',
   ogImage = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85',
   jsonLd,
-  noIndex = false
+  noIndex = false,
+  lang
 }) => {
   useEffect(() => {
+    // Language signal
+    if (lang) {
+      document.documentElement.lang = lang;
+    }
+
     // Update document title
     document.title = title;
 
@@ -82,6 +89,9 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
     }
 
     return () => {
+      if (lang) {
+        document.documentElement.lang = 'az';
+      }
       // clean up json-ld when component unmounts
       const script = document.getElementById('dynamic-jsonld');
       if (script) script.remove();

@@ -28,7 +28,7 @@ import {
 } from './server/supabaseService.ts';
 import { runSupabaseMigration } from './server/migrateToSupabase.ts';
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'dreamart2026';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'dreamart-dev-session-key-strictly-dev-only-2026';

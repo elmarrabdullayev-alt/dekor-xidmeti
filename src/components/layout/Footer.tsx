@@ -60,6 +60,45 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
             ))}
           </nav>
 
+          {/* India Market & Destination Weddings Sub-Nav for International Guests & Planners */}
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] text-white/50 border-t border-white/5 pt-3 font-mono">
+            <span className="text-[#C5A059] uppercase tracking-wider">India Market Hub:</span>
+            <button
+              onClick={() => handleNav('/indian-wedding-azerbaijan')}
+              className="hover:text-[#E5C378] transition-colors cursor-pointer"
+            >
+              Indian Wedding Azerbaijan
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => handleNav('/indian-wedding-decor-baku')}
+              className="hover:text-[#E5C378] transition-colors cursor-pointer"
+            >
+              Baku Decor
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => handleNav('/mehndi-decoration-baku')}
+              className="hover:text-[#E5C378] transition-colors cursor-pointer"
+            >
+              Mehndi Decor
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => handleNav('/sangeet-decoration-baku')}
+              className="hover:text-[#E5C378] transition-colors cursor-pointer"
+            >
+              Sangeet Decor
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => handleNav('/mandap-decoration-azerbaijan')}
+              className="hover:text-[#E5C378] transition-colors cursor-pointer"
+            >
+              Mandap Decor
+            </button>
+          </div>
+
           {/* Social Icons matching mockup: Instagram, Facebook, YouTube, WhatsApp */}
           <div className="flex items-center space-x-4">
             <a

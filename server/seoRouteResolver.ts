@@ -228,24 +228,28 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   if (cleanPath === '/indian-wedding-azerbaijan') {
     const indianFaqs = [
       {
-        question: 'Do you provide Indian wedding decoration in Azerbaijan?',
-        answer: 'Yes. DreamArt Weddings provides event decor services across Azerbaijan, including multi-day wedding concepts, stage styling, floral decor, ceremony areas and reception decoration.'
+        question: 'Can DreamArt Weddings decorate an Indian wedding in Azerbaijan?',
+        answer: 'Yes. DreamArt Weddings is an Azerbaijan-based event decoration company providing custom wedding and event decor in Baku and other regions of Azerbaijan. We design, build, and coordinate multi-event decor programs for destination weddings.'
       },
       {
-        question: 'Can DreamArt Weddings decorate a 3-day Indian wedding?',
-        answer: 'Yes. We design and manage coordinated yet visually distinct environments across multiple days, including Mehendi, Haldi, Sangeet, traditional ceremony and grand reception events with seamless daily transitions.'
+        question: 'Can you create decor for Mehndi and Sangeet events in Baku?',
+        answer: 'Yes. We regularly produce vibrant daytime decor for Mehndi rituals—including custom floral swings, draped pavilions, and colorful lounge seating—as well as large-scale Sangeet evening stages equipped with acoustic-friendly performance backdrops, concert lighting rigs, and illuminated dance floors.'
       },
       {
-        question: 'Do you provide Mehendi and Sangeet decoration?',
-        answer: 'Yes. We craft colorful, bohemian or traditional setups for Mehendi and Haldi, dynamic stage and lighting backdrops for Sangeet nights, and regal settings for evening parties.'
+        question: 'Can DreamArt Weddings design a custom Mandap in Azerbaijan?',
+        answer: 'Yes. Our in-house production team builds custom four-pillar and circular Mandap pavilions engineered specifically for indoor ballrooms, sea-view terraces, or open lawn venues across Azerbaijan with fresh imported florals.'
       },
       {
-        question: 'Can you provide wedding decor outside Baku?',
-        answer: 'Yes. Our logistics fleet and professional setup crews manage destination weddings in Gabala, Guba, Shamakhi, and resort locations throughout Azerbaijan.'
+        question: 'Do you provide wedding decoration outside Baku?',
+        answer: 'Yes. Our specialized logistics fleet and on-site floral teams regularly manage full setups across Azerbaijan, including Gabala (Qəbələ), Guba (Quba), and Shamakhi (Şamaxı).'
       },
       {
-        question: 'How can international clients contact DreamArt Weddings?',
-        answer: 'International couples and wedding planners can reach our team via WhatsApp at +994 50 231 17 28 or phone 050 231 17 28 to schedule a virtual consultation and receive an initial decor estimate.'
+        question: 'Can Indian wedding planners work with DreamArt Weddings as a local decor supplier?',
+        answer: 'Yes. We frequently collaborate with international wedding planners as their dedicated on-the-ground decoration and production partner in Azerbaijan, providing 3D renderings, local floral sourcing, custom carpentry, and complete setup and breakdown crews.'
+      },
+      {
+        question: 'Can you decorate multi-day destination weddings in Azerbaijan?',
+        answer: 'Yes. We routinely handle 2- to 4-day destination wedding programs, organizing seamless overnight turnarounds between consecutive events such as Welcome Dinners, Haldi, Mehndi, Sangeet nights, Mandap wedding ceremonies, and gala Receptions.'
       }
     ];
 
@@ -254,23 +258,25 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
         '@context': 'https://schema.org',
         '@type': 'Service',
         'name': 'Indian Wedding Decoration in Azerbaijan',
-        'description': 'Luxury Indian wedding decoration in Azerbaijan for Mehendi, Sangeet, ceremony and reception events. DreamArt Weddings provides custom multi-day decor across Baku and regions.',
+        'description': 'DreamArt Weddings is an Azerbaijan-based event decoration company providing custom wedding and event decor in Baku and other regions of Azerbaijan, specializing in Mehndi, Sangeet, Mandap, and reception styling.',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'DreamArt Weddings',
           'telephone': '+994502311728',
-          'url': 'https://dreamartweddings.com',
+          'url': PRIMARY_DOMAIN,
           'address': {
             '@type': 'PostalAddress',
             'addressLocality': 'Baku',
             'addressCountry': 'AZ'
-          }
+          },
+          'description': 'Azerbaijan-based event decoration company providing custom wedding and event decor in Baku and other regions of Azerbaijan.'
         },
-        'areaServed': {
-          '@type': 'Country',
-          'name': 'Azerbaijan'
-        },
-        'serviceType': 'Indian Destination Wedding Decor',
+        'areaServed': [
+          { '@type': 'Country', 'name': 'Azerbaijan' },
+          { '@type': 'City', 'name': 'Baku' },
+          { '@type': 'City', 'name': 'Gabala' }
+        ],
+        'serviceType': 'Indian Destination Wedding Decor and Production',
         'url': `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan`
       },
       getBreadcrumbSchema([
@@ -282,10 +288,267 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
 
     return {
       title: 'Indian Wedding Decoration in Azerbaijan | DreamArt Weddings',
-      description: 'Luxury Indian wedding decoration in Azerbaijan for Mehendi, Sangeet, ceremony and reception events. DreamArt Weddings provides custom multi-day decor across Baku and regions.',
+      description: 'Bespoke Indian wedding decoration in Azerbaijan by DreamArt Weddings. Custom Mandap, Mehndi, Sangeet, and reception decor across Baku ballrooms and scenic regions.',
       canonicalUrl: `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan`,
       robots: 'index, follow',
       ogImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      ogType: 'website',
+      jsonLd
+    };
+  }
+
+  // 10b-1. Indian Wedding Decor in Baku (/indian-wedding-decor-baku)
+  if (cleanPath === '/indian-wedding-decor-baku') {
+    const bakuFaqs = [
+      {
+        question: 'Do you provide Indian wedding decoration in Baku?',
+        answer: 'Yes. DreamArt Weddings is an Azerbaijan-based event decoration company headquartered in Baku, providing custom Indian wedding decoration across Baku’s luxury five-star hotel ballrooms, Caspian seaside estates, and palace banquet venues.'
+      },
+      {
+        question: 'Can you work inside major five-star hotels and palace venues in Baku?',
+        answer: 'Yes. Our team has extensive experience working within Baku’s leading hotel ballrooms and private event halls, adhering strictly to hotel engineering requirements and fire-safety protocols.'
+      },
+      {
+        question: 'How do you handle coastal wind conditions for outdoor Indian weddings in Baku?',
+        answer: 'For outdoor coastal terraces and Absheron lawn events, we engineer weighted internal steel ballasts for Mandap structures, use wind-resistant floral netting techniques, and secure canopy drapery with discrete structural anchors.'
+      },
+      {
+        question: 'Can DreamArt Weddings handle quick overnight turnarounds in Baku venues?',
+        answer: 'Yes. With our central fabrication studio and dedicated warehouse located in Baku, our local crews manage rapid overnight room transitions between consecutive multi-day events.'
+      }
+    ];
+
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Indian Wedding Decoration in Baku',
+        'description': 'Bespoke Indian wedding decoration in Baku, Azerbaijan by DreamArt Weddings. Specializing in luxury ballroom transformations, Mandap setups, Mehndi lounges, Sangeet stages, and Caspian coastal celebrations.',
+        'provider': {
+          '@type': 'LocalBusiness',
+          'name': 'DreamArt Weddings',
+          'telephone': '+994502311728',
+          'url': PRIMARY_DOMAIN,
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Baku',
+            'addressCountry': 'AZ'
+          }
+        },
+        'areaServed': {
+          '@type': 'City',
+          'name': 'Baku'
+        },
+        'serviceType': 'Indian Destination Wedding Decor in Baku',
+        'url': `${PRIMARY_DOMAIN}/indian-wedding-decor-baku`
+      },
+      getBreadcrumbSchema([
+        { name: 'Home', url: PRIMARY_DOMAIN },
+        { name: 'Indian Wedding Decoration in Azerbaijan', url: `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan` },
+        { name: 'Indian Wedding Decor in Baku', url: `${PRIMARY_DOMAIN}/indian-wedding-decor-baku` }
+      ]),
+      getFaqPageSchema(bakuFaqs)
+    ];
+
+    return {
+      title: 'Indian Wedding Decor in Baku | Luxury Destination Styling | DreamArt Weddings',
+      description: 'Luxury Indian wedding decor in Baku, Azerbaijan. DreamArt Weddings designs custom Mandaps, Sangeet stages, Mehndi setups, and reception ballroom styling in Baku.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/indian-wedding-decor-baku`,
+      robots: 'index, follow',
+      ogImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      ogType: 'website',
+      jsonLd
+    };
+  }
+
+  // 10b-2. Mehndi Decoration in Baku (/mehndi-decoration-baku)
+  if (cleanPath === '/mehndi-decoration-baku') {
+    const mehndiFaqs = [
+      {
+        question: 'Can you create decor for Mehndi events in Baku?',
+        answer: 'Yes. DreamArt Weddings designs and constructs full Mehndi decorative environments across Baku, including custom floral swings (jhoola), color-blocked pergola drapery, low-seating bohemian lounges, and colorful photo backdrops.'
+      },
+      {
+        question: 'Do you fabricate custom floral swings (jhoola) in Baku?',
+        answer: 'Yes. Our in-house carpentry workshop in Baku crafts sturdy, suspended floral swings engineered for stability and dressed in lush clusters of fresh imported roses and seasonal blooms.'
+      },
+      {
+        question: 'What color palettes do you offer for Mehndi setups in Azerbaijan?',
+        answer: 'We tailor colors to your design brief, frequently working with festive marigold yellows, citrus oranges, fuchsia pinks, emerald greens, and turquoise accents through custom fabrics and florals.'
+      },
+      {
+        question: 'Can you transition a daytime Mehndi into an evening Sangeet space?',
+        answer: 'Yes. Our on-site setup crews coordinate rapid turnaround times to dismantle daytime Mehndi structures or transition the venue space into an evening party environment.'
+      }
+    ];
+
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Mehndi Decoration in Baku',
+        'description': 'Custom Mehndi decoration in Baku, Azerbaijan by DreamArt Weddings. Specializing in bespoke floral swings, colorful drapes, low-seating lounges, and festive photo zones.',
+        'provider': {
+          '@type': 'LocalBusiness',
+          'name': 'DreamArt Weddings',
+          'telephone': '+994502311728',
+          'url': PRIMARY_DOMAIN,
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Baku',
+            'addressCountry': 'AZ'
+          }
+        },
+        'areaServed': {
+          '@type': 'City',
+          'name': 'Baku'
+        },
+        'serviceType': 'Mehndi Event Decoration and Production',
+        'url': `${PRIMARY_DOMAIN}/mehndi-decoration-baku`
+      },
+      getBreadcrumbSchema([
+        { name: 'Home', url: PRIMARY_DOMAIN },
+        { name: 'Indian Wedding Decoration in Azerbaijan', url: `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan` },
+        { name: 'Mehndi Decoration in Baku', url: `${PRIMARY_DOMAIN}/mehndi-decoration-baku` }
+      ]),
+      getFaqPageSchema(mehndiFaqs)
+    ];
+
+    return {
+      title: 'Mehndi Decoration in Baku | Vibrant Swings & Lounge Styling | DreamArt Weddings',
+      description: 'Vibrant Mehndi decoration in Baku by DreamArt Weddings. Custom floral swings, colorful drapes, low-seating bohemian lounges, and festive henna party styling.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/mehndi-decoration-baku`,
+      robots: 'index, follow',
+      ogImage: '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
+      ogType: 'website',
+      jsonLd
+    };
+  }
+
+  // 10b-3. Sangeet Decoration in Baku (/sangeet-decoration-baku)
+  if (cleanPath === '/sangeet-decoration-baku') {
+    const sangeetFaqs = [
+      {
+        question: 'Can you create decor for Sangeet events in Baku?',
+        answer: 'Yes. DreamArt Weddings designs and constructs concert-grade Sangeet decor environments across Baku, including wide performance stages, layered acoustic backdrops, illuminated dance floor frames, and luxury cocktail lounge vignettes.'
+      },
+      {
+        question: 'Do you build custom performance stages for family choreographies?',
+        answer: 'Yes. Our in-house technical carpentry team in Baku constructs reinforced stages with non-slip surfaces, safety skirting, and custom stair access engineered to accommodate energetic group dance performances.'
+      },
+      {
+        question: 'How do you coordinate decor with AV and sound crews in Baku?',
+        answer: 'We work closely with sound, lighting, and LED screen technicians, providing exact CAD stage dimensions, weight-bearing truss integration, and cable pass-throughs.'
+      },
+      {
+        question: 'Can DreamArt Weddings handle rapid overnight turnover after a Sangeet?',
+        answer: 'Yes. Our Baku warehouse and dedicated night-shift crews regularly conduct overnight teardowns to transform the ballroom for a morning Mandap ceremony or afternoon reception.'
+      }
+    ];
+
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Sangeet Decoration in Baku',
+        'description': 'Custom Sangeet decoration in Baku, Azerbaijan by DreamArt Weddings. Specializing in performance stage architecture, concert lighting, dance floor perimeters, and cocktail party styling.',
+        'provider': {
+          '@type': 'LocalBusiness',
+          'name': 'DreamArt Weddings',
+          'telephone': '+994502311728',
+          'url': PRIMARY_DOMAIN,
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Baku',
+            'addressCountry': 'AZ'
+          }
+        },
+        'areaServed': {
+          '@type': 'City',
+          'name': 'Baku'
+        },
+        'serviceType': 'Sangeet Event Decoration and Production',
+        'url': `${PRIMARY_DOMAIN}/sangeet-decoration-baku`
+      },
+      getBreadcrumbSchema([
+        { name: 'Home', url: PRIMARY_DOMAIN },
+        { name: 'Indian Wedding Decoration in Azerbaijan', url: `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan` },
+        { name: 'Sangeet Decoration in Baku', url: `${PRIMARY_DOMAIN}/sangeet-decoration-baku` }
+      ]),
+      getFaqPageSchema(sangeetFaqs)
+    ];
+
+    return {
+      title: 'Sangeet Decoration in Baku | Grand Stage & Dance Floor Styling | DreamArt Weddings',
+      description: 'Concert-grade Sangeet decoration in Baku by DreamArt Weddings. Custom performance stage architecture, 3D backdrops, dance floor styling, and cocktail lounge design.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/sangeet-decoration-baku`,
+      robots: 'index, follow',
+      ogImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
+      ogType: 'website',
+      jsonLd
+    };
+  }
+
+  // 10b-4. Mandap Decoration in Azerbaijan (/mandap-decoration-azerbaijan)
+  if (cleanPath === '/mandap-decoration-azerbaijan') {
+    const mandapFaqs = [
+      {
+        question: 'Can DreamArt Weddings design a custom Mandap in Azerbaijan?',
+        answer: 'Yes. DreamArt Weddings engineers and constructs custom four-pillar and circular dome Mandaps tailored for indoor luxury ballrooms, open-air seaside terraces, or mountain resort lawns across Azerbaijan with fresh imported florals.'
+      },
+      {
+        question: 'What materials and florals are used in your Mandap setups?',
+        answer: 'Our Mandap structures are built from reinforced steel or timber frameworks with fireproof coatings, adorned with fresh imported Ecuadorian roses, Dutch hydrangeas, orchids, and lush seasonal greenery.'
+      },
+      {
+        question: 'How do you handle fire safety for the sacred havan kund in Azerbaijan?',
+        answer: 'We work strictly in compliance with venue safety standards, installing non-combustible protective heat-resistant floor plates, fire-retardant mats, and maintaining on-site fire extinguishing equipment.'
+      },
+      {
+        question: 'Can you install outdoor Mandaps in Gabala or seaside Baku?',
+        answer: 'Yes. For open-air venues on the Absheron coast or mountain resort lawns in Gabala, we engineer weighted internal ballasts to ensure wind stability and protect the floral structures.'
+      }
+    ];
+
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Mandap Decoration in Azerbaijan',
+        'description': 'Custom Mandap decoration and ceremonial pavilion design in Azerbaijan by DreamArt Weddings. Specializing in 4-pillar and circular floral Mandaps, sacred aisle styling, and fire-safe ceremony staging.',
+        'provider': {
+          '@type': 'LocalBusiness',
+          'name': 'DreamArt Weddings',
+          'telephone': '+994502311728',
+          'url': PRIMARY_DOMAIN,
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Baku',
+            'addressCountry': 'AZ'
+          }
+        },
+        'areaServed': [
+          { '@type': 'Country', 'name': 'Azerbaijan' },
+          { '@type': 'City', 'name': 'Baku' },
+          { '@type': 'City', 'name': 'Gabala' }
+        ],
+        'serviceType': 'Mandap Decoration & Ceremonial Staging',
+        'url': `${PRIMARY_DOMAIN}/mandap-decoration-azerbaijan`
+      },
+      getBreadcrumbSchema([
+        { name: 'Home', url: PRIMARY_DOMAIN },
+        { name: 'Indian Wedding Decoration in Azerbaijan', url: `${PRIMARY_DOMAIN}/indian-wedding-azerbaijan` },
+        { name: 'Mandap Decoration in Azerbaijan', url: `${PRIMARY_DOMAIN}/mandap-decoration-azerbaijan` }
+      ]),
+      getFaqPageSchema(mandapFaqs)
+    ];
+
+    return {
+      title: 'Mandap Decoration in Azerbaijan | Bespoke Sacred Pavilions | DreamArt Weddings',
+      description: 'Bespoke Mandap decoration in Azerbaijan by DreamArt Weddings. Custom four-pillar floral pavilions, circular domes, sacred ceremony aisles, and fire-safe staging.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/mandap-decoration-azerbaijan`,
+      robots: 'index, follow',
+      ogImage: '/images/dreamart-toy-dekoru-qizili-altar.webp',
       ogType: 'website',
       jsonLd
     };

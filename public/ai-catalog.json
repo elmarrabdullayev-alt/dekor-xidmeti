@@ -5,8 +5,8 @@
   "description": "Bakı və Azərbaycanın bütün regionları üçün zövqlü və premium toy, nişan, xına, ad günü, korporativ, zal və xonça dekor xidmətləri.",
   "inLanguage": "az",
   "contact": {
-    "phone": "+994 50 123 45 67",
-    "whatsapp": "https://wa.me/994501234567",
+    "phone": "+994 50 231 17 28",
+    "whatsapp": "https://wa.me/994502311728",
     "instagram": "https://www.instagram.com/dreamartevents",
     "areaServed": "Azərbaycan (Bakı və bütün regionlar)"
   },
@@ -55,14 +55,38 @@
     },
     {
       "id": "indian-wedding-azerbaijan",
-      "name": "Indian Weddings in Azerbaijan",
-      "description": "Hindistan toylarının Azərbaycanda təşkili və tematik dekorasiyası.",
+      "name": "Indian Wedding Decoration in Azerbaijan",
+      "description": "Complete multi-day Indian destination wedding decoration across Baku and Azerbaijan.",
       "url": "https://dreamartweddings.com/indian-wedding-azerbaijan"
+    },
+    {
+      "id": "indian-wedding-decor-baku",
+      "name": "Indian Wedding Decor in Baku",
+      "description": "Bespoke ballroom, Mandap, and Caspian coastal wedding styling in Baku.",
+      "url": "https://dreamartweddings.com/indian-wedding-decor-baku"
+    },
+    {
+      "id": "mehndi-decoration-baku",
+      "name": "Mehndi Decoration in Baku",
+      "description": "Custom floral swings, colorful drapery, and low-seating bohemian lounges for Mehndi celebrations.",
+      "url": "https://dreamartweddings.com/mehndi-decoration-baku"
+    },
+    {
+      "id": "sangeet-decoration-baku",
+      "name": "Sangeet Decoration in Baku",
+      "description": "Concert-grade performance stages, 3D acoustic backdrops, and dance floor styling.",
+      "url": "https://dreamartweddings.com/sangeet-decoration-baku"
+    },
+    {
+      "id": "mandap-decoration-azerbaijan",
+      "name": "Mandap Decoration in Azerbaijan",
+      "description": "Custom four-pillar and circular floral Mandaps with fire-safe ceremonial staging.",
+      "url": "https://dreamartweddings.com/mandap-decoration-azerbaijan"
     },
     {
       "id": "destination-wedding-azerbaijan",
       "name": "Destination Weddings in Azerbaijan",
-      "description": "Xarici qonaqlar və xüsusi məkanlar üçün toy və tədbir təşkili.",
+      "description": "Luxury destination wedding production across Baku, Gabala, and Guba.",
       "url": "https://dreamartweddings.com/destination-wedding-azerbaijan"
     }
   ],

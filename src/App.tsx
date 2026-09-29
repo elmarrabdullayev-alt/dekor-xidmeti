@@ -17,6 +17,10 @@ const AdminPage = lazy(() => import('./pages/AdminPage').then(m => ({ default: m
 const VenuesCatalogPage = lazy(() => import('./pages/VenuesCatalogPage').then(m => ({ default: m.VenuesCatalogPage })));
 const VenueDetailPage = lazy(() => import('./pages/VenueDetailPage').then(m => ({ default: m.VenueDetailPage })));
 const IndianWeddingPage = lazy(() => import('./pages/IndianWeddingPage').then(m => ({ default: m.IndianWeddingPage })));
+const IndianWeddingDecorBakuPage = lazy(() => import('./pages/IndianWeddingDecorBakuPage').then(m => ({ default: m.IndianWeddingDecorBakuPage })));
+const MehndiDecorationBakuPage = lazy(() => import('./pages/MehndiDecorationBakuPage').then(m => ({ default: m.MehndiDecorationBakuPage })));
+const SangeetDecorationBakuPage = lazy(() => import('./pages/SangeetDecorationBakuPage').then(m => ({ default: m.SangeetDecorationBakuPage })));
+const MandapDecorationAzerbaijanPage = lazy(() => import('./pages/MandapDecorationAzerbaijanPage').then(m => ({ default: m.MandapDecorationAzerbaijanPage })));
 const DestinationWeddingPage = lazy(() => import('./pages/DestinationWeddingPage').then(m => ({ default: m.DestinationWeddingPage })));
 const BerdeToyDekoruPage = lazy(() => import('./pages/BerdeToyDekoruPage').then(m => ({ default: m.BerdeToyDekoruPage })));
 const QebeleToyDekoruPage = lazy(() => import('./pages/QebeleToyDekoruPage').then(m => ({ default: m.QebeleToyDekoruPage })));
@@ -194,6 +198,46 @@ export default function App() {
     if (path === '/indian-wedding-azerbaijan') {
       return (
         <IndianWeddingPage
+          navigate={navigate}
+          onOpenQuoteModal={handleOpenQuoteModal}
+        />
+      );
+    }
+
+    // 8c. Indian Wedding Decor in Baku (/indian-wedding-decor-baku)
+    if (path === '/indian-wedding-decor-baku') {
+      return (
+        <IndianWeddingDecorBakuPage
+          navigate={navigate}
+          onOpenQuoteModal={handleOpenQuoteModal}
+        />
+      );
+    }
+
+    // 8d. Mehndi Decoration in Baku (/mehndi-decoration-baku)
+    if (path === '/mehndi-decoration-baku') {
+      return (
+        <MehndiDecorationBakuPage
+          navigate={navigate}
+          onOpenQuoteModal={handleOpenQuoteModal}
+        />
+      );
+    }
+
+    // 8e. Sangeet Decoration in Baku (/sangeet-decoration-baku)
+    if (path === '/sangeet-decoration-baku') {
+      return (
+        <SangeetDecorationBakuPage
+          navigate={navigate}
+          onOpenQuoteModal={handleOpenQuoteModal}
+        />
+      );
+    }
+
+    // 8f. Mandap Decoration in Azerbaijan (/mandap-decoration-azerbaijan)
+    if (path === '/mandap-decoration-azerbaijan') {
+      return (
+        <MandapDecorationAzerbaijanPage
           navigate={navigate}
           onOpenQuoteModal={handleOpenQuoteModal}
         />
