@@ -147,7 +147,20 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
 
         {/* Bottom Bar matching mockup */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/75 space-y-3 sm:space-y-0 font-light">
-          <p>© {new Date().getFullYear()} DreamArt Events. Bütün hüquqlar qorunur.</p>
+          <p className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2.5 gap-y-1">
+            <span>© {new Date().getFullYear()} DreamArt Events. Bütün hüquqlar qorunur.</span>
+            <span className="text-white/30 select-none">|</span>
+            <a
+              href="/mexfilik-siyaseti"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNav('/mexfilik-siyaseti');
+              }}
+              className="hover:text-[#E5C378] transition-colors cursor-pointer"
+            >
+              Məxfilik Siyasəti
+            </a>
+          </p>
 
           <div className="flex items-center gap-1.5 text-white/85">
             <MapPin className="w-3.5 h-3.5 text-[#C5A059]" />

@@ -24,6 +24,7 @@ const MandapDecorationAzerbaijanPage = lazy(() => import('./pages/MandapDecorati
 const DestinationWeddingPage = lazy(() => import('./pages/DestinationWeddingPage').then(m => ({ default: m.DestinationWeddingPage })));
 const BerdeToyDekoruPage = lazy(() => import('./pages/BerdeToyDekoruPage').then(m => ({ default: m.BerdeToyDekoruPage })));
 const QebeleToyDekoruPage = lazy(() => import('./pages/QebeleToyDekoruPage').then(m => ({ default: m.QebeleToyDekoruPage })));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 import { store } from './lib/store';
 import { DecorItem, DecorCategorySlug } from './types';
@@ -272,6 +273,11 @@ export default function App() {
           onOpenQuoteModal={handleOpenQuoteModal}
         />
       );
+    }
+
+    // 8e. Privacy Policy Page (/mexfilik-siyaseti)
+    if (path === '/mexfilik-siyaseti') {
+      return <PrivacyPolicyPage navigate={navigate} />;
     }
 
     // 9. Category or Local SEO Routes
