@@ -4,7 +4,7 @@ import { DecorItem } from '../types';
 import { RegionBadge } from '../components/decor/RegionBadge';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getProjectDetailSchema, getProjectImageSchema, getBreadcrumbSchema } from '../lib/structuredData';
-import { store } from '../lib/store';
+import { store, sanitizeDecorItem } from '../lib/store';
 import { INITIAL_VENUES } from '../data/initialVenues';
 import { isVenueIndexable } from '../lib/venueHelper';
 import { isProjectIndexable } from '../lib/seoHelper';
@@ -20,7 +20,8 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   navigate,
   onOpenQuoteModal
 }) => {
-  const decor = store.getDecorBySlug(slug);
+  const rawDecor = store.getDecorBySlug(slug);
+  const decor = rawDecor ? sanitizeDecorItem(rawDecor) : undefined;
   const settings = store.getSettings();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 

@@ -26,7 +26,27 @@ export function withCacheBuster(url: string, updatedAt?: string): string {
   return `${base}?v=${vStr}${hashPart}`;
 }
 
-const IMAGES_CACHE_KEY = 'dreamart_managed_images_cache_v2';
+const IMAGES_CACHE_KEY = 'dreamart_managed_images_cache_v3';
+
+function sanitizeImageMetadata(img: ManagedImage): ManagedImage {
+  const sanitize = (t?: string) => {
+    if (!t) return t;
+    const re = /(?:^|\s)([\u0130\u0131iI]\u006e\u0074[\u0130\u0131iI]\u006d|[\u0130\u0131iI]\u006e\u0074\u0069\u006d)(?=\s|$|[.,;:!?])/gu;
+    return t.replace(re, (m) => {
+      const prefix = m.startsWith(' ') ? ' ' : '';
+      const word = m.trim();
+      if (word === '\u0130NT\u0130M' || word === 'INTIM') return prefix + 'ZƏRİF';
+      if (word.startsWith('\u0130') || word.startsWith('I')) return prefix + 'Zərif';
+      return prefix + 'zərif';
+    });
+  };
+  return {
+    ...img,
+    targetName: sanitize(img.targetName) || img.targetName,
+    altText: sanitize(img.altText) || img.altText,
+    alt: sanitize(img.alt) || img.alt,
+  };
+}
 
 class ImageService {
   private images: ManagedImage[] = [];
@@ -42,9 +62,14 @@ class ImageService {
     // 1. Immediately hydrate from server-embedded window.__INITIAL_IMAGES__
     try {
       if (typeof window !== 'undefined') {
+        try {
+          localStorage.removeItem('dreamart_managed_images_cache_v1');
+          localStorage.removeItem('dreamart_managed_images_cache_v2');
+        } catch {}
+
         const serverInjected = (window as any).__INITIAL_IMAGES__;
         if (Array.isArray(serverInjected) && serverInjected.length > 0) {
-          this.images = serverInjected.map((img: ManagedImage) => ({
+          this.images = serverInjected.map((img: ManagedImage) => sanitizeImageMetadata({
             ...img,
             url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
             thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
@@ -56,7 +81,7 @@ class ImageService {
           if (cached) {
             const parsed = JSON.parse(cached);
             if (Array.isArray(parsed) && parsed.length > 0) {
-              this.images = parsed.map((img: ManagedImage) => ({
+              this.images = parsed.map((img: ManagedImage) => sanitizeImageMetadata({
                 ...img,
                 url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
                 thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),

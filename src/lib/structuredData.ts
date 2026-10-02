@@ -1,4 +1,5 @@
 import { CategoryInfo, DecorItem, FAQItem, Article } from '../types';
+import { sanitizeDecorText } from './store';
 
 export function getLocalBusinessSchema() {
   return {
@@ -93,13 +94,16 @@ export function getProjectDetailSchema(decor: DecorItem, canonicalUrl?: string) 
     ? decor.mainImage
     : `https://dreamartweddings.com${decor.mainImage}`;
 
+  const cleanName = sanitizeDecorText(decor.name);
+  const cleanDescription = sanitizeDecorText(decor.metaDescription || decor.shortDescription);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',
     '@id': `${url}#project`,
-    'name': decor.name,
-    'headline': decor.name,
-    'description': decor.metaDescription || decor.shortDescription,
+    'name': cleanName,
+    'headline': cleanName,
+    'description': cleanDescription,
     'url': url,
     'image': imageUrl,
     'creator': {
@@ -112,8 +116,8 @@ export function getProjectDetailSchema(decor: DecorItem, canonicalUrl?: string) 
       '@type': 'Place',
       'name': `${decor.city}, Azərbaycan`
     },
-    'genre': decor.categoryName,
-    'keywords': [decor.categoryName, decor.style, decor.city, 'DreamArt Weddings'].filter(Boolean).join(', ')
+    'genre': sanitizeDecorText(decor.categoryName),
+    'keywords': [decor.categoryName, decor.style, decor.city, 'DreamArt Weddings'].filter(Boolean).map(sanitizeDecorText).join(', ')
   };
 }
 
@@ -126,8 +130,8 @@ export function getProjectImageSchema(decor: DecorItem) {
     '@context': 'https://schema.org',
     '@type': 'ImageObject',
     'contentUrl': imageUrl,
-    'name': decor.name,
-    'description': decor.imageAltText || decor.shortDescription,
+    'name': sanitizeDecorText(decor.name),
+    'description': sanitizeDecorText(decor.imageAltText || decor.shortDescription),
     'author': {
       '@type': 'Organization',
       'name': 'DreamArt Weddings'

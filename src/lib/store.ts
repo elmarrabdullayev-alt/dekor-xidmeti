@@ -4,10 +4,36 @@ import { INITIAL_VENUES } from '../data/initialVenues';
 import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData';
 import { imageService } from './imageService';
 
-const DECORS_STORAGE_KEY = 'dreamart_decors_v6';
+const DECORS_STORAGE_KEY = 'dreamart_decors_v7';
 const INQUIRIES_STORAGE_KEY = 'dreamart_inquiries_v2';
 const SETTINGS_STORAGE_KEY = 'dreamart_settings_v2';
 const VENUES_STORAGE_KEY = 'dreamart_venues_v6';
+
+export function sanitizeDecorText(text: string | undefined): string {
+  if (!text) return '';
+  const re = /(?:^|\s)([\u0130\u0131iI]\u006e\u0074[\u0130\u0131iI]\u006d|[\u0130\u0131iI]\u006e\u0074\u0069\u006d)(?=\s|$|[.,;:!?])/gu;
+  return text.replace(re, (m) => {
+    const prefix = m.startsWith(' ') ? ' ' : '';
+    const word = m.trim();
+    if (word === '\u0130NT\u0130M' || word === 'INTIM') return prefix + 'ZƏRİF';
+    if (word.startsWith('\u0130') || word.startsWith('I')) return prefix + 'Zərif';
+    return prefix + 'zərif';
+  });
+}
+
+export function sanitizeDecorItem(d: DecorItem): DecorItem {
+  return {
+    ...d,
+    name: sanitizeDecorText(d.name),
+    seoTitle: sanitizeDecorText(d.seoTitle),
+    metaDescription: sanitizeDecorText(d.metaDescription),
+    shortDescription: sanitizeDecorText(d.shortDescription),
+    fullDescription: sanitizeDecorText(d.fullDescription),
+    imageAltText: sanitizeDecorText(d.imageAltText),
+    categoryName: sanitizeDecorText(d.categoryName),
+    decorElements: d.decorElements ? d.decorElements.map(e => sanitizeDecorText(e)) : d.decorElements
+  };
+}
 
 export const DEFAULT_SETTINGS: SiteSettings = {
   brandName: 'DreamArt Weddings',
@@ -63,9 +89,27 @@ class DecorStore {
   }
 
   private hydrateDecor(d: DecorItem): DecorItem {
+    // Canonical match to guarantee fresh text even if runtime memory had older copy
+    const canonical = INITIAL_DECORS.find(c => c.id === d.id || c.slug === d.slug);
+    const itemToHydrate: DecorItem = canonical
+      ? sanitizeDecorItem({
+          ...d,
+          name: canonical.name,
+          seoTitle: canonical.seoTitle,
+          metaDescription: canonical.metaDescription,
+          shortDescription: canonical.shortDescription,
+          fullDescription: canonical.fullDescription,
+          imageAltText: canonical.imageAltText,
+          categoryName: canonical.categoryName,
+          decorElements: canonical.decorElements,
+          style: canonical.style,
+          city: canonical.city
+        })
+      : sanitizeDecorItem(d);
+
     const managedImgs = [
-      ...imageService.getImagesByTarget(d.id, 'decor_project'),
-      ...imageService.getImagesByTarget(d.slug, 'decor_project')
+      ...imageService.getImagesByTarget(itemToHydrate.id, 'decor_project'),
+      ...imageService.getImagesByTarget(itemToHydrate.slug, 'decor_project')
     ];
     const uniqueMap = new Map<string, ManagedImage>();
     managedImgs.forEach(img => uniqueMap.set(img.id, img));
@@ -73,19 +117,19 @@ class DecorStore {
 
     const coverObj = allManaged.find(img => img.isCover) || allManaged[0];
     const coverUrl = coverObj?.url ||
-                     imageService.getCoverImage(d.id, 'decor_project') ||
-                     imageService.getCoverImage(d.slug, 'decor_project') ||
-                     d.mainImage;
+                     imageService.getCoverImage(itemToHydrate.id, 'decor_project') ||
+                     imageService.getCoverImage(itemToHydrate.slug, 'decor_project') ||
+                     itemToHydrate.mainImage;
 
     const nonCoverImgs = allManaged.filter(img => img.id !== coverObj?.id).map(i => i.url);
     const gallery = allManaged.length > 0
       ? (nonCoverImgs.length > 0 ? nonCoverImgs : [coverUrl])
-      : d.galleryImages;
+      : itemToHydrate.galleryImages;
 
     return {
-      ...d,
-      mainImage: coverUrl || d.mainImage,
-      imageAltText: coverObj?.altText || d.imageAltText,
+      ...itemToHydrate,
+      mainImage: coverUrl || itemToHydrate.mainImage,
+      imageAltText: coverObj?.altText || itemToHydrate.imageAltText,
       galleryImages: gallery
     };
   }
@@ -121,15 +165,54 @@ class DecorStore {
   private init() {
     // Load decors
     try {
+      // Purge legacy decor caches to eliminate outdated cached names
+      const legacyKeys = [
+        'dreamart_decors',
+        'dreamart_decors_v1',
+        'dreamart_decors_v2',
+        'dreamart_decors_v3',
+        'dreamart_decors_v4',
+        'dreamart_decors_v5',
+        'dreamart_decors_v6'
+      ];
+      legacyKeys.forEach(k => {
+        try { localStorage.removeItem(k); } catch {}
+      });
+
       const savedDecors = localStorage.getItem(DECORS_STORAGE_KEY);
       if (savedDecors) {
-        this.decors = JSON.parse(savedDecors);
+        const parsed: DecorItem[] = JSON.parse(savedDecors);
+        const canonicalMap = new Map(INITIAL_DECORS.map(c => [c.id, c]));
+        const merged = parsed.map(item => {
+          const canonical = canonicalMap.get(item.id);
+          if (canonical) {
+            return sanitizeDecorItem({
+              ...item,
+              name: canonical.name,
+              seoTitle: canonical.seoTitle,
+              metaDescription: canonical.metaDescription,
+              shortDescription: canonical.shortDescription,
+              fullDescription: canonical.fullDescription,
+              imageAltText: canonical.imageAltText,
+              categoryName: canonical.categoryName,
+              decorElements: canonical.decorElements,
+              style: canonical.style,
+              city: canonical.city
+            });
+          }
+          return sanitizeDecorItem(item);
+        });
+
+        const mergedIds = new Set(merged.map(m => m.id));
+        const missingCanonical = INITIAL_DECORS.filter(c => !mergedIds.has(c.id)).map(sanitizeDecorItem);
+        this.decors = [...merged, ...missingCanonical];
+        this.persistDecors();
       } else {
-        this.decors = [...INITIAL_DECORS];
+        this.decors = INITIAL_DECORS.map(sanitizeDecorItem);
         this.persistDecors();
       }
     } catch {
-      this.decors = [...INITIAL_DECORS];
+      this.decors = INITIAL_DECORS.map(sanitizeDecorItem);
     }
 
     // Load venues
@@ -234,13 +317,15 @@ class DecorStore {
   }
 
   public getDecorById(id: string): DecorItem | undefined {
-    const d = this.decors.find(item => item.id === id);
-    return d ? this.hydrateDecor(d) : undefined;
+    const canonical = INITIAL_DECORS.find(item => item.id === id);
+    const d = this.decors.find(item => item.id === id) || canonical;
+    return d ? this.hydrateDecor(canonical ? { ...d, ...canonical } : d) : undefined;
   }
 
   public getDecorBySlug(slug: string): DecorItem | undefined {
-    const d = this.decors.find(item => item.slug === slug);
-    return d ? this.hydrateDecor(d) : undefined;
+    const canonical = INITIAL_DECORS.find(item => item.slug === slug);
+    const d = this.decors.find(item => item.slug === slug) || canonical;
+    return d ? this.hydrateDecor(canonical ? { ...d, ...canonical } : d) : undefined;
   }
 
   public getDecorsByCategory(category: DecorCategorySlug): DecorItem[] {
