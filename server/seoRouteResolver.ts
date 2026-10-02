@@ -16,6 +16,7 @@ import { isVenueIndexable, getVenueStructuredData } from '../src/lib/venueHelper
 import { isProjectIndexable } from '../src/lib/seoHelper';
 import { isArticleIndexable } from '../src/lib/articleHelper';
 import { DecorCategorySlug } from '../src/types';
+import { sanitizeDecorText } from '../src/lib/sanitizeHelper';
 
 export interface RouteSeoData {
   title: string;
@@ -219,18 +220,22 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
     if (decor) {
       const isIndexable = isProjectIndexable(decor);
       const canonicalUrl = `${PRIMARY_DOMAIN}/dekorlar/${decor.slug}`;
+      const cleanTitle = sanitizeDecorText(decor.seoTitle || `${decor.name} | DreamArt Weddings`);
+      const cleanDesc = sanitizeDecorText(decor.metaDescription || decor.shortDescription);
+      const cleanName = sanitizeDecorText(decor.name);
+
       const jsonLd = [
         getProjectDetailSchema(decor, canonicalUrl),
         getProjectImageSchema(decor),
         getBreadcrumbSchema([
           { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
-          { name: decor.categoryName, url: `${PRIMARY_DOMAIN}/${decor.category}` },
-          { name: decor.name, url: canonicalUrl }
+          { name: sanitizeDecorText(decor.categoryName), url: `${PRIMARY_DOMAIN}/${decor.category}` },
+          { name: cleanName, url: canonicalUrl }
         ])
       ];
       return {
-        title: decor.seoTitle || `${decor.name} | DreamArt Weddings`,
-        description: decor.metaDescription || decor.shortDescription,
+        title: cleanTitle,
+        description: cleanDesc,
         canonicalUrl,
         robots: isIndexable ? 'index, follow' : 'noindex, follow',
         ogImage: decor.mainImage || DEFAULT_IMAGE,

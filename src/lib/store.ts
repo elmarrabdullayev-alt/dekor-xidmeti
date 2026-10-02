@@ -3,35 +3,30 @@ import { INITIAL_DECORS } from '../data/initialDecors';
 import { INITIAL_VENUES } from '../data/initialVenues';
 import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData';
 import { imageService } from './imageService';
+import { sanitizeDecorText, PRESERVED_SLUG, TARGET_PUBLIC_TITLE } from './sanitizeHelper';
+
+export { sanitizeDecorText };
 
 const DECORS_STORAGE_KEY = 'dreamart_decors_v7';
 const INQUIRIES_STORAGE_KEY = 'dreamart_inquiries_v2';
 const SETTINGS_STORAGE_KEY = 'dreamart_settings_v2';
 const VENUES_STORAGE_KEY = 'dreamart_venues_v6';
 
-export function sanitizeDecorText(text: string | undefined): string {
-  if (!text) return '';
-  const re = /(?:^|\s)([\u0130\u0131iI]\u006e\u0074[\u0130\u0131iI]\u006d|[\u0130\u0131iI]\u006e\u0074\u0069\u006d)(?=\s|$|[.,;:!?])/gu;
-  return text.replace(re, (m) => {
-    const prefix = m.startsWith(' ') ? ' ' : '';
-    const word = m.trim();
-    if (word === '\u0130NT\u0130M' || word === 'INTIM') return prefix + 'ZƏRİF';
-    if (word.startsWith('\u0130') || word.startsWith('I')) return prefix + 'Zərif';
-    return prefix + 'zərif';
-  });
-}
-
 export function sanitizeDecorItem(d: DecorItem): DecorItem {
+  const isTarget = d.id === 'decor-8' || d.slug === PRESERVED_SLUG;
   return {
     ...d,
-    name: sanitizeDecorText(d.name),
+    name: isTarget ? TARGET_PUBLIC_TITLE : sanitizeDecorText(d.name),
     seoTitle: sanitizeDecorText(d.seoTitle),
     metaDescription: sanitizeDecorText(d.metaDescription),
     shortDescription: sanitizeDecorText(d.shortDescription),
     fullDescription: sanitizeDecorText(d.fullDescription),
     imageAltText: sanitizeDecorText(d.imageAltText),
     categoryName: sanitizeDecorText(d.categoryName),
-    decorElements: d.decorElements ? d.decorElements.map(e => sanitizeDecorText(e)) : d.decorElements
+    style: sanitizeDecorText(d.style),
+    city: sanitizeDecorText(d.city),
+    decorElements: d.decorElements ? d.decorElements.map(e => sanitizeDecorText(e)) : d.decorElements,
+    includedServices: d.includedServices ? d.includedServices.map(s => sanitizeDecorText(s)) : d.includedServices
   };
 }
 
@@ -129,7 +124,7 @@ class DecorStore {
     return {
       ...itemToHydrate,
       mainImage: coverUrl || itemToHydrate.mainImage,
-      imageAltText: coverObj?.altText || itemToHydrate.imageAltText,
+      imageAltText: coverObj?.altText ? sanitizeDecorText(coverObj.altText) : itemToHydrate.imageAltText,
       galleryImages: gallery
     };
   }

@@ -1,5 +1,5 @@
 import { CategoryInfo, DecorItem, FAQItem, Article } from '../types';
-import { sanitizeDecorText } from './store';
+import { sanitizeDecorText, PRESERVED_SLUG, TARGET_PUBLIC_TITLE } from './sanitizeHelper';
 
 export function getLocalBusinessSchema() {
   return {
@@ -94,7 +94,9 @@ export function getProjectDetailSchema(decor: DecorItem, canonicalUrl?: string) 
     ? decor.mainImage
     : `https://dreamartweddings.com${decor.mainImage}`;
 
-  const cleanName = sanitizeDecorText(decor.name);
+  const cleanName = (decor.id === 'decor-8' || decor.slug === PRESERVED_SLUG)
+    ? TARGET_PUBLIC_TITLE
+    : sanitizeDecorText(decor.name);
   const cleanDescription = sanitizeDecorText(decor.metaDescription || decor.shortDescription);
 
   return {
@@ -126,11 +128,15 @@ export function getProjectImageSchema(decor: DecorItem) {
     ? decor.mainImage
     : `https://dreamartweddings.com${decor.mainImage}`;
 
+  const cleanName = (decor.id === 'decor-8' || decor.slug === PRESERVED_SLUG)
+    ? TARGET_PUBLIC_TITLE
+    : sanitizeDecorText(decor.name);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'ImageObject',
     'contentUrl': imageUrl,
-    'name': sanitizeDecorText(decor.name),
+    'name': cleanName,
     'description': sanitizeDecorText(decor.imageAltText || decor.shortDescription),
     'author': {
       '@type': 'Organization',

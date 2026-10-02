@@ -1,5 +1,6 @@
 import { ManagedImage, ImageSection } from '../types';
 import { getCategoryAliases } from './categoryMapping';
+import { sanitizeDecorText } from './sanitizeHelper';
 
 /**
  * Appends safe cache-busting query parameter based on updatedAt timestamp/version
@@ -29,22 +30,11 @@ export function withCacheBuster(url: string, updatedAt?: string): string {
 const IMAGES_CACHE_KEY = 'dreamart_managed_images_cache_v3';
 
 function sanitizeImageMetadata(img: ManagedImage): ManagedImage {
-  const sanitize = (t?: string) => {
-    if (!t) return t;
-    const re = /(?:^|\s)([\u0130\u0131iI]\u006e\u0074[\u0130\u0131iI]\u006d|[\u0130\u0131iI]\u006e\u0074\u0069\u006d)(?=\s|$|[.,;:!?])/gu;
-    return t.replace(re, (m) => {
-      const prefix = m.startsWith(' ') ? ' ' : '';
-      const word = m.trim();
-      if (word === '\u0130NT\u0130M' || word === 'INTIM') return prefix + 'ZƏRİF';
-      if (word.startsWith('\u0130') || word.startsWith('I')) return prefix + 'Zərif';
-      return prefix + 'zərif';
-    });
-  };
   return {
     ...img,
-    targetName: sanitize(img.targetName) || img.targetName,
-    altText: sanitize(img.altText) || img.altText,
-    alt: sanitize(img.alt) || img.alt,
+    targetName: img.targetName ? sanitizeDecorText(img.targetName) : img.targetName,
+    altText: img.altText ? sanitizeDecorText(img.altText) : img.altText,
+    alt: img.alt ? sanitizeDecorText(img.alt) : img.alt,
   };
 }
 

@@ -5,6 +5,7 @@ import { RegionBadge } from '../components/decor/RegionBadge';
 import { SeoHead } from '../components/layout/SeoHead';
 import { getProjectDetailSchema, getProjectImageSchema, getBreadcrumbSchema } from '../lib/structuredData';
 import { store, sanitizeDecorItem } from '../lib/store';
+import { PRESERVED_SLUG, TARGET_PUBLIC_TITLE } from '../lib/sanitizeHelper';
 import { INITIAL_VENUES } from '../data/initialVenues';
 import { isVenueIndexable } from '../lib/venueHelper';
 import { isProjectIndexable } from '../lib/seoHelper';
@@ -22,6 +23,9 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 }) => {
   const rawDecor = store.getDecorBySlug(slug);
   const decor = rawDecor ? sanitizeDecorItem(rawDecor) : undefined;
+  if (decor && (decor.slug === PRESERVED_SLUG || decor.id === 'decor-8')) {
+    decor.name = TARGET_PUBLIC_TITLE;
+  }
   const settings = store.getSettings();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
