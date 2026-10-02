@@ -1,4 +1,5 @@
 import { ManagedImage, ImageSection } from '../types';
+import { getCategoryAliases } from './categoryMapping';
 
 /**
  * Appends safe cache-busting query parameter based on updatedAt timestamp/version
@@ -210,8 +211,15 @@ class ImageService {
   }
 
   public getImagesByTarget(targetId: string, section?: ImageSection): ManagedImage[] {
+    const aliases = getCategoryAliases(targetId);
     return this.images
-      .filter((img) => img.targetId === targetId && (!section || img.section === section))
+      .filter((img) => {
+        const matchesTarget =
+          img.targetId === targetId ||
+          aliases.includes(img.targetId) ||
+          (section === 'category_cover' && aliases.includes(img.targetId));
+        return matchesTarget && (!section || img.section === section);
+      })
       .map((img) => ({
         ...img,
         url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),

@@ -17,6 +17,8 @@ import { ImageMetaModal } from '../components/admin/ImageMetaModal';
 import { ImageDeleteModal } from '../components/admin/ImageDeleteModal';
 import { SeoHead } from '../components/layout/SeoHead';
 import { isProjectStrictlyLinkedToVenue } from '../lib/venueHelper';
+import { getCategoryCoverImage } from '../components/home/CategorySection';
+import { getCategoryAliases, CATEGORY_DECOR_MAP } from '../lib/categoryMapping';
 
 interface AdminPageProps {
   navigate: (path: string) => void;
@@ -73,6 +75,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
 
   // Modals state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [customUploadTarget, setCustomUploadTarget] = useState<{ section: ImageSection; targetId: string; targetName: string } | null>(null);
   const [replacingImage, setReplacingImage] = useState<ManagedImage | null>(null);
   const [editingMetaImage, setEditingMetaImage] = useState<ManagedImage | null>(null);
   const [deletingImage, setDeletingImage] = useState<ManagedImage | null>(null);
@@ -173,10 +176,23 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     }
   };
 
-  // Filter projects by active category
-  const categoryProjects = decors.filter(d => d.category === activeCategorySlug);
+  // Filter projects by active category and aliases
+  const categoryAliases = getCategoryAliases(activeCategorySlug);
+  const categoryProjects = decors.filter(d => d.category === activeCategorySlug || categoryAliases.includes(d.category));
+  const fallbackProjectId = CATEGORY_DECOR_MAP[activeCategorySlug];
+  const fallbackProject = fallbackProjectId ? decors.find(d => d.id === fallbackProjectId) : undefined;
   const selectedProject = decors.find(d => d.id === selectedProjectId);
   const activeCategory = DECOR_CATEGORIES.find(c => c.slug === activeCategorySlug) || DECOR_CATEGORIES[0];
+  const activeCategoryInfo = CATEGORIES.find(c => c.slug === activeCategorySlug) || {
+    id: activeCategorySlug,
+    name: activeCategory.name,
+    slug: activeCategory.slug,
+    canonicalSlug: activeCategory.slug,
+    heroImage: '/images/dreamart-nisan-dekoru-fotozona.webp'
+  };
+  const activeCategoryCoverUrl = getCategoryCoverImage(activeCategoryInfo as any);
+  const activeCatCoverImages = imageService.getImagesByTarget(activeCategorySlug, 'category_cover');
+  const activeCatManagedImage = activeCatCoverImages.find(i => i.isCover) || activeCatCoverImages[0];
 
   // Images for current active target
   let activeImages: ManagedImage[] = [];
@@ -466,7 +482,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
               <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
                 {DECOR_CATEGORIES.map(cat => {
                   const isActive = activeCategorySlug === cat.slug;
-                  const catProjectsCount = decors.filter(d => d.category === cat.slug).length;
+                  const catAliases = getCategoryAliases(cat.slug);
+                  const catProjectsCount = decors.filter(d => d.category === cat.slug || catAliases.includes(d.category)).length;
 
                   return (
                     <button
@@ -487,7 +504,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                       <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
                         isActive ? 'bg-black/20 text-black font-bold' : 'bg-white/10 text-neutral-400'
                       }`}>
-                        {catProjectsCount} layihə
+                        {catProjectsCount > 0 ? `${catProjectsCount} layihə` : 'Qapaq aktiv'}
                       </span>
                     </button>
                   );
@@ -495,21 +512,22 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
               </div>
             </div>
 
-            {/* LEVEL 1: Category Project List (Shown when no project is open) */}
+            {/* LEVEL 1: Category Project List & Category Cover (Shown when no project is open) */}
             {!selectedProjectId && (
-              <div className="space-y-4">
+              <div className="space-y-6">
+                {/* Category Header */}
                 <div className="bg-[#141414] border border-[#242424] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <h2 className="text-base font-semibold text-white flex items-center gap-2">
                       <span>{activeCategory.icon}</span>
-                      <span>{activeCategory.name} Layihələri</span>
+                      <span>{activeCategory.name} Bölməsi</span>
                     </h2>
                     <p className="text-xs text-neutral-400 mt-1">{activeCategory.desc}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => navigate(`/${activeCategory.slug}`)}
-                      className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 text-xs flex items-center gap-1.5 transition"
+                      className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 text-xs flex items-center gap-1.5 transition cursor-pointer"
                     >
                       <Eye className="w-3.5 h-3.5 text-[#C5A262]" />
                       <span>İctimai Səhifəyə Bax</span>
@@ -517,70 +535,228 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {categoryProjects.map(proj => {
-                    const projImages = images.filter(img => img.section === 'decor_project' && img.targetId === proj.id);
-                    const coverImg = proj.mainImage;
-
-                    return (
-                      <div
-                        key={proj.id}
-                        id={`project-card-${proj.id}`}
-                        className="bg-[#161616] border border-[#262626] hover:border-[#C5A262]/80 rounded-2xl overflow-hidden transition flex flex-col group shadow-lg"
-                      >
-                        {/* Project Cover Image */}
-                        <div className="relative aspect-video w-full bg-black/60 overflow-hidden">
-                          <img
-                            src={coverImg}
-                            alt={proj.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                          />
-                          <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md bg-[#C5A262] text-black font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-md">
-                            <Star className="w-3 h-3 fill-black" />
-                            Əsas Qapaq
-                          </div>
-                          <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/80 border border-white/10 text-white text-[10px] font-mono">
-                            {projImages.length > 0 ? `${projImages.length} şəkil` : 'Varsayılan'}
-                          </div>
-                          <div className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded bg-black/75 text-[10px] font-mono text-neutral-300 flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-[#C5A262]" />
-                            <span>{proj.city}</span>
-                            {proj.venueName && <span>• {proj.venueName}</span>}
-                          </div>
-                        </div>
-
-                        {/* Project Info & Manage Action */}
-                        <div className="p-4 flex-1 flex flex-col justify-between space-y-4">
-                          <div>
-                            <h3 className="font-serif text-base text-white group-hover:text-[#E5C378] transition-colors leading-snug">
-                              {proj.name}
-                            </h3>
-                            <p className="text-xs text-neutral-400 font-light mt-1.5 line-clamp-2">
-                              {proj.shortDescription}
-                            </p>
-                          </div>
-
-                          <div className="pt-3 border-t border-[#242424] flex items-center justify-between gap-2">
-                            <button
-                              onClick={() => setSelectedProjectId(proj.id)}
-                              className="flex-1 py-2 px-3 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer shadow-md"
-                            >
-                              <FolderOpen className="w-3.5 h-3.5" />
-                              <span>Şəkilləri İdarə Et</span>
-                            </button>
-                            <button
-                              onClick={() => navigate(`/dekorlar/${proj.slug}`)}
-                              title="Saytda canlı bax"
-                              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition cursor-pointer"
-                            >
-                              <ExternalLink className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
+                {/* 1. DEDICATED CATEGORY COVER IMAGE MANAGEMENT CARD */}
+                <div className="bg-[#161616] border border-[#2B2B2B] hover:border-[#C5A262]/60 rounded-2xl p-4 sm:p-5 transition shadow-xl space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#242424]">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#C5A262]/10 border border-[#C5A262]/30 flex items-center justify-center text-[#C5A262]">
+                        <ImageIcon className="w-4 h-4" />
                       </div>
-                    );
-                  })}
+                      <div>
+                        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                          <span>{activeCategory.name} — Əsas Qapaq Şəkli (Cover)</span>
+                          <span className="px-2 py-0.5 rounded-full text-[10px] bg-[#C5A262]/20 text-[#C5A262] font-mono border border-[#C5A262]/30">
+                            Sayt üzrə aktiv
+                          </span>
+                        </h3>
+                        <p className="text-[11px] text-neutral-400">
+                          Ana səhifədə, xidmət kataloqunda və /{activeCategory.slug} səhifəsinin yuxarı bannerində nümayiş olunan qapaq şəkli.
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setCustomUploadTarget({
+                          section: 'category_cover',
+                          targetId: activeCategorySlug,
+                          targetName: `${activeCategory.name} Qapaq`
+                        });
+                        setIsUploadOpen(true);
+                      }}
+                      className="px-3.5 py-1.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-1.5 transition shadow cursor-pointer self-start sm:self-auto shrink-0"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Yeni Qapaq Yüklə</span>
+                    </button>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-4 items-start">
+                    <div className="relative w-full md:w-64 aspect-video rounded-xl overflow-hidden bg-black/60 border border-[#333] shrink-0 group">
+                      <img
+                        src={activeCategoryCoverUrl}
+                        alt={`${activeCategory.name} Qapaq`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/80 text-[10px] text-[#C5A262] font-semibold border border-[#C5A262]/30 flex items-center gap-1">
+                        <Star className="w-3 h-3 fill-[#C5A262]" />
+                        <span>Qapaq</span>
+                      </div>
+                      {activeCatManagedImage && (
+                        <div className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/75 text-[9px] text-neutral-300 font-mono">
+                          {activeCatManagedImage.filename}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex-1 space-y-2.5 w-full">
+                      <div className="text-xs text-neutral-300 space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-neutral-500">Mənbə:</span>
+                          <span className="font-mono text-[11px] text-[#E5C378]">
+                            {activeCatManagedImage ? 'Admin Qeydiyyatı (admin_images)' : 'Avtomatik Mapped Qapaq'}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-neutral-500">Target ID:</span>
+                          <span className="font-mono text-[11px] text-neutral-300">
+                            {activeCategorySlug}
+                          </span>
+                        </div>
+                        {activeCatManagedImage?.altText && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-neutral-500 shrink-0">Alt Mətni:</span>
+                            <span className="text-neutral-400 italic text-[11px]">
+                              {activeCatManagedImage.altText}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="pt-2 flex flex-wrap items-center gap-2">
+                        {activeCatManagedImage && (
+                          <>
+                            <button
+                              onClick={() => setReplacingImage(activeCatManagedImage)}
+                              className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer"
+                              title="Bu şəkli yenisi ilə əvəzlə"
+                            >
+                              <RefreshCw className="w-3.5 h-3.5 text-[#C5A262]" />
+                              <span>Şəkli Əvəzlə</span>
+                            </button>
+                            <button
+                              onClick={() => setEditingMetaImage(activeCatManagedImage)}
+                              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer border border-white/5"
+                              title="Alt mətni və fayl adını redaktə et"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                              <span>Meta Redaktə</span>
+                            </button>
+                          </>
+                        )}
+                        <button
+                          onClick={() => setPreviewImage(activeCatManagedImage || {
+                            id: 'preview-' + activeCategorySlug,
+                            url: activeCategoryCoverUrl,
+                            filename: activeCategorySlug + '-cover.webp',
+                            altText: activeCategory.name,
+                            section: 'category_cover',
+                            targetId: activeCategorySlug,
+                            targetName: activeCategory.name,
+                            isCover: true,
+                            order: 0
+                          })}
+                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Tam Ölçüdə Bax</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. CATEGORY PROJECT CARDS SECTION */}
+                <div className="space-y-4 pt-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                      {activeCategory.name} Layihə Kartları ({categoryProjects.length}):
+                    </h3>
+                  </div>
+
+                  {categoryProjects.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {categoryProjects.map(proj => {
+                        const projImages = images.filter(img => img.section === 'decor_project' && img.targetId === proj.id);
+                        const coverImg = proj.mainImage;
+
+                        return (
+                          <div
+                            key={proj.id}
+                            id={`project-card-${proj.id}`}
+                            className="bg-[#161616] border border-[#262626] hover:border-[#C5A262]/80 rounded-2xl overflow-hidden transition flex flex-col group shadow-lg"
+                          >
+                            {/* Project Cover Image */}
+                            <div className="relative aspect-video w-full bg-black/60 overflow-hidden">
+                              <img
+                                src={coverImg}
+                                alt={proj.name}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                              />
+                              <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md bg-[#C5A262] text-black font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-md">
+                                <Star className="w-3 h-3 fill-black" />
+                                Əsas Qapaq
+                              </div>
+                              <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/80 border border-white/10 text-white text-[10px] font-mono">
+                                {projImages.length > 0 ? `${projImages.length} şəkil` : 'Varsayılan'}
+                              </div>
+                              <div className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded bg-black/75 text-[10px] font-mono text-neutral-300 flex items-center gap-1">
+                                <MapPin className="w-3 h-3 text-[#C5A262]" />
+                                <span>{proj.city}</span>
+                                {proj.venueName && <span>• {proj.venueName}</span>}
+                              </div>
+                            </div>
+
+                            {/* Project Info & Manage Action */}
+                            <div className="p-4 flex-1 flex flex-col justify-between space-y-4">
+                              <div>
+                                <h3 className="font-serif text-base text-white group-hover:text-[#E5C378] transition-colors leading-snug">
+                                  {proj.name}
+                                </h3>
+                                <p className="text-xs text-neutral-400 font-light mt-1.5 line-clamp-2">
+                                  {proj.shortDescription}
+                                </p>
+                              </div>
+
+                              <div className="pt-3 border-t border-[#242424] flex items-center justify-between gap-2">
+                                <button
+                                  onClick={() => setSelectedProjectId(proj.id)}
+                                  className="flex-1 py-2 px-3 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer shadow-md"
+                                >
+                                  <FolderOpen className="w-3.5 h-3.5" />
+                                  <span>Şəkilləri İdarə Et</span>
+                                </button>
+                                <button
+                                  onClick={() => navigate(`/dekorlar/${proj.slug}`)}
+                                  title="Saytda canlı bax"
+                                  className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition cursor-pointer"
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="bg-[#141414] border border-[#242424] rounded-2xl p-6 text-center space-y-3">
+                      <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-neutral-400 mx-auto">
+                        <Layers className="w-6 h-6 text-[#C5A262]" />
+                      </div>
+                      <div className="max-w-md mx-auto space-y-1">
+                        <h4 className="text-sm font-semibold text-white">
+                          {activeCategory.name} üçün fərdi layihə kartı
+                        </h4>
+                        <p className="text-xs text-neutral-400 font-light">
+                          Yuxarıdakı qapaq şəkli saytın ana səhifəsində, xidmət kataloqunda və /{activeCategory.slug} səhifəsində aktivdir.
+                        </p>
+                      </div>
+                      {fallbackProject && (
+                        <div className="pt-2 max-w-sm mx-auto">
+                          <button
+                            onClick={() => setSelectedProjectId(fallbackProject.id)}
+                            className="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs flex items-center justify-center gap-2 transition cursor-pointer"
+                          >
+                            <span>Əlaqəli Layihəyə Bax ({fallbackProject.name})</span>
+                            <ArrowRight className="w-3.5 h-3.5 text-[#C5A262]" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -1383,14 +1559,18 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
       {isUploadOpen && (
         <ImageUploadModal
           isOpen={isUploadOpen}
-          onClose={() => setIsUploadOpen(false)}
-          section={uploadSection}
-          targetId={uploadTargetId}
-          targetName={uploadTargetName}
+          onClose={() => {
+            setIsUploadOpen(false);
+            setCustomUploadTarget(null);
+          }}
+          section={customUploadTarget?.section || uploadSection}
+          targetId={customUploadTarget?.targetId || uploadTargetId}
+          targetName={customUploadTarget?.targetName || uploadTargetName}
           maxAllowed={uploadSection === 'indian_wedding' || uploadSection === 'destination_wedding' ? 2 : undefined}
           currentCount={activeImages.length}
           onSuccess={() => {
             showNotice('Yeni şəkil uğurla yükləndi və optimallaşdırıldı!');
+            setCustomUploadTarget(null);
           }}
         />
       )}

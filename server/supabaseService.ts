@@ -201,10 +201,20 @@ export function mapDbRowToStoredImage(row: any): StoredImage {
   if (group === 'destination_wedding' || group === 'destination-wedding') group = 'destination_wedding';
 
   let targetId = row.target_id || row.targetId || row.projectId || row.venueId || 'general';
-  if (targetId === 'xina') targetId = 'xina-dekoru';
-  if (targetId === 'adgunu' || targetId === 'ad-gunu') targetId = 'ad-gunu-dekoru';
-  if (targetId === 'indian_wedding') targetId = 'indian-wedding';
-  if (targetId === 'destination_wedding') targetId = 'destination-wedding';
+  const cleanTarget = String(targetId).trim().toLowerCase().replace(/_/g, '-');
+  if (cleanTarget === 'adgunu' || cleanTarget === 'ad-gunu' || cleanTarget === 'adgunudekoru' || cleanTarget === 'adgunu-dekoru' || cleanTarget === '4') targetId = 'ad-gunu-dekoru';
+  else if (cleanTarget === 'ozel' || cleanTarget === 'ozel-gun' || cleanTarget === 'ozel-gunler' || cleanTarget === 'ozelgunler' || cleanTarget === 'ozelgunlerdekoru' || cleanTarget === 'ozel-gunler-dekoru' || cleanTarget === '10') targetId = 'ozel-gunler-dekoru';
+  else if (cleanTarget === 'toy' || cleanTarget === '1') targetId = 'toy-dekoru';
+  else if (cleanTarget === 'nisan' || cleanTarget === '2') targetId = 'nisan-dekoru';
+  else if (cleanTarget === 'xina' || cleanTarget === '3') targetId = 'xina-dekoru';
+  else if (cleanTarget === 'korporativ' || cleanTarget === 'korporativ-tedbirler' || cleanTarget === '5') targetId = 'korporativ-dekor';
+  else if (cleanTarget === 'zal' || cleanTarget === '6') targetId = 'zal-dekoru';
+  else if (cleanTarget === 'xonca' || cleanTarget === '7') targetId = 'xonca-xidmeti';
+  else if (cleanTarget === 'heri' || cleanTarget === '8') targetId = 'heri-sufresi';
+  else if (cleanTarget === 'yubiley' || cleanTarget === '9') targetId = 'yubiley-dekoru';
+  else if (cleanTarget === 'magaza' || cleanTarget === 'magaza-acilis' || cleanTarget === 'magaza-acilisi' || cleanTarget === '11') targetId = 'magaza-acilis-dekoru';
+  else if (cleanTarget === 'indian-wedding' || cleanTarget === 'indian_wedding') targetId = 'indian-wedding';
+  else if (cleanTarget === 'destination-wedding' || cleanTarget === 'destination_wedding') targetId = 'destination-wedding';
 
   const isVenue = group === 'venue_project';
 

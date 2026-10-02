@@ -5,6 +5,7 @@ import { imageService } from '../../lib/imageService';
 import { getOptimizedImageUrl, getSrcSet } from '../../lib/responsiveImage';
 import { store } from '../../lib/store';
 import { CategoryInfo } from '../../types';
+import { getCategoryAliases, normalizeCategoryIdentifier, CATEGORY_DECOR_MAP } from '../../lib/categoryMapping';
 
 interface CategorySectionProps {
   onSelectCategory: (slug: string) => void;
@@ -16,28 +17,27 @@ interface CategorySectionProps {
  * Guaranteed to match desktop and mobile seamlessly without static unsplash fallback overriding Supabase.
  */
 export const getCategoryCoverImage = (cat: CategoryInfo): string => {
-  // 1. Direct match by slug, canonicalSlug, or id for category_cover
-  const directCover =
-    imageService.getCoverImage(cat.slug, 'category_cover') ||
-    imageService.getCoverImage(cat.canonicalSlug, 'category_cover') ||
-    imageService.getCoverImage(cat.id, 'category_cover');
+  const canonical = normalizeCategoryIdentifier(cat.slug || cat.canonicalSlug || cat.id);
+  const aliases = getCategoryAliases(cat.slug || cat.canonicalSlug || cat.id);
 
-  if (directCover && !directCover.includes('unsplash.com')) {
-    return directCover;
+  // 1. Direct match by slug, canonicalSlug, id or any alias for category_cover
+  for (const alias of aliases) {
+    const directCover = imageService.getCoverImage(alias, 'category_cover');
+    if (directCover && !directCover.includes('unsplash.com')) {
+      return directCover;
+    }
   }
 
-  // 2. Direct match across any section by slug or canonicalSlug
-  const anySectionCover =
-    imageService.getCoverImage(cat.slug) ||
-    imageService.getCoverImage(cat.canonicalSlug) ||
-    imageService.getCoverImage(cat.id);
-
-  if (anySectionCover && !anySectionCover.includes('unsplash.com')) {
-    return anySectionCover;
+  // 2. Direct match across any section by slug, canonicalSlug, or alias
+  for (const alias of aliases) {
+    const anySectionCover = imageService.getCoverImage(alias);
+    if (anySectionCover && !anySectionCover.includes('unsplash.com')) {
+      return anySectionCover;
+    }
   }
 
   // 3. Decor projects belonging to this category from store (hydrated with real Supabase images)
-  const categoryProjects = store.getDecorsByCategory(cat.slug as any);
+  const categoryProjects = store.getDecorsByCategory(canonical as any);
   if (categoryProjects && categoryProjects.length > 0) {
     for (const proj of categoryProjects) {
       const projCover =
@@ -55,21 +55,8 @@ export const getCategoryCoverImage = (cat: CategoryInfo): string => {
     }
   }
 
-  // 4. Default decor ID mapping for admin-managed projects (decor-3 for xina, decor-4 for adgunu, etc.)
-  const categoryDecorMap: Record<string, string> = {
-    'toy-dekoru': 'decor-1',
-    'nisan-dekoru': 'decor-2',
-    'xina-dekoru': 'decor-3',
-    'ad-gunu-dekoru': 'decor-4',
-    'korporativ-dekor': 'decor-5',
-    'zal-dekoru': 'decor-6',
-    'xonca-xidmeti': 'decor-9',
-    'heri-sufresi': 'decor-8',
-    'yubiley-dekoru': 'decor-5',
-    'ozel-gunler-dekoru': 'decor-2',
-    'magaza-acilis-dekoru': 'decor-2',
-  };
-  const mappedId = categoryDecorMap[cat.slug];
+  // 4. Default decor ID mapping for admin-managed projects (decor-4 for adgunu, decor-2 for ozelgunler, etc.)
+  const mappedId = CATEGORY_DECOR_MAP[canonical] || CATEGORY_DECOR_MAP[cat.slug];
   if (mappedId) {
     const mappedCover =
       imageService.getCoverImage(mappedId, 'decor_project') ||
@@ -81,7 +68,7 @@ export const getCategoryCoverImage = (cat: CategoryInfo): string => {
 
   // 5. Look for any managed Supabase image matching category slug or keywords
   const allImages = imageService.getAllImages();
-  const slugClean = cat.slug.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const slugClean = canonical.toLowerCase().replace(/[^a-z0-9]/g, '');
   const match = allImages.find((img) => {
     if (!img.url || img.url.includes('unsplash.com')) return false;
     const targetClean = (img.targetId || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -97,8 +84,11 @@ export const getCategoryCoverImage = (cat: CategoryInfo): string => {
     return match.url;
   }
 
-  // 6. Direct cover if found
-  if (directCover) return directCover;
+  // 6. Direct cover if found (including fallback)
+  for (const alias of aliases) {
+    const fallbackCover = imageService.getCoverImage(alias, 'category_cover');
+    if (fallbackCover) return fallbackCover;
+  }
 
   // 7. Project main image if present
   if (categoryProjects && categoryProjects[0]?.mainImage) {

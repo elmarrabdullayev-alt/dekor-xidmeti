@@ -190,6 +190,25 @@
     "sizeKb": 150
   },
   {
+    "id": "img-cat-ozelgunler",
+    "group": "category_cover",
+    "filename": "dreamart-ozel-gunler-dekoru-qapaq.webp",
+    "url": "/images/dreamart-nisan-dekoru-fotozona.webp",
+    "thumbUrl": "/images/dreamart-nisan-dekoru-fotozona.webp",
+    "alt": "Romantik tərtibat və zərif güllərlə özəl günlərin təşkili və dekoru örtük şəkli",
+    "format": "webp",
+    "isCover": true,
+    "order": 10,
+    "projectId": "ozel-gunler-dekoru",
+    "createdAt": "2026-10-02T05:00:00.000Z",
+    "updatedAt": "2026-10-02T05:00:00.000Z",
+    "section": "category_cover",
+    "targetId": "ozel-gunler-dekoru",
+    "targetName": "Özəl günlər",
+    "altText": "Romantik tərtibat və zərif güllərlə özəl günlərin təşkili və dekoru örtük şəkli",
+    "sizeKb": 150
+  },
+  {
     "id": "img-decor-1-cover",
     "group": "decor_project",
     "filename": "dreamart-toy-dekoru-qizili-altar.webp",

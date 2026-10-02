@@ -137,6 +137,19 @@ export function getInitialSeedImages(): ManagedImage[] {
       format: 'webp',
       uploadedAt: now
     },
+    {
+      id: 'img-cat-ozelgunler',
+      url: '/images/dreamart-nisan-dekoru-fotozona.webp',
+      filename: 'dreamart-ozel-gunler-dekoru-qapaq.webp',
+      altText: 'Romantik tərtibat və zərif güllərlə özəl günlərin təşkili və dekoru örtük şəkli',
+      section: 'category_cover',
+      targetId: 'ozel-gunler-dekoru',
+      targetName: 'Özəl günlər',
+      isCover: true,
+      order: 1,
+      format: 'webp',
+      uploadedAt: now
+    },
 
     // 3. Dekor Layihələri (decor_project)
     {
