@@ -196,4 +196,55 @@ export interface ManagedImage {
   updatedAt?: string;
 }
 
+export interface ArticleSubSection {
+  title: string;
+  content: string;
+  bulletPoints?: string[];
+}
+
+export interface ArticleSection {
+  id?: string;
+  title: string;
+  content: string;
+  bulletPoints?: string[];
+  callout?: string;
+  subSections?: ArticleSubSection[];
+  image?: string;
+  imageAlt?: string;
+}
+
+export interface ArticleServiceLink {
+  title: string;
+  slug: string;
+  description: string;
+}
+
+export interface Article {
+  id: string;
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  excerpt: string;
+  category: string;
+  categorySlug: string;
+  publishDate: string;
+  updatedDate: string;
+  author: string;
+  authorRole?: string;
+  heroImage: string;
+  heroAlt: string;
+  directAnswer?: string;
+  readingTimeMinutes: number;
+  sections: ArticleSection[];
+  faqs: FAQItem[];
+  relatedServices: ArticleServiceLink[];
+  relatedProjects: string[]; // project slugs
+  relatedVenues?: string[]; // venue slugs
+  keywords: string[];
+  isPublished: boolean;
+  isFeatured?: boolean;
+}
+
+
 

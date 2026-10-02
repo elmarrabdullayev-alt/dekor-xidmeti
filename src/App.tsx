@@ -13,6 +13,8 @@ const PortfolioPage = lazy(() => import('./pages/PortfolioPage').then(m => ({ de
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const ArticlesHubPage = lazy(() => import('./pages/ArticlesHubPage').then(m => ({ default: m.ArticlesHubPage })));
+const ArticleDetailPage = lazy(() => import('./pages/ArticleDetailPage').then(m => ({ default: m.ArticleDetailPage })));
 const AdminPage = lazy(() => import('./pages/AdminPage').then(m => ({ default: m.AdminPage })));
 const VenuesCatalogPage = lazy(() => import('./pages/VenuesCatalogPage').then(m => ({ default: m.VenuesCatalogPage })));
 const VenueDetailPage = lazy(() => import('./pages/VenueDetailPage').then(m => ({ default: m.VenueDetailPage })));
@@ -170,6 +172,28 @@ export default function App() {
     if (path === '/xidmetler') {
       return (
         <ServicesPage
+          navigate={navigate}
+          onOpenQuoteModal={handleOpenQuoteModal}
+        />
+      );
+    }
+
+    // 6b. Articles Hub Page (/meqaleler)
+    if (path === '/meqaleler') {
+      return (
+        <ArticlesHubPage
+          navigate={navigate}
+          onOpenQuoteModal={handleOpenQuoteModal}
+        />
+      );
+    }
+
+    // 6c. Article Detail Page (/meqaleler/:slug)
+    if (path.startsWith('/meqaleler/')) {
+      const slug = path.replace('/meqaleler/', '');
+      return (
+        <ArticleDetailPage
+          slug={slug}
           navigate={navigate}
           onOpenQuoteModal={handleOpenQuoteModal}
         />

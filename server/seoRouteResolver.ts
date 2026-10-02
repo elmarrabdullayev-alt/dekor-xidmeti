@@ -2,16 +2,19 @@ import { CATEGORIES } from '../src/data/categories';
 import { INITIAL_VENUES } from '../src/data/initialVenues';
 import { INITIAL_DECORS } from '../src/data/initialDecors';
 import { REGIONAL_LOCATIONS } from '../src/data/regionalData';
+import { INITIAL_ARTICLES, getArticleBySlug } from '../src/data/articles';
 import {
   getLocalBusinessSchema,
   getCategoryServiceSchema,
   getFaqPageSchema,
   getBreadcrumbSchema,
   getProjectDetailSchema,
-  getProjectImageSchema
+  getProjectImageSchema,
+  getArticleSchema
 } from '../src/lib/structuredData';
 import { isVenueIndexable, getVenueStructuredData } from '../src/lib/venueHelper';
 import { isProjectIndexable } from '../src/lib/seoHelper';
+import { isArticleIndexable } from '../src/lib/articleHelper';
 import { DecorCategorySlug } from '../src/types';
 
 export interface RouteSeoData {
@@ -131,6 +134,67 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
         robots: isIndexable ? 'index, follow' : 'noindex, follow',
         ogImage: venue.mainImage || DEFAULT_IMAGE,
         ogType: 'website',
+        jsonLd
+      };
+    }
+  }
+
+  // 4b. Articles Hub Page (/meqaleler)
+  if (cleanPath === '/meqaleler') {
+    return {
+      title: 'Məqalələr | Toy, Nişan və Tədbir Dekoru üzrə Faydalı Məlumatlar',
+      description: 'Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə tərtibatı üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri.',
+      canonicalUrl: `${PRIMARY_DOMAIN}/meqaleler`,
+      robots: 'index, follow',
+      ogImage: `${PRIMARY_DOMAIN}/images/dreamart-toy-dekoru-qizili-altar.webp`,
+      ogType: 'website',
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          'name': 'Məqalələr | Toy, Nişan və Tədbir Dekoru üzrə Faydalı Məlumatlar',
+          'description': 'Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə tərtibatı üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri.',
+          'url': `${PRIMARY_DOMAIN}/meqaleler`
+        },
+        getBreadcrumbSchema([
+          { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
+          { name: 'Məqalələr', url: `${PRIMARY_DOMAIN}/meqaleler` }
+        ])
+      ]
+    };
+  }
+
+  // 4c. Article Detail Page (/meqaleler/:slug)
+  if (cleanPath.startsWith('/meqaleler/')) {
+    const slug = cleanPath.replace('/meqaleler/', '');
+    const article = getArticleBySlug(slug);
+    if (article) {
+      const isIndexable = isArticleIndexable(article);
+      const canonicalUrl = `${PRIMARY_DOMAIN}/meqaleler/${article.slug}`;
+      const imageUrl = article.heroImage.startsWith('http')
+        ? article.heroImage
+        : `${PRIMARY_DOMAIN}${article.heroImage}`;
+
+      const jsonLd: any[] = [
+        getBreadcrumbSchema([
+          { name: 'Ana səhifə', url: PRIMARY_DOMAIN },
+          { name: 'Məqalələr', url: `${PRIMARY_DOMAIN}/meqaleler` },
+          { name: article.title, url: canonicalUrl }
+        ]),
+        getArticleSchema(article, canonicalUrl)
+      ];
+
+      if (article.faqs && article.faqs.length > 0) {
+        jsonLd.push(getFaqPageSchema(article.faqs));
+      }
+
+      return {
+        title: article.metaTitle || `${article.title} | DreamArt Weddings`,
+        description: article.metaDescription || article.excerpt,
+        canonicalUrl,
+        robots: isIndexable ? 'index, follow' : 'noindex, follow',
+        ogImage: imageUrl,
+        ogType: 'article',
         jsonLd
       };
     }

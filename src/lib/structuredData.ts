@@ -1,4 +1,4 @@
-import { CategoryInfo, DecorItem, FAQItem } from '../types';
+import { CategoryInfo, DecorItem, FAQItem, Article } from '../types';
 
 export function getLocalBusinessSchema() {
   return {
@@ -134,3 +134,42 @@ export function getProjectImageSchema(decor: DecorItem) {
     }
   };
 }
+
+export function getArticleSchema(article: Article, canonicalUrl?: string) {
+  const url = canonicalUrl || `https://dreamartweddings.com/meqaleler/${article.slug}`;
+  const imageUrl = article.heroImage.startsWith('http')
+    ? article.heroImage
+    : `https://dreamartweddings.com${article.heroImage}`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    'headline': article.title,
+    'description': article.metaDescription || article.excerpt,
+    'url': url,
+    'image': imageUrl,
+    'datePublished': article.publishDate,
+    'dateModified': article.updatedDate || article.publishDate,
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': url
+    },
+    'author': {
+      '@type': 'Organization',
+      'name': article.author || 'DreamArt Weddings',
+      'url': 'https://dreamartweddings.com'
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'DreamArt Weddings',
+      'url': 'https://dreamartweddings.com',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': 'https://dreamartweddings.com/images/dreamart-toy-dekoru-qizili-altar.webp'
+      }
+    },
+    'keywords': article.keywords?.join(', ') || ''
+  };
+}
+
