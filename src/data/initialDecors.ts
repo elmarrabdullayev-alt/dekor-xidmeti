@@ -294,10 +294,10 @@ export const INITIAL_DECORS: DecorItem[] = [
     city: 'Gəncə',
     shortDescription: 'Dairəvi masanın mərkəzində ucalan təbii ağac budaqları, çətirini və ətəyini bəzəyən sıx ağ-krem qızılgüllər və yaşıl yarpaqlar. Dairəvi güzgülü altlıq, klassik zərif stullar, incə qab-qacaq düzümü və fondakı isti kəhrəba divar işıqları ilə yaradılmış zərif mərasim mühiti.',
     fullDescription: 'Qərb regionunun qonaqpərvərlik ənənələrinə uyğunlaşdırılmış zərif nişan tərtibatı. Gəncənin seçilmiş restoranları və həyət evləri üçün qüsursuz işıqlandırma, fərdi ad lövhəsi və 12 ədəd xonça üçün xüsusi pilləli stendlər.',
-    mainImage: '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
+    mainImage: '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp',
     galleryImages: [
-      '/images/dreamart-nisan-dekoru-fotozona.webp',
-      '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp'
+      '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
+      '/images/dreamart-nisan-dekoru-fotozona.webp'
     ],
     includedServices: [
       'Gəncə şəhərinə çatdırılma və montaj',
@@ -311,7 +311,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 1500,
     seoTitle: 'Gəncədə Nişan Dekoru və Xonça Masası | DreamArt Weddings',
     metaDescription: 'Gəncə və qərb bölgəsi üçün zövqlü nişan dekoru, tağ və xonça stendləri xidməti.',
-    imageAltText: 'Gəncədə təbii ağac budaqları, sıx ağ qızılgüllər və klassik stullarla tərtib edilmiş zərif mərasim masası dekoru',
+    imageAltText: 'Gəncədə dairəvi çiçək tağları, büllur çilçıraqlar və zərif nişan masası dekoru',
     status: 'published',
     isFeatured: true,
     isRealProject: true,

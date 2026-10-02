@@ -322,6 +322,19 @@ export function getInitialSeedImages(): ManagedImage[] {
       uploadedAt: now
     },
     {
+      id: 'img-decor-8-gal-2',
+      url: '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp',
+      filename: 'dreamart-bey-gelin-masasi-cicek-tagi.webp',
+      altText: 'Gəncədə dairəvi çiçək tağları, büllur çilçıraqlar və zərif nişan masası dekoru',
+      section: 'decor_project',
+      targetId: 'decor-8',
+      targetName: 'Təbii Ağac Budaqları və Sıx Ağ Güllərlə Zərif Masa Dekoru',
+      isCover: true,
+      order: 1,
+      format: 'webp',
+      uploadedAt: now
+    },
+    {
       id: 'img-decor-8-cover',
       url: '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
       filename: 'dreamart-tebii-budag-agac-kompozisiyasi.webp',
@@ -329,8 +342,21 @@ export function getInitialSeedImages(): ManagedImage[] {
       section: 'decor_project',
       targetId: 'decor-8',
       targetName: 'Təbii Ağac Budaqları və Sıx Ağ Güllərlə Zərif Masa Dekoru',
-      isCover: true,
-      order: 1,
+      isCover: false,
+      order: 2,
+      format: 'webp',
+      uploadedAt: now
+    },
+    {
+      id: 'img-decor-8-gal-1',
+      url: '/images/dreamart-nisan-dekoru-fotozona.webp',
+      filename: 'dreamart-nisan-dekoru-fotozona.webp',
+      altText: 'Bej drapaj pərdələr, işıqlı neon hərflər, ağ qızılgüllər və gümüşü şamdanlarla nişan fotozonası',
+      section: 'decor_project',
+      targetId: 'decor-8',
+      targetName: 'Təbii Ağac Budaqları və Sıx Ağ Güllərlə Zərif Masa Dekoru',
+      isCover: false,
+      order: 3,
       format: 'webp',
       uploadedAt: now
     },
