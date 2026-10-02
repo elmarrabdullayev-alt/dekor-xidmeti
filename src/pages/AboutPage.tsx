@@ -62,7 +62,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal
                 DreamArt Events olaraq, hər bir tədbirə sadəcə dekorasiya kimi deyil, unudulmaz həyat anlarının səhnəsi kimi yanaşırıq. Biz şablon həllərdən uzaq durur, məkanın ruhuna və cütlüyün xarakterinə uyğun fərdi hekayələr qururuq.
               </p>
               <p>
-                Kolleksiyamızda canlı çiçək arxitekturası, zərif şam işıqlandırması, eksklüziv xonça xidmətləri və ən son trendlər birləşir. Bakı ilə yanaşı, Qəbələ, Gəncə, Şəki və digər bölgələrdə də layihələrimizi eyni yüksək keyfiyyət standartı ilə icra edirik.
+                Kolleksiyamızda canlı çiçək kompozisiyaları, zərif şam işıqlandırması, eksklüziv xonça xidmətləri və ən son trendlər birləşir. Bakı ilə yanaşı, Qəbələ, Gəncə, Şəki və digər bölgələrdə də layihələrimizi eyni yüksək keyfiyyət standartı ilə icra edirik.
               </p>
             </div>
           </div>

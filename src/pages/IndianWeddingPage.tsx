@@ -178,7 +178,7 @@ export const IndianWeddingPage: React.FC<IndianWeddingPageProps> = ({
       icon: Sun,
       tag: 'Morning Ritual',
       description:
-        'The Haldi ceremony is an intimate, joy-filled morning ritual requiring clean, picturesque, and functional staging. We build dedicated wooden ritual platforms bordered by cascading yellow and white blooms, fresh marigolds, and airy sheer curtains. Low tables with brass urns (urli) filled with floating rose petals provide sacred elegance with easy cleanup.',
+        'The Haldi ceremony is an elegant, joy-filled morning ritual requiring clean, picturesque, and functional staging. We build dedicated wooden ritual platforms bordered by cascading yellow and white blooms, fresh marigolds, and airy sheer curtains. Low tables with brass urns (urli) filled with floating rose petals provide sacred elegance with easy cleanup.',
       capabilities: [
         'Dedicated raised ritual seating for the couple with floral backboards',
         'Traditional brass urli decorative bowls with floating candles & blossoms',
@@ -224,11 +224,11 @@ export const IndianWeddingPage: React.FC<IndianWeddingPageProps> = ({
     {
       id: 'welcome',
       title: 'Welcome Dinner & Mehmaan Nawazi',
-      subtitle: 'Warm Hospitality, Ambient Fairy Lights & Intimate Elegance',
+      subtitle: 'Warm Hospitality, Ambient Fairy Lights & Refined Elegance',
       icon: HeartHandshake,
       tag: 'Arrival Evening',
       description:
-        'Setting the tone for the entire destination weekend, the Welcome Dinner offers arriving guests an inviting, warm introduction to Azerbaijan. We design intimate candlelit dinner settings, personalized welcome signage, customized seating charts, and ambient fairy-light ceilings that foster connection.',
+        'Setting the tone for the entire destination weekend, the Welcome Dinner offers arriving guests an inviting, warm introduction to Azerbaijan. We design elegant candlelit dinner settings, personalized welcome signage, customized seating charts, and ambient fairy-light ceilings that foster connection.',
       capabilities: [
         'Personalized welcome signage featuring bespoke couple monograms',
         'Long banquet table styling with fresh olive branches, roses, and tapered candles',

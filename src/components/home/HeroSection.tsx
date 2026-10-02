@@ -23,7 +23,7 @@ const HERO_SLIDES: HeroSlide[] = [
     id: 'hero-slide-1',
     image: '/images/dreamart-toy-dekoru-qizili-altar.webp',
     fallbackUrl: '/images/dreamart-toy-dekoru-qizili-altar.webp',
-    title: 'Eksklüziv Toy Altarı & Masası',
+    title: 'Eksklüziv Toy Səhnəsi & Masası',
     subtitle: 'Zövqlü Qızılı Çiçək Kompozisiyaları',
     alt: 'DreamArt Events lüks toy və məclis dekorasiyası, zövqlü dekor həlləri',
   },

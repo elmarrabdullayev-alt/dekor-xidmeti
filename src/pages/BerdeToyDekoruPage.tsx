@@ -126,7 +126,7 @@ export const BerdeToyDekoruPage: React.FC<BerdeToyDekoruPageProps> = ({
     {
       title: 'Fərdi Xatirə Fotozonası',
       description:
-        'Neon yazılı arxa divarlar, dəbdəbəli gül arxitekturası və fotoqraflar üçün ideal işıq balansı ilə tərtib edilmiş xüsusi fotozona.'
+        'Neon yazılı arxa divarlar, dəbdəbəli gül kompozisiyaları və fotoqraflar üçün ideal işıq balansı ilə tərtib edilmiş xüsusi fotozona.'
     },
     {
       title: 'Təhlükəsiz Montaj və Operativ Sökülmə',
@@ -203,18 +203,18 @@ export const BerdeToyDekoruPage: React.FC<BerdeToyDekoruPageProps> = ({
 
   const inspirationProjects = [
     {
-      name: 'Ağ Qızılgül Toy Altarı Dekoru',
+      name: 'Ağ Qızılgül Toy Səhnəsi Dekoru',
       category: 'Toy dekoru',
       slug: 'ag-qizilgul-ve-zerif-samli-toy-altari-baki',
       image: store.getDecorBySlug('ag-qizilgul-ve-zerif-samli-toy-altari-baki')?.mainImage || imageService.getCoverImage('decor-1', 'decor_project', '/images/dreamart-toy-dekoru-qizili-altar.webp'),
-      description: 'Klassik lüks toy altar dekoru, canlı ağ güllər, şam işıqlandırması və zərif bəy-gəlin masası.'
+      description: 'Klassik lüks toy səhnəsi dekoru, canlı ağ güllər, şam işıqlandırması və zərif bəy-gəlin masası.'
     },
     {
       name: 'Monumental Toy Səhnəsi Dekoru',
       category: 'Səhnə dekoru',
       slug: 'qizili-arkali-ve-monumental-toy-sehnesi-baki',
       image: store.getDecorBySlug('qizili-arkali-ve-monumental-toy-sehnesi-baki')?.mainImage || imageService.getCoverImage('img-portfolio-4', 'portfolio_lookbook', '/images/dreamart-monumental-toy-sehnesi-dekoru.webp'),
-      description: 'Geniş zallar üçün hündür qızılı tağlar, pilləli şam kompozisiyaları və zəngin gül arxitekturası.'
+      description: 'Geniş zallar üçün hündür qızılı tağlar, pilləli şam kompozisiyaları və zəngin gül kompozisiyaları.'
     },
     {
       name: 'Böyük Şadlıq Sarayı Zal Dekoru',

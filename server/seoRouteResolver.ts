@@ -762,7 +762,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
     const qebeleFaqs = [
       {
         question: 'DreamArt Weddings Qəbələdə toy dekoru xidməti göstərir?',
-        answer: 'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək arxitekturası və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
+        answer: 'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək tərtibatı və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
       },
       {
         question: 'Qəbələdə destination wedding dekoru sifariş etmək mümkündür?',
@@ -770,7 +770,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
       },
       {
         question: 'Qəbələdə açıq hava toy dekoru hazırlamaq mümkündür?',
-        answer: 'Bəli. Dağ mənzərəli çəmənliklər və meşə kənarı açıq hava məkanları üçün küləyə davamlı möhkəm altar konstruksiyaları, çiçəkli nikah tağları, işıqlandırma çilçıraqları və xüsusi oturma zonaları qurulur.'
+        answer: 'Bəli. Dağ mənzərəli çəmənliklər və meşə kənarı açıq hava məkanları üçün küləyə davamlı möhkəm nikah tağı konstruksiyaları, çiçəkli tağlar, işıqlandırma çilçıraqları və xüsusi oturma zonaları qurulur.'
       },
       {
         question: 'Bakıdan Qəbələyə dekor və quraşdırma komandası gəlir?',

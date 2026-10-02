@@ -37,7 +37,7 @@ export const ArticlesHubPage: React.FC<ArticlesHubPageProps> = ({ navigate, onOp
   ];
 
   const serviceShortcuts = [
-    { name: 'Toy Dekoru', path: '/toy-dekoru', desc: 'Lüks toy altarları və zal dekorasiyası' },
+    { name: 'Toy Dekoru', path: '/toy-dekoru', desc: 'Lüks toy səhnəsi və zal dekorasiyası' },
     { name: 'Nişan Dekoru', path: '/nisan-dekoru', desc: 'Ev və restoran üçün romantik fon tağları' },
     { name: 'Xına Dekoru', path: '/xina-dekoru', desc: 'Xına taxtı, bəzəkli süfrə və fotozonalar' },
     { name: 'Xonça Xidməti', path: '/xonca-xidmeti', desc: 'Eksklüziv büllur və çiçəkli xonçalar' },

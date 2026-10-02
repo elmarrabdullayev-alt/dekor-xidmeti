@@ -30,7 +30,7 @@ const INITIAL_SAMPLE_INQUIRIES: InquiryRequest[] = [
     eventType: 'Toy dekoru',
     date: '2026-10-15',
     location: 'Bakı (Boutique 19)',
-    notes: 'Ağ qızılgül və şam kompozisiyalı altar tağı və 15 masa üçün mərkəz gülləri lazımdır.',
+    notes: 'Ağ qızılgül və şam kompozisiyalı nikah tağı və 15 masa üçün mərkəz gülləri lazımdır.',
     decorName: 'Qızılı Heykəllər və Ağ Güllərlə Dəbdəbəli Toy Səhnəsi',
     createdAt: '2026-09-02T11:30:00Z',
     status: 'new'

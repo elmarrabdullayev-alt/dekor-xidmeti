@@ -9,11 +9,11 @@ export const CATEGORIES: CategoryInfo[] = [
     heroImage: '/images/dreamart-toy-dekoru-qizili-altar.webp',
     shortDescription: 'Zövqlü arxa fonlar, zərif gəlin-bəy masası və xüsusi çiçək kompozisiyaları ilə toy dekorları.',
     seoH1: 'Toy Dekorları və Toy Dekoru Sifarişi Xidməti',
-    seoIntroduction: 'DreamArt Weddings Bakı və Azərbaycanın bütün regionlarında fərdi toy dekorları və tam həcmli dekor sifarişi layihələri həyata keçirir. Zövqlü altar tağları, zərif gəlin-bəy masası, premium təbii floristika və xüsusi işıqlandırma detalları ilə unudulmaz tədbir atmosferi yaradırıq.',
+    seoIntroduction: 'DreamArt Weddings Bakı və Azərbaycanın bütün regionlarında fərdi toy dekorları və tam həcmli dekor sifarişi layihələri həyata keçirir. Zövqlü nikah tağları, zərif gəlin-bəy masası, premium təbii floristika və xüsusi işıqlandırma detalları ilə unudulmaz tədbir atmosferi yaradırıq.',
     metaTitle: 'Toy Dekorları və Dekor Sifarişi Bakı | DreamArt Weddings',
     metaDescription: 'Bakı və regionlarda zövqlü toy dekorları, gəlin masası, səhnə arxa fonu və dekor sifarişi. Fərdi konsept, təbii güllər və professional quraşdırma: 050 231 17 28.',
     whatIncluded: [
-      'Fərdi memarlıq altar tağı və xüsusi arxa fon konstruksiyası',
+      'Fərdi nikah tağı və xüsusi arxa fon konstruksiyası',
       'Gəlin və bəy masasının eksklüziv floristika ilə bəzədilməsi',
       'Qonaq masaları üçün hündür vaza və ya kompakt gül kompozisiyaları',
       'İtalyan şüşə şamdanlar və təhlükəsiz şam işıqlandırması',
@@ -34,7 +34,7 @@ export const CATEGORIES: CategoryInfo[] = [
       {
         step: '02',
         title: '3D Konsept Eskizi və Gül Seçimi',
-        description: 'Cütlüyün zövqünə uyğun rəng palitrası, təbii gül arxitekturası və işıq detalları razılaşdırılır.'
+        description: 'Cütlüyün zövqünə uyğun rəng palitrası, təbii gül kompozisiyaları və işıq detalları razılaşdırılır.'
       },
       {
         step: '03',
@@ -54,7 +54,7 @@ export const CATEGORIES: CategoryInfo[] = [
     directAnswers: [
       {
         question: 'DreamArt Weddings toy dekoru sifarişi qəbul edir?',
-        answer: 'Bəli. DreamArt Weddings Bakı, Abşeron və Azərbaycanın bütün regionlarında fərdi toy dekorları, səhnə, altar tağı və zal dekorasiyası üçün rəsmi dekor sifarişi qəbul edir. Məsləhət və eskiz üçün WhatsApp və telefon aktivdir.'
+        answer: 'Bəli. DreamArt Weddings Bakı, Abşeron və Azərbaycanın bütün regionlarında fərdi toy dekorları, səhnə, nikah tağı və zal dekorasiyası üçün rəsmi dekor sifarişi qəbul edir. Məsləhət və eskiz üçün WhatsApp və telefon aktivdir.'
       },
       {
         question: 'Bakıdan kənarda toy dekoru sifarişi mümkündür?',
@@ -78,10 +78,10 @@ export const CATEGORIES: CategoryInfo[] = [
       intro: 'DreamArt Weddings-də toy dekoru qiymətləri fiks paketlərlə məhdudlaşmır; hər bir cütlüyün büdcəsinə və arzuladığı vizuala uyğunlaşdırılan şəffaf amillər əsasında formalaşır:',
       factors: [
         { title: 'Məkanın və Zalın Ölçüsü', description: 'Zalın tavan hündürlüyü, səhnənin eni və qonaq tutumuna görə konstruksiyanın miqyası müəyyən edilir.' },
-        { title: 'Gəlin Masası və Arxa Fon Konstruksiyası', description: 'Altar tağının növü, 3D memarlıq panelləri, metal karkas və ya zərif toxuma drapaj materialları.' },
+        { title: 'Gəlin Masası və Arxa Fon Konstruksiyası', description: 'Nikah tağının növü, 3D panellər, metal karkas və ya zərif toxuma drapaj materialları.' },
         { title: 'Floristika və Gül Növləri', description: 'Təravətli idxal canlı çiçəklərin (qızılgüllər, qortenziyalar, orxideyalar) və ya premium dərəcəli realizmli süni çiçəklərin nisbəti.' },
         { title: 'Qonaq Masası Tərtibatı', description: 'Masa sayı, büllur şamdanlar, zərif süfrə runnerləri və mərkəzi gül kompozisiyalarının hündürlüyü.' },
-        { title: 'İşıqlandırma və Xüsusi İstehsal', description: 'İsti kəhrəba işıqlandırma, fərdi monoqram lövhələri və xüsusi kəsim arxitektur detallar.' },
+        { title: 'İşıqlandırma və Xüsusi İstehsal', description: 'İsti kəhrəba işıqlandırma, fərdi monoqram lövhələri və xüsusi kəsim dekor elementləri.' },
         { title: 'Logistika və Quraşdırma Məsafəsi', description: 'Bakı daxili və ya Qəbələ, Gəncə, Bərdə kimi regionlara xüsusi nəqliyyatla təhlükəsiz çatdırılma və montaj/sökülmə.' }
       ],
       ctaLabel: 'Qiymət təklifi al'
@@ -137,7 +137,7 @@ export const CATEGORIES: CategoryInfo[] = [
       'Çatdırılma, quraşdırma və mərasim sonrası sökülmə'
     ],
     suitableFor: [
-      'Ev şəraitində və ya villa həyətində keçirilən intim nişan mərasimləri',
+      'Ev şəraitində və ya villa həyətində keçirilən ailəvi nişan mərasimləri',
       'Restoran və banket zallarında təşkil olunan geniş tərkibli nişan ziyafətləri',
       'Zərif romantik pastel və qızılı elementləri sevən cütlüklər'
     ],
@@ -237,7 +237,7 @@ export const CATEGORIES: CategoryInfo[] = [
     heroImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
     shortDescription: 'Milli adət-ənənələrlə müasir estetik zərifliyi birləşdirən xına gecəsi dekorasiyası.',
     seoH1: 'Xına Dekoru və Xına Gecəsi Tərtibatı Xidməti',
-    seoIntroduction: 'DreamArt Weddings xına mərasimləri üçün ənənəvi milli motivlərlə müasir dəbdəbəli gül arxitekturasını birləşdirir. Qırmızı, zümrüd və qızılı çalarlarda gəlin taxtı, zəngin şam kompozisiyaları, qonaq masaları və xonça atributları peşəkarlıqla təqdim edilir.',
+    seoIntroduction: 'DreamArt Weddings xına mərasimləri üçün ənənəvi milli motivlərlə müasir dəbdəbəli gül tərtibatını birləşdirir. Qırmızı, zümrüd və qızılı çalarlarda gəlin taxtı, zəngin şam kompozisiyaları, qonaq masaları və xonça atributları peşəkarlıqla təqdim edilir.',
     metaTitle: 'Xına Gecəsi Dekoru və Xına Masası Xidməti | DreamArt Weddings',
     metaDescription: 'Bakı və regionlarda zərif xına dekoru, gəlin taxtı, arxa fon pərdələri, büllur şamdanlar və xonça stendləri. Fərdi dizayn və sifariş: 050 231 17 28.',
     whatIncluded: [
@@ -346,7 +346,7 @@ export const CATEGORIES: CategoryInfo[] = [
     whatIncluded: [
       'Fərdi dizaynlı fotozona və arxa fon divar konstruksiyası',
       'Ad və ya yaş yazılı fərdi neon işıqlandırma lövhəsi',
-      'Zərif pastel şar arxitekturası və ya canlı təbii gül detalları',
+      'Zərif pastel şar kompozisiyası və ya canlı təbii gül detalları',
       'Tort masası, desert və candy bar stendlərinin bəzədilməsi',
       'Məkanın ümumi abu-havasına uyğunlaşdırılmış xüsusi isti işıqlandırma',
       'Məkana çatdırılma, operativ montaj və tədbir sonrası sökülmə'
@@ -389,7 +389,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Uşaq ad günü üçün dekor sifariş etmək olar?',
-        answer: 'Bəli. Həm oğlan, həm qız uşaqları üçün sevimli mövzular, təhlükəsiz şar arxitekturası, tort stendi və tematik fotozonalar hazırlanır.'
+        answer: 'Bəli. Həm oğlan, həm qız uşaqları üçün sevimli mövzular, təhlükəsiz şar dekoru, tort stendi və tematik fotozonalar hazırlanır.'
       },
       {
         question: 'Qız uşaqları üçün hansı ad günü dekor fikirləri təklif olunur?',
@@ -411,7 +411,7 @@ export const CATEGORIES: CategoryInfo[] = [
         description: 'Müasir bayram estetikasını əks etdirən fərqli stil və dizayn istiqamətləri:',
         items: [
           'Minimalist & Zərif: Pastel tonlar, incə toxunuşlu canlı güllər və fərdi xətt neon yazılar',
-          'Qala & Dəbdəbə: Qara, qızılı və ya zümrüd rənglərdə şamdanlı ziyafət masası və isti arxitektur işıqlar',
+          'Qala & Dəbdəbə: Qara, qızılı və ya zümrüd rənglərdə şamdanlı ziyafət masası və isti dekorativ işıqlandırma',
           'İnstaqramik Foto Divarlar: Parlaq parıltılı fonlar, akrilik rəqəmlər və zəngin gül instalyasiyaları',
           'Bohem & Təbii: Qurudulmuş pampas otları, ağac elementləri və təbii toxumalı açıq hava dekorları'
         ],
@@ -465,7 +465,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Uşaq ad günü üçün dekor sifariş etmək olar?',
-        answer: 'Bəli. Sevimli personajlar, təhlükəsiz şar arxitekturası, tort masası və xüsusi foto divarlar uşaq tədbirləri üçün qurulur.'
+        answer: 'Bəli. Sevimli personajlar, təhlükəsiz şar dekoru, tort masası və xüsusi foto divarlar uşaq tədbirləri üçün qurulur.'
       },
       {
         question: 'Bakıdan kənarda və regionlarda ad günü sifarişi mümkündür?',
@@ -832,7 +832,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Fərdi konsept hazırlamaq mümkündür?',
-        answer: 'Bəli. Gəlinin zövqünə, ev interyerinə və ya restoran zalının dizaynına uyğun fərdi rəng palitrası və canlı çiçək arxitekturası tərtib edilir.'
+        answer: 'Bəli. Gəlinin zövqünə, ev interyerinə və ya restoran zalının dizaynına uyğun fərdi rəng palitrası və canlı çiçək kompozisiyası tərtib edilir.'
       },
       {
         question: 'Qiymət necə hesablanır?',
@@ -858,7 +858,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Fərdi konsept hazırlamaq mümkündür?',
-        answer: 'Bəli. Gəlinin zövqünə, ev interyerinə və ya restoran zalının dizaynına uyğun fərdi rəng palitrası və canlı çiçək arxitekturası tərtib edilir.'
+        answer: 'Bəli. Gəlinin zövqünə, ev interyerinə və ya restoran zalının dizaynına uyğun fərdi rəng palitrası və canlı çiçək kompozisiyası tərtib edilir.'
       },
       {
         question: 'Həri süfrəsi dekorunun qiyməti necə hesablanır?',
@@ -882,7 +882,7 @@ export const CATEGORIES: CategoryInfo[] = [
     heroImage: '/images/dreamart-qala-gecesi-samdan-dekoru.webp',
     shortDescription: 'Mötəbər yaş yubileyləri üçün dəbdəbəli zal, səhnə və ziyafət masası tərtibatı.',
     seoH1: 'Yubiley Dekoru və Ziyafət Masası Tərtibatı',
-    seoIntroduction: 'DreamArt Weddings əlamətdar yaş yubileyləri (30, 50, 60, 70 illik) və ailəvi ildönümləri üçün mötəbər və dəbdəbəli ziyafət mühitinin yaradılmasını təmin edir. Qonaq masalarının büllur şamdanlar və canlı güllərlə tərtibatı, yubilyar üçün fərdi səhnə və fotozona, zərif arxitektur işıqlandırma ilə unudulmaz gecə dizayn edilir.',
+    seoIntroduction: 'DreamArt Weddings əlamətdar yaş yubileyləri (30, 50, 60, 70 illik) və ailəvi ildönümləri üçün mötəbər və dəbdəbəli ziyafət mühitinin yaradılmasını təmin edir. Qonaq masalarının büllur şamdanlar və canlı güllərlə tərtibatı, yubilyar üçün fərdi səhnə və fotozona, zərif dekorativ işıqlandırma ilə unudulmaz gecə dizayn edilir.',
     metaTitle: 'Yubiley Dekoru və Tədbir Tərtibatı Bakı | DreamArt Weddings',
     metaDescription: 'Bakı və regionlarda 50, 60 illik və xüsusi yubileylər üçün dəbdəbəli zal və səhnə dekoru, fotozona, büllur şamdanlar və canlı güllər. Əlaqə: 050 231 17 28.',
     whatIncluded: [
@@ -890,7 +890,7 @@ export const CATEGORIES: CategoryInfo[] = [
       'Ziyafət masalarının büllur şamdanlar, zərif süfrə aksessuarları və təbii güllərlə bəzədilməsi',
       'Səhnə arxa fonu, kürsü və təbrik guşəsi tərtibatı',
       'Xatirə guşəsi, hədiyyə və tort masası stendləri',
-      'İsti kəhrəba tonlu arxitektur işıqlandırma və detallar',
+      'İsti kəhrəba tonlu dekorativ işıqlandırma və detallar',
       'Çatdırılma, peşəkar quraşdırma və ziyafətdən sonra operativ sökülmə'
     ],
     suitableFor: [
@@ -987,8 +987,8 @@ export const CATEGORIES: CategoryInfo[] = [
     whatIncluded: [
       'Tədbirin məqsədinə uyğun fərdi konsept dizaynı və məkan seçimi dəstəyi',
       'Romantik təbii çiçək tağları, "Marry Me" və ya fərdi neon/işıqlı hərf lövhələri',
-      'İntim şam yeməyi masası düzümü, büllur qədəhlər, şamlar və gül ləçəkləri',
-      'Mövzuya uyğun balon arxitekturası və ya zərif floristika instalyasiyaları',
+      'Özəl şam yeməyi masası düzümü, büllur qədəhlər, şamlar və gül ləçəkləri',
+      'Mövzuya uyğun şar kompozisiyası və ya zərif floristika instalyasiyaları',
       'Şəkil və video çəkilişi üçün estetik foto guşəsi',
       'Çatdırılma, məxfi/vaxtında quraşdırma və tədbirdən sonra operativ sökülmə'
     ],
@@ -1105,7 +1105,7 @@ export const CATEGORIES: CategoryInfo[] = [
       {
         step: '02',
         title: 'Brend Rənglərinə Uyğun Konsept',
-        description: 'Şirkət loqosu, brend palitrası və şar/çiçək arxitekturası razılaşdırılır.'
+        description: 'Şirkət loqosu, brend palitrası və şar və çiçək kompozisiyası razılaşdırılır.'
       },
       {
         step: '03',

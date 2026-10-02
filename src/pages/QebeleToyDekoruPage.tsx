@@ -49,7 +49,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
     {
       question: 'DreamArt Weddings Qəbələdə toy dekoru xidməti göstərir?',
       answer:
-        'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək arxitekturası və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
+        'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək tərtibatı və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
     },
     {
       question: 'Qəbələdə destination wedding dekoru sifariş etmək mümkündür?',
@@ -59,7 +59,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
     {
       question: 'Qəbələdə açıq hava toy dekoru hazırlamaq mümkündür?',
       answer:
-        'Bəli. Dağ mənzərəli çəmənliklər və meşə kənarı açıq hava məkanları üçün küləyə davamlı möhkəm altar konstruksiyaları, çiçəkli nikah tağları, işıqlandırma çilçıraqları və xüsusi oturma zonaları qurulur.'
+        'Bəli. Dağ mənzərəli çəmənliklər və meşə kənarı açıq hava məkanları üçün küləyə davamlı möhkəm nikah tağı konstruksiyaları, çiçəkli tağlar, işıqlandırma çilçıraqları və xüsusi oturma zonaları qurulur.'
     },
     {
       question: 'Bakıdan Qəbələyə dekor və quraşdırma komandası gəlir?',
@@ -178,7 +178,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
       day: '2. Əsas Toy Mərasimi',
       label: 'Ceremony & Grand Reception',
       description:
-        'Açıq hava nikah altarı, monumental bəy-gəlin səhnəsi, yüksək çiçək arxitekturası və işıq instalyasiyaları ilə qala ziyafəti.'
+        'Açıq hava nikah tağı, monumental bəy-gəlin səhnəsi, yüksək çiçək kompozisiyaları və işıq instalyasiyaları ilə qala ziyafəti.'
     },
     {
       day: '3. Əyləncə və After-Party',
@@ -198,7 +198,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
       desc: 'İstifadə olunacaq canlı idxal güllərin həcmi və ya premium real-touch kompozisiyalar.'
     },
     {
-      label: 'Səhnə və Altar Miqyası',
+      label: 'Səhnə və Nikah Tağı Miqyası',
       desc: 'Gəlin-bəy arxa fonunun eni, hündürlüyü və fərdi istehsal konstruksiyalarının mürəkkəbliyi.'
     },
     {
@@ -233,18 +233,18 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
 
   const verifiedReferenceProjects = [
     {
-      name: 'Ağ Qızılgül Toy Altarı Dekoru',
+      name: 'Ağ Qızılgül Toy Səhnəsi Dekoru',
       category: 'Toy dekoru',
       slug: 'ag-qizilgul-ve-zerif-samli-toy-altari-baki',
       image: store.getDecorBySlug('ag-qizilgul-ve-zerif-samli-toy-altari-baki')?.mainImage || imageService.getCoverImage('decor-1', 'decor_project', '/images/dreamart-toy-dekoru-qizili-altar.webp'),
-      description: 'Klassik lüks toy altar dekoru, canlı ağ güllər, şam işıqlandırması və zərif bəy-gəlin masası.'
+      description: 'Klassik lüks toy səhnəsi dekoru, canlı ağ güllər, şam işıqlandırması və zərif bəy-gəlin masası.'
     },
     {
       name: 'Monumental Toy Səhnəsi Dekoru',
       category: 'Səhnə dekoru',
       slug: 'panoramik-sadliq-zali-tavan-isig-instalyasiyasi-baki',
       image: store.getDecorBySlug('panoramik-sadliq-zali-tavan-isig-instalyasiyasi-baki')?.mainImage || imageService.getCoverImage('img-portfolio-4', 'portfolio_lookbook', '/images/dreamart-monumental-toy-sehnesi-dekoru.webp'),
-      description: 'Geniş zallar üçün hündür tağlar, pilləli şam kompozisiyaları və zəngin gül arxitekturası.'
+      description: 'Geniş zallar üçün hündür tağlar, pilləli şam kompozisiyaları və zəngin gül kompozisiyaları.'
     },
     {
       name: 'Büllur və Qızılı Ziyafət Masası Tərtibatı',
