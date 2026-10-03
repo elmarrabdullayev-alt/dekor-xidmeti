@@ -875,7 +875,7 @@ export const INITIAL_ARTICLES: Article[] = [
     slug: 'magaza-acilis-dekoru-nece-planlanir',
     title: 'Mağaza Açılışı üçün Dekor Necə Planlanır?',
     metaTitle: 'Mağaza Açılışı üçün Dekor Necə Planlanır? | Brend Tədbir Bələdçisi',
-    metaDescription: 'Mağaza, butik və filial açılışları üçün peşəkar dekorasiya planı: fasad bəzədilməsi, qırmızı xalça, lent kəsmə guşəsi, fotozona və korporativ atributika.',
+    metaDescription: 'Mağaza və obyekt açılışı üçün dekorasiya planı: şar seçimi, qapıların şarla bəzədilməsi, şar tağının yeri, loqolu fotozona və brend rəngləri bələdçisi.',
     excerpt: 'Müştəri axını və brend tanınmasını artıran açılış dekorasiyası: fasad tağları, qırmızı xalça, loqolu fotozona və peşəkar açılış atributikası.',
     category: 'Korporativ və Açılış',
     categorySlug: 'magaza-acilis-dekoru',
@@ -885,91 +885,124 @@ export const INITIAL_ARTICLES: Article[] = [
     authorRole: 'Korporativ və Brend Tədbirlər Meneceri',
     heroImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
     heroAlt: 'Rəsmi açılış mərasimləri və brend tədbirləri üçün quraşdırılmış monumental səhnə və fotozona karkası',
-    readingTimeMinutes: 7,
+    readingTimeMinutes: 8,
     isPublished: true,
     isFeatured: true,
     keywords: [
       'magaza acilis dekoru nece planlanir',
       'magaza acilis dekoru',
-      'acilis dekoru',
+      'acilis ucun sar dekoru',
+      'qapilarin sarla bezedilmesi',
+      'sar tagi',
       'acilis ucun fotozona',
-      'brend tedbir dekoru',
-      'acilis lenti ve xalca'
+      'brend tedbir dekoru'
     ],
-    directAnswer: 'Mağaza açılışı dekoru planlanarkən ən vacib addımlar: 1) Fasadın və vitrinin uzaqdan diqqət çəkən zövqlü kompozisiya ilə vurğulanması; 2) Rəsmi lent kəsmə mərasimi üçün qırmızı/qızılı xalça, qızılı dayaqlı kəndirlər, bəzəkli qayçı və məxmər yastıq təminatı; 3) Brendin loqosu və şüarını əks etdirən peşəkar fotozona divarı (press-wall); 4) Mağaza daxilində məhsul rəflərini bağlamayan, sərbəst hərəkətə imkan verən kompakt çiçək və ya şar vurğuları.',
+    directAnswer: 'Mağaza açılışı dekoru planlanarkən ən vacib 6 addım: 1) Məkanın girişinə uyğun zövqlü şar tağı və ya çiçək kompozisiyası seçilməsi; 2) Qapıların şarla bəzədilməsində müştəri axını üçün 2.2 metr təmiz keçid saxlanılması; 3) Şar tağının vitrin görüntüsünü bağlamayan fasad xəttində yerləşdirilməsi; 4) Brendin rəsmi Pantone rənglərinə 100% uyğunlaşdırılmış loqolu mat fotozona hazırlanması; 5) Rəsmi lent kəsmə mərasimi atributlarının təminatı; 6) Ticarət mərkəzinin qrafikinə uyğun gecə və ya səhər tezdən montaj.',
     sections: [
       {
-        id: 'fasad-ve-giris',
-        title: '1. Fasad və Giriş Zonasının Tərtibatı: Müştəri Diqqətini Cəlb Etmək',
-        content: 'Açılış günündə ilk təəssürat küçədən və ya ticarət mərkəzinin dəhlizindən başlayır. Giriş qapısı ətrafında zövqlü üzvi şar qövsü (organic balloon garland) və ya brendin rənglərinə uyğunlaşdırılmış çiçək instalyasiyası piyadaların nəzərini dərhal mağazaya yönəldir.',
+        id: 'hansi-dekorlar-lazimdir',
+        title: '1. Mağaza Açılışı üçün Hansı Dekorlar Lazımdır?',
+        content: 'Yeni mağaza, butik, gözəllik salonu, restoran və ya filial açılışı zamanı tərtibat təkcə bayram ab-havası yaratmır, həm də ilk gündən brendinizin nüfuzunu formalaşdırır. Kompleks açılış dekorasiyasına adətən bu əsas zonalar daxildir: giriş qapısı və fasad üçün şar tağı, qırmızı xalça və qızılı postamentlərlə lent kəsmə guşəsi, qonaqlar və sosial media üçün loqolu brend fotozona (press-wall) və daxili məhsul stendlərini tamamlayan zərif mini floristika.',
         bulletPoints: [
-          'Brendin korporativ rənglərinə 100% uyğunlaşdırılmış şar və ya çiçək tağları',
-          'Vitrinin qarşısını bağlamayan, əksinə vitrindəki yeni kolleksiyanı çərçivəyə salan konstruksiyalar',
-          'Girişdə brend loqosu və "Böyük Açılış" (Grand Opening) şüarı olan xüsusi stendlər'
+          'Fasad və giriş zonası üçün uzaqdan diqqət çəkən üzvi və ya klassik şar tağı',
+          'Rəsmi lent kəsmə mərasimi dəsti (qızılı dirəklər, məxmər kəndirlər, xüsusi qayçılar və nimçə)',
+          'Şirkət loqosu və şüarı ilə fərdiləşdirilmiş parıltısız mat foto divar',
+          'Kassa və qeydiyyat masası üzərində məhsul baxışına mane olmayan kompakt gül kompozisiyaları'
+        ],
+        callout: 'Təcrübəli komandamızın təqdim etdiyi komplekt açılış xidmətləri və nümunəvi layihələrlə tanış olmaq üçün [Mağaza Açılış Dekoru](/magaza-acilis-dekoru) əsas xidmət səhifəmizə baxa bilərsiniz.'
+      },
+      {
+        id: 'sar-dekoru-seçimi',
+        title: '2. Açılış üçün Şar Dekoru Necə Seçilir?',
+        content: 'Açılış üçün şar dekoru seçərkən ən vacib amil şarların keyfiyyəti, rəng balansı və məkanın şəraitidir. Ucuz və nazik şarlar günəş şüaları və Bakının küləyi altında tez sönür və ya partlayır. Peşəkar açılışlarda sıx lateksli, ikiqat qoruyucu emulsiya ilə işlənmiş və rəngini günlərlə qoruyan xrom, pastel və metallik şarlara üstünlük verilir.',
+        bulletPoints: [
+          'Material keyfiyyəti: Açıq hava üçün qalın divarlı, günəşə və temperatura davamlı lateks şarlar',
+          'Rəng palitrası: Ən çox 2–3 rəng harmoniyası (şirkətin əsas və tamamlayıcı rəngləri)',
+          'Tekstura uyğunluğu: Xrom parıltı ilə mat pastel tonlarının peşəkar vəhdəti',
+          'Ölçü müxtəlifliyi: Müasir üzvi dizaynda 5 düymdən 36 düymə qədər müxtəlif ölçülü şarların dinamik düzülüşü'
         ]
       },
       {
-        id: 'lent-kesme-merasimi',
-        title: '2. Rəsmi Açılış Mərasimi Atributları: Qırmızı Xalça və Lent Kəsmə Guşəsi',
-        content: 'Rəsmi lent kəsmə anı tədbirin ən çox foto və video çəkilən, mediada və sosial şəbəkələrdə paylaşılan anıdır. Bu mərasim üçün yüksək səviyyəli rəsmi protokol atributları hazırlanmalıdır.',
+        id: 'qapilarin-sarla-bezedilmesi',
+        title: '3. Qapıların Şarla Bəzədilməsində Nələrə Diqqət Etmək Lazımdır?',
+        content: 'Qapıların şarla bəzədilməsi açılış günündə piyada və müştəri axınının birbaşa içəri yönləndirilməsində əsas rolu oynayır. Lakin qapı bəzəyi zamanı təhlükəsizlik və erqonomika qaydalarına ciddi riayət edilməlidir. Şar kompozisiyası qapının mexaniki hərəkət radiusuna daxil olmamalı, sensorlu avtomatik qapıların sensor gözünü örtməməlidir.',
         bulletPoints: [
-          'Giriş pilləkənləri və ya qapı önünə salınan premium qırmızı və ya qızılı xalça',
-          'Parlaq qızılı və ya xrom dayaqlı məxmər kəndir baryerlər (stanchions)',
-          'Zərli bəzəkli qayçılar, məxmər yastıq və brend loqolu ipək açılış lenti'
+          'Minimum keçid hündürlüyü: Şar tağının altından insanların rahat keçməsi üçün minimum 2.2 metr təmiz hündürlük',
+          'Giriş eninin qorunması: Qapının hər iki tərəfində ən azı 1.2–1.5 metr sərbəst piyada zolağı saxlanılmalıdır',
+          'Fasada zərər verməyən montaj: Şüşə və metal konstruksiyalara qoruyucu vakuum və ya elastik bağlayıcılar tətbiq olunmalıdır',
+          'Külək təhlükəsizliyi: Açıq havada küçə qapılarında karkasın arxa dayağına gizli çəki blokları qoyulmalıdır'
+        ],
+        callout: 'Qapı və girişlərin peşəkar şarla bəzədilməsi üçün fərdi ölçülər əsasında hazırlanmış smeta almaq istəyirsinizsə, [Mağaza Açılış Dekoru](/magaza-acilis-dekoru) bölməmizlə əlaqə saxlayın.'
+      },
+      {
+        id: 'sar-tagi-yerlesdirilme',
+        title: '4. Şar Tağı Harada Yerləşdirilməlidir?',
+        content: 'Şar tağının düzgün yerləşdirilməsi mağazanın görmə bucağını maksimal dərəcədə artırır. Ən ideal yerləşdirmə fasadın əsas giriş portalının perimetri boyunca və ya vitrinin üst xətti ilə giriş qapısını birləşdirən zərif asimmetrik xətdir.',
+        bulletPoints: [
+          'Simmetrik tağ: Klassik və geniş fasadlı mağazalar üçün girişin tam mərkəzini vurğulayır',
+          'Asimmetrik üzvi tağ: Butiklər və salonlar üçün bir tərəfdən başlayıb vitrin üzərindən axan müasir xətt',
+          'Vitrin görünüşü: Şarlar vitrində nümayiş olunan maneken və yeni məhsulları qətiyyən gizlətməməlidir',
+          'Piyada bucağı: Küçədən hər iki tərəfdən gələn insanların uzaqdan görə biləcəyi 3D bucaqda quraşdırılmalıdır'
         ]
       },
       {
-        id: 'brend-fotozonasi',
-        title: '3. Brend Fotozonası (Press-Wall): Sosial Şəbəkələr və Media üçün Vizual Mərkəz',
-        content: 'Açılışa dəvət olunan bloqerlər, media nümayəndələri və ilk müştərilər üçün xüsusi fotozona yaradılmalıdır. Mat, işığı parıldatmayan press-wall divarı üzərində brendin loqosu və şüarı təkrar olunur, yanlarında isə çiçək sütunları və işıqlandırma yerləşdirilir.',
+        id: 'acilis-fotozonasi-hazirlanmasi',
+        title: '5. Açılış Fotozonası Necə Hazırlanmalıdır?',
+        content: 'Açılış fotozonası tədbirin sosial şəbəkələrdəki vizual simasıdır. Fotozonanın arxa fonunda şirkət loqosunun şahmat qaydasında təkrarı (press-wall) və ya mərkəzi böyük həcmli loqo yerləşdirilir. Ən əsas məqam materialın mat olmasıdır ki, foto və video flaşları zamanı arxa fonda ağ parıltı ləkələri düşməsin.',
         bulletPoints: [
-          'Parlama əleyhinə mat kətan üzərində loqoların dəqiq qrafik çapı',
-          'Fotozonanın kənarlarını bəzəyən zərif çiçək kaskadları və ya neon loqo lövhəsi',
-          'Foto və video reportajlar üçün düzgün istiqamətləndirilmiş isti ön işıq'
+          'Ölçü proporsiyası: Qrup fotoları üçün ən ideal ölçü 2.4 metr hündürlük və 3.0 metr endir',
+          'Parlama əleyhinə örtük: Mat parça və ya xüsusi qeyri-parıltılı baner kətanı',
+          'İşıqlandırma: Fotozonanın qarşısında yumşaq isti kəhrəba ön işıq təmin edilməlidir',
+          'Kompozisiya vurğusu: Yan tərəflərdə brend rənglərində şar kaskadı və ya neon loqo lövhəsi'
         ]
       },
       {
-        id: 'daxili-mekan-dekoru',
-        title: '4. Daxili Məkan Dekorasiyası: Məhsul Nümayişinə Mane Olmayan Zərif Detallar',
-        content: 'Mağazanın içərisində dekorasiya müştərilərin rahat alış-verişinə və məhsullarla tanışlığına mane olmamalıdır. Geniş keçidləri boş saxlamaq, kassa zonası və vitrin üstlərində yığcam canlı gül kompozisiyaları yerləşdirmək ən peşəkar yanaşmadır.',
+        id: 'brend-rengleri-istifadesi',
+        title: '6. Brend Rənglərini Dekorda Necə İstifadə Etmək Olar?',
+        content: 'Brend rənglərinin dekora inteqrasiyası şirkətin korporativ brand-book standartlarına ciddi riayət etməyi tələb edir. Əgər brendinizin rəngi tünd göy və qızılıdırsa, təsadüfi mavi şarlardan istifadə etmək brendin vizual bütövlüyünü pozur. Peşəkar dizaynerlər rəsmi Pantone kodlarına uyğun gələn dəqiq şar, xalça və lent tonlarını seçirlər.',
         bulletPoints: [
-          'Kassa və qeydiyyat masası üzərində zərif çiçək aranjimanları',
-          'Məhsul stendlərini vurğulayan mini şar dəstələri və ya zərif lentlər',
-          'Qonaqlar üçün furşet masası və şampan qədəhlərinin yerləşdiyi zərif guşə'
+          'Əsas və vurğu balansı: 70% əsas korporativ rəng, 20% tamamlayıcı neytral ton, 10% parlaq xrom vurğu',
+          'Loqolu lent və aksesuarlar: Qırmızı lent kəsmə lentinin üzərində loqonun qızılı və ya gümüşü basma ilə çapı',
+          'Çiçək ahəngi: Canlı çiçək kompozisiyalarında brendin rənglərinə uyğun təbii qızılgül və qozalar',
+          'Məkan daxili uyğunluq: Daxili vitrin və resepsiya masasında da eyni rəng kodlarının təkrarı'
         ]
       },
       {
         id: 'planlama-ve-vaxt',
-        title: '5. Açılış Dekoru Planlamasında Vaxt və Logistika Cədvəli',
-        content: 'Ticarət mərkəzlərində və mərkəzi küçələrdə montaj işləri adətən gecə saatlarında aparılır. Tədbir günü səhər mağaza açılarkən bütün dekorasiya 100% hazır vəziyyətdə təhvil verilməlidir.',
+        title: '7. Açılış Dekoru Planlamasında Vaxt və Logistika Cədvəli',
+        content: 'Ticarət mərkəzlərində və mərkəzi prospektlərdə montaj işləri adətən gecə saatlarında aparılır. Tədbir günü səhər mağaza açılarkən bütün dekorasiya 100% hazır vəziyyətdə təhvil verilməlidir.',
         bulletPoints: [
-          'Açılışdan 7 gün əvvəl: Məkanın fasad ölçülərinin götürülməsi və eskiz razılaşması',
+          'Açılışdan 7 gün əvvəl: Məkanın fasad ölçülərinin götürülməsi və konsept razılaşması',
           'Açılışdan 2 gün əvvəl: Press-wall bannerinin və loqolu lentlərin çapının tamamlanması',
-          'Açılış gecəsi (00:00–06:00): Fasad tağının və xalçanın səliqəli quraşdırılması',
+          'Açılış gecəsi (00:00–06:00): Fasad tağının, xalçanın və lent kəsmə stendinin quraşdırılması',
           'Açılış səhəri (09:00): Bütün detalların son yoxlanışı və təntənəli açılışa start'
         ]
       }
     ],
     faqs: [
       {
-        question: 'Mağaza açılışı dekoru açılış günündən neçə saat əvvəl quraşdırılmalıdır?',
-        answer: 'Ticarət mərkəzlərində montaj adətən açılışdan əvvəlki gecə həyata keçirilir. Küçə mağazalarında isə açılışdan 2–3 saat əvvəl bütün dekorasiya tam hazır vəziyyətə gətirilir.'
+        question: 'Mağaza açılışı üçün hansı dekorlar lazımdır?',
+        answer: 'Əsas komplektə giriş fasadının şar tağı, qırmızı lent kəsmə mərasimi guşəsi (qızılı postamentlər, kəndirlər, qayçı, yastıq), brend loqolu fotozona və vitrin/resepsiya çiçək vurğuları daxildir.'
       },
       {
-        question: 'Brendin korporativ rəngləri dekorasiyada necə əks olunur?',
-        answer: 'Şarlar, çiçək kompozisiyaları, xalça, lent və press-wall dizaynı birbaşa brendinizin rəsmi Pantone və ya CMYK rəng kodlarına uyğun fərdi hazırlanır.'
+        question: 'Açılış üçün şar dekoru necə seçilir?',
+        answer: 'Şarların lateks qalınlığına, günəşə və küləyə dözümlülüyünə, həmçinin brendin rəsmi korporativ rəngləri ilə dəqiq uyğunluğuna əsasən xrom və pastel tonlarda seçilir.'
       },
       {
-        question: 'Fasad bəzədilməsi üçün icazələr və külək təhlükəsizliyi necə tənzimlənir?',
-        answer: 'Fasad konstruksiyaları binanın divarına zərər verməyən xüsusi qoruyucu bərkidicilərlə quraşdırılır və güclü küləyə davamlı möhkəm karkaslar tətbiq olunur.'
+        question: 'Qapıların şarla bəzədilməsində nələrə diqqət etmək lazımdır?',
+        answer: 'Müştəri axını üçün minimum 2.2 metr təmiz keçid hündürlüyünün saxlanılmasına, avtomatik sensorların qarşısının bağlanmamasına və fasada zərər verməyən bərkidicilərin tətbiqinə diqqət yetirilməlidir.'
       },
       {
-        question: 'Lent kəsmə aksesuarları (qayçı, məxmər yastıq, lent) dekor paketlərinə daxildirmi?',
-        answer: 'Bəli, DreamArt Weddings açılış mərasimi üçün zərli bəzəkli qayçılar, məxmər qızılı altlıq yastığı və brend loqolu lenti komplekt şəkildə təqdim edir.'
+        question: 'Şar tağı harada yerləşdirilməlidir?',
+        answer: 'Giriş qapısının perimetri boyunca və ya vitrinin üst xətti ilə qapını birləşdirən asimmetrik xətdə yerləşdirilməlidir ki, vitrindəki yeni məhsulları gizlətməsin və piyadaların uzaqdan nəzərini cəlb etsin.'
       },
       {
-        question: 'Açılış dekorasiyasını tədbirdən neçə gün əvvəl sifariş vermək lazımdır?',
-        answer: 'Xüsusi loqolu çap və fərdi fasad karkası tələb olunursa, ən azı 3–5 gün öncədən sifariş verməyiniz tövsiyə olunur.'
+        question: 'Açılış fotozonası necə hazırlanmalıdır?',
+        answer: 'Parlama əleyhinə mat kətan üzərində loqoların dəqiq çapı ilə 2.4x3.0m ölçülü metal karkasda qurulmalı, yumşaq ön çəkiliş işığı və brend rənglərində şar kompozisiyası ilə tamamlanmalıdır.'
+      },
+      {
+        question: 'Brend rənglərini dekorda necə istifadə etmək olar?',
+        answer: 'Brand-book üzrə rəsmi Pantone kodlarına uyğun şar və parça tonları seçilir, 70-20-10 rəng balansı qorunur və loqolu lent kəsimi detalları ilə zənginləşdirilir.'
       }
     ],
     relatedServices: [
@@ -1045,8 +1078,20 @@ export const INITIAL_ARTICLES: Article[] = [
         ]
       },
       {
+        id: 'acilis-ucun-fotozona',
+        title: '3. Açılış üçün Fotozona: Loqolu Arxa Fon və Brend Tərtibatı',
+        content: 'Mağaza, butik, salon və yeni obyekt açılışlarında fotozona brendin ictimaiyyətə və mediaya təqdim olunmasında əsas vizual vasitədir. Açılış fotozonası həm brend rənglərini əks etdirən möhkəm mat karkasdan, həm də loqonun aydın göründüyü xüsusi arxa fondan (press-wall) ibarət olmalıdır.',
+        bulletPoints: [
+          'Loqolu arxa fon (logo background): Şirkət loqosunun və şüarının parıltısız mat səthdə peşəkar şəkildə əks olunması',
+          'Brend rəngləri (brand colors): Şirkətin rəsmi korporativ rənglərinə 100% uyğunlaşdırılmış panel və çərçivə palitrası',
+          'Şar və çiçək kombinasiyası: Brend rənglərində üzvi şar girlandası və zərif çiçək aranjemanının harmoniyası',
+          'Vitrin və açılış fotosessiyası: Mağaza vitrininin və ya foye zonasının qarşısında qonaqların, bloqerlərin və müştərilərin rahat foto çəkdirməsi üçün xüsusi çəkiliş nöqtəsi'
+        ],
+        callout: 'Yeni obyektinizin və ya mağazanızın açılışı üçün kompleks giriş şar tağları, lent kəsmə guşəsi və loqolu fotozona sifariş etmək istəyirsinizsə, [Mağaza Açılış Dekoru](/magaza-acilis-dekoru) xidmətimizlə tanış ola bilərsiniz.'
+      },
+      {
         id: 'materiallar-floristika',
-        title: '3. Materiallar və Floristika: Canlı Gül Divarı, Şarlar və Mat Panellər',
+        title: '4. Materiallar və Floristika: Canlı Gül Divarı, Şarlar və Mat Panellər',
         content: 'Fotozonanın karkasında istifadə olunan materiallar flaş işığı altında parıldamamalıdır. Parıltılı laminat və ya parlaq banerlər fotoqrafın işini çətinləşdirir. Bu səbəbdən mat boyalı ağac karkaslar, məxmər örtüklər və ya təbii bitki örtükləri tövsiyə edilir.',
         bulletPoints: [
           'Canlı güllər: Xüsusi nəmləndirici süngərlərdə quraşdırılaraq 10–12 saat təravətini saxlayır',
@@ -1056,7 +1101,7 @@ export const INITIAL_ARTICLES: Article[] = [
       },
       {
         id: 'cekilis-isiqlandirmasi',
-        title: '4. Foto Çəkiliş İşıqlandırması: Flaş Parıltısını Aradan Qaldırmaq',
+        title: '5. Foto Çəkiliş İşıqlandırması: Flaş Parıltısını Aradan Qaldırmaq',
         content: 'Fotozonanın qarşısında zəif və ya soyuq işıq olduqda qonaqların üzündə sərt kölgələr yaranır. Düzgün fotozona dizaynına mütləq yumşaq kəhrəba ön işıqlandırma və döşəmə səviyyəsində isti projektorlar (uplights) daxil edilir.',
         bulletPoints: [
           '2800K–3200K isti təbii işıq spektri fotolarda dərini parlaq və canlı göstərir',
@@ -1066,7 +1111,7 @@ export const INITIAL_ARTICLES: Article[] = [
       },
       {
         id: 'qonaq-axini-logistika',
-        title: '5. Qonaq Axını və Məkanda Yerləşdirmə Logistikası',
+        title: '6. Qonaq Axını və Məkanda Yerləşdirmə Logistikası',
         content: 'Fotozona ziyafət zalının ən aktiv nöqtələrindən biridir. Fotoqrafın rahat işləməsi üçün fotozonanın qarşısında ən azı 3–4 metr sərbəst çəkiliş məsafəsi olmalıdır.',
         bulletPoints: [
           'Ofisiantların xidmət qapılarından və mətbəx çıxışından uzaqda yerləşməlidir',
@@ -1076,7 +1121,7 @@ export const INITIAL_ARTICLES: Article[] = [
       },
       {
         id: 'yoxlama-siyahisi-fotozona',
-        title: '6. Fotozona Seçimində Addım-Addım Yoxlama Siyahısı',
+        title: '7. Fotozona Seçimində Addım-Addım Yoxlama Siyahısı',
         content: 'Fotozona sifariş edərkən bu meyarları ardıcıllıqla yoxlamağınız tövsiyə olunur:',
         bulletPoints: [
           'Məkanın tavan hündürlüyünü və divar enini dəqiq ölçün',
@@ -1086,6 +1131,10 @@ export const INITIAL_ARTICLES: Article[] = [
       }
     ],
     faqs: [
+      {
+        question: 'Mağaza və ya obyekt açılışı üçün fotozona necə olmalıdır?',
+        answer: 'Açılış fotozonası parıltısız mat press-wall lövhəsi üzərində şirkət loqosu və şüarı ilə hazırlanır, brend rənglərində şar və ya çiçək kompozisiyası ilə tamamlanır. Flaş parıltısının qarşısını almaq üçün mat örtükdən istifadə edilməlidir.'
+      },
       {
         question: 'Qrup şəkillərinin rahat çəkilməsi üçün fotozonanın minimum ölçüsü nə qədər olmalıdır?',
         answer: '5–8 nəfərlik ailə və dost qruplarının rahat kadra sığması üçün fotozonanın eni ən azı 2.8–3 metr, hündürlüyü isə 2.4 metr olmalıdır.'
@@ -1108,6 +1157,11 @@ export const INITIAL_ARTICLES: Article[] = [
       }
     ],
     relatedServices: [
+      {
+        title: 'Mağaza Açılış Dekoru',
+        slug: 'magaza-acilis-dekoru',
+        description: 'Brend loqolu fotozona, fasad şar tağları və qırmızı lent kəsmə guşəsi.'
+      },
       {
         title: 'Toy Dekoru Xidməti',
         slug: 'toy-dekoru',

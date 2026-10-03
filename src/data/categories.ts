@@ -501,12 +501,14 @@ export const CATEGORIES: CategoryInfo[] = [
       'Səhnə arxa fonu, kürsü bəzəyi və təqdimat zonası dekoru',
       'VIP qonaq masaları üçün zövqlü floristika və şam kompozisiyaları',
       'Tədbir zalı üçün tematik işıqlandırma həlləri',
-      'Bank köçürməsi, elektron qaimə və rəsmi müqavilə ilə xidmət'
+      'Bank köçürməsi, elektron qaimə və rəsmi müqavilə ilə xidmət',
+      'Yeni mağaza, butik və ya filial açılışları üçün zövqlü [Mağaza Açılış Dekoru](/magaza-acilis-dekoru) tərtibatı'
     ],
     suitableFor: [
       'Şirkətlərin illik yubileyləri və yeni il qala gecələri',
       'Beynəlxalq konfranslar, forumlar və rəsmi təqdimatlar',
-      'Məhsul lansmanı və mətbuat qarşılamaları'
+      'Məhsul lansmanı, mətbuat qarşılamaları və brend aktivasiyaları',
+      'Pərakəndə mağaza və ya filial açılışları zamanı xüsusi [Mağaza Açılış Dekoru](/magaza-acilis-dekoru) tələb edən bizneslər'
     ],
     planningProcess: [
       {
@@ -554,6 +556,10 @@ export const CATEGORIES: CategoryInfo[] = [
       {
         question: 'Bakı və regionlarda korporativ layihələr icra olunur?',
         answer: 'Bəli. Bakı otelləri və konqres mərkəzləri ilə yanaşı Qəbələ, Şamaxı və digər bölgələrdəki korporativ qala gecələri icra edilir.'
+      },
+      {
+        question: 'Şirkətin yeni mağaza və ya filial açılışı üçün ayrıca dekor xidməti var?',
+        answer: 'Bəli. Ticarət obyektləri, butiklər, salonlar və yeni filialların açılışında giriş qapılarının şarla bəzədilməsi, şar tağı və qırmızı lent kəsimi üçün birbaşa [Mağaza Açılış Dekoru](/magaza-acilis-dekoru) xidmətimiz fəaliyyət göstərir. Bu bölməmiz isə rəsmi korporativ qala gecələr, konfranslar, forumlar və brendinq təqdimatlarına fokuslanmışdır.'
       }
     ],
     pricingFactors: {
@@ -1078,23 +1084,125 @@ export const CATEGORIES: CategoryInfo[] = [
     slug: 'magaza-acilis-dekoru',
     canonicalSlug: 'magaza-acilis-dekoru',
     heroImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
-    shortDescription: 'Mağazaların və ticarət məkanlarının təntənəli açılışı üçün giriş tağları, qırmızı lent kəsimi və brend fotozonalar.',
-    seoH1: 'Mağaza Açılış Dekoru və Təntənəli Açılış Tərtibatı',
-    seoIntroduction: 'DreamArt Weddings yeni açılan mağazalar, butiklər, salonlar və kommersiya məkanları üçün diqqətçəkən mağaza açılış dekoru həlləri təqdim edir. Giriş üçün zərif şar və çiçək tağları, təntənəli qırmızı lent kəsimi guşəsi, brend loqolu foto divar və vitrin bəzəyi ilə açılış gününüz möhtəşəm hadisəyə çevrilir.',
-    metaTitle: 'Mağaza Açılış Dekoru və Təntənəli Açılış Xidməti Bakı | DreamArt Weddings',
-    metaDescription: 'Bakı və regionlarda mağaza açılış dekoru, giriş tağı, şar və çiçək instalyasiyaları, qırmızı lent kəsimi və brend fotozona. Sifariş: 050 231 17 28.',
+    shortDescription: 'Mağazaların və ticarət məkanlarının təntənəli açılışı üçün giriş şar tağları, qapı bəzədilməsi, qırmızı lent kəsimi və loqolu brend fotozonalar.',
+    seoH1: 'Mağaza və Obyekt Açılış Dekoru | Zövqlü Giriş Şar Tağları və Brend Tərtibatı',
+    seoIntroduction: 'DreamArt Weddings yeni açılan mağazalar, butiklər, gözəllik salonları, restoranlar, apteklər və ofislər üçün diqqətçəkən mağaza və obyekt açılış dekoru həlləri təqdim edir. Giriş qapılarının brend rənglərində şarla bəzədilməsi, möhtəşəm şar tağı, təntənəli lent kəsmə guşəsi və loqolu brend fotozona ilə açılış gününüz müştəri axını cəlb edən unudulmaz hadisəyə çevrilir.',
+    metaTitle: 'Mağaza və Obyekt Açılış Dekoru Bakı | Şar Tağı, Fotozona və Lent Kəsimi | DreamArt Weddings',
+    metaDescription: 'Bakı və regionlarda mağaza, butik, salon və obyekt açılış dekoru. Giriş qapılarının şarla bəzədilməsi, şar tağı, loqolu fotozona və lent kəsmə guşəsi. Əlaqə: 050 231 17 28.',
     whatIncluded: [
-      'Mağaza girişi üçün zərif üzvi şar tağı və ya premium çiçək karkas kompozisiyası',
-      'Təntənəli qırmızı lent kəsimi guşəsi (qızılı postamentlər, qırmızı məxmər kəndirlər, qızılı qayçı və nimçə)',
-      'Mağaza brendi və loqosu ilə fərdi fotosessiya divarı (Press-wall / Photo wall)',
-      'Vitrin və fasad tərtibatı üçün xüsusi dekorativ elementlər və lent aksessuarları',
-      'Qonaqlar və müştərilər üçün foye/resepsiya qarşılama stendləri',
+      'Mağaza və obyekt girişi üçün üzvi şar tağı və ya brend rənglərində klassik spiral şar kompozisiyası',
+      'Giriş qapılarının perimetr boyunca şarla bəzədilməsi və fasad vizuallığının artırılması',
+      'Təntənəli qırmızı lent kəsimi guşəsi (qızılı postamentlər, qırmızı məxmər kəndirlər, qızılı qayçılar, atlas yastıq və lent)',
+      'Brend loqosu və açılış şüarı ilə fərdiləşdirilmiş parıltısız mat fotozona (Press-wall / Photo wall)',
+      'Vitrin və fasad tərtibatı üçün brend rənglərində zərif çiçək və lent detalları',
       'Vaxtında məkana çatdırılma, açılış saatından əvvəl montaj və tədbir sonrası operativ sökülmə'
     ],
     suitableFor: [
-      'Yeni açılan butik, mağaza, gözəllik salonu, klinika və kafe/restoranlar',
-      'Şəbəkə mağazaların filial açılışları və brendin yenilənməsi (rebranding) mərasimləri',
-      'Mövsümi endirim və xüsusi tanıtım günlərində müştəri diqqətini cəlb etmək istəyən bizneslər'
+      'Yeni açılan mağaza, butik, gözəllik salonu, restoran, kafe, aptek, klinika və ofislər',
+      'Şəbəkə ticarət mərkəzlərində və mərkəzi küçələrdə yeni filial açılışı və rebrendinq tədbirləri',
+      'Biznes açılışı və xüsusi tanıtım günlərində piyada və alıcı diqqətini dərhal cəlb etmək istəyən brendlər'
+    ],
+    richSections: [
+      {
+        id: 'sar-dekoru',
+        h2: 'Mağaza və Obyekt Açılışı üçün Şar Dekoru',
+        badge: 'GİRİŞ VƏ FASAD İNSTALYASİYASI',
+        lead: 'Yeni bir mağaza, butik, salon, restoran, aptek və ya ofis açarkən ilk günün ən vacib hədəfi ətrafdan keçən piyadaların və potensial müştərilərin diqqətini obyektinizə yönəltməkdir. Mağaza və obyekt açılışı üçün şar dekoru fasadın uzaqdan dərhal seçilməsini təmin edən ən cəlbedici vizual vasitədir.',
+        paragraphs: [
+          'DreamArt Weddings olaraq biznes açılışı dekoru çərçivəsində obyektin fasad memarlığına tam uyğunlaşdırılmış açılış üçün şar dekoru həlləri təqdim edirik. Şirkətinizin korporativ brend rənglərində hazırlanan şar kompozisiyaları həm ticarət mərkəzlərinin daxilindəki pavilyonlarda, həm də şəhərin aktiv küçələrində yerləşən yeni mağaza açılışlarında möhtəşəm ab-hava yaradır.',
+          'Açılış üçün şar kompozisiyaları sadə şar düzülüşü deyil; bu, brendinizin peşəkar imicini və təntənəsini əks etdirən dizayndır. Vitrin şüşələrinin görüntüsünü örtmədən, vitrindəki yeni məhsulları çərçivəyə salaraq alıcı axınını birbaşa girişə yönləndiririk.'
+        ],
+        bulletPoints: [
+          'Brend rənglərində xrom, pastel və metallik şar kompozisiyaları',
+          'Vitrinin və fasadın fərdi ölçülərinə uyğun xüsusi karkaslı və ya karkassız montaj',
+          'Küçə mağazaları, ticarət mərkəzi filialları və biznes mərkəzləri üçün uyğunluq',
+          'Açılış saatından əvvəl dəqiq montaj və küləyə qarşı dayanıqlı bərkitmə'
+        ],
+        callout: 'İstər butik açılışı dekoru, istər gözəllik salonu, aptek və ya restoran açılışı olsun — hər bir obyekt növü üçün piyada hərəkət istiqamətinə uyğun fərdi şar dekorasiyası dizayn olunur.',
+        ctaText: 'Açılış şar dekoru təklifi al',
+        ctaAction: 'whatsapp',
+        ctaPrefill: 'Salam, mağaza və ya obyekt açılışımız üçün şar dekoru təklifi almaq istəyirəm.'
+      },
+      {
+        id: 'qapi-giris-sar',
+        h2: 'Qapı və Girişlərin Şarla Bəzədilməsi',
+        badge: 'QAPI ÇƏRÇİVƏSİ VƏ ŞAR TAĞI',
+        lead: 'Qapıların şarla bəzədilməsi mağaza və obyekt açılışlarında ən çox tələb olunan dekor elementidir. Müştəri obyektə yaxınlaşarkən ilk olaraq giriş qapısını və onu əhatə edən zövqlü şar tağını görür.',
+        paragraphs: [
+          'Mağaza qapısının şarla bəzədilməsində əsas meyar vizual estetika ilə bərabər təhlükəsizlik və erqonomikadır: quraşdırılan şar tağı və ya asimmetrik şar instalyasiyası müştərilərin və qonaqların sərbəst hərəkətinə mane olmamalı, avtomatik sensorlu və ya mexaniki şüşə qapıların açılıb-bağlanmasını məhdudlaşdırmamalıdır.',
+          'Giriş qapısının şarla bəzədilməsi zamanı həm simmetrik klassik spiral şar tağı, həm də müasir üzvi (organic) asimmetrik kompozisiyalar tətbiq olunur. Asimmetrik kompozisiyalarda müxtəlif diametrli şarlardan istifadə edilərək qapının bir küncündən vitrin boyunca axan dinamik vizual xətt yaradılır ki, bu da butik, salon və kafelərdə xüsusilə dəbli görünür.'
+        ],
+        bulletPoints: [
+          'Giriş qapısının konturunu zərif çərçivəyə alan karkaslı şar tağları',
+          'Müxtəlif diametrli şarlardan ibarət müasir üzvi asimmetrik instalyasiyalar',
+          'Piyada və alıcı axınının rahat daxil olması üçün minimum 2.2 metr təmiz keçid hündürlüyü',
+          'Qapı konstruksiyasına və şüşə fasada zərər verməyən xüsusi qoruyucu montaj'
+        ],
+        callout: 'Giriş üçün şar dekoru seçərkən qapının eni və küçənin külək istiqaməti əvvəlcədən nəzərə alınır, qapı çərçivəsinə elastik dayanıqlı bərkidicilər tətbiq olunur.',
+        ctaText: 'Qapı üçün şar tağı sifarişi',
+        ctaAction: 'whatsapp',
+        ctaPrefill: 'Salam, mağaza qapısının şarla bəzədilməsi və şar tağı üçün məlumat almaq istəyirəm.'
+      },
+      {
+        id: 'fotozona-brend',
+        h2: 'Açılış üçün Fotozona və Brend Dekoru',
+        badge: 'BRENDİNQ VƏ FOTOSESSİYA ZONASI',
+        lead: 'Açılış gününün ən böyük marketinq dəyəri həmin gün çəkilən foto və videoların sosial şəbəkələrdə, mediada və qonaqların profillərində paylaşılmasıdır. Buna görə də açılış üçün fotozona tədbirin əsas cazibə mərkəzidir.',
+        paragraphs: [
+          'DreamArt Weddings şirkətinizin loqotipi, sloqanı və korporativ rəngləri ilə fərdiləşdirilmiş loqolu fotozona və press-wall konstruksiyaları hazırlayır. Metal karkas üzərində quraşdırılan mat materiallar çəkiliş zamanı flaş işığını əks etdirmir və qonaqların, bloqerlərin və ilk alıcıların kadrlarda möhtəşəm görünməsini təmin edir.',
+          'Brend fotozona dizaynını brend rənglərində şar klasterləri, neon loqo lövhələri və ya zərif canlı/süni çiçək vurğuları ilə tamamlayırıq. Bu, həm açılış günü canlı bayram ab-havası yaradır, həm də brendinizin yaddaşlarda dəbdəbəli və peşəkar qalmasına xidmət edir.'
+        ],
+        bulletPoints: [
+          'Şirkət loqosu və korporativ rənglərində parıltısız mat press-wall lövhəsi',
+          'Foto və video çəkilişlər üçün ideal 2.4m x 3.0m proporsiyalı karkas',
+          'Brend rənglərində zərif şar və gül toxunuşları ilə zənginləşdirilmiş kompozisiya',
+          'Sosial media və media nümayəndələri üçün xüsusi işıqlandırılmış çəkiliş nöqtəsi'
+        ],
+        callout: 'Fotozona ideyaları və çəkiliş erqonomikası haqqında daha ətraflı məsləhətlər üçün [Fotozona Dekoru İdeyaları](/meqaleler/fotozona-dekoru-ideyalari) bələdçimizlə tanış ola bilərsiniz.',
+        ctaText: 'Brend fotozona üçün qiymət al',
+        ctaAction: 'whatsapp',
+        ctaPrefill: 'Salam, mağaza açılışımız üçün brend loqolu fotozona sifarişi vermək istəyirəm.'
+      },
+      {
+        id: 'lent-kesme',
+        h2: 'Lent Kəsmə və Qarşılama Zonası',
+        badge: 'RƏSMİ MƏRASİM PROTOKOLU',
+        lead: 'Açılış gününün ən təntənəli və protokol anı qırmızı lent kəsmə mərasimidir. Qonaqların və mətbuatın qarşısında icra olunan lent kəsmə dekoru rəsmi tədbirin ciddiyyətini və estetik təqdimatını yüksək səviyyəyə qaldırır.',
+        paragraphs: [
+          'Açılış üçün lent kəsmə zonası komplekt halında təmin edilir: parlaq qızılı postament dayaqları, qırmızı və ya qızılı məxmər kəndirlər, zərli dekorativ qayçılar, məxmər örtüklü təqdimat nimçələri və üzərində brend loqosu tətbiq oluna bilən atlas lent.',
+          'Giriş pilləkənləri və ya qapı önünə salınan qırmızı xalça qonaqların qarşılanma estetikasını tamamlayır. Rəsmi şəxslər və təsisçilər lenti kəsdikdən dərhal sonra qonaq axını daxili salona dəvət olunur və açılış proqramı maneəsiz davam edir.'
+        ],
+        bulletPoints: [
+          'Qızılı dayaqlı kəndir baryerlər (stanchions) və məxmər örtük',
+          'Zərli bəzəkli mərasim qayçıları və məxmər yastıqlı təqdimat nimçəsi',
+          'Brendin tələbinə uyğun enli atlas və ya loqolu açılış lenti',
+          'Giriş zonası üçün premium qırmızı və ya qızılı qarşılama xalçası'
+        ],
+        callout: 'Açılış giriş dekoru və lent kəsmə guşəsi mərasim saatından 2 saat əvvəl tam hazır vəziyyətə gətirilir və mərasim başa çatdıqdan sonra operativ şəkildə toplanır.',
+        ctaText: 'Lent kəsmə guşəsi sifariş et',
+        ctaAction: 'whatsapp',
+        ctaPrefill: 'Salam, açılış üçün lent kəsmə dəsti və xalça icarəsi üçün qiymət öyrənmək istəyirəm.'
+      },
+      {
+        id: 'planlama-rehberi',
+        h2: 'Mağaza Açılışı Dekoru Necə Planlanır?',
+        badge: 'PRAKTİKİ PLANLAMA VƏ SMETA',
+        lead: 'Uğurlu açılış dekorasiyası dəqiq vaxt bölgüsü, məkanın texniki analizi və brend identikliyinin düzgün əks olunmasından asılıdır. Təcrübəmizə əsaslanan əsas praktiki planlama qaydaları:',
+        paragraphs: [
+          '1. Məkan və Fasad Ölçüləri: Giriş qapısının eni, hündürlüyü və vitrin şüşəsinin sahəsi dəqiq ölçülür. Şar tağının ölçüləri qapının açılış bucağına uyğunlaşdırılır.\n2. Brend Rəngləri və Loqo Görünüşü: Şirkətinizin brand-book tələblərinə uyğun Pantone kodları ilə şarların və bannerin rəngləri dəqiqləşdirilir. Loqo piyada və avtomobil hərəkəti baxış bucağından dərhal oxunmalıdır.\n3. Montaj Saatı və Qrafik: Ticarət mərkəzlərində quraşdırma adətən gecə saatlarında (00:00–06:00), küçə obyektlərində isə səhər açılışdan 2–3 saat əvvəl tamamlanır.',
+          '4. Piyada Axını və Çəkiliş Bucağı: Dekorasiya müştərilərin giriş-çıxışına mane olmamalı, fotozona isə həm gün işığını, həm də çəkiliş işıqlandırmasını düzgün qəbul etməlidir.\n5. Hava Şəraiti: Açıq havada küçə mağazalarında Bakının güclü küləyi nəzərə alınaraq gizli ağırlıq blokları və elastik bərkidicilər istifadə olunur.\n6. Şəffaf Qiymətləndirmə: Mağaza açılışı dekoru qiyməti və şar dekoru qiyməti fasadın metrajına, şar kompozisiyasının növünə, fotozona ölçüsünə və lent kəsmə atributlarına əsasən fərdi, şəffaf smeta ilə formalaşdırılır (sabit saxta qiymətlər tətbiq olunmur).'
+        ],
+        bulletPoints: [
+          'Fasad ölçülərinə və piyada hərəkət istiqamətinə uyğun konsept',
+          'Brend rənglərinə 100% dəqiq uyğunlaşdırılmış şar və loqo palitrası',
+          'Ticarət mərkəzinin iş qrafikinə uyğun gecə və ya səhər tezdən montaj',
+          'Küləyə davamlı təhlükəsiz bərkitmə və operativ sökülmə zəmanəti'
+        ],
+        callout: 'Planlamanın hər bir detalı haqqında addım-addım bələdçi üçün [Mağaza Açılışı Dekoru Necə Planlanır?](/meqaleler/magaza-acilis-dekoru-nece-planlanir) məqaləmizi oxuya bilərsiniz. Böyük miqyaslı şirkət tədbirləri və qala gecələri üçün isə [Korporativ Tədbir Dekoru](/korporativ-dekor) xidmətimiz fəaliyyət göstərir.',
+        ctaText: 'Mağaza və ya obyekt açılışınız üçün dekor təklifi alın',
+        ctaAction: 'whatsapp',
+        ctaPrefill: 'Mağaza və ya obyekt açılışınız üçün dekor təklifi alın'
+      }
     ],
     planningProcess: [
       {
@@ -1119,39 +1227,43 @@ export const CATEGORIES: CategoryInfo[] = [
       }
     ],
     geoDirectAnswer: {
-      question: 'Mağaza açılışı üçün dekor hazırlanır?',
-      answer: 'Bəli. DreamArt Weddings mağazaların, butiklərin, salon və ofislərin təntənəli açılışı üçün giriş tağları, şar-çiçək instalyasiyaları, qırmızı lent guşəsi və brend fotozonalar hazırlayır. Əlaqə: 050 231 17 28.'
+      question: 'Mağaza və obyekt açılışı üçün dekor hazırlanır?',
+      answer: 'Bəli. DreamArt Weddings mağazaların, butiklərin, salon, aptek, restoran və ofislərin təntənəli açılışı üçün giriş şar tağları, qapı bəzədilməsi, qırmızı lent kəsmə guşəsi və brend loqolu fotozonalar hazırlayır. Əlaqə: 050 231 17 28.'
     },
     directAnswers: [
       {
-        question: 'Mağaza açılışı üçün dekor hazırlanır?',
-        answer: 'Bəli. DreamArt Weddings mağazaların, butiklərin, salon və ofislərin təntənəli açılışı üçün giriş tağları, şar-çiçək instalyasiyaları, qırmızı lent guşəsi və brend fotozonalar hazırlayır.'
+        question: 'Mağaza və obyekt açılışı üçün şar dekoru hazırlanır?',
+        answer: 'Bəli. Mağazaların, butiklərin, salonların, restoran və ofislərin təntənəli açılışı üçün brend rənglərində giriş şar tağları, qapı bəzəyi və fasad kompozisiyaları hazırlanır.'
+      },
+      {
+        question: 'Qapıların şarla bəzədilməsi necə həyata keçirilir?',
+        answer: 'Giriş qapısının perimetri boyunca klassik spiral və ya müasir üzvi asimmetrik şar tağı quraşdırılır. Qapının açılıb-bağlanmasına və müştəri axınına mane olmamaq üçün minimum 2.2 metr təmiz keçid saxlanılır.'
       },
       {
         question: 'Qırmızı lent kəsimi ləvazimatları təmin edilir?',
-        answer: 'Bəli. Qızılı dirəklər, qırmızı məxmər kəndirlər, qızılı qayçılar və atlas yastıqça açılış dəstimizə daxildir.'
+        answer: 'Bəli. Qızılı dirəklər, qırmızı məxmər kəndirlər, qızılı qayçılar, məxmər yastıq və atlas açılış lenti komplekt şəkildə təmin edilir.'
+      },
+      {
+        question: 'Mağaza açılış dekorunun qiyməti necə müəyyən edilir?',
+        answer: 'Fasadın eninə, giriş tağının metrajına, şar kompozisiyasının növünə, fotozona ölçüsünə və açılış atributlarının həcminə əsasən şəffaf fərdi smeta ilə hesablanır.'
+      },
+      {
+        question: 'Səhər tezdən və ya gecə montaj tamamlana bilər?',
+        answer: 'Bəli. Ticarət mərkəzinin və ya küçə mağazasının iş rejiminə uyğun olaraq gecə (00:00–06:00) və ya açılış saatından 2-3 saat əvvəl montaj tam hazır təhvil verilir.'
       },
       {
         question: 'Bakı və regionlarda açılış dekoru sifariş etmək olar?',
         answer: 'Bəli. Bakı və Abşeronla yanaşı Sumqayıt, Qəbələ, Gəncə, Bərdə və digər şəhərlərdə açılan ticarət obyektləri üçün quraşdırma həyata keçirilir.'
-      },
-      {
-        question: 'Mağaza açılış dekorunun qiyməti necə müəyyən edilir?',
-        answer: 'Fasadın eninə, giriş tağının formasına (şar və ya canlı çiçək), fotozona ölçüsünə və açılış atributlarının həcminə əsasən fərdi smeta ilə hesablanır.'
-      },
-      {
-        question: 'Səhər tezdən açılışa qədər montaj tamamlana bilər?',
-        answer: 'Bəli. Ticarət mərkəzinin və ya mağazanın iş rejiminə uyğun olaraq səhər açılış saatından 2-3 saat əvvəl montaj tam hazır təhvil verilir.'
       }
     ],
     pricingFactors: {
       title: 'Mağaza Açılış Dekoru Qiymətini Formalaşdıran Amillər',
-      intro: 'Ticarət obyektinin açılış miqyası və seçilən atributlara uyğun şəffaf smeta tərtib edilir:',
+      intro: 'Ticarət obyektinin açılış miqyası və seçilən atributlara uyğun şəffaf fərdi smeta tərtib edilir (sabit saxta qiymətlər tətbiq olunmur):',
       factors: [
-        { title: 'Giriş Tağının Ölçüsü və Tərkibi', description: 'Fasadın eninə uyğun üzvi şar girlandası və ya premium metal karkaslı canlı/süni gül tağı.' },
-        { title: 'Qırmızı Lent Kəsim Guşəsi', description: 'Qızılı dirəklər, məxmər kəndirlər, xüsusi lent, brend qayçılar və təqdimat nimçələri.' },
-        { title: 'Brend Foto Divar (Press-wall)', description: 'Şirkət loqosu və açılış sloqanı çap olunmuş metal konstruksiyalı fotozona.' },
-        { title: 'Vitrin və Fasad Bəzəyi', description: 'Vitrin şüşələrinin brend lentləri və çiçək elementləri ilə tamamlanması.' },
+        { title: 'Giriş Tağının Ölçüsü və Tərkibi', description: 'Giriş qapısının metrajına uyğun klassik spiral və ya premium üzvi asimmetrik şar girlandası.' },
+        { title: 'Qırmızı Lent Kəsim Guşəsi', description: 'Qızılı postamentlər, məxmər kəndirlər, xüsusi lent, brend qayçılar və təqdimat nimçələri.' },
+        { title: 'Brend Foto Divar (Press-wall)', description: 'Şirkət loqosu və açılış sloqanı çap olunmuş metal konstruksiyalı parıltısız mat fotozona.' },
+        { title: 'Vitrin və Fasad Bəzəyi', description: 'Vitrin şüşələrinin brend rənglərində lentlər və çiçək elementləri ilə tamamlanması.' },
         { title: 'Montaj Saatı və Logistika', description: 'Gecə və ya səhər tezdən açılışa qədər operativ montaj və açılışdan sonra sökülmə.' }
       ],
       ctaLabel: 'Qiymət təklifi al'
@@ -1159,27 +1271,31 @@ export const CATEGORIES: CategoryInfo[] = [
     relatedDecorIds: ['decor-2', 'decor-5'],
     relatedVenueSlugs: ['meridian', 'by-meridian'],
     relatedCuratedLocalSlugs: ['baki', 'qebele', 'berde'],
-    whatsappPrefill: 'Salam, mağaza açılış dekoru və lent kəsimi üçün qiymət təklifi almaq istəyirəm.',
+    whatsappPrefill: 'Mağaza və ya obyekt açılışınız üçün dekor təklifi alın',
     faqs: [
       {
-        question: 'Mağaza açılışı üçün dekor hazırlanır?',
-        answer: 'Bəli. Mağazaların, butiklərin, salon və ofislərin açılışı üçün giriş tağları, şar-çiçək kompozisiyaları və lent kəsimi stendləri qurulur.'
+        question: 'Mağaza və obyekt açılışı üçün şar dekoru necə sifariş edilir?',
+        answer: 'Obyektinizin ünvanı, giriş qapısının ölçüləri, açılış tarixi və brendinizin rəngləri əsasında konsept hazırlanır və razılaşdırıldıqdan sonra montaj icra edilir.'
       },
       {
-        question: 'Qırmızı lent kəsimi dəsti icarəyə verilir?',
-        answer: 'Bəli. Qızılı dirəklər, qırmızı məxmər kəndirlər, qızılı qayçılar və açılış lenti tam şəkildə təmin edilir.'
+        question: 'Qapı və girişlərin şarla bəzədilməsi hansı formalarda hazırlanır?',
+        answer: 'Giriş qapısı üçün klassik spiral şar tağı və ya müasir üzvi (organic garland) asimmetrik kompozisiyalar hazırlanır. Müştəri keçidinə qətiyyən mane olmur.'
       },
       {
-        question: 'Gecə və ya səhər tezdən montaj mümkündür?',
-        answer: 'Bəli. Ticarət mərkəzləri və küçə mağazalarının qrafikinə uyğunlaşaraq tədbirdən 2-3 saat əvvəl montaj tamamlanır.'
-      },
-      {
-        question: 'Brend loqosu foto divara çap olunur?',
-        answer: 'Bəli. Şirkətin loqosu və açılış vizualları yüksək keyfiyyətli press-wall lövhəsinə tətbiq edilir.'
+        question: 'Açılış üçün loqolu fotozona və lent kəsmə guşəsi paketə daxildir?',
+        answer: 'Bəli. Tələbatınıza uyğun olaraq loqolu mat press-wall divarı, qızılı postamentlər, qırmızı məxmər kəndirlər, zərli qayçılar və lent təqdimat dəsti vahid paket halında təqdim edilir.'
       },
       {
         question: 'Mağaza açılış dekorunun qiyməti necə hesablanır?',
-        answer: 'Giriş qapısının ölçülərinə, şar kompozisiyasının uzunluğuna və fotozonanın miqyasına görə şəffaf fərdi smeta ilə hesablanır.'
+        answer: 'Giriş qapısının ölçülərinə, şar kompozisiyasının metrajına, fotozonanın ölçüsünə və lent kəsmə atributlarının həcminə görə şəffaf fərdi smeta ilə hesablanır.'
+      },
+      {
+        question: 'Şar dekorunda brendin rəsmi korporativ rənglərindən istifadə olunurmu?',
+        answer: 'Bəli. Brendinizin rəsmi rəng palitrasına (Pantone/CMYK) 100% uyğunlaşdırılmış keyfiyyətli lateks, xrom və pastel şarlardan istifadə olunur.'
+      },
+      {
+        question: 'Gecə və ya səhər tezdən açılışa qədər montaj tamamlana bilər?',
+        answer: 'Bəli. Ticarət mərkəzləri və küçə mağazalarının qrafikinə uyğunlaşaraq gecə saatlarında və ya tədbirdən 2-3 saat əvvəl montaj tam hazır təhvil verilir.'
       }
     ]
   }

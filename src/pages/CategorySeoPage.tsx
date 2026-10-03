@@ -74,6 +74,44 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
     return () => unsub();
   }, []);
 
+  const renderRichText = (text: string) => {
+    if (!text) return null;
+    const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
+    return parts.map((part, i) => {
+      const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      if (match) {
+        const [, label, url] = match;
+        if (url.startsWith('/')) {
+          return (
+            <a
+              key={i}
+              href={url}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(url);
+              }}
+              className="text-[#C5A059] underline hover:text-[#DFC17B] transition-colors font-medium"
+            >
+              {label}
+            </a>
+          );
+        }
+        return (
+          <a
+            key={i}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#C5A059] underline hover:text-[#DFC17B] transition-colors font-medium"
+          >
+            {label}
+          </a>
+        );
+      }
+      return <React.Fragment key={i}>{part}</React.Fragment>;
+    });
+  };
+
   const heroImage = getCategoryCoverImage(category);
   const cmsImgs = imageService.getImagesByTarget(category.slug, 'category_cover');
   const heroAlt = cmsImgs[0]?.altText || category.seoH1 || categoryProjects[0]?.imageAltText || `${category.name} - DreamArt Weddings`;
@@ -251,6 +289,108 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
                   </div>
                 </div>
               )}
+            </div>
+          </section>
+        )}
+
+        {/* Strengthened Rich Editorial & Commercial H2 Sections */}
+        {category.richSections && category.richSections.length > 0 && (
+          <section className="py-14 sm:py-20 bg-[#0E0E0E] border-b border-white/10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+              <div className="text-center max-w-3xl mx-auto mb-4">
+                <span className="text-[10px] uppercase tracking-[0.35em] text-[#C5A059] block mb-2 font-medium">
+                  ƏTRAFLI XİDMƏT VƏ TEXNİKİ TƏRTİBAT
+                </span>
+                <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-white font-normal">
+                  {category.name} üzrə Peşəkar Həllərimiz
+                </h2>
+                <div className="w-12 h-px bg-[#C5A059]/40 mx-auto mt-4" />
+              </div>
+
+              {category.richSections.map((sec, idx) => (
+                <div
+                  key={sec.id || idx}
+                  className="bg-[#121212] border border-white/10 hover:border-[#C5A059]/40 rounded-sm p-6 sm:p-8 lg:p-10 transition-colors shadow-xl"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    {sec.badge && (
+                      <span className="text-[10px] font-mono uppercase tracking-[0.25em] px-2.5 py-1 bg-[#C5A059]/15 text-[#E5C378] border border-[#C5A059]/30 rounded-sm inline-block w-fit">
+                        {sec.badge}
+                      </span>
+                    )}
+                    <span className="text-xs text-white/40 font-mono">0{idx + 1} / 0{category.richSections?.length}</span>
+                  </div>
+
+                  <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal mb-4">
+                    {sec.h2}
+                  </h2>
+
+                  {sec.lead && (
+                    <p className="text-sm sm:text-base text-white/90 font-light leading-relaxed mb-4">
+                      {renderRichText(sec.lead)}
+                    </p>
+                  )}
+
+                  {sec.paragraphs && sec.paragraphs.map((p, pIdx) => (
+                    <p key={pIdx} className="text-xs sm:text-sm text-white/75 font-light leading-relaxed mb-3">
+                      {renderRichText(p)}
+                    </p>
+                  ))}
+
+                  {sec.bulletPoints && sec.bulletPoints.length > 0 && (
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 my-5">
+                      {sec.bulletPoints.map((point, bpIdx) => (
+                        <li key={bpIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-white/80 font-light bg-[#171717] p-3.5 rounded-sm border border-white/5">
+                          <span className="w-4 h-4 rounded-full bg-[#C5A059]/20 text-[#C5A059] flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+                            ✓
+                          </span>
+                          <span>{renderRichText(point)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {sec.callout && (
+                    <div className="my-5 p-4 sm:p-5 rounded-sm bg-[#171510] border-l-4 border-[#C5A059] text-xs sm:text-sm text-[#E5C378] font-light leading-relaxed flex items-start gap-3">
+                      <Sparkles className="w-4 h-4 text-[#C5A059] shrink-0 mt-0.5" />
+                      <div>{renderRichText(sec.callout)}</div>
+                    </div>
+                  )}
+
+                  {sec.ctaText && (
+                    <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center gap-4">
+                      {sec.ctaAction === 'whatsapp' ? (
+                        <button
+                          onClick={() => {
+                            const text = sec.ctaPrefill || category.whatsappPrefill || 'Mağaza və ya obyekt açılışınız üçün dekor təklifi alın';
+                            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+                          }}
+                          className="bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-2.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors flex items-center gap-2 cursor-pointer shadow-md"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                          <span>{sec.ctaText}</span>
+                        </button>
+                      ) : sec.ctaAction === 'link' && sec.ctaLink ? (
+                        <button
+                          onClick={() => navigate(sec.ctaLink!)}
+                          className="bg-[#1A1A1A] hover:bg-[#C5A059] hover:text-[#0B0B0B] text-[#C5A059] border border-[#C5A059]/40 px-5 py-2.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors flex items-center gap-2 cursor-pointer"
+                        >
+                          <span>{sec.ctaText}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => onOpenQuoteModal(`${category.name} - ${sec.h2}`)}
+                          className="bg-[#C5A059] hover:bg-[#D4AF37] text-[#0B0B0B] px-5 py-2.5 rounded-sm text-xs font-medium tracking-wide uppercase transition-colors flex items-center gap-2 cursor-pointer"
+                        >
+                          <span>{sec.ctaText}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </section>
         )}

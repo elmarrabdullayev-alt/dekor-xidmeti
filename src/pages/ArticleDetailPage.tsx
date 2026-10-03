@@ -94,6 +94,44 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const whatsappMessage = `Salam, DreamArt Weddings! "${article.title}" məqalənizi oxudum və bu mövzuda tədbir dekorasiyası üçün məsləhət almaq istəyirəm.`;
   const whatsappUrl = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
+  const renderRichText = (text: string) => {
+    if (!text) return null;
+    const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
+    return parts.map((part, i) => {
+      const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      if (match) {
+        const [, label, url] = match;
+        if (url.startsWith('/')) {
+          return (
+            <a
+              key={i}
+              href={url}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(url);
+              }}
+              className="text-[#C5A059] underline hover:text-[#DFC17B] transition-colors font-medium"
+            >
+              {label}
+            </a>
+          );
+        }
+        return (
+          <a
+            key={i}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#C5A059] underline hover:text-[#DFC17B] transition-colors font-medium"
+          >
+            {label}
+          </a>
+        );
+      }
+      return <React.Fragment key={i}>{part}</React.Fragment>;
+    });
+  };
+
   return (
     <div className="bg-[#0B0B0B] text-[#EAEAEA] min-h-screen">
       <SeoHead
@@ -198,7 +236,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <span>Qısa və Aydın Cavab</span>
             </div>
             <p className="text-sm sm:text-base text-[#FAF8F5] leading-relaxed font-light">
-              {article.directAnswer}
+              {renderRichText(article.directAnswer)}
             </p>
           </div>
         )}
@@ -212,7 +250,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </h2>
 
               <p className="text-sm sm:text-base leading-relaxed text-white/80 font-light">
-                {section.content}
+                {renderRichText(section.content)}
               </p>
 
               {section.bulletPoints && section.bulletPoints.length > 0 && (
@@ -220,7 +258,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                   {section.bulletPoints.map((point, pIdx) => (
                     <li key={pIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-white/75 font-light">
                       <CheckCircle2 className="w-4 h-4 text-[#C5A059] shrink-0 mt-0.5" />
-                      <span>{point}</span>
+                      <span>{renderRichText(point)}</span>
                     </li>
                   ))}
                 </ul>
@@ -228,7 +266,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
 
               {section.callout && (
                 <div className="my-5 p-4 rounded-sm bg-[#151515] border border-[#C5A059]/30 text-xs sm:text-sm text-[#E5C378] italic leading-relaxed">
-                  {section.callout}
+                  {renderRichText(section.callout)}
                 </div>
               )}
 
@@ -240,14 +278,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                         {sub.title}
                       </h3>
                       <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed">
-                        {sub.content}
+                        {renderRichText(sub.content)}
                       </p>
                       {sub.bulletPoints && (
                         <ul className="space-y-1.5 pt-1">
                           {sub.bulletPoints.map((bp, bpIdx) => (
                             <li key={bpIdx} className="text-xs text-white/70 flex items-center gap-2">
                               <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059]" />
-                              <span>{bp}</span>
+                              <span>{renderRichText(bp)}</span>
                             </li>
                           ))}
                         </ul>

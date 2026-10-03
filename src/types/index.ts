@@ -69,6 +69,20 @@ export interface CategorySubSection {
   ctaText?: string;
 }
 
+export interface CategoryRichSection {
+  id?: string;
+  h2: string;
+  badge?: string;
+  lead?: string;
+  paragraphs: string[];
+  bulletPoints?: string[];
+  callout?: string;
+  ctaText?: string;
+  ctaAction?: 'whatsapp' | 'quote' | 'link';
+  ctaLink?: string;
+  ctaPrefill?: string;
+}
+
 export interface CategoryPricingFactorInfo {
   title: string;
   intro: string;
@@ -94,6 +108,7 @@ export interface CategoryInfo {
   geoDirectAnswer?: GeoDirectAnswer;
   directAnswers?: GeoDirectAnswer[];
   subSections?: CategorySubSection[];
+  richSections?: CategoryRichSection[];
   pricingFactors?: CategoryPricingFactorInfo;
   relatedDecorIds?: string[];
   relatedProjectSlugs?: string[];
