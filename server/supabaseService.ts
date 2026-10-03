@@ -99,6 +99,8 @@ export function getStructuredStorageKey(
 
   if (cleanSection === 'home_hero' || cleanTarget.startsWith('hero-slide')) {
     baseFolder = 'home/hero';
+  } else if (cleanSection === 'hero_mobile' || cleanTarget.startsWith('hero-mobile')) {
+    baseFolder = 'home/hero-mobile';
   } else if (cleanSection === 'decor_project') {
     baseFolder = `decor/${cleanTarget || 'project'}`;
   } else if (cleanSection === 'venue_project') {
@@ -509,7 +511,7 @@ export async function replaceImageInSupabase(
     }
   }
 
-  const isHero = existingGroup === 'home_hero';
+  const isHero = existingGroup === 'home_hero' || existingGroup === 'hero_mobile';
   const processed = await processImageWithSharp(
     rawBuffer,
     existingTargetName || existingTarget,

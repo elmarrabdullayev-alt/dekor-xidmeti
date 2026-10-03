@@ -166,6 +166,7 @@ export interface VenueItem {
 
 export type ImageSection =
   | 'home_hero'
+  | 'hero_mobile'
   | 'category_cover'
   | 'decor_project'
   | 'venue_project'

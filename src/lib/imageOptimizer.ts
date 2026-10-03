@@ -36,6 +36,8 @@ export function generateSuggestedFilename(
   switch (section) {
     case 'home_hero':
       return `dreamart-events-hero-${cleanTarget}-${pad}.webp`;
+    case 'hero_mobile':
+      return `dreamart-events-mobile-hero-${cleanTarget}-${pad}.webp`;
     case 'category_cover':
       return `dreamart-${cleanTarget}-qapaq-${pad}.webp`;
     case 'decor_project':
@@ -68,6 +70,8 @@ export function generateSuggestedAltText(
   switch (section) {
     case 'home_hero':
       return `DreamArt Events ${name} əsas banner tərtibatı`;
+    case 'hero_mobile':
+      return `DreamArt Events ${name} mobil banner tərtibatı`;
     case 'category_cover':
       return `DreamArt Events ${name} örtük şəkli`;
     case 'decor_project':

@@ -13,6 +13,7 @@ interface HeroSlide {
   id: string;
   image: string;
   fallbackUrl: string;
+  mobileImage?: string;
   title: string;
   subtitle: string;
   alt: string;
@@ -50,6 +51,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
   const [cmsHeroImages, setCmsHeroImages] = useState<ManagedImage[]>(() =>
     imageService.getImagesBySection('home_hero')
   );
+  const [cmsMobileHeroImages, setCmsMobileHeroImages] = useState<ManagedImage[]>(() =>
+    imageService.getImagesBySection('hero_mobile')
+  );
   // Track loaded slide indices to ensure only active hero slide loads initially (saving network payload)
   const [loadedSlideIndices, setLoadedSlideIndices] = useState<Set<number>>(() => new Set([0]));
   const touchStartX = useRef<number | null>(null);
@@ -57,43 +61,65 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
 
   // Subscribe to CMS changes and proactively fetch fresh data from server
   useEffect(() => {
+    const syncImages = () => {
+      setCmsHeroImages(imageService.getImagesBySection('home_hero'));
+      setCmsMobileHeroImages(imageService.getImagesBySection('hero_mobile'));
+    };
+
     // Sync with memory cache immediately
-    setCmsHeroImages(imageService.getImagesBySection('home_hero'));
+    syncImages();
 
     // Proactively fetch latest records from server (Supabase / disk) with cache-busting
     imageService.fetchImages().then((imgs) => {
       if (imgs && imgs.length > 0) {
-        setCmsHeroImages(imageService.getImagesBySection('home_hero'));
+        syncImages();
       }
     });
 
-    const unsub = imageService.subscribe(() => {
-      setCmsHeroImages(imageService.getImagesBySection('home_hero'));
-    });
+    const unsub = imageService.subscribe(syncImages);
     return () => unsub();
   }, []);
 
   // Compute slides prioritizing CMS images with cache-busting timestamp to prevent stale browser cache
   const activeSlides: HeroSlide[] = HERO_SLIDES.map((defaultSlide, idx) => {
+    // 1. Desktop match (strictly unchanged from existing logic)
     const cmsMatch =
       cmsHeroImages.find((img) => img.targetId === defaultSlide.id) ||
       cmsHeroImages.find((img) => img.order === idx) ||
       cmsHeroImages[idx];
 
+    let desktopUrl = defaultSlide.image;
+    let altText = defaultSlide.alt;
+
     if (cmsMatch && cmsMatch.url) {
       const timestamp = cmsMatch.updatedAt ? new Date(cmsMatch.updatedAt).getTime() : '';
-      const resolvedUrl = timestamp
+      desktopUrl = timestamp
         ? (cmsMatch.url.includes('?') ? `${cmsMatch.url}&_t=${timestamp}` : `${cmsMatch.url}?_t=${timestamp}`)
         : cmsMatch.url;
-
-      return {
-        ...defaultSlide,
-        image: resolvedUrl,
-        fallbackUrl: resolvedUrl,
-        alt: cmsMatch.altText || cmsMatch.alt || defaultSlide.alt,
-      };
+      altText = cmsMatch.altText || cmsMatch.alt || defaultSlide.alt;
     }
-    return defaultSlide;
+
+    // 2. Mobile match: independent slot hero-mobile-1, hero-mobile-2, hero-mobile-3
+    const mobileSlotId = `hero-mobile-${idx + 1}`;
+    const mobileMatch =
+      cmsMobileHeroImages.find((img) => img.targetId === mobileSlotId) ||
+      cmsMobileHeroImages.find((img) => img.order === idx);
+
+    let mobileUrl = desktopUrl; // Fallback to corresponding desktop slide if no mobile override
+    if (mobileMatch && mobileMatch.url) {
+      const mobileTimestamp = mobileMatch.updatedAt ? new Date(mobileMatch.updatedAt).getTime() : '';
+      mobileUrl = mobileTimestamp
+        ? (mobileMatch.url.includes('?') ? `${mobileMatch.url}&_t=${mobileTimestamp}` : `${mobileMatch.url}?_t=${mobileTimestamp}`)
+        : mobileMatch.url;
+    }
+
+    return {
+      ...defaultSlide,
+      image: desktopUrl,
+      fallbackUrl: desktopUrl,
+      mobileImage: mobileUrl,
+      alt: altText,
+    };
   });
 
   // If CMS contains additional slides beyond the default 3
@@ -218,19 +244,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
               aria-hidden={!isActive}
             >
               {isLoaded ? (
-                <img
-                  key={slideImg}
-                  src={getOptimizedImageUrl(slideImg, idx === 0 ? 1200 : 1024)}
-                  srcSet={getSrcSet(slideImg, [640, 1024, 1440, 1920])}
-                  sizes="100vw"
-                  width={1920}
-                  height={1080}
-                  alt={slide.alt}
-                  loading={idx === 0 ? 'eager' : 'lazy'}
-                  fetchPriority={idx === 0 ? 'high' : 'low'}
-                  decoding={idx === 0 ? 'sync' : 'async'}
-                  className="w-full h-full object-cover object-center"
-                />
+                <picture className="w-full h-full block">
+                  {/* Mobile portrait / smartphone viewport: <= 767px */}
+                  <source
+                    media="(max-width: 767px)"
+                    srcSet={getSrcSet(slide.mobileImage || slideImg, [480, 640, 768])}
+                    sizes="100vw"
+                  />
+                  {/* Tablet and Desktop viewport: >= 768px */}
+                  <source
+                    media="(min-width: 768px)"
+                    srcSet={getSrcSet(slideImg, [1024, 1440, 1920])}
+                    sizes="100vw"
+                  />
+                  {/* Default fallback img tag: preserves existing desktop layout and loading behavior */}
+                  <img
+                    key={slideImg}
+                    src={getOptimizedImageUrl(slideImg, idx === 0 ? 1200 : 1024)}
+                    srcSet={getSrcSet(slideImg, [640, 1024, 1440, 1920])}
+                    sizes="100vw"
+                    width={1920}
+                    height={1080}
+                    alt={slide.alt}
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={idx === 0 ? 'high' : 'low'}
+                    decoding={idx === 0 ? 'sync' : 'async'}
+                    className="w-full h-full object-cover object-center"
+                  />
+                </picture>
               ) : (
                 <div className="w-full h-full bg-[#0A0A0A]" />
               )}

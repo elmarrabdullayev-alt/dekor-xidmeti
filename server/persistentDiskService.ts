@@ -187,7 +187,7 @@ export async function uploadImageRecord(params: {
   isCover?: boolean;
   focalPoint?: { x: number; y: number };
 }): Promise<StoredImage> {
-  const isHero = params.section === 'home_hero';
+  const isHero = params.section === 'home_hero' || params.section === 'hero_mobile';
   const processed = await processImageWithSharp(
     params.rawBuffer,
     params.filenameHint || `dreamart-${params.targetId}`,
@@ -317,7 +317,7 @@ export async function replaceImageRecord(
   }
 
   if (existing) {
-    const isHero = existing.group === 'home_hero';
+    const isHero = existing.group === 'home_hero' || existing.group === 'hero_mobile';
     const processed = await processImageWithSharp(
       rawBuffer,
       existing.filename,

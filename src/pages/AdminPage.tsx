@@ -3,7 +3,7 @@ import {
   Lock, LogOut, Upload, RefreshCw, Trash2, Star, Check, ArrowUp, ArrowDown,
   Edit3, ExternalLink, Image as ImageIcon, Sparkles, AlertCircle, Eye,
   Building2, ChevronLeft, ArrowRight, MapPin, Database, FolderOpen, Layers,
-  Compass, X
+  Compass, X, Smartphone
 } from 'lucide-react';
 import { ImageSection, ManagedImage } from '../types';
 import { imageService } from '../lib/imageService';
@@ -47,8 +47,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   const [authError, setAuthError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Top Admin View Tabs: 'decors' (Default & Unified Category -> Project -> Images) | 'venues' | 'hero' | 'indian_wedding' | 'destination_wedding'
-  const [activeAdminTab, setActiveAdminTab] = useState<'decors' | 'venues' | 'hero' | 'indian_wedding' | 'destination_wedding'>(() => {
+  // Top Admin View Tabs: 'decors' | 'venues' | 'hero' | 'hero_mobile' | 'indian_wedding' | 'destination_wedding'
+  const [activeAdminTab, setActiveAdminTab] = useState<'decors' | 'venues' | 'hero' | 'hero_mobile' | 'indian_wedding' | 'destination_wedding'>(() => {
     if (currentPath?.includes('restoranlar')) return 'venues';
     if (currentPath?.includes('indian-wedding')) return 'indian_wedding';
     if (currentPath?.includes('destination-wedding')) return 'destination_wedding';
@@ -66,6 +66,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
 
   // Hero slide selection for 'hero' tab
   const [activeHeroTargetId, setActiveHeroTargetId] = useState<string>('hero-slide-1');
+
+  // Mobile Hero slide selection for 'hero_mobile' tab
+  const [activeMobileHeroTargetId, setActiveMobileHeroTargetId] = useState<string>('hero-mobile-1');
 
   // Images reactive state from imageService
   const [images, setImages] = useState<ManagedImage[]>(() => imageService.getImages());
@@ -226,6 +229,17 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     activeImages = images
       .filter(img => img.section === 'home_hero' && img.targetId === activeHeroTargetId)
       .sort((a, b) => a.order - b.order);
+  } else if (activeAdminTab === 'hero_mobile') {
+    uploadSection = 'hero_mobile';
+    uploadTargetId = activeMobileHeroTargetId;
+    uploadTargetName = activeMobileHeroTargetId === 'hero-mobile-1'
+      ? 'Mobil Slayd 1'
+      : activeMobileHeroTargetId === 'hero-mobile-2'
+      ? 'Mobil Slayd 2'
+      : 'Mobil Slayd 3';
+    activeImages = images
+      .filter(img => img.section === 'hero_mobile' && img.targetId === activeMobileHeroTargetId)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
   } else if (activeAdminTab === 'indian_wedding') {
     uploadSection = 'indian_wedding';
     uploadTargetId = 'indian-wedding';
@@ -441,7 +455,19 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
             }`}
           >
             <Sparkles className="w-4 h-4" />
-            <span>Ana Səhifə Hero</span>
+            <span>Ana Səhifə Hero (Masaüstü)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveAdminTab('hero_mobile')}
+            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+              activeAdminTab === 'hero_mobile'
+                ? 'bg-[#C5A262] text-black shadow-md'
+                : 'bg-[#161616] text-neutral-300 hover:bg-[#202020] border border-[#262626]'
+            }`}
+          >
+            <Smartphone className="w-4 h-4" />
+            <span>Mobil Hero Slayder</span>
           </button>
 
           <button
@@ -1337,6 +1363,304 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
             </div>
           </div>
         )}
+
+        {/* ============================================================== */}
+        {/* VIEW C2: MOBILE HERO SLIDES (INDEPENDENT MOBIL SLAYDER)         */}
+        {/* ============================================================== */}
+        {activeAdminTab === 'hero_mobile' && (() => {
+          const MOBILE_SLOTS = [
+            {
+              id: 'hero-mobile-1',
+              name: 'Mobil Slayd 1',
+              desktopId: 'hero-slide-1',
+              desktopFallbackUrl: '/images/dreamart-toy-dekoru-qizili-altar.webp',
+              title: 'Eksklüziv Toy Səhnəsi & Masası',
+              subtitle: 'Zövqlü Qızılı Çiçək Kompozisiyaları',
+            },
+            {
+              id: 'hero-mobile-2',
+              name: 'Mobil Slayd 2',
+              desktopId: 'hero-slide-2',
+              desktopFallbackUrl: '/images/dreamart-nisan-dekoru-fotozona.webp',
+              title: 'Zərif Nişan & Fotozona Tərtibatı',
+              subtitle: 'Müasir İşıqlandırma və Estetik Dizayn',
+            },
+            {
+              id: 'hero-mobile-3',
+              name: 'Mobil Slayd 3',
+              desktopId: 'hero-slide-3',
+              desktopFallbackUrl: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
+              title: 'Panoramik Şadlıq Zalı & Banket',
+              subtitle: 'Möhtəşəm Tavan Pərdələri və İnstalyasiya',
+            },
+          ];
+
+          return (
+            <div className="space-y-6">
+              <div className="bg-[#141414] border border-[#242424] rounded-2xl p-4 sm:p-5 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222]">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <Smartphone className="w-4 h-4 text-[#C5A262]" />
+                      <h2 className="text-sm font-semibold text-[#F5F5F7]">Mobil Hero Slayder İdarəetməsi</h2>
+                      <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#C5A262]/20 text-[#E5C378] border border-[#C5A262]/30">
+                        Ayrı Mobil Qrup
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-400 mt-1">
+                      Mobil cihazlar üçün 3 fərdi şaquli (9:16) slayd şəkli. Mobil şəkli dəyişmək masaüstü (desktop) slaydlara qətiyyən təsir etmir.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const curSlot = MOBILE_SLOTS.find(s => s.id === activeMobileHeroTargetId) || MOBILE_SLOTS[0];
+                      setCustomUploadTarget({
+                        section: 'hero_mobile',
+                        targetId: curSlot.id,
+                        targetName: curSlot.name,
+                      });
+                      setIsUploadOpen(true);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-2 transition shadow-md cursor-pointer self-start sm:self-auto"
+                  >
+                    <Upload className="w-4 h-4" />
+                    <span>Seçilmiş Slayda Şəkil Yüklə</span>
+                  </button>
+                </div>
+
+                {/* Slot Selector tabs */}
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {MOBILE_SLOTS.map((slot) => {
+                    const hasCustom = images.some(
+                      (img) => img.section === 'hero_mobile' && img.targetId === slot.id
+                    );
+                    const isSelected = activeMobileHeroTargetId === slot.id;
+
+                    return (
+                      <button
+                        key={slot.id}
+                        onClick={() => setActiveMobileHeroTargetId(slot.id)}
+                        className={`px-3.5 py-2 rounded-lg text-xs transition border flex items-center gap-2 cursor-pointer ${
+                          isSelected
+                            ? 'bg-white/15 text-white border-[#C5A262] font-semibold'
+                            : 'bg-[#1E1E1E] text-neutral-400 border-[#2E2E2E] hover:text-white hover:bg-[#252525]'
+                        }`}
+                      >
+                        <Smartphone className="w-3.5 h-3.5 text-[#C5A262]" />
+                        <span>{slot.name}</span>
+                        {hasCustom ? (
+                          <span className="w-2 h-2 rounded-full bg-emerald-400" title="Fərdi mobil şəkil aktivdir" />
+                        ) : (
+                          <span className="w-2 h-2 rounded-full bg-amber-400/80" title="Desktop şəkli aktivdir (Fallback)" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 3 Mobile Hero Slots Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {MOBILE_SLOTS.map((slot) => {
+                  const mobileImgs = images
+                    .filter((img) => img.section === 'hero_mobile' && img.targetId === slot.id)
+                    .sort((a, b) => (a.order || 0) - (b.order || 0));
+                  const customMobileImg = mobileImgs[0];
+
+                  const desktopImg = images.find(
+                    (img) => img.section === 'home_hero' && img.targetId === slot.desktopId
+                  );
+                  const fallbackUrl = desktopImg?.thumbUrl || desktopImg?.url || slot.desktopFallbackUrl;
+
+                  const isCustomActive = Boolean(customMobileImg);
+                  const displayUrl = customMobileImg ? (customMobileImg.thumbUrl || customMobileImg.url) : fallbackUrl;
+                  const isSelected = activeMobileHeroTargetId === slot.id;
+
+                  return (
+                    <div
+                      key={slot.id}
+                      className={`relative rounded-2xl overflow-hidden bg-[#161616] border transition flex flex-col ${
+                        isSelected ? 'border-[#C5A262] shadow-lg shadow-[#C5A262]/10 ring-1 ring-[#C5A262]' : 'border-[#262626]'
+                      }`}
+                    >
+                      {/* Slot Header */}
+                      <div className="p-3.5 border-b border-[#242424] flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Smartphone className="w-4 h-4 text-[#C5A262]" />
+                          <span className="font-semibold text-xs text-white">{slot.name}</span>
+                        </div>
+                        {isCustomActive ? (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-400">
+                            Fərdi Mobil
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-950/80 border border-amber-500/40 text-amber-400">
+                            Masaüstü Fallback
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Preview: Portrait 9:16 mobile frame */}
+                      <div className="relative aspect-[9/14] sm:aspect-[9/15] w-full overflow-hidden bg-black/80 flex items-center justify-center group">
+                        <img
+                          src={displayUrl}
+                          alt={customMobileImg?.altText || slot.name}
+                          className="w-full h-full object-cover object-center"
+                        />
+
+                        {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setPreviewImage(
+                                customMobileImg || {
+                                  id: slot.id,
+                                  url: displayUrl,
+                                  thumbUrl: displayUrl,
+                                  filename: `${slot.id}-preview.webp`,
+                                  altText: slot.name,
+                                  section: 'hero_mobile',
+                                  targetId: slot.id,
+                                  targetName: slot.name,
+                                  isCover: false,
+                                  order: 0,
+                                  format: 'webp',
+                                  uploadedAt: '',
+                                }
+                              )
+                            }
+                            className="p-2.5 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-md transition cursor-pointer"
+                            title="Şəkilə tam ölçüdə bax"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        {/* Top corner ratio badge */}
+                        <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-mono text-white/80">
+                          9:16 Mobil
+                        </div>
+                      </div>
+
+                      {/* Info & Action Controls */}
+                      <div className="p-3.5 space-y-3 flex-1 flex flex-col justify-between">
+                        <div className="space-y-1.5">
+                          <div className="text-[11px] text-[#E5C378] font-medium leading-tight">
+                            {slot.title}
+                          </div>
+                          {isCustomActive && customMobileImg ? (
+                            <div className="space-y-1">
+                              <div className="text-[11px] font-mono text-neutral-300 truncate">
+                                {customMobileImg.filename}
+                              </div>
+                              <div className="text-[10px] text-neutral-500">
+                                {customMobileImg.sizeKb ? `${customMobileImg.sizeKb} KB • ` : ''}
+                                {customMobileImg.format.toUpperCase()}
+                              </div>
+                              {customMobileImg.altText && (
+                                <div className="text-[10px] text-neutral-400 line-clamp-1 italic">
+                                  "{customMobileImg.altText}"
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <p className="text-[11px] text-neutral-400 leading-normal">
+                              Hazırda mobil cihazlarda bu slayd üçün masaüstü şəkli göstərilir. Fərdi şaquli şəkil yükləyərək onu əvəzləyə bilərsiniz.
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="space-y-2 pt-2 border-t border-[#222]">
+                          {isCustomActive && customMobileImg ? (
+                            <div className="grid grid-cols-2 gap-2">
+                              <button
+                                onClick={() => setReplacingImage(customMobileImg)}
+                                className="py-2 px-2.5 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 font-medium flex items-center justify-center gap-1.5 cursor-pointer transition"
+                              >
+                                <RefreshCw className="w-3.5 h-3.5 text-[#C5A262]" />
+                                <span>Dəyiş</span>
+                              </button>
+
+                              <button
+                                onClick={() => setEditingMetaImage(customMobileImg)}
+                                className="py-2 px-2.5 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 hover:text-[#C5A262] transition cursor-pointer flex items-center justify-center gap-1.5"
+                              >
+                                <Edit3 className="w-3.5 h-3.5 text-[#C5A262]" />
+                                <span>Alt Mətni</span>
+                              </button>
+
+                              <button
+                                onClick={() =>
+                                  setPreviewImage(customMobileImg)
+                                }
+                                className="py-2 px-2.5 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 hover:text-white transition cursor-pointer flex items-center justify-center gap-1.5"
+                              >
+                                <Eye className="w-3.5 h-3.5 text-[#C5A262]" />
+                                <span>Tam Baxış</span>
+                              </button>
+
+                              <button
+                                onClick={() => setDeletingImage(customMobileImg)}
+                                className="py-2 px-2.5 text-[11px] rounded-lg bg-red-950/30 hover:bg-red-900/50 border border-red-500/20 text-red-300 transition cursor-pointer flex items-center justify-center gap-1.5"
+                                title="Fərdi mobil şəkli sil və desktop şəklinə qayıt"
+                              >
+                                <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                                <span>İlkinə Qaytar</span>
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="space-y-2">
+                              <button
+                                onClick={() => {
+                                  setActiveMobileHeroTargetId(slot.id);
+                                  setCustomUploadTarget({
+                                    section: 'hero_mobile',
+                                    targetId: slot.id,
+                                    targetName: slot.name,
+                                  });
+                                  setIsUploadOpen(true);
+                                }}
+                                className="w-full py-2.5 px-3 rounded-lg bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-2 transition shadow cursor-pointer"
+                              >
+                                <Upload className="w-3.5 h-3.5" />
+                                <span>Fərdi Mobil Şəkil Yüklə</span>
+                              </button>
+
+                              <button
+                                onClick={() =>
+                                  setPreviewImage({
+                                    id: slot.id,
+                                    url: displayUrl,
+                                    thumbUrl: displayUrl,
+                                    filename: `${slot.id}-fallback.webp`,
+                                    altText: slot.name,
+                                    section: 'hero_mobile',
+                                    targetId: slot.id,
+                                    targetName: slot.name,
+                                    isCover: false,
+                                    order: 0,
+                                    format: 'webp',
+                                    uploadedAt: '',
+                                  })
+                                }
+                                className="w-full py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 hover:text-white transition text-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                              >
+                                <Eye className="w-3.5 h-3.5 text-[#C5A262]" />
+                                <span>Mövcud Şəkilə Bax</span>
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* ============================================================== */}
         {/* VIEW D: INDIAN WEDDING & DESTINATION WEDDING TOP IMAGES (MAX 2) */}
