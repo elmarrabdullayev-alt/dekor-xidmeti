@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Phone, ArrowRight, CheckCircle2, MessageCircle } from 'lucide-react';
+import { Phone, ArrowRight, CheckCircle2, MessageCircle, AlertCircle } from 'lucide-react';
 import { store } from '../../lib/store';
+import { sendQuoteRequest } from '../../lib/quoteService';
 
 interface QuoteSectionProps {
   initialDecorName?: string;
@@ -13,31 +14,62 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    notes: ''
+    notes: '',
+    honeypot: ''
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) return;
+    if (loading) return; // Prevent duplicate submissions
+
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      setErrorMessage('Zəhmət olmasa adınızı və əlaqə nömrənizi daxil edin.');
+      return;
+    }
 
     setLoading(true);
-    setTimeout(() => {
-      store.addInquiry({
-        name: formData.name,
-        phone: formData.phone,
-        eventType: initialDecorName || 'Dekor Sifarişi',
-        date: '',
-        location: 'Bakı',
-        notes: formData.notes,
-        decorName: initialDecorName
-      });
-      setLoading(false);
+    setErrorMessage(null);
+
+    // Save inquiry locally for admin panel
+    store.addInquiry({
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      eventType: initialDecorName || 'Dekor Sifarişi',
+      date: '',
+      location: 'Bakı',
+      notes: formData.notes.trim(),
+      decorName: initialDecorName
+    });
+
+    // Send securely to DreamArt server -> Telegram Bot API
+    const response = await sendQuoteRequest({
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      service: initialDecorName || 'Dekor Sifarişi',
+      eventType: initialDecorName || 'Dekor Sifarişi',
+      location: 'Bakı',
+      message: formData.notes.trim(),
+      notes: formData.notes.trim(),
+      decorName: initialDecorName,
+      honeypot: formData.honeypot
+    });
+
+    setLoading(false);
+
+    if (response.success) {
       setSubmitted(true);
+      setFormData({ name: '', phone: '', notes: '', honeypot: '' });
       if (onSuccess) onSuccess();
-    }, 400);
+    } else {
+      // Preserve customer entered data on error
+      setErrorMessage(
+        response.message || 'Sorğu göndərilərkən problem yarandı. Zəhmət olmasa yenidən cəhd edin.'
+      );
+    }
   };
 
   const handleWhatsAppDirect = () => {
@@ -96,7 +128,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
               <button
                 type="button"
                 onClick={handleWhatsAppDirect}
-                className="inline-flex items-center gap-2 text-xs sm:text-sm text-white/80 hover:text-[#25D366] transition-colors"
+                className="inline-flex items-center gap-2 text-xs sm:text-sm text-white/80 hover:text-[#25D366] transition-colors cursor-pointer"
               >
                 <MessageCircle className="w-4 h-4 text-[#25D366]" />
                 <span>WhatsApp ilə birbaşa yazın</span>
@@ -109,20 +141,21 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
             <div className="bg-[#121212] rounded-sm border border-white/10 hover:border-[#C5A059]/40 p-6 sm:p-8 shadow-2xl transition-colors">
               {submitted ? (
                 <div className="text-center py-10 space-y-4">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-[#C5A059]/20 border border-[#C5A059] flex items-center justify-center text-[#C5A059]">
-                    <CheckCircle2 className="w-6 h-6" />
+                  <div className="w-14 h-14 mx-auto rounded-full bg-[#C5A059]/20 border border-[#C5A059] flex items-center justify-center text-[#C5A059] shadow-lg shadow-[#C5A059]/10">
+                    <CheckCircle2 className="w-7 h-7" />
                   </div>
                   <h3 className="font-serif text-2xl text-white">Müraciətiniz qəbul edildi!</h3>
-                  <p className="text-xs sm:text-sm text-white/70 max-w-sm mx-auto font-light">
-                    Təşəkkür edirik. Dizaynerimiz ən qısa zamanda sizinlə əlaqə saxlayaraq fərdi təklif təqdim edəcək.
+                  <p className="text-xs sm:text-sm text-white/80 max-w-sm mx-auto font-light leading-relaxed">
+                    Sorğunuz uğurla göndərildi. Komandamız sizinlə qısa zamanda əlaqə saxlayacaq.
                   </p>
                   <button
                     type="button"
                     onClick={() => {
                       setSubmitted(false);
-                      setFormData({ name: '', phone: '', notes: '' });
+                      setFormData({ name: '', phone: '', notes: '', honeypot: '' });
+                      setErrorMessage(null);
                     }}
-                    className="text-xs text-[#C5A059] underline hover:text-white pt-2"
+                    className="text-xs text-[#C5A059] hover:text-white pt-2 cursor-pointer font-medium underline"
                   >
                     Yeni müraciət göndər
                   </button>
@@ -138,15 +171,37 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
                     </p>
                   </div>
 
+                  {errorMessage && (
+                    <div className="p-3 bg-red-950/40 border border-red-500/40 rounded-sm flex items-start gap-2.5 text-red-200 text-xs">
+                      <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
+                  {/* Spam Honeypot Field */}
+                  <div className="hidden" aria-hidden="true">
+                    <input
+                      type="text"
+                      name="company_website"
+                      value={formData.honeypot}
+                      onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-xs uppercase tracking-wider text-white/70 mb-1.5 font-medium">
-                      Adınız
+                      Adınız *
                     </label>
                     <input
                       type="text"
                       required
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                        if (errorMessage) setErrorMessage(null);
+                      }}
                       placeholder="Məsələn: Leyla Əliyeva"
                       className="w-full bg-[#181818] border border-white/10 focus:border-[#C5A059] rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-hidden transition-colors"
                     />
@@ -154,13 +209,16 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
 
                   <div>
                     <label className="block text-xs uppercase tracking-wider text-white/70 mb-1.5 font-medium">
-                      Telefon nömrəniz
+                      Telefon nömrəniz *
                     </label>
                     <input
                       type="tel"
                       required
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        if (errorMessage) setErrorMessage(null);
+                      }}
                       placeholder="050 123 45 67"
                       className="w-full bg-[#181818] border border-white/10 focus:border-[#C5A059] rounded-sm px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-hidden transition-colors font-mono"
                     />
@@ -182,7 +240,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ initialDecorName, on
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[#C5A059] hover:bg-[#D4AF37] disabled:opacity-50 text-[#0B0B0B] font-medium py-3.5 rounded-sm text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2"
+                    className="w-full bg-[#C5A059] hover:bg-[#D4AF37] disabled:opacity-60 text-[#0B0B0B] font-medium py-3.5 rounded-sm text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2 disabled:cursor-not-allowed"
                   >
                     <span>{loading ? 'Göndərilir...' : 'Qiymət təklifi al'}</span>
                     <ArrowRight className="w-4 h-4" />

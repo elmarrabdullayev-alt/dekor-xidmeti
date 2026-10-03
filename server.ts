@@ -27,6 +27,7 @@ import {
   ADMIN_IMAGES_TABLE,
 } from './server/supabaseService.ts';
 import { runSupabaseMigration } from './server/migrateToSupabase.ts';
+import { handleQuoteRequest, isTelegramConfigured, runDirectTelegramTest } from './server/telegramService.ts';
 
 const PORT = Number(process.env.PORT) || 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
@@ -319,8 +320,12 @@ async function startServer() {
       uploadsDirAccessible: uploadsOk,
       sharpAvailable,
       oldStoragePreserved: true,
+      telegramConfigured: isTelegramConfigured(),
     });
   });
+
+  // Public Quote / Proposal Request API: Validates and forwards to Telegram
+  app.post('/api/quote-request', handleQuoteRequest);
 
   // Admin Login: issues secure httpOnly cookie (no token in JSON body)
   app.post('/api/admin/login', (req, res) => {
@@ -373,6 +378,17 @@ async function startServer() {
     } catch (err: any) {
       console.error('[Migration Error]:', err);
       return res.status(500).json({ error: err.message || 'Miqrasiya zamanı xəta baş verdi' });
+    }
+  });
+
+  // Protected: Diagnostic Telegram Test (Sends "✅ DreamArt Telegram test")
+  app.post('/api/admin/telegram-test', requireAdminAuth, async (_req, res) => {
+    try {
+      const result = await runDirectTelegramTest();
+      return res.json(result);
+    } catch (err: any) {
+      console.error('[Telegram Test Error]:', err);
+      return res.status(500).json({ error: err.message || 'Telegram test xətası' });
     }
   });
 

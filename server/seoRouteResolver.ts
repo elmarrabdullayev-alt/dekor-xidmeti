@@ -1,8 +1,8 @@
-import { CATEGORIES } from '../src/data/categories';
-import { INITIAL_VENUES } from '../src/data/initialVenues';
-import { INITIAL_DECORS } from '../src/data/initialDecors';
-import { REGIONAL_LOCATIONS } from '../src/data/regionalData';
-import { INITIAL_ARTICLES, getArticleBySlug } from '../src/data/articles';
+import { CATEGORIES } from '../src/data/categories.ts';
+import { INITIAL_VENUES } from '../src/data/initialVenues.ts';
+import { INITIAL_DECORS } from '../src/data/initialDecors.ts';
+import { REGIONAL_LOCATIONS } from '../src/data/regionalData.ts';
+import { INITIAL_ARTICLES, getArticleBySlug } from '../src/data/articles.ts';
 import {
   getLocalBusinessSchema,
   getCategoryServiceSchema,
@@ -11,12 +11,12 @@ import {
   getProjectDetailSchema,
   getProjectImageSchema,
   getArticleSchema
-} from '../src/lib/structuredData';
-import { isVenueIndexable, getVenueStructuredData } from '../src/lib/venueHelper';
-import { isProjectIndexable } from '../src/lib/seoHelper';
-import { isArticleIndexable } from '../src/lib/articleHelper';
-import { DecorCategorySlug } from '../src/types';
-import { sanitizeDecorText } from '../src/lib/sanitizeHelper';
+} from '../src/lib/structuredData.ts';
+import { isVenueIndexable, getVenueStructuredData } from '../src/lib/venueHelper.ts';
+import { isProjectIndexable } from '../src/lib/seoHelper.ts';
+import { isArticleIndexable } from '../src/lib/articleHelper.ts';
+import { DecorCategorySlug } from '../src/types/index.ts';
+import { sanitizeDecorText } from '../src/lib/sanitizeHelper.ts';
 
 export interface RouteSeoData {
   title: string;
