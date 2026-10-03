@@ -10,7 +10,7 @@ export const INITIAL_VENUES: VenueItem[] = [
     district: 'Səbail',
     address: 'Badamdar qəsəbəsi, 3-cü massiv',
     shortDescription: 'Bakının nüfuzlu məkanlarından biri olan Meridian restoranında DreamArt Weddings tərəfindən icra edilmiş möhtəşəm toy və nikah dekorları.',
-    venueNotes: 'Dairəvi mərkəzi səhnə quruluşu və hündür tavan monumental gül tağları və asma instalyasiyalar üçün olduqca əlverişlidir. Giriş qarşılama tuneli və gəlin masası üçün fərdi işıqlandırma ahəngi tətbiq olunur.',
+    venueNotes: 'Dairəvi mərkəzi səhnə quruluşu və hündür tavan böyük gül tağları və asma tavan bəzəkləri üçün olduqca əlverişlidir. Giriş qarşılama tuneli və gəlin masası üçün fərdi işıqlandırma ahəngi tətbiq olunur.',
     mainImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
     galleryImages: [
       '/images/dreamart-toy-dekoru-qizili-altar.webp',
@@ -90,7 +90,7 @@ export const INITIAL_VENUES: VenueItem[] = [
     city: 'Bakı',
     district: 'Nərimanov',
     address: 'Heydər Əliyev prospekti',
-    shortDescription: 'Böyük Saray üçün tavan instalyasiyaları, monumental gül kompozisiyaları və genişmiqyaslı zal dekorasiyası.',
+    shortDescription: 'Böyük Saray üçün zərif tavan dekorları, möhtəşəm gül kompozisiyaları və genişmiqyaslı zal bəzədilməsi.',
     venueNotes: 'Geniş ziyafət zalları, mərkəzi rəqs meydançası və hündür tavanlar üçün asma gül konstruksiyaları və operativ quraşdırma komandası ilə vaxtında təhvil təmin olunur.',
     mainImage: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
     galleryImages: [
@@ -98,7 +98,7 @@ export const INITIAL_VENUES: VenueItem[] = [
     ],
     hasRealProject: true,
     relatedDecorIds: ['decor-6'],
-    relatedServices: ['Böyük zal dekoru', 'Tavan instalyasiyası', 'Səhnə quruluşu', 'Qala gecəsi'],
+    relatedServices: ['Böyük zal dekoru', 'Tavan dekoru', 'Səhnə quruluşu', 'Qala gecəsi'],
     faqs: generateDefaultVenueFaqs('Böyük Saray', true, '050 231 17 28', {
       name: 'Dalğalı Ağ Tül və Kristal Çilçıraqlı Monumental Zal Dekoru',
       slug: 'panoramik-sadliq-zali-tavan-isig-instalyasiyasi-baki',
@@ -106,7 +106,7 @@ export const INITIAL_VENUES: VenueItem[] = [
       serviceSlug: 'zal-dekoru'
     }),
     seoTitle: 'Böyük Saray Toy Dekoru və Zal Tərtibatı | Bakı | DreamArt Weddings',
-    metaDescription: 'Böyük Saray şadlıq sarayında monumental toy və zal dekorasiyası. Tavan gül instalyasiyaları, səhnə dizaynı və əlaqə: 050 231 17 28.',
+    metaDescription: 'Böyük Saray şadlıq sarayında möhtəşəm toy və zal dekorasiyası. Tavan gül bəzəkləri, səhnə dizaynı və əlaqə: 050 231 17 28.',
     status: 'published',
     indexStatus: 'index',
     createdAt: '2026-08-30T15:00:00Z'
@@ -181,13 +181,13 @@ export const INITIAL_VENUES: VenueItem[] = [
     city: 'Bakı',
     district: 'Səbail',
     address: 'Dövlət Bayrağı Meydanı',
-    shortDescription: 'Elektra Hall konsert və genişmiqyaslı tədbir məkanında böyük səhnə dizaynı, monumental işıq və tavan instalyasiyaları.',
+    shortDescription: 'Elektra Hall konsert və genişmiqyaslı tədbir məkanında böyük səhnə dizaynı, möhtəşəm işıq və asma tavan dekorları.',
     venueNotes: 'Yüksək tavan və geniş səhnə infrastrukturu sayəsində nəhəng 3D konstruksiyalar, asma gül kompozisiyaları və dinamik işıq layihələri üçün idealdır.',
     mainImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=85',
     galleryImages: [],
     hasRealProject: false,
     relatedDecorIds: [],
-    relatedServices: ['Monumental səhnə dekoru', 'Tavan instalyasiyaları', 'Qala gecəsi dekoru', 'Giriş tuneli'],
+    relatedServices: ['Möhtəşəm səhnə dekoru', 'Tavan dekorları', 'Qala gecəsi dekoru', 'Giriş tuneli'],
     faqs: generateDefaultVenueFaqs('Elektra Hall', false, '050 231 17 28'),
     seoTitle: 'Elektra Hall Toy və Böyük Tədbir Dekoru | Bakı | DreamArt Weddings',
     metaDescription: 'Elektra Hall üçün möhtəşəm səhnə və zal dekorasiyası, genişmiqyaslı tavan kompozisiyaları və fərdi dizayn.',

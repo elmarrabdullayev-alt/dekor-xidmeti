@@ -41,7 +41,7 @@ const HERO_SLIDES: HeroSlide[] = [
     image: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
     fallbackUrl: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
     title: 'Panoramik Şadlıq Zalı & Banket',
-    subtitle: 'Möhtəşəm Tavan Pərdələri və İnstalyasiya',
+    subtitle: 'Möhtəşəm Tavan Pərdələri və İşıq Dekoru',
     alt: 'DreamArt Events premium banket və korporativ zal dekorasiyası Bakı Azərbaycan',
   },
 ];

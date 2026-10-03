@@ -105,7 +105,7 @@ export function generateDefaultVenueFaqs(
       },
       {
         question: `Bu məkanda hansı dekor xidmətləri mümkündür?`,
-        answer: `${safeName} məkanında DreamArt Weddings tərəfindən ${servicePart}toy dekoru, bəy-gəlin masası, monumental arxa fon tağı, qonaq masaları üçün hündür gül kompozisiyaları, zərif şam işıqlandırması və qarşılama fotozonası xidmətləri mümkündür. Bütün nümunələr DreamArt Weddings portfoliosunda təqdim olunur.`
+        answer: `${safeName} məkanında DreamArt Weddings tərəfindən ${servicePart}toy dekoru, bəy-gəlin masası, möhtəşəm arxa fon tağı, qonaq masaları üçün hündür gül kompozisiyaları, zərif şam işıqlandırması və qarşılama fotozonası xidmətləri mümkündür. Bütün nümunələr DreamArt Weddings portfoliosunda təqdim olunur.`
       },
       {
         question: `Bu məkanda dekorasiya quraşdırılması necə təşkil olunur?`,

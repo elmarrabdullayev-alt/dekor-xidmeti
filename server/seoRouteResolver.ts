@@ -707,7 +707,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
       },
       {
         question: 'Bərdədə böyük şadlıq sarayı üçün tam dekor mümkündür?',
-        answer: 'Bəli. Geniş qonaq tutumuna malik zallar üçün monumental gəlin-bəy səhnəsi, bütün qonaq masalarının büllur şamdanlar və güllərlə bəzədilməsi, tavan asma instalyasiyaları və giriş fotozonası daxil olmaqla tam zal konsepti icra edilir.'
+        answer: 'Bəli. Geniş qonaq tutumuna malik zallar üçün möhtəşəm gəlin-bəy səhnəsi, bütün qonaq masalarının büllur şamdanlar və güllərlə bəzədilməsi, tavan asma dekorları və giriş fotozonası daxil olmaqla tam zal konsepti icra edilir.'
       },
       {
         question: 'Toy dekorunun qiyməti necə müəyyən olunur?',

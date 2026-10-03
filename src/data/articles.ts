@@ -91,7 +91,7 @@ export const INITIAL_ARTICLES: Article[] = [
       },
       {
         question: 'Xına mərasimi evdə, yoxsa restoranda keçirilərkən dekor fərqlənir?',
-        answer: 'Bəli. Ev şəraitində adətən kompakt, lakin olduqca zərif arxa fon tağları və qatlanan süfrə dekorları seçilir. Restoran və ya banket zallarında isə geniş səhnə, monumental xına taxtı və ayrıca fotozona quraşdırılır.'
+        answer: 'Bəli. Ev şəraitində adətən kompakt, lakin olduqca zərif arxa fon tağları və qatlanan süfrə dekorları seçilir. Restoran və ya banket zallarında isə geniş səhnə, dəbdəbəli xına taxtı və ayrıca fotozona quraşdırılır.'
       },
       {
         question: 'Xonça xidmətini də dekorla birgə sifariş etmək mümkündür?',
@@ -212,7 +212,7 @@ export const INITIAL_ARTICLES: Article[] = [
       },
       {
         question: 'Nişan və toy dekoru arasındakı əsas konsept fərqi nədir?',
-        answer: 'Nişan dekoru adətən daha səmimi, pastel və romantik xarakter daşıyır. Toy dekoru isə daha monumental, genişmiqyaslı zal arxitekturası və böyük səhnə konstruksiyaları ilə fərqlənir.'
+        answer: 'Nişan dekoru adətən daha səmimi, pastel və romantik xarakter daşıyır. Toy dekoru isə daha dəbdəbəli, genişmiqyaslı zal dizaynı və böyük səhnə konstruksiyaları ilə fərqlənir.'
       }
     ],
     relatedServices: [
@@ -229,7 +229,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Toy Dekoru Xidməti',
         slug: 'toy-dekoru',
-        description: 'Böyük zallar üçün monumental toy tağları və gəlin-bəy səhnələri.'
+        description: 'Böyük zallar üçün möhtəşəm toy tağları və gəlin-bəy səhnələri.'
       }
     ],
     relatedProjects: [
@@ -244,7 +244,7 @@ export const INITIAL_ARTICLES: Article[] = [
     title: 'Dekor Qiyməti Nədən Asılıdır?',
     metaTitle: 'Dekor Qiyməti Nədən Asılıdır? | Toy və Tədbir Smeta Bələdçisi',
     metaDescription: 'Toy və tədbir dekorunun qiymətini formalaşdıran amillər: təbii gül həcmi, məkan miqyası, xüsusi konstruksiyalar və logistika xərclərinin detallı təhlili.',
-    excerpt: 'Dekorasiya büdcəsini formalaşdıran əsas faktorlar: canlı floristika, fərdi istehsal konstruksiyaları, tavan instalyasiyaları və logistika xərcləri.',
+    excerpt: 'Dekorasiya büdcəsini formalaşdıran əsas faktorlar: canlı floristika, fərdi istehsal konstruksiyaları, tavan dekorları və daşınma xərcləri.',
     category: 'Qiymət və Planlama',
     categorySlug: 'toy-dekoru',
     publishDate: '2026-09-20',
@@ -283,7 +283,7 @@ export const INITIAL_ARTICLES: Article[] = [
         bulletPoints: [
           'Baza Zona: Yalnız bəy-gəlin masası və arxa fon tağı',
           'Orta Miqyas: Arxa fon + giriş qarşılama fotozonası + gəlin yolu dekoru',
-          'Tam Ziyarətçi Təcrübəsi: Arxa fon + bütün qonaq masalarının çiçək kompozisiyaları + zal tavan asma instalyasiyaları + xüsusi podyum və pilləkən dekoru'
+          'Tam Ziyarətçi Təcrübəsi: Arxa fon + bütün qonaq masalarının çiçək kompozisiyaları + zal tavan asma dekorları + xüsusi podyum və pilləkən dekoru'
         ]
       },
       {
@@ -297,12 +297,12 @@ export const INITIAL_ARTICLES: Article[] = [
       },
       {
         id: 'isıq-ve-tavan',
-        title: '4. İşıqlandırma, Şamlar və Tavan İnstalyasiyaları',
+        title: '4. İşıqlandırma, Şamlar və Tavan Dekoru',
         content: 'Hündür tavanlı şadlıq saraylarında tavan sahəsinin çiçəklərlə və ya minlərlə sallanan kristal və şüşə kürələrlə bəzədilməsi xüsusi alpinist və mühəndis montajı tələb edir. Bu kateqoriya zala nağılvari dərinlik qatsa da, mürəkkəb texniki quraşdırma büdcəyə təsir göstərir.',
         bulletPoints: [
           'İtalyan şüşə şamdanlar və təhlükəsiz şamlar',
           'Zalın xüsusi işıqlandırılması (fokus və arxa fon işıqları)',
-          'Tavan və çilçıraq instalyasiyaları'
+          'Tavan və çilçıraq dekorları'
         ]
       },
       {
@@ -348,7 +348,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Zal və Banket Dekoru',
         slug: 'zal-dekoru',
-        description: 'Tavan instalyasiyaları, podyumlar və qonaq masalarının bəzədilməsi.'
+        description: 'Asma tavan dekorları, podyumlar və qonaq masalarının bəzədilməsi.'
       },
       {
         title: 'Bütün Xidmətlərimiz',
@@ -485,7 +485,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Zal və Banket Dekoru',
         slug: 'zal-dekoru',
-        description: 'Tavan instalyasiyaları, podyumlar və qonaq masalarının bəzədilməsi.'
+        description: 'Asma tavan dekorları, podyumlar və qonaq masalarının bəzədilməsi.'
       },
       {
         title: 'Xonça və Mərasim Xidməti',
@@ -750,7 +750,7 @@ export const INITIAL_ARTICLES: Article[] = [
     slug: 'banket-ve-zal-dekoru-ferqi',
     title: 'Banket Dekoru ilə Zal Dekoru Arasında Fərq Nədir?',
     metaTitle: 'Banket Dekoru ilə Zal Dekoru Arasında Fərq Nədir? | Dizayn və Məkan Təhlili',
-    metaDescription: 'Banket dekoru ilə zal dekorunun əsas fərqləri: qonaq masasının rahatlığı, tavan instalyasiyaları, məkan həcmi və tədbir növünə görə dekorasiya yanaşmaları.',
+    metaDescription: 'Banket dekoru ilə zal dekorunun əsas fərqləri: qonaq masasının rahatlığı, tavan dekorları, məkan həcmi və tədbir növünə görə dekorasiya yanaşmaları.',
     excerpt: 'Banket və bütöv zal dekorasiyasının texniki və vizual fərqləri: masa dekoru, tavan asma konstruksiyaları, işıqlandırma və məkan miqyası.',
     category: 'Zal və Banket',
     categorySlug: 'zal-dekoru',
@@ -768,10 +768,10 @@ export const INITIAL_ARTICLES: Article[] = [
       'banket dekoru',
       'zal dekoru',
       'banket masa dekoru',
-      'tavan instalyasiyasi',
+      'tavan dekoru',
       'restoran dekorasiyasi baki'
     ],
-    directAnswer: 'Əsas fərq məkanın əhatə miqyası və tədbir ssenarisindədir: Banket dekoru birbaşa qonaqların əyləşdiyi masaların, süfrələrin, mərkəz güllərinin, şamdanların və servis detallarının bəzədilməsinə fokuslanır. Zal dekoru isə bütöv məkanın transformasiyasını əhatə edir — bura tavan asma instalyasiyaları, zalın divar drapajları, sütunlar, podyumlar, səhnə quruluşu və zala giriş dekorasiya elementləri daxildir.',
+    directAnswer: 'Əsas fərq məkanın əhatə miqyası və tədbir ssenarisindədir: Banket dekoru birbaşa qonaqların əyləşdiyi masaların, süfrələrin, mərkəz güllərinin, şamdanların və servis detallarının bəzədilməsinə fokuslanır. Zal dekoru isə bütöv məkanın transformasiyasını əhatə edir — bura tavan asma dekorları, zalın divar drapajları, sütunlar, podyumlar, səhnə quruluşu və zala giriş dekorasiya elementləri daxildir.',
     sections: [
       {
         id: 'banket-dekoru-mahiyyeti',
@@ -786,9 +786,9 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         id: 'zal-dekoru-mahiyyeti',
         title: '2. Zal Dekoru Nədir? Tavan, Sütunlar, Podyum və Qlobal Məkan Transformasiyası',
-        content: 'Zal dekorasiyası isə bütöv məkanın kimliyini dəyişdirən monumental memarlıq layihəsidir. Standart restoran zalını möhtəşəm nağıl sarayına çevirmək üçün mühəndislik və konstruksiya işləri aparılır.',
+        content: 'Zal dekorasiyası isə bütöv məkanın kimliyini dəyişdirən möhtəşəm dizayn layihəsidir. Standart restoran zalını möhtəşəm nağıl sarayına çevirmək üçün mühəndislik və konstruksiya işləri aparılır.',
         bulletPoints: [
-          'Tavan instalyasiyaları: Minlərlə sallanan kristal saplar, çiçək bağçaları və işıqlı çilçıraqlar',
+          'Tavan dekorları: Minlərlə sallanan kristal saplar, çiçək bağçaları və işıqlı çilçıraqlar',
           'Podyum və döşəmə həlləri: Ağ, qara və ya güzgülü lak örtüklü xüsusi pilləli səhnələr',
           'Memarlıq sütunları və divar örtükləri: Zalın mövcud çatışmazlıqlarını örtən xüsusi konstruksiyalar'
         ]
@@ -835,7 +835,7 @@ export const INITIAL_ARTICLES: Article[] = [
         answer: 'Özəl qala şam yeməkləri, korporativ ziyafətlər və ya zərif interyeri olan restoranlarda yalnız banket masalarının peşəkar bəzədilməsi tamamilə yetərli və olduqca zövqlü nəticə verir.'
       },
       {
-        question: 'Tavan instalyasiyaları zalın təhlükəsizliyinə necə təsir göstərir?',
+        question: 'Tavan dekorları və asma elementlər zalın təhlükəsizliyinə necə təsir göstərir?',
         answer: 'Bütün asma konstruksiyalar sertifikatlı təhlükəsizlik trosları və yükdaşıma hesablamaları ilə zala bərkidilir; yanğın təhlükəsizliyi qaydalarına uyğun materiallar istifadə olunur.'
       },
       {
@@ -851,7 +851,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Zal və Banket Dekoru',
         slug: 'zal-dekoru',
-        description: 'Tavan instalyasiyaları, podyumlar və qonaq masalarının bəzədilməsi.'
+        description: 'Asma tavan dekorları, podyumlar və qonaq masalarının bəzədilməsi.'
       },
       {
         title: 'Korporativ Tədbir Dekoru',
@@ -884,7 +884,7 @@ export const INITIAL_ARTICLES: Article[] = [
     author: 'DreamArt Events Korporativ Layihələr Şöbəsi',
     authorRole: 'Korporativ və Brend Tədbirlər Meneceri',
     heroImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
-    heroAlt: 'Rəsmi açılış mərasimləri və brend tədbirləri üçün quraşdırılmış monumental səhnə və fotozona karkası',
+    heroAlt: 'Rəsmi açılış mərasimləri və brend tədbirləri üçün quraşdırılmış möhtəşəm səhnə və fotozona karkası',
     readingTimeMinutes: 8,
     isPublished: true,
     isFeatured: true,
@@ -1245,7 +1245,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         id: 'arxa-fon-harmoniya',
         title: '4. Arxa Fon Konstruksiyası ilə Masanın Vahid Harmoniyası',
-        content: 'Arxa fon və bəy-gəlin masası bir-birini tamamlayan vahid memarlıq ansamblı təşkil etməlidir. Dairəvi monumental tağlar, qızılı həndəsi karkaslar və ya işıqlı monoqram fonu səhnənin mərkəz nöqtəsini möhkəmləndirir.',
+        content: 'Arxa fon və bəy-gəlin masası bir-birini tamamlayan vahid memarlıq ansamblı təşkil etməlidir. Dairəvi möhtəşəm tağlar, qızılı həndəsi karkaslar və ya işıqlı monoqram fonu səhnənin mərkəz nöqtəsini möhkəmləndirir.',
         bulletPoints: [
           'Arxa fonda parıltılı deyil, mat parça və ya təbii çiçək divarlarına üstünlük verilməlidir',
           'Monoqram detalları: Bəy və gəlinin baş hərfləri zərif qızılı və ya arxa işıqlı formatda hazırlanır',
@@ -1289,12 +1289,12 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Toy Dekoru Xidməti',
         slug: 'toy-dekoru',
-        description: 'Bəy-gəlin səhnəsi, monumental tağlar və tam zal dekorasiyası.'
+        description: 'Bəy-gəlin səhnəsi, möhtəşəm tağlar və tam zal dekorasiyası.'
       },
       {
         title: 'Zal və Banket Dekoru',
         slug: 'zal-dekoru',
-        description: 'Podyumlar, tavan instalyasiyaları və qonaq masalarının bəzədilməsi.'
+        description: 'Podyumlar, asma tavan dekorları və qonaq masalarının bəzədilməsi.'
       }
     ],
     relatedProjects: [
@@ -1597,7 +1597,7 @@ export const INITIAL_ARTICLES: Article[] = [
         bulletPoints: [
           'LED ekranın kənarlarını çərçivəyə alan zərif minimalist memarlıq elementləri',
           'Çıxış edən spikerlərin arxasında parıltı yaratmayan mat səthlər',
-          'Səhnə kənarında şirkətin illik nailiyyətlərini simvolizə edən heykəltəraşlıq və ya gül instalyasiyaları'
+          'Səhnə kənarında şirkətin illik nailiyyətlərini simvolizə edən zərif heykəllər və ya gül kompozisiyaları'
         ]
       },
       {

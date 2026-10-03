@@ -357,7 +357,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                   </h3>
                   <div className="pl-5 border-l-2 border-[#C5A059]/50 space-y-3">
                     <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
-                      <strong>{venue.name}</strong> məkanında DreamArt Weddings tərəfindən bəy-gəlin masası, monumental səhnə tağı, qonaq masası kompozisiyaları, zal bəzəyi, şam işıqlandırması və qarşılama fotozonası xidmətləri mümkündür. Müvafiq xidmət səhifələrimizə keçid edə bilərsiniz:
+                      <strong>{venue.name}</strong> məkanında DreamArt Weddings tərəfindən bəy-gəlin masası, möhtəşəm səhnə tağı, qonaq masası kompozisiyaları, zal bəzəyi, şam işıqlandırması və qarşılama fotozonası xidmətləri mümkündür. Müvafiq xidmət səhifələrimizə keçid edə bilərsiniz:
                     </p>
                     <div className="flex flex-wrap gap-2 text-xs">
                       <button

@@ -338,11 +338,11 @@ export const CATEGORIES: CategoryInfo[] = [
     slug: 'ad-gunu-dekoru',
     canonicalSlug: 'ad-gunu-dekoru',
     heroImage: '/images/dreamart-nisan-dekoru-fotozona.webp',
-    shortDescription: 'Böyüklər və uşaqlar üçün estetik ad günü dekorları, fotozonalar, neon işıqlar və şar-gül instalyasiyaları.',
+    shortDescription: 'Böyüklər və uşaqlar üçün estetik ad günü dekorları, fotozonalar, neon işıqlar, şar və gül kompozisiyaları.',
     seoH1: 'Ad Günü Dekorları, Uşaq və Qız Üçün Fotozona Tərtibatı',
     seoIntroduction: 'DreamArt Weddings böyüklər, yeniyetmələr və uşaqlar üçün kreativ ad günü dekorları və estetik fotozonalar hazırlayır. Populyar ad günü dekoru fikirləri, uşaq ad günü dekorları və qız uşaqları üçün nağılvari konseptlərlə fərdi bayram ab-havası qurulur.',
     metaTitle: 'Ad Günü Dekorları, Uşaq və Qız Üçün Fotozonalar | DreamArt Weddings',
-    metaDescription: 'Bakı və regionlarda ad günü dekorları, kreativ dekor fikirləri, uşaq və qız üçün zərif fotozonalar, neon işıqlar və şar-gül instalyasiyaları. Əlaqə: 050 231 17 28.',
+    metaDescription: 'Bakı və regionlarda ad günü dekorları, kreativ dekor fikirləri, uşaq və qız üçün zərif fotozonalar, neon işıqlar, şar və gül kompozisiyaları. Əlaqə: 050 231 17 28.',
     whatIncluded: [
       'Fərdi dizaynlı fotozona və arxa fon divar konstruksiyası',
       'Ad və ya yaş yazılı fərdi neon işıqlandırma lövhəsi',
@@ -393,7 +393,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Qız uşaqları üçün hansı ad günü dekor fikirləri təklif olunur?',
-        answer: 'Zərif pudra və pastel tonlar, çiçəkli tağlar, işıqlı neon yazılar, kəpənək və nağıl motivli zərif instalyasiyalar təqdim edilir.'
+        answer: 'Zərif pudra və pastel tonlar, çiçəkli tağlar, işıqlı neon yazılar, kəpənək və nağıl motivli zərif dekor elementləri təqdim edilir.'
       },
       {
         question: 'Ad günü dekorunun qiyməti necə hesablanır?',
@@ -412,7 +412,7 @@ export const CATEGORIES: CategoryInfo[] = [
         items: [
           'Minimalist & Zərif: Pastel tonlar, incə toxunuşlu canlı güllər və fərdi xətt neon yazılar',
           'Qala & Dəbdəbə: Qara, qızılı və ya zümrüd rənglərdə şamdanlı ziyafət masası və isti dekorativ işıqlandırma',
-          'İnstaqramik Foto Divarlar: Parlaq parıltılı fonlar, akrilik rəqəmlər və zəngin gül instalyasiyaları',
+          'İnstaqramik Foto Divarlar: Parlaq parıltılı fonlar, akril rəqəmlər və zəngin gül kompozisiyaları',
           'Bohem & Təbii: Qurudulmuş pampas otları, ağac elementləri və təbii toxumalı açıq hava dekorları'
         ],
         ctaText: 'Fərdi Konsept Seç'
@@ -422,7 +422,7 @@ export const CATEGORIES: CategoryInfo[] = [
         badge: 'Uşaqlar Üçün',
         description: 'Uşaqların nağıl dünyasını reallığa çevirən təhlükəsiz və rəngarəng bayram mühiti:',
         items: [
-          'Sevimli cizgi filmi və macəra mövzularına uyğunlaşdırılmış personaj instalyasiyaları',
+          'Sevimli cizgi filmi və macəra mövzularına uyğunlaşdırılmış personaj fiqurları və dekorları',
           'Təhlükəsiz, qoxusuz və ekoloji xammaldan hazırlanmış pastel və parlaq şar kompozisiyaları',
           'Uşaq boyuna uyğunlaşdırılmış interaktiv foto divarlar və böyük rəqəm heykəlləri',
           'Candy bar, tematik desert stendləri və ad günü tortu üçün xüsusi bəzədilmiş masa düzümü'
@@ -569,7 +569,7 @@ export const CATEGORIES: CategoryInfo[] = [
         { title: 'Foto Divar və Press-Wall Miqyası', description: 'Loqotipli banner çapı, parlaq parça və ya xüsusi 3D panel konstruksiyaları.' },
         { title: 'Səhnə və Kürsü Tərtibatı', description: 'Rəsmi çıxış zonası, LED arxa fon çərçivələri və canlı çiçək aranjemanları.' },
         { title: 'VIP Qonaq Masaları', description: 'Şirkət rəhbərliyi və tərəfdaşlar üçün büllur şamdanlar və zövqlü floristika.' },
-        { title: 'Brendinq Elementlərinin İstehsalı', description: 'Xüsusi kəsim akrilik və ya metal loqolar, tematik instalyasiyalar.' },
+        { title: 'Brendinq Elementlərinin İstehsalı', description: 'Xüsusi kəsim akril və ya metal loqolar, tematik dekorativ konstruksiyalar.' },
         { title: 'Quraşdırma Vaxtı və Təhlükəsizlik', description: 'Gecə və ya məhdud saatlarda operativ texniki quraşdırma və sökülmə.' }
       ],
       ctaLabel: 'Rəsmi smeta al'
@@ -608,12 +608,12 @@ export const CATEGORIES: CategoryInfo[] = [
     heroImage: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
     shortDescription: 'Böyük şadlıq sarayları, banket zalları və restoranların tam həcmli banket zalı dekorasiyası.',
     seoH1: 'Zal və Banket Dekoru Xidməti – Şadlıq Sarayı və Restoran Bəzədilməsi',
-    seoIntroduction: 'DreamArt Weddings şadlıq sarayları, otel zalları və böyük banket zalları üçün tam həcmli banket dekoru və məkan dizaynı həyata keçirir. Tavan asma instalyasiyaları, zərif süfrə düzümü, çilçıraq bəzəkləri və zəngin giriş dəhlizi ilə məkanın aurası dəyişdirilir.',
+    seoIntroduction: 'DreamArt Weddings şadlıq sarayları, otel zalları və böyük banket zalları üçün tam həcmli banket dekoru və məkan dizaynı həyata keçirir. Tavan asma dekorları, zərif süfrə düzümü, çilçıraq bəzəkləri və zəngin giriş dəhlizi ilə məkanın aurası dəyişdirilir.',
     metaTitle: 'Banket Dekoru və Zal Dekoru Xidməti Bakı | DreamArt Weddings',
-    metaDescription: 'Bakı və regionlarda banket dekoru, böyük zalların bəzədilməsi, qonaq masaları, tavan instalyasiyaları və çilçıraq kompozisiyaları. Sifariş: 050 231 17 28.',
+    metaDescription: 'Bakı və regionlarda banket dekoru, böyük zalların bəzədilməsi, qonaq masaları, tavan dekorları və çilçıraq bəzəkləri. Sifariş: 050 231 17 28.',
     whatIncluded: [
       'Bütün qonaq masalarının zərif gül və şam kompozisiyaları ilə bəzədilməsi',
-      'Tavan və çilçıraq asma çiçək instalyasiyaları',
+      'Tavan və çilçıraq üçün asma çiçək kompozisiyaları',
       'Giriş qarşılama tuneli və foye dekorasiyası',
       'Bəy-gəlin səhnəsi və arxa fon dekoru',
       'Zalın quruluşuna uyğun fərdi rəng və işıq balansı',
@@ -648,12 +648,12 @@ export const CATEGORIES: CategoryInfo[] = [
     ],
     geoDirectAnswer: {
       question: 'Banket zalı tam dekor edilə bilər?',
-      answer: 'Bəli. DreamArt Weddings 200–600 nəfərlik böyük şadlıq sarayları və banket zallarını bütöv memarlıq konsepti ilə dekorasiya edir: qonaq masaları, tavan instalyasiyaları, səhnə və giriş foye kompleks şəkildə hazırlanır. Əlaqə: 050 231 17 28.'
+      answer: 'Bəli. DreamArt Weddings 200–600 nəfərlik böyük şadlıq sarayları və banket zallarını bütöv memarlıq konsepti ilə dekorasiya edir: qonaq masaları, tavan dekorları, səhnə və giriş foyesi kompleks şəkildə hazırlanır. Əlaqə: 050 231 17 28.'
     },
     directAnswers: [
       {
         question: 'Banket zalı tam dekor edilə bilər?',
-        answer: 'Bəli. DreamArt Weddings 200–600 nəfərlik böyük şadlıq sarayları və banket zallarını bütöv memarlıq konsepti ilə dekorasiya edir: qonaq masaları, tavan instalyasiyaları, səhnə və giriş foye kompleks şəkildə hazırlanır.'
+        answer: 'Bəli. DreamArt Weddings 200–600 nəfərlik böyük şadlıq sarayları və banket zallarını bütöv memarlıq konsepti ilə dekorasiya edir: qonaq masaları, tavan dekorları, səhnə və giriş foyesi kompleks şəkildə hazırlanır.'
       },
       {
         question: 'Banket dekoru üçün qonaq masalarının bəzədilməsi necə aparılır?',
@@ -677,7 +677,7 @@ export const CATEGORIES: CategoryInfo[] = [
       intro: 'Böyük zallarda smeta məkanın arxitekturasına və tədbir miqyasına uyğun formalaşır:',
       factors: [
         { title: 'Masa Sayı və Ziyarətçi Tutumu', description: '20-dən 60 masaya qədər hər bir masa üçün kompozisiya və şamdanlar.' },
-        { title: 'Tavan və Çilçıraq İnstalyasiyaları', description: 'Tavandan asılan zərif çiçək buludları və xüsusi karkaslar.' },
+        { title: 'Tavan və Çilçıraq Bəzəkləri', description: 'Tavandan asılan zərif çiçək buludları və xüsusi karkaslar.' },
         { title: 'Bəy-Gəlin Masası və Səhnə Dekoru', description: 'Gəlin-bəy masası və ya rəsmi nümayəndə heyəti üçün arxa fon divarı.' },
         { title: 'Çiçək Növü və Sıxlığı', description: 'İdxal canlı güllər və ya yüksək realizmli premium süni çiçəklər.' },
         { title: 'Texniki Quraşdırma və Təhlükəsizlik', description: 'Xüsusi nərdivan və qaldırıcılarla yüksək tavan quraşdırması.' }
@@ -695,7 +695,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Zal dekorunun qiyməti necə hesablanır?',
-        answer: 'Zalın sahəsi, masa sayı, istifadə olunacaq gül növləri (təbii və ya premium süni) və tavan/səhnə instalyasiyasının həcminə əsasən fərdi smeta hazırlanır.'
+        answer: 'Zalın sahəsi, masa sayı, istifadə olunacaq gül növləri (təbii və ya premium süni) və tavan və səhnə dekorunun həcminə əsasən fərdi smeta hazırlanır.'
       },
       {
         question: 'Böyük zallarda quraşdırma nə qədər vaxt aparır?',
@@ -994,7 +994,7 @@ export const CATEGORIES: CategoryInfo[] = [
       'Tədbirin məqsədinə uyğun fərdi konsept dizaynı və məkan seçimi dəstəyi',
       'Romantik təbii çiçək tağları, "Marry Me" və ya fərdi neon/işıqlı hərf lövhələri',
       'Özəl şam yeməyi masası düzümü, büllur qədəhlər, şamlar və gül ləçəkləri',
-      'Mövzuya uyğun şar kompozisiyası və ya zərif floristika instalyasiyaları',
+      'Mövzuya uyğun şar kompozisiyası və ya zərif canlı gül bəzəkləri',
       'Şəkil və video çəkilişi üçün estetik foto guşəsi',
       'Çatdırılma, məxfi/vaxtında quraşdırma və tədbirdən sonra operativ sökülmə'
     ],
@@ -1129,12 +1129,12 @@ export const CATEGORIES: CategoryInfo[] = [
         badge: 'QAPI ÇƏRÇİVƏSİ VƏ ŞAR TAĞI',
         lead: 'Qapıların şarla bəzədilməsi mağaza və obyekt açılışlarında ən çox tələb olunan dekor elementidir. Müştəri obyektə yaxınlaşarkən ilk olaraq giriş qapısını və onu əhatə edən zövqlü şar tağını görür.',
         paragraphs: [
-          'Mağaza qapısının şarla bəzədilməsində əsas meyar vizual estetika ilə yanaşı təhlükəsizlik və müştərilərin rahat hərəkətidir: quraşdırılan şar tağı və ya asimmetrik şar instalyasiyası müştərilərin və qonaqların sərbəst hərəkətinə mane olmamalı, avtomatik sensorlu və ya mexaniki şüşə qapıların açılıb-bağlanmasını məhdudlaşdırmamalıdır.',
+          'Mağaza qapısının şarla bəzədilməsində əsas meyar vizual estetika ilə yanaşı təhlükəsizlik və müştərilərin rahat hərəkətidir: quraşdırılan şar tağı və ya asimmetrik şar dekoru müştərilərin və qonaqların sərbəst hərəkətinə mane olmamalı, avtomatik sensorlu və ya mexaniki şüşə qapıların açılıb-bağlanmasını məhdudlaşdırmamalıdır.',
           'Giriş qapısının şarla bəzədilməsi zamanı həm simmetrik klassik spiral şar tağı, həm də müasir üzvi (organic) asimmetrik kompozisiyalar tətbiq olunur. Asimmetrik kompozisiyalarda müxtəlif diametrli şarlardan istifadə edilərək qapının bir küncündən vitrin boyunca axan dinamik vizual xətt yaradılır ki, bu da butik, salon və kafelərdə xüsusilə dəbli görünür.'
         ],
         bulletPoints: [
           'Giriş qapısının konturunu zərif çərçivəyə alan karkaslı şar tağları',
-          'Müxtəlif diametrli şarlardan ibarət müasir üzvi asimmetrik instalyasiyalar',
+          'Müxtəlif ölçülü şarlardan ibarət müasir asimmetrik şar dekorları',
           'Piyada və alıcı axınının rahat daxil olması üçün minimum 2.2 metr təmiz keçid hündürlüyü',
           'Qapı konstruksiyasına və şüşə fasada zərər verməyən xüsusi təhlükəsiz quraşdırma'
         ],

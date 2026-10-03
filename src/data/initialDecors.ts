@@ -9,8 +9,8 @@ export const INITIAL_DECORS: DecorItem[] = [
     categoryName: 'Toy dekoru',
     style: 'Klassik Lüks',
     city: 'Bakı',
-    shortDescription: 'Qara fon üzərində qızılı saplı pərdələr, parıltılı monoqram və iki monumental qızılı əl heykəlindən ibarət səhnə kompozisiyası. Ağ podyumu bürüyən sıx ağ qızılgül kaskadı, oymalı ağ kreslolar, güzgülü masa və çoxsaylı hündür şüşə şamdanlarla tamamlanmış bəy-gəlin guşəsi.',
-    fullDescription: 'Zövqlü və unudulmaz toy mərasimi üçün xüsusi hazırlanmış dekor konsepsiyası. Dairəvi monumental arxa fon konstruksiyası, təravətli ağ qızılgül və qortenziya çiçək kompozisiyaları, pilləli şam işıqlandırması və zərif gəlin-bəy masası ahəngi ilə məkanınıza krallıq dəbdəbəsi gətirir.',
+    shortDescription: 'Qara fon üzərində qızılı saplı pərdələr, parıltılı monoqram və iki böyük qızılı əl heykəlindən ibarət səhnə kompozisiyası. Ağ podyumu bürüyən sıx ağ qızılgül kaskadı, oymalı ağ kreslolar, güzgülü masa və çoxsaylı hündür şüşə şamdanlarla tamamlanmış bəy-gəlin guşəsi.',
+    fullDescription: 'Zövqlü və unudulmaz toy mərasimi üçün xüsusi hazırlanmış dekor konsepsiyası. Dairəvi möhtəşəm arxa fon konstruksiyası, təravətli ağ qızılgül və qortenziya çiçək kompozisiyaları, pilləli şam işıqlandırması və zərif gəlin-bəy masası ahəngi ilə məkanınıza krallıq dəbdəbəsi gətirir.',
     mainImage: '/images/dreamart-toy-dekoru-qizili-altar.webp',
     galleryImages: [
       '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
@@ -42,7 +42,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     venueName: 'Meridian',
     decorElements: [
       'Qara fon üzərində qızılı saplı pərdələr və işıqlı monoqram',
-      'İki monumental qızılı əl heykəli kompozisiyası',
+      'İki böyük qızılı əl heykəli kompozisiyası',
       'Ağ podyum pillələrini örtən sıx ağ qızılgül kaskadı',
       'Oymalı zərif ağ kreslolar və güzgülü bəy-gəlin masası',
       'Pilləli hündür şüşə şamdanlar və yanan ağ şamlar'
@@ -134,7 +134,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     categoryName: 'Ad günü dekoru',
     style: 'Modern Minimal',
     city: 'Bakı',
-    shortDescription: 'Zərif bej və krem drapaj parçalar, mərkəzdə parlaq işıqlı hərf instalyasiyası və qara cilalı döşəmə əksi. Hündür altlıqlar üzərində sıx ağ qızılgül dəstələri, gümüşü şamdanlar və müxtəlif hündürlüklü şüşə şamlarla tamamlanmış estetik fotozona.',
+    shortDescription: 'Zərif bej və krem drapaj parçalar, mərkəzdə parlaq işıqlı hərf dekoru və qara cilalı döşəmə əksi. Hündür altlıqlar üzərində sıx ağ qızılgül dəstələri, gümüşü şamdanlar və müxtəlif hündürlüklü şüşə şamlarla tamamlanmış estetik fotozona.',
     fullDescription: 'Yubiley və ad günləri üçün qonaqların heyran qalacağı foto və video fonu. Həcmli pastel şarlar, fərdi neon yazı lövhəsi, zərif tort stendi və müasir podyum dizaynı.',
     mainImage: '/images/dreamart-nisan-dekoru-fotozona.webp',
     galleryImages: [
@@ -233,7 +233,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     regionalSuitability: 'premiumRegional',
     minimumRegionalOrderValue: 5000,
     seoTitle: 'Böyük Zal Dekoru və Şadlıq Sarayı Bəzədilməsi | DreamArt Weddings',
-    metaDescription: 'Bakı və regionlarda böyük toy zalları və restoranların tam həcmli dekorasiyası və tavan instalyasiyaları.',
+    metaDescription: 'Bakı və regionlarda böyük toy zalları və restoranların bəzədilməsi və zövqlü tavan dekorları.',
     imageAltText: 'Böyük Saray məkanında asma ağ tül tavan örtükləri, böyük kristal çilçıraqlar və şəffaf stullarla bəzədilmiş ziyafət zalı dekoru',
     status: 'published',
     isFeatured: true,

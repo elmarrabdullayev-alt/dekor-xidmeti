@@ -136,7 +136,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
         'Qonaq masalarının büllur şamdanlar və güllərlə bəzədilməsi, fərdi süfrə toxumaları, xüsusi menyu kartları və mütənasib zal dizaynı.'
     },
     {
-      title: 'Fərdi Səhnə və Monumental Backdrop',
+      title: 'Fərdi Səhnə və Möhtəşəm Fon Dekoru',
       description:
         'Bəy və gəlin üçün memarlıq tağları, 3D dekorativ panellər, zəngin təbii gül kompozisiyaları və estetik podium işıqlandırması.'
     },
@@ -151,9 +151,9 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
         'Qonaqların qarşılandığı çiçəkli giriş arkaları, güzgülü xoşgəldin stendləri və şamlarla işıqlandırılmış istiqamətləndirici cığırlar.'
     },
     {
-      title: 'Fotozona və Lounge Styling',
+      title: 'Fotozona və İstirahət Guşəsi Dekoru',
       description:
-        'Dağ havasına uyğun axşam işıqlı foto zonaları, rahat velvet mebellərdən ibarət istirahət güşələri və xüsusi kokteyl masaları.'
+        'Dağ havasına uyğun axşam işıqlı fotozonalar, rahat məxmər mebellərdən ibarət istirahət güşələri və xüsusi kokteyl masaları.'
     },
     {
       title: 'Bakı–Qəbələ Regional Logistika',
@@ -172,13 +172,13 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
       day: '1. Qarşılama Şamı',
       label: 'Welcome Dinner / Cocktail',
       description:
-        'Uzaqdan gələn qonaqlar üçün səmimi dağ ab-havasında zərif şamlar, alçaq çiçək kompozisiyaları və rahat lounge guşələri.'
+        'Uzaqdan gələn qonaqlar üçün səmimi dağ ab-havasında zərif şamlar, alçaq çiçək kompozisiyaları və rahat istirahət guşələri.'
     },
     {
       day: '2. Əsas Toy Mərasimi',
       label: 'Ceremony & Grand Reception',
       description:
-        'Açıq hava nikah tağı, monumental bəy-gəlin səhnəsi, yüksək çiçək kompozisiyaları və işıq instalyasiyaları ilə qala ziyafəti.'
+        'Açıq hava nikah tağı, möhtəşəm bəy-gəlin səhnəsi, hündür çiçək kompozisiyaları və işıq bəzəkləri ilə təntənəli toy ziyafəti.'
     },
     {
       day: '3. Əyləncə və After-Party',
