@@ -373,7 +373,7 @@ export default function App() {
           href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Salam, DreamArt Weddings! Tədbir dekorasiyası ilə bağlı məlumat almaq istəyirəm.')}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 z-40 bg-[#1C1C1C] hover:bg-[#C5A059] text-[#FAF9F6] p-3.5 border border-[#C5A059]/30 shadow-xl transition-all duration-300 flex items-center justify-center group"
+          className="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-40 bg-[#1C1C1C] hover:bg-[#C5A059] text-[#FAF9F6] p-3 sm:p-3.5 rounded-full sm:rounded-none border border-[#C5A059]/30 shadow-xl transition-all duration-300 flex items-center justify-center group"
           aria-label="WhatsApp ilə əlaqə"
           title="WhatsApp ilə əlaqə"
         >
