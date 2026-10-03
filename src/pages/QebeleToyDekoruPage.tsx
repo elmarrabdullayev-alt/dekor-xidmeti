@@ -49,7 +49,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
     {
       question: 'DreamArt Weddings Qəbələdə toy dekoru xidməti göstərir?',
       answer:
-        'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək tərtibatı və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
+        'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək dekoru və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
     },
     {
       question: 'Qəbələdə destination wedding dekoru sifariş etmək mümkündür?',
@@ -123,7 +123,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
     {
       title: 'Qəbələdə Destination Wedding Dekoru',
       description:
-        'Dağ kurortları, füsunkar təbiət əraziləri və ziyafət zalları üçün beynəlxalq standartlara uyğun tam konsept tərtibatı və stilistika.'
+        'Dağ kurortları, füsunkar təbiət əraziləri və ziyafət zalları üçün beynəlxalq standartlara uyğun tam konsept dekorasiyası və stilistika.'
     },
     {
       title: 'Açıq Hava Mərasim Dekorasiyası',
@@ -184,7 +184,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
       day: '3. Əyləncə və After-Party',
       label: 'Late Night Celebration',
       description:
-        'Dinamik gecə işıqları, neon detallar, fərdi bar stendi və rəqs meydançası ətrafında parlaq partiya tərtibatı.'
+        'Dinamik gecə işıqları, neon detallar, fərdi bar stendi və rəqs meydançası ətrafında parlaq partiya dekoru.'
     }
   ];
 
@@ -310,7 +310,7 @@ export const QebeleToyDekoruPage: React.FC<QebeleToyDekoruPageProps> = ({
             </h1>
 
             <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-3xl mx-auto font-light leading-relaxed mb-8">
-              DreamArt Weddings Qəbələdə fərdi toy dekoru və tədbir dizaynı layihələri həyata keçirir: dağ mənzərəli açıq hava mərasim zonaları, ziyafət zalları, reception tərtibatı və Bakıdan birbaşa peşəkar regional quraşdırma.
+              DreamArt Weddings Qəbələdə fərdi toy dekoru və tədbir dizaynı layihələri həyata keçirir: dağ mənzərəli açıq hava mərasim zonaları, ziyafət zalları, qarşılama zonası bəzədilməsi və Bakıdan birbaşa peşəkar regional quraşdırma.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">

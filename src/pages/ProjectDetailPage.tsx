@@ -301,7 +301,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
               <div className="space-y-1.5">
                 <h4 className="font-serif text-sm text-white font-medium">Oxşar dekor sifariş etmək mümkündür?</h4>
                 <p className="text-xs text-white/70 font-light leading-relaxed">
-                  Bəli. DreamArt Weddings bu layihə əsasında məkanınızın ölçülərinə və zövqünüzə uyğun fərdi tərtibat hazırlayır. Əlaqə: 050 231 17 28.
+                  Bəli. DreamArt Weddings bu layihə əsasında məkanınızın ölçülərinə və zövqünüzə uyğun fərdi dekorasiya hazırlayır. Əlaqə: 050 231 17 28.
                 </p>
               </div>
             </div>

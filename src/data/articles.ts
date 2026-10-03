@@ -44,7 +44,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         id: 'xonca-desti-ve-sufre',
         title: '2. Xonça Dəsti və Süfrə Aksesuarları',
-        content: 'Xına mərasiminin ən müqəddəs və simvolik hissəsi xonçalardır. Xonçaların tərtibatı xına məkanının ümumi dekor konseptinə uyğunlaşdırılmalıdır. Büllur qablar, zərli tütünqabı formaları, ipək lentlər və təzə çiçək ləçəkləri xonçaları sadə hədiyyədən sənət əsərinə çevirir.',
+        content: 'Xına mərasiminin ən müqəddəs və simvolik hissəsi xonçalardır. Xonçaların bəzədilməsi xına məkanının ümumi dekor konseptinə uyğunlaşdırılmalıdır. Büllur qablar, zərli tütünqabı formaları, ipək lentlər və təzə çiçək ləçəkləri xonçaları sadə hədiyyədən sənət əsərinə çevirir.',
         bulletPoints: [
           'Xına xonçası (gəlinin əlinə qoyulacaq bəzəkli xına və xüsusi naxış alətləri)',
           'Şirniyyat və paxlava xonçaları (milli motivlərlə bəzədilmiş büllur qablarda)',
@@ -102,7 +102,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Xına Dekoru Xidməti',
         slug: 'xina-dekoru',
-        description: 'Müasir xına taxtları, səhnə arxa fonları və zərif çiçək tərtibatı.'
+        description: 'Müasir xına taxtları, səhnə arxa fonları və zərif çiçək bəzəyi.'
       },
       {
         title: 'Xonça Bəzədilməsi Xidməti',
@@ -126,7 +126,7 @@ export const INITIAL_ARTICLES: Article[] = [
     slug: 'nisan-dekoru-nece-secilir',
     title: 'Nişan Dekoru Necə Seçilir?',
     metaTitle: 'Nişan Dekoru Necə Seçilir? | Məkan və Rəng Harmoniyası Bələdçisi',
-    metaDescription: 'Nişan dekoru seçərkən nələrə diqqət yetirilməlidir? Məkan ölçüsü, rəng palitrası, arxa fon tağları və çiçək tərtibatı üzrə peşəkar tövsiyələr.',
+    metaDescription: 'Nişan dekoru seçərkən nələrə diqqət yetirilməlidir? Məkan ölçüsü, rəng palitrası, arxa fon tağları və çiçək dekoru üzrə peşəkar tövsiyələr.',
     excerpt: 'Zövqlü nişan mərasimi üçün dekor seçimi: ev, villa və ya restoran məkanlarına uyğun fon tağları, gül kompozisiyaları və işıq harmoniyası.',
     category: 'Nişan Mərasimi',
     categorySlug: 'nisan-dekoru',
@@ -301,7 +301,7 @@ export const INITIAL_ARTICLES: Article[] = [
         content: 'Hündür tavanlı şadlıq saraylarında tavan sahəsinin çiçəklərlə və ya minlərlə sallanan kristal və şüşə kürələrlə bəzədilməsi xüsusi alpinist və mühəndis montajı tələb edir. Bu kateqoriya zala nağılvari dərinlik qatsa da, mürəkkəb texniki quraşdırma büdcəyə təsir göstərir.',
         bulletPoints: [
           'İtalyan şüşə şamdanlar və təhlükəsiz şamlar',
-          'Zal memarlıq işıqlandırılması (spotlight və yuyucu işıqlar)',
+          'Zalın xüsusi işıqlandırılması (fokus və arxa fon işıqları)',
           'Tavan və çilçıraq instalyasiyaları'
         ]
       },
@@ -388,7 +388,7 @@ export const INITIAL_ARTICLES: Article[] = [
       'gelin masasi dekoru',
       'toy sehnesi baki'
     ],
-    directAnswer: 'Toy dekoru seçərkən ən vacib 5 prinsip bunlardır: 1) Məkanın tavan hündürlüyü və rəng qamması ilə konseptin uzlaşması; 2) Gəlin-bəy səhnəsi və arxa fonun fotolarda parıltı yaratmayan teksturalarla tərtibatı; 3) Canlı və ya premium süni floristikanın mövsümə uyğun seçilməsi; 4) Qonaq masalarının görünüş bucağını bağlamayan optimal mərkəz gülləri; 5) Zalda isti kəhrəba işıqlandırmanın şam və çilçıraqlarla harmoniyası.',
+    directAnswer: 'Toy dekoru seçərkən ən vacib 5 prinsip bunlardır: 1) Məkanın tavan hündürlüyü və rəng qamması ilə konseptin uzlaşması; 2) Gəlin-bəy səhnəsi və arxa fonun fotolarda parıltı yaratmayan teksturalarla bəzədilməsi; 3) Canlı və ya premium süni floristikanın mövsümə uyğun seçilməsi; 4) Qonaq masalarının görünüş bucağını bağlamayan optimal mərkəz gülləri; 5) Zalda isti kəhrəba işıqlandırmanın şam və çilçıraqlarla harmoniyası.',
     sections: [
       {
         id: 'mekan-arxitekturasi',
@@ -480,7 +480,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Toy Dekoru Xidməti',
         slug: 'toy-dekoru',
-        description: 'Lüks toy tağları, gəlin masası və tam həcmli zal tərtibatı.'
+        description: 'Lüks toy tağları, gəlin masası və tam həcmli zal dekoru.'
       },
       {
         title: 'Zal və Banket Dekoru',
@@ -490,7 +490,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Xonça və Mərasim Xidməti',
         slug: 'xonca-xidmeti',
-        description: 'Büllur, məxmər və canlı güllərlə bəzədilmiş eksklüziv xonça dəstləri.'
+        description: 'Büllur, məxmər və canlı güllərlə bəzədilmiş xonça dəstləri.'
       }
     ],
     relatedProjects: [
@@ -504,8 +504,8 @@ export const INITIAL_ARTICLES: Article[] = [
     slug: 'ad-gunu-dekoru-ideyalari',
     title: 'Ad Günü Dekoru üçün Müasir və Zövqlü İdeyalar',
     metaTitle: 'Ad Günü Dekoru üçün Müasir İdeyalar | Zövqlü Fotozona və Masa Konseptləri',
-    metaDescription: 'Ad günü və yubiley mərasimləri üçün müasir dekorasiya ideyaları: neon yazılı fotozonalar, zərif şam və çiçək kompozisiyaları, rəng palitrası və masa tərtibatı.',
-    excerpt: 'Yaddaqalan ad günü qeyd etməsi üçün ən müasir dekor trendləri: zərif süfrə tərtibatı, tematik fotozonalar, neon işıqlar və canlı çiçək vurğuları.',
+    metaDescription: 'Ad günü və yubiley mərasimləri üçün müasir dekorasiya ideyaları: neon yazılı fotozonalar, zərif şam və çiçək kompozisiyaları, rəng palitrası və masa dekoru.',
+    excerpt: 'Yaddaqalan ad günü qeyd etməsi üçün ən müasir dekor trendləri: zərif süfrə bəzəyi, tematik fotozonalar, neon işıqlar və canlı çiçək vurğuları.',
     category: 'Ad Günü Dekoru',
     categorySlug: 'ad-gunu-dekoru',
     publishDate: '2026-10-01',
@@ -627,7 +627,7 @@ export const INITIAL_ARTICLES: Article[] = [
     slug: 'usaq-ad-gunu-dekoru-nece-secilir',
     title: 'Uşaq Ad Günü Dekoru Necə Seçilir?',
     metaTitle: 'Uşaq Ad Günü Dekoru Necə Seçilir? | Tema, Təhlükəsizlik və İdeyalar',
-    metaDescription: 'Uşaq ad günü dekoru seçimi bələdçisi: yaşa uyğun tematik konseptlər, qız və oğlan uşaqları üçün rənglər, təhlükəsiz materiallar və fotozona tərtibatı.',
+    metaDescription: 'Uşaq ad günü dekoru seçimi bələdçisi: yaşa uyğun tematik konseptlər, qız və oğlan uşaqları üçün rənglər, təhlükəsiz materiallar və fotozona dekoru.',
     excerpt: 'Balacaların ən sevimli bayramı üçün dekor seçimi qaydaları: təhlükəsiz materiallar, nağıl qəhrəmanları, interaktiv fotozonalar və zərif desert masası.',
     category: 'Uşaq Tədbirləri',
     categorySlug: 'ad-gunu-dekoru',
@@ -749,9 +749,9 @@ export const INITIAL_ARTICLES: Article[] = [
     id: 'art-7',
     slug: 'banket-ve-zal-dekoru-ferqi',
     title: 'Banket Dekoru ilə Zal Dekoru Arasında Fərq Nədir?',
-    metaTitle: 'Banket Dekoru ilə Zal Dekoru Arasında Fərq Nədir? | Memarlıq və Tərtibat Təhlili',
-    metaDescription: 'Banket dekoru ilə zal dekorunun əsas fərqləri: qonaq masası erqonomikası, tavan instalyasiyaları, məkan həcmi və tədbir növünə görə dekorasiya yanaşmaları.',
-    excerpt: 'Banket və bütöv zal dekorasiyasının texniki və vizual fərqləri: masa tərtibatı, tavan asma konstruksiyaları, işıqlandırma və məkan miqyası.',
+    metaTitle: 'Banket Dekoru ilə Zal Dekoru Arasında Fərq Nədir? | Dizayn və Məkan Təhlili',
+    metaDescription: 'Banket dekoru ilə zal dekorunun əsas fərqləri: qonaq masasının rahatlığı, tavan instalyasiyaları, məkan həcmi və tədbir növünə görə dekorasiya yanaşmaları.',
+    excerpt: 'Banket və bütöv zal dekorasiyasının texniki və vizual fərqləri: masa dekoru, tavan asma konstruksiyaları, işıqlandırma və məkan miqyası.',
     category: 'Zal və Banket',
     categorySlug: 'zal-dekoru',
     publishDate: '2026-10-01',
@@ -775,10 +775,10 @@ export const INITIAL_ARTICLES: Article[] = [
     sections: [
       {
         id: 'banket-dekoru-mahiyyeti',
-        title: '1. Banket Dekoru Nədir? Masa Tərtibatı, Çiçəklər və Servis Uyğunluğu',
-        content: 'Banket dekorasiyası birbaşa qonağın şəxsi təcrübəsi ilə bağlıdır. Qonaq saatlarla masada əyləşir və onun gözü qarşısında olan elementlərin erqonomikası, toxunma keyfiyyəti və qoxusu çox vacibdir. Burada masanın ölçüsünə uyğun gül hündürlüyü, şamdanların təhlükəsizliyi və qab-qacaqla harmoniyası əsas götürülür.',
+        title: '1. Banket Dekoru Nədir? Masa Dekoru, Çiçəklər və Servis Uyğunluğu',
+        content: 'Banket dekorasiyası birbaşa qonağın şəxsi təcrübəsi ilə bağlıdır. Qonaq saatlarla masada əyləşir və onun gözü qarşısında olan elementlərin rahatlığı və zərifliyi, toxunma keyfiyyəti və qoxusu çox vacibdir. Burada masanın ölçüsünə uyğun gül hündürlüyü, şamdanların təhlükəsizliyi və qab-qacaqla harmoniyası əsas götürülür.',
         bulletPoints: [
-          'Mərkəz Çiçək Kompozisiyaları: Qonaqların ünsiyyətini kəsməyən erqonomik hündürlüklər',
+          'Mərkəz Çiçək Kompozisiyaları: Qonaqların ünsiyyətini və baxışını kəsməyən optimal hündürlüklər',
           'Süfrə Tekstili: İpək, kətan və ya məxmər örtüklər, zərif parça salfetlər',
           'İşıqlandırma: İtalyan şüşə şamdanlar və axşam saatlarında isti, romantik atmosfer yaradan canlı şamlar'
         ]
@@ -821,7 +821,7 @@ export const INITIAL_ARTICLES: Article[] = [
         bulletPoints: [
           'Rəqs meydançası üzərində mərkəzi asma çiçək qübbəsi',
           'Bəy-gəlin səhnəsinə istiqamətləndirilən xüsusi profil projektorları',
-          'Zalın memarlıq elementlərini vurğulayan arxa plan yuyucu işıqları (wall-wash)'
+          'Zalın divar və memarlıq detallarını vurğulayan arxa plan divar işıqları (wall-wash)'
         ]
       }
     ],
@@ -840,7 +840,7 @@ export const INITIAL_ARTICLES: Article[] = [
       },
       {
         question: 'Banket masasında qonaqların bir-birini rahat görməsi üçün gülün hündürlüyü nə qədər olmalıdır?',
-        answer: 'Kompozisiyanın ya 30 sm-dən aşağı, ya da 75 sm-dən hündür incə dayaq üzərində olması qızıl erqonomika standartıdır.'
+        answer: 'Kompozisiyanın ya 30 sm-dən aşağı, ya da 75 sm-dən hündür incə dayaq üzərində olması qızıl dizayn qaydasıdır.'
       },
       {
         question: 'Restoran rəhbərliyi ilə zal dekorasiyası razılaşdırılarkən hansı texniki detallar vacibdir?',
@@ -861,7 +861,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Toy Dekoru Xidməti',
         slug: 'toy-dekoru',
-        description: 'Səhnə, nikah tağı və böyük zalların tam həcmli tərtibatı.'
+        description: 'Səhnə, nikah tağı və böyük zalların tam həcmli bəzədilməsi.'
       }
     ],
     relatedProjects: [
@@ -902,7 +902,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         id: 'hansi-dekorlar-lazimdir',
         title: '1. Mağaza Açılışı üçün Hansı Dekorlar Lazımdır?',
-        content: 'Yeni mağaza, butik, gözəllik salonu, restoran və ya filial açılışı zamanı tərtibat təkcə bayram ab-havası yaratmır, həm də ilk gündən brendinizin nüfuzunu formalaşdırır. Kompleks açılış dekorasiyasına adətən bu əsas zonalar daxildir: giriş qapısı və fasad üçün şar tağı, qırmızı xalça və qızılı postamentlərlə lent kəsmə guşəsi, qonaqlar və sosial media üçün loqolu brend fotozona (press-wall) və daxili məhsul stendlərini tamamlayan zərif mini floristika.',
+        content: 'Yeni mağaza, butik, gözəllik salonu, restoran və ya filial açılışı zamanı dekor təkcə bayram ab-havası yaratmır, həm də ilk gündən brendinizin nüfuzunu formalaşdırır. Kompleks açılış dekorasiyasına adətən bu əsas zonalar daxildir: giriş qapısı və fasad üçün şar tağı, qırmızı xalça və qızılı postamentlərlə lent kəsmə guşəsi, qonaqlar və sosial media üçün loqolu brend fotozona (press-wall) və daxili məhsul stendlərini tamamlayan zərif mini floristika.',
         bulletPoints: [
           'Fasad və giriş zonası üçün uzaqdan diqqət çəkən üzvi və ya klassik şar tağı',
           'Rəsmi lent kəsmə mərasimi dəsti (qızılı dirəklər, məxmər kəndirlər, xüsusi qayçılar və nimçə)',
@@ -925,7 +925,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         id: 'qapilarin-sarla-bezedilmesi',
         title: '3. Qapıların Şarla Bəzədilməsində Nələrə Diqqət Etmək Lazımdır?',
-        content: 'Qapıların şarla bəzədilməsi açılış günündə piyada və müştəri axınının birbaşa içəri yönləndirilməsində əsas rolu oynayır. Lakin qapı bəzəyi zamanı təhlükəsizlik və erqonomika qaydalarına ciddi riayət edilməlidir. Şar kompozisiyası qapının mexaniki hərəkət radiusuna daxil olmamalı, sensorlu avtomatik qapıların sensor gözünü örtməməlidir.',
+        content: 'Qapıların şarla bəzədilməsi açılış günündə piyada və müştəri axınının birbaşa içəri yönləndirilməsində əsas rolu oynayır. Lakin qapı bəzəyi zamanı təhlükəsizlik və qonaqların rahat hərəkəti qaydalarına ciddi riayət edilməlidir. Şar kompozisiyası qapının mexaniki hərəkət radiusuna daxil olmamalı, sensorlu avtomatik qapıların sensor gözünü örtməməlidir.',
         bulletPoints: [
           'Minimum keçid hündürlüyü: Şar tağının altından insanların rahat keçməsi üçün minimum 2.2 metr təmiz hündürlük',
           'Giriş eninin qorunması: Qapının hər iki tərəfində ən azı 1.2–1.5 metr sərbəst piyada zolağı saxlanılmalıdır',
@@ -1058,7 +1058,7 @@ export const INITIAL_ARTICLES: Article[] = [
     sections: [
       {
         id: 'karkas-olculeri',
-        title: '1. Məkan və Karkas Ölçülərinin Düzgün Seçilməsi (Kadr Erqonomikası)',
+        title: '1. Məkan və Karkas Ölçülərinin Düzgün Seçilməsi (Rahat Kadr və Məkan Ölçüləri)',
         content: 'Fotozonanın əsas funksiyası tək və ya qrup halında çəkilən şəkillərdə arxa planı tam əhatə etməkdir. Geniş bucaqlı obyektivlərlə çəkiliş aparıldıqda eni 2 metrdən az olan karkasların kənarları kadrda görünür və arxadakı zal detalları estetik görüntünü pozur.',
         bulletPoints: [
           'Fərdi və cütlük fotoları üçün: 2.2m hündürlük, 2.0–2.4m en',
@@ -1190,7 +1190,7 @@ export const INITIAL_ARTICLES: Article[] = [
     title: 'Bəy-Gəlin Masası Dekoru Necə Seçilir?',
     metaTitle: 'Bəy-Gəlin Masası Dekoru Necə Seçilir? | Toy Səhnəsi Bələdçisi',
     metaDescription: 'Bəy-gəlin masası dekoru seçimi: masa forması, arxa fon tağı, çiçək kompozisiyaları, şamlar və səhnə podyumunun düzgün proporsiyaları haqqında peşəkar bələdçi.',
-    excerpt: 'Toy məclisinin baş qəhrəmanları üçün səhnə tərtibatı: masanın forması, arxa fon karkasları, sıx gül kaskadları və şam işıqlandırmasının harmoniyası.',
+    excerpt: 'Toy məclisinin baş qəhrəmanları üçün səhnə dekoru: masanın forması, arxa fon karkasları, sıx gül kaskadları və şam işıqlandırmasının harmoniyası.',
     category: 'Toy Dekoru',
     categorySlug: 'toy-dekoru',
     publishDate: '2026-10-01',
@@ -1266,7 +1266,7 @@ export const INITIAL_ARTICLES: Article[] = [
     faqs: [
       {
         question: 'Bəy-gəlin masasının hündürlüyü və eni standart olaraq nə qədərdir?',
-        answer: 'Masanın hündürlüyü 75–78 sm, uzunluğu 1.8–2.4 metr, eni isə 80–100 sm təşkil edir. Bu ölçü həm rahat əyləşmə, həm də zəngin gül tərtibatı üçün optimaldır.'
+        answer: 'Masanın hündürlüyü 75–78 sm, uzunluğu 1.8–2.4 metr, eni isə 80–100 sm təşkil edir. Bu ölçü həm rahat əyləşmə, həm də zəngin gül bəzəyi üçün optimaldır.'
       },
       {
         question: 'Güzgülü masa seçərkən çəkiliş işıqlarının əksi narahatlıq yaradırmı?',
@@ -1289,7 +1289,7 @@ export const INITIAL_ARTICLES: Article[] = [
       {
         title: 'Toy Dekoru Xidməti',
         slug: 'toy-dekoru',
-        description: 'Bəy-gəlin səhnəsi, monumental tağlar və tam zal tərtibatı.'
+        description: 'Bəy-gəlin səhnəsi, monumental tağlar və tam zal dekorasiyası.'
       },
       {
         title: 'Zal və Banket Dekoru',
@@ -1308,7 +1308,7 @@ export const INITIAL_ARTICLES: Article[] = [
     slug: 'heri-sufresi-nece-hazirlanir',
     title: 'Həri Süfrəsi Necə Hazırlanır?',
     metaTitle: 'Həri Süfrəsi Necə Hazırlanır? | Mərasim Detalları və Bəzək Qaydaları',
-    metaDescription: 'Həri süfrəsi üçün nə lazımdır? Xonçalar, şirniyyat qabları, qənd sındırma guşəsi, zərif şamlar və ailəvi mərasim üçün dekor tərtibatı haqqında tam məlumat.',
+    metaDescription: 'Həri süfrəsi üçün nə lazımdır? Xonçalar, şirniyyat qabları, qənd sındırma guşəsi, zərif şamlar və ailəvi mərasim üçün fərdi dekor bələdçisi.',
     excerpt: 'İki ailənin ilk rəsmi qovuşma günü olan həri mərasimi üçün zərif süfrə: büllur qablar, xonçalar, çiçəklər və ənənəvi mərasim atributları.',
     category: 'Həri və Nişan',
     categorySlug: 'heri-sufresi',
@@ -1557,7 +1557,7 @@ export const INITIAL_ARTICLES: Article[] = [
     slug: 'korporativ-tedbir-dekoru-nece-planlanir',
     title: 'Korporativ Tədbir Dekoru Necə Planlanır?',
     metaTitle: 'Korporativ Tədbir Dekoru Necə Planlanır? | Şirkət və Qala Gecəsi Bələdçisi',
-    metaDescription: 'Şirkət tədbirləri, qala gecələri, forum və mükafatlandırma mərasimləri üçün peşəkar korporativ dekorasiya planı: brendbuk rəngləri, press-wall və səhnə tərtibatı.',
+    metaDescription: 'Şirkət tədbirləri, qala gecələri, forum və mükafatlandırma mərasimləri üçün peşəkar korporativ dekorasiya planı: brendbuk rəngləri, press-wall və səhnə dekorasiyası.',
     excerpt: 'Şirkət imicini və tədbir miqyasını əks etdirən peşəkar korporativ dekorasiya: brendbuk harmoniyası, qala masaları, mətbuat fotozonaları və səhnə dizaynı.',
     category: 'Korporativ Tədbir',
     categorySlug: 'korporativ-dekor',
@@ -1578,7 +1578,7 @@ export const INITIAL_ARTICLES: Article[] = [
       'brend tedbir dekoru',
       'korporativ tedbir dizayni'
     ],
-    directAnswer: 'Korporativ tədbir dekorunun planlanmasında 5 əsas baza addım: 1) Şirkətin brendbuk və korporativ rənglərinə 100% riayət edilməsi; 2) Səhnə və podiumun spikerlər və mükafatlandırma üçün işıqlandırılmış mat arxa fonla təchiz edilməsi; 3) Rəsmi mətbuat və qonaqlar üçün geniş enlikdə (ən azı 3–4 metr) loqolu press-wall fotozonası; 4) Qala şam yeməyi masalarında qonaqların ünsiyyətinə mane olmayan erqonomik çiçək kompozisiyaları; 5) Tədbir məkanının reqlamentinə uyğun gecə montajı və operativ sökülmə qrafiki.',
+    directAnswer: 'Korporativ tədbir dekorunun planlanmasında 5 əsas baza addım: 1) Şirkətin brendbuk və korporativ rənglərinə 100% riayət edilməsi; 2) Səhnə və podiumun spikerlər və mükafatlandırma üçün işıqlandırılmış mat arxa fonla təchiz edilməsi; 3) Rəsmi mətbuat və qonaqlar üçün geniş enlikdə (ən azı 3–4 metr) loqolu press-wall fotozonası; 4) Qala şam yeməyi masalarında qonaqların ünsiyyətinə və baxışına mane olmayan zərif çiçək kompozisiyaları; 5) Tədbir məkanının reqlamentinə uyğun gecə quraşdırması və operativ toplanma qrafiki.',
     sections: [
       {
         id: 'brend-identikliyi-korporativ',

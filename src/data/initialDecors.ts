@@ -10,7 +10,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     style: 'Klassik Lüks',
     city: 'Bakı',
     shortDescription: 'Qara fon üzərində qızılı saplı pərdələr, parıltılı monoqram və iki monumental qızılı əl heykəlindən ibarət səhnə kompozisiyası. Ağ podyumu bürüyən sıx ağ qızılgül kaskadı, oymalı ağ kreslolar, güzgülü masa və çoxsaylı hündür şüşə şamdanlarla tamamlanmış bəy-gəlin guşəsi.',
-    fullDescription: 'Zövqlü və unudulmaz toy mərasimi üçün xüsusi hazırlanmış tərtibat. Dairəvi monumental arxa fon konstruksiyası, təravətli ağ qızılgül və qortenziya çiçək kompozisiyaları, pilləli şam işıqlandırması və zərif gəlin-bəy masası ahəngi ilə məkanınıza krallıq dəbdəbəsi gətirir.',
+    fullDescription: 'Zövqlü və unudulmaz toy mərasimi üçün xüsusi hazırlanmış dekor konsepsiyası. Dairəvi monumental arxa fon konstruksiyası, təravətli ağ qızılgül və qortenziya çiçək kompozisiyaları, pilləli şam işıqlandırması və zərif gəlin-bəy masası ahəngi ilə məkanınıza krallıq dəbdəbəsi gətirir.',
     mainImage: '/images/dreamart-toy-dekoru-qizili-altar.webp',
     galleryImages: [
       '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
@@ -24,14 +24,14 @@ export const INITIAL_DECORS: DecorItem[] = [
       'Gəlin və bəy masasının bəzədilməsi',
       'İtalyan şüşə şamdanlar və təhlükəsiz şamlar',
       'Məkan xüsusi isti işıqlandırması',
-      'Bakı daxilində çatdırılma və montaj',
+      'Bakı daxilində çatdırılma və peşəkar quraşdırılma',
       'Tədbir bitdikdən sonra sökülmə'
     ],
     regionalService: true,
     regionalSuitability: 'premiumRegional',
     minimumRegionalOrderValue: 2000,
     seoTitle: 'Ağ Qızılgül Toy Səhnəsi Dekoru Bakı | DreamArt Weddings',
-    metaDescription: 'Bakıda klassik lüks toy səhnəsi dekoru. Canlı ağ güllər, şam işıqlandırması və eksklüziv gəlin masası tərtibatı.',
+    metaDescription: 'Bakıda klassik lüks toy səhnəsi dekoru. Canlı ağ güllər, şam işıqlandırması və zərif gəlin masası dekoru.',
     imageAltText: 'Meridian məkanında qara-qızılı fon, parıltılı monoqram, ağ qızılgül kaskadı və şüşə şamdanlarla bəzədilmiş bəy-gəlin toy səhnəsi',
     status: 'published',
     isFeatured: true,
@@ -112,14 +112,14 @@ export const INITIAL_DECORS: DecorItem[] = [
       'Canlı və qorunan güllərdən kompozisiyalar',
       'Xonçalar üçün fərdi stendlər və döşəkcələr',
       'Antik şamdanlar və atmosferik işıqlandırma',
-      'Qəbələ və şimal bölgəsinə çatdırılma və montaj'
+      'Qəbələ və şimal bölgəsinə çatdırılma və peşəkar quraşdırılma'
     ],
     regionalService: true,
     regionalSuitability: 'premiumRegional',
     minimumRegionalOrderValue: 2500,
     seoTitle: 'Qəbələdə Premium Xına Gecəsi Dekoru | DreamArt Weddings',
     metaDescription: 'Qəbələ və regionlar üçün dəbdəbəli qırmızı xına dekoru, gəlin taxtı və şam kompozisiyası.',
-    imageAltText: 'Qəbələdə dörd qızılı tağ, kristal çilçıraqlar, ağ taxt kreslolar və çoxsaylı şamlarla tərtib edilmiş xına səhnəsi',
+    imageAltText: 'Qəbələdə dörd qızılı tağ, kristal çilçıraqlar, ağ taxt kreslolar və çoxsaylı şamlarla bəzədilmiş xına səhnəsi',
     status: 'published',
     isFeatured: false,
     isRealProject: false,
@@ -142,7 +142,7 @@ export const INITIAL_DECORS: DecorItem[] = [
       '/images/dreamart-banket-zali-goy-isiq-dekoru.webp'
     ],
     includedServices: [
-      'Arxa fon panelinin montajı',
+      'Arxa fon panelinin quraşdırılması',
       'Pastel mat şar kompozisiyası',
       'Fərdi "Happy Birthday" neon yazısı',
       'Silindr tort və şirniyyat stendləri',
@@ -153,7 +153,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     regionalSuitability: 'local',
     minimumRegionalOrderValue: 600,
     seoTitle: 'Ad Günü Fotozona Dekoru Bakı | DreamArt Weddings',
-    metaDescription: 'Bakıda ad günləri üçün estetik şar fotozonası, neon işıqlar və zərif tort stendi tərtibatı.',
+    metaDescription: 'Bakıda ad günləri üçün estetik şar fotozonası, neon işıqlar və zərif tort stendi dekoru.',
     imageAltText: 'Bakıda bej parçalar, işıqlı hərflər, ağ güllər və şamlarla işlənmiş ad günü fotozona dekoru',
     status: 'published',
     isFeatured: false,
@@ -170,7 +170,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     style: 'Rəsmi Dəbdəbə',
     city: 'Bakı',
     shortDescription: 'Qara parça süfrə üzərində ucalan hündür çoxqollu büllur şamdan, incə şamlar və qızılı aksessuarlarla tərtib edilmiş ziyafət masası. Ağ gül kompozisiyaları, şəffaf qədəhlər və arxa fonda dalğalanan ağ səhnə pərdələri ilə tamamlanmış rəsmi qala gecəsi ab-havası.',
-    fullDescription: 'Şirkət təqdimatları, ilsonu qala gecələri və rəsmi ziyafətlər üçün nəzərdə tutulmuş nüfuzlu tərtibat. 40 metrlik masa boyu davam edən qızılgül və evkalipt runner-i, fərdi brend lövhələri və peşəkar işıq dizaynı.',
+    fullDescription: 'Şirkət təqdimatları, ilsonu qala gecələri və rəsmi ziyafətlər üçün nəzərdə tutulmuş nüfuzlu dekorasiya. 40 metrlik masa boyu davam edən qızılgül və evkalipt raneri, fərdi brend lövhələri və peşəkar işıq dizaynı.',
     mainImage: '/images/dreamart-qala-gecesi-samdan-dekoru.webp',
     galleryImages: [
       '/images/dreamart-restoran-qonaq-masasi-dekoru.webp',
@@ -227,12 +227,12 @@ export const INITIAL_DECORS: DecorItem[] = [
       'Bütün qonaq masaları üçün hündür gül kompozisiyaları',
       'Giriş qarşılama tuneli və fotozona',
       'Xüsusi ziyafət podyumu və səhnə dizaynı',
-      '25 nəfərlik texniki və florist heyəti ilə tam montaj'
+      '25 nəfərlik florist və dekorçu heyəti ilə tam quraşdırılma'
     ],
     regionalService: true,
     regionalSuitability: 'premiumRegional',
     minimumRegionalOrderValue: 5000,
-    seoTitle: 'Böyük Zal Dekoru və Şadlıq Sarayı Tərtibatı | DreamArt Weddings',
+    seoTitle: 'Böyük Zal Dekoru və Şadlıq Sarayı Bəzədilməsi | DreamArt Weddings',
     metaDescription: 'Bakı və regionlarda böyük toy zalları və restoranların tam həcmli dekorasiyası və tavan instalyasiyaları.',
     imageAltText: 'Böyük Saray məkanında asma ağ tül tavan örtükləri, böyük kristal çilçıraqlar və şəffaf stullarla bəzədilmiş ziyafət zalı dekoru',
     status: 'published',
@@ -259,7 +259,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     categoryName: 'Toy dekoru',
     style: 'Təbiət Şıq',
     city: 'Qəbələ',
-    shortDescription: 'Açıq təbiət fonunda ucaldılmış möhkəm taxta nikah tağı, sıx yaşıl evkalipt yarpaqları və təbii ağ qızılgül kompozisiyaları. Yaşıl çəmənlik üzərində ağ qonaq oturacaqları və ləçəkli cığırla tamamlanmış açıq hava nikah mərasimi tərtibatı.',
+    shortDescription: 'Açıq təbiət fonunda ucaldılmış möhkəm taxta nikah tağı, sıx yaşıl evkalipt yarpaqları və təbii ağ qızılgül kompozisiyaları. Yaşıl çəmənlik üzərində ağ qonaq oturacaqları və ləçəkli cığırla tamamlanmış açıq hava nikah mərasimi dekoru.',
     fullDescription: 'Qafqaz dağlarının əzəmətli mənzərəsini tamamlayan zərif təbii dekor konsepti. Küləyə və hava şəraitinə dayanıqlı möhkəm tağ konstruksiyası, təbii çəmənlik üzərində ağ kreslolar və zərif çiçək ləçəkləri ilə bəzədilmiş gəlin yolu.',
     mainImage: 'https://images.unsplash.com/photo-1545232979-fbf6786a34be?auto=format&fit=crop&w=1600&q=85',
     galleryImages: [
@@ -270,7 +270,7 @@ export const INITIAL_DECORS: DecorItem[] = [
       'Təbii ağ və krem çiçəklərdən tağ',
       'Qonaq oturacaqları üçün çiçək detalları',
       'Gəlin yolu xalçası və fənərlər',
-      'Qəbələyə xüsusi nəqliyyat və montaj komandası'
+      'Qəbələyə xüsusi nəqliyyat və peşəkar quraşdırma komandası'
     ],
     regionalService: true,
     regionalSuitability: 'premiumRegional',
@@ -293,18 +293,18 @@ export const INITIAL_DECORS: DecorItem[] = [
     style: 'Aristokratik',
     city: 'Gəncə',
     shortDescription: 'Dairəvi masanın mərkəzində ucalan təbii ağac budaqları, çətirini və ətəyini bəzəyən sıx ağ-krem qızılgüllər və yaşıl yarpaqlar. Dairəvi güzgülü altlıq, klassik zərif stullar, incə qab-qacaq düzümü və fondakı isti kəhrəba divar işıqları ilə yaradılmış zərif mərasim mühiti.',
-    fullDescription: 'Qərb regionunun qonaqpərvərlik ənənələrinə uyğunlaşdırılmış zərif nişan tərtibatı. Gəncənin seçilmiş restoranları və həyət evləri üçün qüsursuz işıqlandırma, fərdi ad lövhəsi və 12 ədəd xonça üçün xüsusi pilləli stendlər.',
+    fullDescription: 'Qərb regionunun qonaqpərvərlik ənənələrinə uyğunlaşdırılmış zərif nişan dekoru. Gəncənin seçilmiş restoranları və həyət evləri üçün qüsursuz işıqlandırma, fərdi ad lövhəsi və 12 ədəd xonça üçün xüsusi pilləli stendlər.',
     mainImage: '/images/dreamart-bey-gelin-masasi-cicek-tagi.webp',
     galleryImages: [
       '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
       '/images/dreamart-nisan-dekoru-fotozona.webp'
     ],
     includedServices: [
-      'Gəncə şəhərinə çatdırılma və montaj',
+      'Gəncə şəhərinə çatdırılma və peşəkar quraşdırılma',
       'Xüsusi arxa fon və ad monoqramı',
       'Gül kompozisiyaları və zərif şamlar',
       'Xonçalar üçün xüsusi bəzədilmiş stendlər',
-      'Tədbirdən dərhal sonra operativ sökülmə'
+      'Tədbirdən dərhal sonra operativ toplanma'
     ],
     regionalService: true,
     regionalSuitability: 'regional',
@@ -343,7 +343,7 @@ export const INITIAL_DECORS: DecorItem[] = [
     includedServices: [
       '12-24 ədəd fərdi büllur və qızılı xonça qabları',
       'Təbii canlı çiçək bəzəkləri və ipək lentlər',
-      'Xüsusi dizaynlı şirniyyat və hədiyyə tərtibatı',
+      'Xüsusi dizaynlı şirniyyat və hədiyyə bəzəyi',
       'Xonçalar üçün işıqlı və pilləli nümayiş stendləri',
       'Bakı və Abşeron üzrə təhlükəsiz zərif çatdırılma'
     ],
@@ -352,8 +352,8 @@ export const INITIAL_DECORS: DecorItem[] = [
     minimumRegionalOrderValue: 1200,
     priceDisplay: '350 AZN-dən',
     seoTitle: 'Eksklüziv Xonça Bəzədilməsi və İcarəsi Bakı | DreamArt Weddings',
-    metaDescription: 'Toy, nişan və xına üçün lüks xonça xidməti. Canlı güllər, büllur qablar və fərdi tərtibat.',
-    imageAltText: 'Bakıda oymalı qızılı sini, ağ-çəhrayı təbii qızılgüllər və yanan şamlarla tərtib edilmiş toy və nişan xonçası',
+    metaDescription: 'Toy, nişan və xına üçün lüks xonça xidməti. Canlı güllər, büllur qablar və fərdi bəzədilmə.',
+    imageAltText: 'Bakıda oymalı qızılı sini, ağ-çəhrayı təbii qızılgüllər və yanan şamlarla bəzədilmiş toy və nişan xonçası',
     status: 'published',
     isFeatured: true,
     isRealProject: true,

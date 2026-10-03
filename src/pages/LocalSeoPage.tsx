@@ -31,7 +31,7 @@ export const LocalSeoPage: React.FC<LocalSeoPageProps> = ({
     isMajorHub: false,
     distanceFromBaku: 'Məsafəyə görə hesablanır',
     logisticsNotice: 'Bölgə üzrə orta və premium dekorasiya layihələri fərdi logistika planı ilə quraşdırılır.',
-    recommendedDecorTypes: ['Toy dekoru', 'Nişan masası', 'Zal tərtibatı']
+    recommendedDecorTypes: ['Toy dekoru', 'Nişan masası', 'Zal dekoru']
   };
 
   if (!category) {

@@ -18,7 +18,7 @@ export const CATEGORIES: CategoryInfo[] = [
       'Qonaq masaları üçün hündür vaza və ya kompakt gül kompozisiyaları',
       'İtalyan şüşə şamdanlar və təhlükəsiz şam işıqlandırması',
       'Zala giriş qarşılama fotozonası və xüsusi detallı stendlər',
-      'Məkana operativ çatdırılma, peşəkar montaj və tədbir bitdikdən sonra sökülmə'
+      'Məkana operativ çatdırılma, peşəkar quraşdırma və tədbir bitdikdən sonra toplanma'
     ],
     suitableFor: [
       'Restoran və şadlıq saraylarında keçirilən böyük toy ziyafətləri',
@@ -62,14 +62,14 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Dekor sifarişi üçün proses necə başlayır?',
-        answer: 'İlk olaraq məkanın foto və ölçüləri təhlil olunur, cütlüyün istəyinə uyğun 3D konsept eskizi və şəffaf smeta tərtib edilir, razılaşdırıldıqdan sonra montaj planlaşdırılır.'
+        answer: 'İlk olaraq məkanın foto və ölçüləri təhlil olunur, cütlüyün istəyinə uyğun 3D konsept eskizi və şəffaf smeta tərtib edilir, razılaşdırıldıqdan sonra quraşdırma planlaşdırılır.'
       },
       {
         question: 'Toy dekorunun qiyməti necə hesablanır?',
         answer: 'Toy dekorunun qiyməti zalın həcminə, gəlin masası və səhnə ölçüsünə, təbii çiçəklərin növünə, şamdan və işıqlandırma detallarına əsasən fərdi smeta ilə hesablanır.'
       },
       {
-        question: 'Məkan dekoru və masa tərtibatı mümkündür?',
+        question: 'Məkan dekoru və masa bəzədilməsi mümkündür?',
         answer: 'Bəli. Həm gəlin-bəy səhnəsi, həm qonaq masalarının çiçək kompozisiyaları, həm də giriş fotozonası bütöv ansambl şəklində qurulur.'
       }
     ],
@@ -80,9 +80,9 @@ export const CATEGORIES: CategoryInfo[] = [
         { title: 'Məkanın və Zalın Ölçüsü', description: 'Zalın tavan hündürlüyü, səhnənin eni və qonaq tutumuna görə konstruksiyanın miqyası müəyyən edilir.' },
         { title: 'Gəlin Masası və Arxa Fon Konstruksiyası', description: 'Nikah tağının növü, 3D panellər, metal karkas və ya zərif toxuma drapaj materialları.' },
         { title: 'Floristika və Gül Növləri', description: 'Təravətli idxal canlı çiçəklərin (qızılgüllər, qortenziyalar, orxideyalar) və ya premium dərəcəli realizmli süni çiçəklərin nisbəti.' },
-        { title: 'Qonaq Masası Tərtibatı', description: 'Masa sayı, büllur şamdanlar, zərif süfrə runnerləri və mərkəzi gül kompozisiyalarının hündürlüyü.' },
+        { title: 'Qonaq Masası Dekoru', description: 'Masa sayı, büllur şamdanlar, zərif süfrə ranerləri və mərkəzi gül kompozisiyalarının hündürlüyü.' },
         { title: 'İşıqlandırma və Xüsusi İstehsal', description: 'İsti kəhrəba işıqlandırma, fərdi monoqram lövhələri və xüsusi kəsim dekor elementləri.' },
-        { title: 'Logistika və Quraşdırma Məsafəsi', description: 'Bakı daxili və ya Qəbələ, Gəncə, Bərdə kimi regionlara xüsusi nəqliyyatla təhlükəsiz çatdırılma və montaj/sökülmə.' }
+        { title: 'Logistika və Quraşdırma Məsafəsi', description: 'Bakı daxili və ya Qəbələ, Gəncə, Bərdə kimi regionlara xüsusi nəqliyyatla təhlükəsiz çatdırılma və peşəkar quraşdırma/toplanma.' }
       ],
       ctaLabel: 'Qiymət təklifi al'
     },
@@ -93,7 +93,7 @@ export const CATEGORIES: CategoryInfo[] = [
     faqs: [
       {
         question: 'DreamArt Weddings toy dekoru sifarişi qəbul edir?',
-        answer: 'Bəli. Bakı və Azərbaycanın bütün regionlarında fərdi toy dekorları, səhnə və zal tərtibatı üçün rəsmi dekor sifarişi qəbul edilir. Əlaqə: 050 231 17 28.'
+        answer: 'Bəli. Bakı və Azərbaycanın bütün regionlarında fərdi toy dekorları, səhnə və zal bəzədilməsi üçün rəsmi dekor sifarişi qəbul edilir. Əlaqə: 050 231 17 28.'
       },
       {
         question: 'Toy dekorları üçün fərdi konsept hazırlanır?',
@@ -123,11 +123,11 @@ export const CATEGORIES: CategoryInfo[] = [
     slug: 'nisan-dekoru',
     canonicalSlug: 'nisan-dekoru',
     heroImage: '/images/dreamart-nisan-dekoru-fotozona.webp',
-    shortDescription: 'Romantik və incə detallarla bəzədilmiş fərdi nişan dekorları və masa tərtibatı.',
+    shortDescription: 'Romantik və incə detallarla bəzədilmiş fərdi nişan dekorları və zərif masa bəzədilməsi.',
     seoH1: 'Nişan Dekorları, Nişan Masası və Nişan Dekoru Qiymətləri',
     seoIntroduction: 'DreamArt Weddings ev şəraitində, həyət villalarında və ya restoran zallarında keçirilən nişan mərasimləri üçün zövqlü nişan dekorları hazırlayır. Nişan dekoru qiymətləri hər bir layihənin miqyasına, seçilən çiçək kompozisiyalarına və fərdi dizayn detallarına əsasən şəffaf hesablanır.',
     metaTitle: 'Nişan Dekorları və Nişan Dekoru Qiymətləri Bakı | DreamArt Weddings',
-    metaDescription: 'Bakı və regionlarda unikal nişan dekorları, nişan masası və fotozona tərtibatı. Nişan dekoru qiymətləri, fərdi smeta amilləri və sifariş: 050 231 17 28.',
+    metaDescription: 'Bakı və regionlarda unikal nişan dekorları, nişan masası və fotozona dekoru. Nişan dekoru qiymətləri, fərdi smeta amilləri və sifariş: 050 231 17 28.',
     whatIncluded: [
       'Zərif fərdi nişan tağı və arxa fon dizaynı',
       'Nişan masasının çiçək, şamdan və aksesuarlarla bəzədilməsi',
@@ -178,14 +178,14 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Bakıdan kənarda nişan dekoru sifariş etmək olar?',
-        answer: 'Bəli. Qəbələ, Gəncə, Bərdə, Sumqayıt və digər bölgələr üçün nişan dekoru çatdırılması və peşəkar montajı mövcuddur.'
+        answer: 'Bəli. Qəbələ, Gəncə, Bərdə, Sumqayıt və digər bölgələr üçün nişan dekoru çatdırılması və peşəkar quraşdırılması mövcuddur.'
       },
       {
         question: 'Fərdi konsept və gəlin libasına uyğun rəng seçimi mümkündür?',
         answer: 'Bəli. Hər layihə xanımın libasına və bəyənilən palitraya uyğunlaşdırılmış eksklüziv konseptlə hazırlanır.'
       },
       {
-        question: 'Məkan dekoru və masa tərtibatı mümkündür?',
+        question: 'Məkan dekoru və masa bəzədilməsi mümkündür?',
         answer: 'Bəli. Nişan masası, xonça guşəsi, üzük stendi və fotozona bir-birini tamamlayan vahid dizaynda icra olunur.'
       }
     ],
@@ -198,7 +198,7 @@ export const CATEGORIES: CategoryInfo[] = [
         { title: 'Çiçək Sıxlığı və Təbii Floristika', description: 'Sezon çiçəkləri, premium idxal qızılgüllər, qortenziyalar və ya yüksək keyfiyyətli toxuma floristika seçimi.' },
         { title: 'Xüsusi İstehsal və Ad Lövhələri', description: 'Cütlüyün adları ilə kəsilmiş akrilik, taxta və ya neon işıqlı fərdi lövhələr.' },
         { title: 'Nişan Masası və Xonça Stendləri', description: 'Büllur şamdanlar, güzgülü podnoslar, üzük qabı və gəlin sovqatları üçün xüsusi nümayiş masaları.' },
-        { title: 'İşıqlandırma, Çatdırılma və Montaj', description: 'İsti tonlu işıq cihazları, nəqliyyat və gecə tədbir bitdikdən sonra sökülmə xidməti.' }
+        { title: 'İşıqlandırma, Çatdırılma və Quraşdırma', description: 'İsti tonlu işıq cihazları, nəqliyyat və gecə tədbir bitdikdən sonra toplanma xidməti.' }
       ],
       ctaLabel: 'Qiymət təklifi al'
     },
@@ -236,8 +236,8 @@ export const CATEGORIES: CategoryInfo[] = [
     canonicalSlug: 'xina-dekoru',
     heroImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
     shortDescription: 'Milli adət-ənənələrlə müasir estetik zərifliyi birləşdirən xına gecəsi dekorasiyası.',
-    seoH1: 'Xına Dekoru və Xına Gecəsi Tərtibatı Xidməti',
-    seoIntroduction: 'DreamArt Weddings xına mərasimləri üçün ənənəvi milli motivlərlə müasir dəbdəbəli gül tərtibatını birləşdirir. Qırmızı, zümrüd və qızılı çalarlarda gəlin taxtı, zəngin şam kompozisiyaları, qonaq masaları və xonça atributları peşəkarlıqla təqdim edilir.',
+    seoH1: 'Xına Dekoru və Xına Gecəsi Bəzədilməsi Xidməti',
+    seoIntroduction: 'DreamArt Weddings xına mərasimləri üçün ənənəvi milli motivlərlə müasir dəbdəbəli gül bəzəyini birləşdirir. Qırmızı, zümrüd və qızılı çalarlarda gəlin taxtı, zəngin şam kompozisiyaları, qonaq masaları və xonça atributları peşəkarlıqla təqdim edilir.',
     metaTitle: 'Xına Gecəsi Dekoru və Xına Masası Xidməti | DreamArt Weddings',
     metaDescription: 'Bakı və regionlarda zərif xına dekoru, gəlin taxtı, arxa fon pərdələri, büllur şamdanlar və xonça stendləri. Fərdi dizayn və sifariş: 050 231 17 28.',
     whatIncluded: [
@@ -282,7 +282,7 @@ export const CATEGORIES: CategoryInfo[] = [
     directAnswers: [
       {
         question: 'DreamArt Weddings xına gecəsi üçün tam dekorasiya xidməti göstərir?',
-        answer: 'Bəli. DreamArt Weddings xına gecələri üçün eksklüziv gəlin taxtı, arxa fon divarı, qonaq masaları və xonça nümayiş stendləri ilə tam tərtibat təqdim edir.'
+        answer: 'Bəli. DreamArt Weddings xına gecələri üçün fərdi gəlin taxtı, arxa fon divarı, qonaq masaları və xonça nümayiş stendləri ilə tam dekorasiya təqdim edir.'
       },
       {
         question: 'Bakıdan kənarda və regionlarda xına dekoru sifarişi mümkündür?',
@@ -297,7 +297,7 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Qiymət seçilən taxt modelinə, zalın ölçüsünə, masa sayına, çiçək kompozisiyalarına və nəqliyyat məsafəsinə əsasən fərdi və şəffaf smeta ilə hesablanır.'
       },
       {
-        question: 'Məkan dekoru və masa tərtibatı mümkündür?',
+        question: 'Məkan dekoru və masa bəzədilməsi mümkündür?',
         answer: 'Bəli. Həm gəlin taxtı və səhnə, həm qonaq masaları üçün şamdanlar və güllər, həm də xonçalar üçün xüsusi guşə birgə qurulur.'
       }
     ],
@@ -308,7 +308,7 @@ export const CATEGORIES: CategoryInfo[] = [
     faqs: [
       {
         question: 'DreamArt Weddings xına gecəsi üçün tam dekorasiya xidməti göstərir?',
-        answer: 'Bəli. DreamArt Weddings xına gecələri üçün eksklüziv gəlin taxtı, arxa fon divarı, qonaq masaları və xonça nümayiş stendləri ilə tam tərtibat təqdim edir.'
+        answer: 'Bəli. DreamArt Weddings xına gecələri üçün fərdi gəlin taxtı, arxa fon divarı, qonaq masaları və xonça nümayiş stendləri ilə tam dekorasiya təqdim edir.'
       },
       {
         question: 'Bakıdan kənarda və regionlarda xına dekoru sifarişi mümkündür?',
@@ -316,7 +316,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Xına dekoru üçün fərdi dizayn mümkündür?',
-        answer: 'Bəli. Klassik qırmızı məxmər konseptlərdən tutmuş müasir zümrüd, qızılı və ya krem tonlarında eksklüziv xına dekorasiyası tərtib edirik.'
+        answer: 'Bəli. Klassik qırmızı məxmər konseptlərdən tutmuş müasir zümrüd, qızılı və ya krem tonlarında zövqlü xına dekorasiyası tərtib edirik.'
       },
       {
         question: 'Xına dekorunun qiyməti necə hesablanır?',
@@ -349,7 +349,7 @@ export const CATEGORIES: CategoryInfo[] = [
       'Zərif pastel şar kompozisiyası və ya canlı təbii gül detalları',
       'Tort masası, desert və candy bar stendlərinin bəzədilməsi',
       'Məkanın ümumi abu-havasına uyğunlaşdırılmış xüsusi isti işıqlandırma',
-      'Məkana çatdırılma, operativ montaj və tədbir sonrası sökülmə'
+      'Məkana çatdırılma, operativ quraşdırma və tədbir sonrası toplanma'
     ],
     suitableFor: [
       'Böyüklərin ad günü və əlamətdar şəxsi şənlikləri',
@@ -492,22 +492,22 @@ export const CATEGORIES: CategoryInfo[] = [
     canonicalSlug: 'korporativ-dekor',
     heroImage: '/images/dreamart-qala-gecesi-samdan-dekoru.webp',
     shortDescription: 'Şirkət tədbirləri, qala gecələr, rəsmi qəbullar və təqdimatlar üçün peşəkar korporativ tədbir dekoru.',
-    seoH1: 'Korporativ Tədbir Dekoru və Qala Gecələri Tərtibatı',
-    seoIntroduction: 'DreamArt Weddings şirkətlərin korporativ tədbir dekoru (həmçinin geniş korporativ tedbir dekoru axtarışlarına uyğun) və brendinq tələblərinə cavab verən rəsmi qala gecə dekorasiyaları təqdim edir. Səhnə tərtibatı, rəsmi press-wall foto divarı, VIP qonaq masaları və brend rənglərinə uyğun floristika həyata keçirilir.',
-    metaTitle: 'Korporativ Tədbir Dekoru Bakı | Rəsmi Banket və Qala Tərtibatı | DreamArt Weddings',
-    metaDescription: 'Bakı və regionlarda korporativ tədbir dekoru, şirkət qala gecələri, rəsmi foto divar, səhnə və zal tərtibatı. Rəsmi müqavilə və köçürmə ilə: 050 231 17 28.',
+    seoH1: 'Korporativ Tədbir Dekoru və Qala Gecələri Dekoru',
+    seoIntroduction: 'DreamArt Weddings şirkətlərin korporativ tədbir dekoru və brendinq tələblərinə cavab verən rəsmi qala gecəsi dekorasiyaları təqdim edir. Səhnə dekoru, rəsmi press-wall foto divarı, VIP qonaq masaları və brend rənglərinə uyğun floristika həyata keçirilir.',
+    metaTitle: 'Korporativ Tədbir Dekoru Bakı | Rəsmi Banket və Qala Gecəsi Dekoru | DreamArt Weddings',
+    metaDescription: 'Bakı və regionlarda korporativ tədbir dekoru, şirkət qala gecələri, rəsmi foto divar, səhnə və zal dekoru. Rəsmi müqavilə və köçürmə ilə: 050 231 17 28.',
     whatIncluded: [
       'Rəsmi fotosessiya divarı (Press-wall / Photo wall) və brend loqosunun tətbiqi',
       'Səhnə arxa fonu, kürsü bəzəyi və təqdimat zonası dekoru',
       'VIP qonaq masaları üçün zövqlü floristika və şam kompozisiyaları',
       'Tədbir zalı üçün tematik işıqlandırma həlləri',
       'Bank köçürməsi, elektron qaimə və rəsmi müqavilə ilə xidmət',
-      'Yeni mağaza, butik və ya filial açılışları üçün zövqlü [Mağaza Açılış Dekoru](/magaza-acilis-dekoru) tərtibatı'
+      'Yeni mağaza, butik və ya filial açılışları üçün zövqlü [Mağaza Açılış Dekoru](/magaza-acilis-dekoru)'
     ],
     suitableFor: [
       'Şirkətlərin illik yubileyləri və yeni il qala gecələri',
       'Beynəlxalq konfranslar, forumlar və rəsmi təqdimatlar',
-      'Məhsul lansmanı, mətbuat qarşılamaları və brend aktivasiyaları',
+      'Məhsul təqdimatı, mətbuat konfransları və brend tanıtım tədbirləri',
       'Pərakəndə mağaza və ya filial açılışları zamanı xüsusi [Mağaza Açılış Dekoru](/magaza-acilis-dekoru) tələb edən bizneslər'
     ],
     planningProcess: [
@@ -524,7 +524,7 @@ export const CATEGORIES: CategoryInfo[] = [
       {
         step: '03',
         title: 'Dəqiq Qrafiklə Quraşdırma',
-        description: 'Tədbirin rəsmi başlanğıc saatından xeyli öncə peşəkar montaj təmin edilir.'
+        description: 'Tədbirin rəsmi başlanğıc saatından xeyli öncə peşəkar quraşdırma təmin edilir.'
       },
       {
         step: '04',
@@ -591,7 +591,7 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Bəli, korporativ müştərilər üçün rəsmi müqavilə, elektron qaimə və bank köçürməsi ilə xidmət göstərilir.'
       },
       {
-        question: 'Genişmiqyaslı qala gecələrinin tərtibatını icra edirsiniz?',
+        question: 'Genişmiqyaslı qala gecələrinin dekorasiyasını icra edirsiniz?',
         answer: 'Bəli, 500 nəfərə qədər böyük zallarda səhnə, masa və fotozona layihələri həyata keçiririk.'
       },
       {
@@ -606,18 +606,18 @@ export const CATEGORIES: CategoryInfo[] = [
     slug: 'zal-dekoru',
     canonicalSlug: 'zal-dekoru',
     heroImage: '/images/dreamart-zal-dekoru-tavan-instalyasiyasi.webp',
-    shortDescription: 'Böyük şadlıq sarayları, banket zalları və restoranların tam həcmli banket dekoru tərtibatı.',
-    seoH1: 'Zal və Banket Dekoru Xidməti – Şadlıq Sarayı və Restoran Tərtibatı',
-    seoIntroduction: 'DreamArt Weddings şadlıq sarayları, otel zalları və böyük banket zalları üçün tam həcmli banket dekoru və memarlıq dekorasiyası həyata keçirir. Tavan asma instalyasiyaları, zərif süfrə düzümü, çilçıraq bəzəkləri və zəngin giriş dəhlizi ilə məkanın aurası dəyişdirilir.',
-    metaTitle: 'Banket Dekoru və Zal Tərtibatı Xidməti Bakı | DreamArt Weddings',
+    shortDescription: 'Böyük şadlıq sarayları, banket zalları və restoranların tam həcmli banket zalı dekorasiyası.',
+    seoH1: 'Zal və Banket Dekoru Xidməti – Şadlıq Sarayı və Restoran Bəzədilməsi',
+    seoIntroduction: 'DreamArt Weddings şadlıq sarayları, otel zalları və böyük banket zalları üçün tam həcmli banket dekoru və məkan dizaynı həyata keçirir. Tavan asma instalyasiyaları, zərif süfrə düzümü, çilçıraq bəzəkləri və zəngin giriş dəhlizi ilə məkanın aurası dəyişdirilir.',
+    metaTitle: 'Banket Dekoru və Zal Dekoru Xidməti Bakı | DreamArt Weddings',
     metaDescription: 'Bakı və regionlarda banket dekoru, böyük zalların bəzədilməsi, qonaq masaları, tavan instalyasiyaları və çilçıraq kompozisiyaları. Sifariş: 050 231 17 28.',
     whatIncluded: [
       'Bütün qonaq masalarının zərif gül və şam kompozisiyaları ilə bəzədilməsi',
       'Tavan və çilçıraq asma çiçək instalyasiyaları',
       'Giriş qarşılama tuneli və foye dekorasiyası',
-      'Prezidium (gəlin-bəy səhnəsi) və arxa fon tərtibatı',
-      'Zalın memarlıq quruluşuna uyğun fərdi rəng və işıq balansı',
-      'Bütün montaj və sökülmə xidmətləri'
+      'Bəy-gəlin səhnəsi və arxa fon dekoru',
+      'Zalın quruluşuna uyğun fərdi rəng və işıq balansı',
+      'Bütün quraşdırma və toplanma xidmətləri'
     ],
     suitableFor: [
       '200–600 nəfərlik böyük şadlıq sarayı və banket zalları',
@@ -656,8 +656,8 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Bəli. DreamArt Weddings 200–600 nəfərlik böyük şadlıq sarayları və banket zallarını bütöv memarlıq konsepti ilə dekorasiya edir: qonaq masaları, tavan instalyasiyaları, səhnə və giriş foye kompleks şəkildə hazırlanır.'
       },
       {
-        question: 'Banket dekoru üçün qonaq masalarının tərtibatı necə aparılır?',
-        answer: 'Hər masa üçün büllur şamdanlar, zərif süfrə runnerləri, təbii və ya premium süni çiçək kompozisiyaları və zərif nömrələmə təmin edilir.'
+        question: 'Banket dekoru üçün qonaq masalarının bəzədilməsi necə aparılır?',
+        answer: 'Hər masa üçün büllur şamdanlar, zərif süfrə ranerləri, təbii və ya premium süni çiçək kompozisiyaları və zərif nömrələmə təmin edilir.'
       },
       {
         question: 'Banket dekorunun qiyməti necə hesablanır?',
@@ -668,7 +668,7 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Bəli. Qəbələ, Gəncə, Bərdə və digər şəhərlərdəki restoran və banket zalları üçün komandamız yerində quraşdırma həyata keçirir.'
       },
       {
-        question: 'Məkan dekoru və masa tərtibatı mümkündür?',
+        question: 'Məkan dekoru və masa bəzədilməsi mümkündür?',
         answer: 'Bəli. Həm zala giriş dəhlizi, həm tavan çilçıraqları, həm də bütün qonaq masaları vahid rəng və işıq harmoniyasında bəzədilir.'
       }
     ],
@@ -678,16 +678,16 @@ export const CATEGORIES: CategoryInfo[] = [
       factors: [
         { title: 'Masa Sayı və Ziyarətçi Tutumu', description: '20-dən 60 masaya qədər hər bir masa üçün kompozisiya və şamdanlar.' },
         { title: 'Tavan və Çilçıraq İnstalyasiyaları', description: 'Tavandan asılan zərif çiçək buludları və xüsusi karkaslar.' },
-        { title: 'Prezidium və Səhnə Arxitekturası', description: 'Gəlin-bəy və ya rəsmi nümayəndə heyəti üçün arxa fon divarı.' },
+        { title: 'Bəy-Gəlin Masası və Səhnə Dekoru', description: 'Gəlin-bəy masası və ya rəsmi nümayəndə heyəti üçün arxa fon divarı.' },
         { title: 'Çiçək Növü və Sıxlığı', description: 'İdxal canlı güllər və ya yüksək realizmli premium süni çiçəklər.' },
-        { title: 'Texniki Quraşdırma və Təhlükəsizlik', description: 'Xüsusi nərdivan və qaldırıcılarla yüksək tavan montajı.' }
+        { title: 'Texniki Quraşdırma və Təhlükəsizlik', description: 'Xüsusi nərdivan və qaldırıcılarla yüksək tavan quraşdırması.' }
       ],
       ctaLabel: 'Qiymət təklifi al'
     },
     relatedDecorIds: ['decor-6', 'decor-1', 'decor-5'],
     relatedVenueSlugs: ['meridian', 'boyuk-saray', 'bagcali-saray'],
     relatedCuratedLocalSlugs: ['baki', 'qebele', 'berde'],
-    whatsappPrefill: 'Salam, banket dekoru və böyük zal tərtibatı üçün qiymət təklifi almaq istəyirəm.',
+    whatsappPrefill: 'Salam, banket dekoru və böyük zal bəzədilməsi üçün qiymət təklifi almaq istəyirəm.',
     faqs: [
       {
         question: 'Banket zalı tam dekor edilə bilər?',
@@ -707,7 +707,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Yalnız masa bəzədilməsi xidməti sifariş etmək olar?',
-        answer: 'Bəli, layihənin tələbinə uyğun olaraq yalnız qonaq masaları və ya yalnız səhnə tərtibatı üçün də xidmət göstərilir.'
+        answer: 'Bəli, layihənin tələbinə uyğun olaraq yalnız qonaq masaları və ya yalnız səhnə dekoru üçün də xidmət göstərilir.'
       }
     ]
   },
@@ -769,7 +769,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Xonçaların içərisinə şirniyyat və qənd daxildir?',
-        answer: 'Müştərinin istəyinə əsasən həm boş stendlər təqdim edilir, həm də premium şirniyyatlarla tam tərtibat həyata keçirilir.'
+        answer: 'Müştərinin istəyinə əsasən həm boş stendlər təqdim edilir, həm də premium şirniyyatlarla tam bəzədilmə həyata keçirilir.'
       },
       {
         question: 'Ünvana çatdırılma xidməti var?',
@@ -783,13 +783,13 @@ export const CATEGORIES: CategoryInfo[] = [
     slug: 'heri-sufresi',
     canonicalSlug: 'heri-sufresi',
     heroImage: '/images/dreamart-tebii-budag-agac-kompozisiyasi.webp',
-    shortDescription: 'Milli ənənə və müasir zərifliklə bəzədilmiş həri süfrəsi, çay masası və xonça tərtibatı.',
-    seoH1: 'Həri Süfrəsi Dekoru və Masa Tərtibatı Xidməti',
+    shortDescription: 'Milli ənənə və müasir zərifliklə bəzədilmiş həri süfrəsi, çay masası və xonça dekoru.',
+    seoH1: 'Həri Süfrəsi Dekoru və Masa Bəzədilməsi Xidməti',
     seoIntroduction: 'DreamArt Weddings ev şəraitində, həyət villalarında və ya restoranların xüsusi zallarında keçirilən həri mərasimləri üçün incə və zövqlü masa dizaynı təqdim edir. Təbii gül kompozisiyaları, xüsusi şirniyyat və çay təqdimatı qabları, zərif şamdanlar və estetik xonça elementləri ilə milli adətlərimiz müasir lüks estetika ilə birləşdirilir.',
-    metaTitle: 'Həri Süfrəsi Dekoru və Masa Tərtibatı Bakı | DreamArt Weddings',
-    metaDescription: 'Bakı və regionlarda zərif həri süfrəsi dekoru, xonça və masa tərtibatı, canlı çiçəklər, şamlar və fərdi dizayn. Sifariş və qiymət: 050 231 17 28.',
+    metaTitle: 'Həri Süfrəsi Dekoru və Masa Bəzədilməsi Bakı | DreamArt Weddings',
+    metaDescription: 'Bakı və regionlarda zərif həri süfrəsi dekoru, xonça və masa bəzəyi, canlı çiçəklər, şamlar və fərdi dizayn. Sifariş və qiymət: 050 231 17 28.',
     whatIncluded: [
-      'Fərdi dizaynlı həri süfrəsi örtüyü və zərif masa runner-i',
+      'Fərdi dizaynlı həri süfrəsi örtüyü və zərif masa raneri',
       'Təravətli canlı güllərdən (qızılgül, qortenziya, evkalipt) mərkəzi kompozisiyalar',
       'Büllur və ya qızılı şamdanlar, zərif şam işıqlandırması',
       'Həri şirniyyatı, nabat, qənd və fərdi xonçalar üçün xüsusi nümayiş stendləri',
@@ -825,12 +825,12 @@ export const CATEGORIES: CategoryInfo[] = [
     ],
     geoDirectAnswer: {
       question: 'DreamArt Weddings həri süfrəsi dekoru xidməti göstərir?',
-      answer: 'Bəli. DreamArt Weddings həri mərasimləri üçün xüsusi masa örtüyü, canlı çiçək kompozisiyaları, büllur şamdanlar, xonça və şirniyyat stendlərindən ibarət tam həri süfrəsi tərtibatı təqdim edir. Əlaqə və sifariş: 050 231 17 28.'
+      answer: 'Bəli. DreamArt Weddings həri mərasimləri üçün xüsusi masa örtüyü, canlı çiçək kompozisiyaları, büllur şamdanlar, xonça və şirniyyat stendlərindən ibarət tam həri süfrəsi dekoru təqdim edir. Əlaqə və sifariş: 050 231 17 28.'
     },
     directAnswers: [
       {
         question: 'DreamArt Weddings həri süfrəsi dekoru xidməti göstərir?',
-        answer: 'Bəli. DreamArt Weddings həri mərasimləri üçün xüsusi masa örtüyü, canlı çiçək kompozisiyaları, büllur şamdanlar, xonça və şirniyyat stendlərindən ibarət tam həri süfrəsi tərtibatı təqdim edir.'
+        answer: 'Bəli. DreamArt Weddings həri mərasimləri üçün xüsusi masa örtüyü, canlı çiçək kompozisiyaları, büllur şamdanlar, xonça və şirniyyat stendlərindən ibarət tam həri süfrəsi dekoru təqdim edir.'
       },
       {
         question: 'Bakıdan kənarda və regionlarda həri dekoru sifarişi mümkündür?',
@@ -845,7 +845,7 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Qiymət masanın ölçüsünə, istifadə olunan güllərin tərkibinə (təbii idxal çiçəklər və ya premium floristika), aksessuar sayına və ünvanın logistika məsafəsinə əsasən fərdi və şəffaf smeta ilə hesablanır.'
       },
       {
-        question: 'Məkan dekoru və masa tərtibatı mümkündür?',
+        question: 'Məkan dekoru və masa bəzədilməsi mümkündür?',
         answer: 'Bəli. Yalnız süfrə düzümü deyil, həmçinin arxa fon tağı, fotozona, qonaq qarşılama stendi və zal bəzəyi kompleks şəkildə həyata keçirilir.'
       }
     ],
@@ -856,7 +856,7 @@ export const CATEGORIES: CategoryInfo[] = [
     faqs: [
       {
         question: 'DreamArt Weddings həri süfrəsi dekoru xidməti göstərir?',
-        answer: 'Bəli. DreamArt Weddings həri mərasimləri üçün xüsusi masa örtüyü, canlı çiçək kompozisiyaları, büllur şamdanlar, xonça və şirniyyat stendlərindən ibarət tam həri süfrəsi tərtibatı təqdim edir.'
+        answer: 'Bəli. DreamArt Weddings həri mərasimləri üçün xüsusi masa örtüyü, canlı çiçək kompozisiyaları, büllur şamdanlar, xonça və şirniyyat stendlərindən ibarət tam həri süfrəsi dekoru təqdim edir.'
       },
       {
         question: 'Bakıdan kənarda və regionlarda həri dekoru sifarişi mümkündür?',
@@ -886,15 +886,15 @@ export const CATEGORIES: CategoryInfo[] = [
     slug: 'yubiley-dekoru',
     canonicalSlug: 'yubiley-dekoru',
     heroImage: '/images/dreamart-qala-gecesi-samdan-dekoru.webp',
-    shortDescription: 'Mötəbər yaş yubileyləri üçün dəbdəbəli zal, səhnə və ziyafət masası tərtibatı.',
-    seoH1: 'Yubiley Dekoru və Ziyafət Masası Tərtibatı',
-    seoIntroduction: 'DreamArt Weddings əlamətdar yaş yubileyləri (30, 50, 60, 70 illik) və ailəvi ildönümləri üçün mötəbər və dəbdəbəli ziyafət mühitinin yaradılmasını təmin edir. Qonaq masalarının büllur şamdanlar və canlı güllərlə tərtibatı, yubilyar üçün fərdi səhnə və fotozona, zərif dekorativ işıqlandırma ilə unudulmaz gecə dizayn edilir.',
-    metaTitle: 'Yubiley Dekoru və Tədbir Tərtibatı Bakı | DreamArt Weddings',
+    shortDescription: 'Mötəbər yaş yubileyləri üçün dəbdəbəli zal, səhnə və ziyafət masası dekoru.',
+    seoH1: 'Yubiley Dekoru və Ziyafət Masası Bəzədilməsi',
+    seoIntroduction: 'DreamArt Weddings əlamətdar yaş yubileyləri (30, 50, 60, 70 illik) və ailəvi ildönümləri üçün mötəbər və dəbdəbəli ziyafət mühitinin yaradılmasını təmin edir. Qonaq masalarının büllur şamdanlar və canlı güllərlə bəzədilməsi, yubilyar üçün fərdi səhnə və fotozona, zərif dekorativ işıqlandırma ilə unudulmaz gecə dizayn edilir.',
+    metaTitle: 'Yubiley Dekoru və Ziyafət Tədbiri Bakı | DreamArt Weddings',
     metaDescription: 'Bakı və regionlarda 50, 60 illik və xüsusi yubileylər üçün dəbdəbəli zal və səhnə dekoru, fotozona, büllur şamdanlar və canlı güllər. Əlaqə: 050 231 17 28.',
     whatIncluded: [
       'Yubilyarın şərəfinə fərdi fotozona və rəqəm/monoqram kompozisiyası',
       'Ziyafət masalarının büllur şamdanlar, zərif süfrə aksessuarları və təbii güllərlə bəzədilməsi',
-      'Səhnə arxa fonu, kürsü və təbrik guşəsi tərtibatı',
+      'Səhnə arxa fonu, kürsü və təbrik guşəsi dekoru',
       'Xatirə guşəsi, hədiyyə və tort masası stendləri',
       'İsti kəhrəba tonlu dekorativ işıqlandırma və detallar',
       'Çatdırılma, peşəkar quraşdırma və ziyafətdən sonra operativ sökülmə'
@@ -918,7 +918,7 @@ export const CATEGORIES: CategoryInfo[] = [
       {
         step: '03',
         title: 'Məkanda Dəqiq Quraşdırma',
-        description: 'Tədbir başlamazdan 3-4 saat əvvəl peşəkar heyət bütün zal və masa tərtibatını tamamlayır.'
+        description: 'Tədbir başlamazdan 3-4 saat əvvəl peşəkar heyət bütün zal və masa dekorunu tamamlayır.'
       },
       {
         step: '04',
@@ -948,8 +948,8 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Qiymət qonaq masalarının sayına, istifadə edilən çiçəklərin tərkibinə, səhnə və fotozona konstruksiyasının miqyasına görə şəffaf smeta ilə formalaşır.'
       },
       {
-        question: 'Məkan dekoru və masa tərtibatı mümkündür?',
-        answer: 'Bəli. Həm ziyafət masalarının büllur şamdanlar və güllərlə tərtibatı, həm də bütün zalın və səhnənin kompleks bəzədilməsi icra edilir.'
+        question: 'Məkan dekoru və masa bəzədilməsi mümkündür?',
+        answer: 'Bəli. Həm ziyafət masalarının büllur şamdanlar və güllərlə bəzədilməsi, həm də bütün zalın və səhnənin kompleks bəzədilməsi icra edilir.'
       }
     ],
     relatedDecorIds: ['decor-5', 'decor-6', 'decor-1'],
@@ -1047,7 +1047,7 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Məkanın yerləşdiyi ünvana, seçilmiş tağ və masa konstruksiyasına, təbii çiçək və işıq elementlərinin həcminə əsasən şəffaf smeta tərtib edilir.'
       },
       {
-        question: 'Məkan dekoru və masa tərtibatı mümkündür?',
+        question: 'Məkan dekoru və masa bəzədilməsi mümkündür?',
         answer: 'Bəli. Həm romantik axşam yeməyi masası, həm arxa fon tağı, həm də şam və fənərlərlə bəzədilmiş cığır tam təmin edilir.'
       }
     ],
@@ -1066,7 +1066,7 @@ export const CATEGORIES: CategoryInfo[] = [
       },
       {
         question: 'Sürpriz üçün məxfi quraşdırma təmin edilir?',
-        answer: 'Bəli. Sürpriz pozulmasın deyə təyin edilmiş dəqiq vaxtda gizli və operativ montaj həyata keçirilir.'
+        answer: 'Bəli. Sürpriz pozulmasın deyə təyin edilmiş dəqiq vaxtda gizli və operativ quraşdırma həyata keçirilir.'
       },
       {
         question: 'Özəl gün dekorunun qiyməti necə hesablanır?',
@@ -1085,7 +1085,7 @@ export const CATEGORIES: CategoryInfo[] = [
     canonicalSlug: 'magaza-acilis-dekoru',
     heroImage: '/images/dreamart-monumental-toy-sehnesi-dekoru.webp',
     shortDescription: 'Mağazaların və ticarət məkanlarının təntənəli açılışı üçün giriş şar tağları, qapı bəzədilməsi, qırmızı lent kəsimi və loqolu brend fotozonalar.',
-    seoH1: 'Mağaza və Obyekt Açılış Dekoru | Zövqlü Giriş Şar Tağları və Brend Tərtibatı',
+    seoH1: 'Mağaza və Obyekt Açılış Dekoru | Zövqlü Giriş Şar Tağları və Brend Dekoru',
     seoIntroduction: 'DreamArt Weddings yeni açılan mağazalar, butiklər, gözəllik salonları, restoranlar, apteklər və ofislər üçün diqqətçəkən mağaza və obyekt açılış dekoru həlləri təqdim edir. Giriş qapılarının brend rənglərində şarla bəzədilməsi, möhtəşəm şar tağı, təntənəli lent kəsmə guşəsi və loqolu brend fotozona ilə açılış gününüz müştəri axını cəlb edən unudulmaz hadisəyə çevrilir.',
     metaTitle: 'Mağaza və Obyekt Açılış Dekoru Bakı | Şar Tağı, Fotozona və Lent Kəsimi | DreamArt Weddings',
     metaDescription: 'Bakı və regionlarda mağaza, butik, salon və obyekt açılış dekoru. Giriş qapılarının şarla bəzədilməsi, şar tağı, loqolu fotozona və lent kəsmə guşəsi. Əlaqə: 050 231 17 28.',
@@ -1094,8 +1094,8 @@ export const CATEGORIES: CategoryInfo[] = [
       'Giriş qapılarının perimetr boyunca şarla bəzədilməsi və fasad vizuallığının artırılması',
       'Təntənəli qırmızı lent kəsimi guşəsi (qızılı postamentlər, qırmızı məxmər kəndirlər, qızılı qayçılar, atlas yastıq və lent)',
       'Brend loqosu və açılış şüarı ilə fərdiləşdirilmiş parıltısız mat fotozona (Press-wall / Photo wall)',
-      'Vitrin və fasad tərtibatı üçün brend rənglərində zərif çiçək və lent detalları',
-      'Vaxtında məkana çatdırılma, açılış saatından əvvəl montaj və tədbir sonrası operativ sökülmə'
+      'Vitrin və fasad bəzədilməsi üçün brend rənglərində zərif çiçək və lent detalları',
+      'Vaxtında məkana çatdırılma, açılış saatından əvvəl quraşdırma və tədbir sonrası operativ toplanma'
     ],
     suitableFor: [
       'Yeni açılan mağaza, butik, gözəllik salonu, restoran, kafe, aptek, klinika və ofislər',
@@ -1114,9 +1114,9 @@ export const CATEGORIES: CategoryInfo[] = [
         ],
         bulletPoints: [
           'Brend rənglərində xrom, pastel və metallik şar kompozisiyaları',
-          'Vitrinin və fasadın fərdi ölçülərinə uyğun xüsusi karkaslı və ya karkassız montaj',
+          'Vitrinin və fasadın fərdi ölçülərinə uyğun xüsusi karkaslı və ya karkassız quraşdırma',
           'Küçə mağazaları, ticarət mərkəzi filialları və biznes mərkəzləri üçün uyğunluq',
-          'Açılış saatından əvvəl dəqiq montaj və küləyə qarşı dayanıqlı bərkitmə'
+          'Açılış saatından əvvəl dəqiq quraşdırma və küləyə qarşı dayanıqlı bərkitmə'
         ],
         callout: 'İstər butik açılışı dekoru, istər gözəllik salonu, aptek və ya restoran açılışı olsun — hər bir obyekt növü üçün piyada hərəkət istiqamətinə uyğun fərdi şar dekorasiyası dizayn olunur.',
         ctaText: 'Açılış şar dekoru təklifi al',
@@ -1129,14 +1129,14 @@ export const CATEGORIES: CategoryInfo[] = [
         badge: 'QAPI ÇƏRÇİVƏSİ VƏ ŞAR TAĞI',
         lead: 'Qapıların şarla bəzədilməsi mağaza və obyekt açılışlarında ən çox tələb olunan dekor elementidir. Müştəri obyektə yaxınlaşarkən ilk olaraq giriş qapısını və onu əhatə edən zövqlü şar tağını görür.',
         paragraphs: [
-          'Mağaza qapısının şarla bəzədilməsində əsas meyar vizual estetika ilə bərabər təhlükəsizlik və erqonomikadır: quraşdırılan şar tağı və ya asimmetrik şar instalyasiyası müştərilərin və qonaqların sərbəst hərəkətinə mane olmamalı, avtomatik sensorlu və ya mexaniki şüşə qapıların açılıb-bağlanmasını məhdudlaşdırmamalıdır.',
+          'Mağaza qapısının şarla bəzədilməsində əsas meyar vizual estetika ilə yanaşı təhlükəsizlik və müştərilərin rahat hərəkətidir: quraşdırılan şar tağı və ya asimmetrik şar instalyasiyası müştərilərin və qonaqların sərbəst hərəkətinə mane olmamalı, avtomatik sensorlu və ya mexaniki şüşə qapıların açılıb-bağlanmasını məhdudlaşdırmamalıdır.',
           'Giriş qapısının şarla bəzədilməsi zamanı həm simmetrik klassik spiral şar tağı, həm də müasir üzvi (organic) asimmetrik kompozisiyalar tətbiq olunur. Asimmetrik kompozisiyalarda müxtəlif diametrli şarlardan istifadə edilərək qapının bir küncündən vitrin boyunca axan dinamik vizual xətt yaradılır ki, bu da butik, salon və kafelərdə xüsusilə dəbli görünür.'
         ],
         bulletPoints: [
           'Giriş qapısının konturunu zərif çərçivəyə alan karkaslı şar tağları',
           'Müxtəlif diametrli şarlardan ibarət müasir üzvi asimmetrik instalyasiyalar',
           'Piyada və alıcı axınının rahat daxil olması üçün minimum 2.2 metr təmiz keçid hündürlüyü',
-          'Qapı konstruksiyasına və şüşə fasada zərər verməyən xüsusi qoruyucu montaj'
+          'Qapı konstruksiyasına və şüşə fasada zərər verməyən xüsusi təhlükəsiz quraşdırma'
         ],
         callout: 'Giriş üçün şar dekoru seçərkən qapının eni və küçənin külək istiqaməti əvvəlcədən nəzərə alınır, qapı çərçivəsinə elastik dayanıqlı bərkidicilər tətbiq olunur.',
         ctaText: 'Qapı üçün şar tağı sifarişi',
@@ -1158,7 +1158,7 @@ export const CATEGORIES: CategoryInfo[] = [
           'Brend rənglərində zərif şar və gül toxunuşları ilə zənginləşdirilmiş kompozisiya',
           'Sosial media və media nümayəndələri üçün xüsusi işıqlandırılmış çəkiliş nöqtəsi'
         ],
-        callout: 'Fotozona ideyaları və çəkiliş erqonomikası haqqında daha ətraflı məsləhətlər üçün [Fotozona Dekoru İdeyaları](/meqaleler/fotozona-dekoru-ideyalari) bələdçimizlə tanış ola bilərsiniz.',
+        callout: 'Fotozona ideyaları və rahat foto çəkilişi planlaması haqqında daha ətraflı məsləhətlər üçün [Fotozona Dekoru İdeyaları](/meqaleler/fotozona-dekoru-ideyalari) bələdçimizlə tanış ola bilərsiniz.',
         ctaText: 'Brend fotozona üçün qiymət al',
         ctaAction: 'whatsapp',
         ctaPrefill: 'Salam, mağaza açılışımız üçün brend loqolu fotozona sifarişi vermək istəyirəm.'
@@ -1189,14 +1189,14 @@ export const CATEGORIES: CategoryInfo[] = [
         badge: 'PRAKTİKİ PLANLAMA VƏ SMETA',
         lead: 'Uğurlu açılış dekorasiyası dəqiq vaxt bölgüsü, məkanın texniki analizi və brend identikliyinin düzgün əks olunmasından asılıdır. Təcrübəmizə əsaslanan əsas praktiki planlama qaydaları:',
         paragraphs: [
-          '1. Məkan və Fasad Ölçüləri: Giriş qapısının eni, hündürlüyü və vitrin şüşəsinin sahəsi dəqiq ölçülür. Şar tağının ölçüləri qapının açılış bucağına uyğunlaşdırılır.\n2. Brend Rəngləri və Loqo Görünüşü: Şirkətinizin brand-book tələblərinə uyğun Pantone kodları ilə şarların və bannerin rəngləri dəqiqləşdirilir. Loqo piyada və avtomobil hərəkəti baxış bucağından dərhal oxunmalıdır.\n3. Montaj Saatı və Qrafik: Ticarət mərkəzlərində quraşdırma adətən gecə saatlarında (00:00–06:00), küçə obyektlərində isə səhər açılışdan 2–3 saat əvvəl tamamlanır.',
+          '1. Məkan və Fasad Ölçüləri: Giriş qapısının eni, hündürlüyü və vitrin şüşəsinin sahəsi dəqiq ölçülür. Şar tağının ölçüləri qapının açılış bucağına uyğunlaşdırılır.\n2. Brend Rəngləri və Loqo Görünüşü: Şirkətinizin brand-book tələblərinə uyğun Pantone kodları ilə şarların və bannerin rəngləri dəqiqləşdirilir. Loqo piyada və avtomobil hərəkəti baxış bucağından dərhal oxunmalıdır.\n3. Quraşdırma Saatı və Qrafik: Ticarət mərkəzlərində quraşdırma adətən gecə saatlarında (00:00–06:00), küçə obyektlərində isə səhər açılışdan 2–3 saat əvvəl tamamlanır.',
           '4. Piyada Axını və Çəkiliş Bucağı: Dekorasiya müştərilərin giriş-çıxışına mane olmamalı, fotozona isə həm gün işığını, həm də çəkiliş işıqlandırmasını düzgün qəbul etməlidir.\n5. Hava Şəraiti: Açıq havada küçə mağazalarında Bakının güclü küləyi nəzərə alınaraq gizli ağırlıq blokları və elastik bərkidicilər istifadə olunur.\n6. Şəffaf Qiymətləndirmə: Mağaza açılışı dekoru qiyməti və şar dekoru qiyməti fasadın metrajına, şar kompozisiyasının növünə, fotozona ölçüsünə və lent kəsmə atributlarına əsasən fərdi, şəffaf smeta ilə formalaşdırılır (sabit saxta qiymətlər tətbiq olunmur).'
         ],
         bulletPoints: [
           'Fasad ölçülərinə və piyada hərəkət istiqamətinə uyğun konsept',
           'Brend rənglərinə 100% dəqiq uyğunlaşdırılmış şar və loqo palitrası',
-          'Ticarət mərkəzinin iş qrafikinə uyğun gecə və ya səhər tezdən montaj',
-          'Küləyə davamlı təhlükəsiz bərkitmə və operativ sökülmə zəmanəti'
+          'Ticarət mərkəzinin iş qrafikinə uyğun gecə və ya səhər tezdən quraşdırma',
+          'Küləyə davamlı təhlükəsiz bərkitmə və operativ toplanma zəmanəti'
         ],
         callout: 'Planlamanın hər bir detalı haqqında addım-addım bələdçi üçün [Mağaza Açılışı Dekoru Necə Planlanır?](/meqaleler/magaza-acilis-dekoru-nece-planlanir) məqaləmizi oxuya bilərsiniz. Böyük miqyaslı şirkət tədbirləri və qala gecələri üçün isə [Korporativ Tədbir Dekoru](/korporativ-dekor) xidmətimiz fəaliyyət göstərir.',
         ctaText: 'Mağaza və ya obyekt açılışınız üçün dekor təklifi alın',
@@ -1248,8 +1248,8 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Fasadın eninə, giriş tağının metrajına, şar kompozisiyasının növünə, fotozona ölçüsünə və açılış atributlarının həcminə əsasən şəffaf fərdi smeta ilə hesablanır.'
       },
       {
-        question: 'Səhər tezdən və ya gecə montaj tamamlana bilər?',
-        answer: 'Bəli. Ticarət mərkəzinin və ya küçə mağazasının iş rejiminə uyğun olaraq gecə (00:00–06:00) və ya açılış saatından 2-3 saat əvvəl montaj tam hazır təhvil verilir.'
+        question: 'Səhər tezdən və ya gecə quraşdırma tamamlana bilər?',
+        answer: 'Bəli. Ticarət mərkəzinin və ya küçə mağazasının iş rejiminə uyğun olaraq gecə (00:00–06:00) və ya açılış saatından 2-3 saat əvvəl dekor tam hazır təhvil verilir.'
       },
       {
         question: 'Bakı və regionlarda açılış dekoru sifariş etmək olar?',
@@ -1264,7 +1264,7 @@ export const CATEGORIES: CategoryInfo[] = [
         { title: 'Qırmızı Lent Kəsim Guşəsi', description: 'Qızılı postamentlər, məxmər kəndirlər, xüsusi lent, brend qayçılar və təqdimat nimçələri.' },
         { title: 'Brend Foto Divar (Press-wall)', description: 'Şirkət loqosu və açılış sloqanı çap olunmuş metal konstruksiyalı parıltısız mat fotozona.' },
         { title: 'Vitrin və Fasad Bəzəyi', description: 'Vitrin şüşələrinin brend rənglərində lentlər və çiçək elementləri ilə tamamlanması.' },
-        { title: 'Montaj Saatı və Logistika', description: 'Gecə və ya səhər tezdən açılışa qədər operativ montaj və açılışdan sonra sökülmə.' }
+        { title: 'Quraşdırma Saatı və Logistika', description: 'Gecə və ya səhər tezdən açılışa qədər operativ quraşdırma və açılışdan sonra toplanma.' }
       ],
       ctaLabel: 'Qiymət təklifi al'
     },
@@ -1275,7 +1275,7 @@ export const CATEGORIES: CategoryInfo[] = [
     faqs: [
       {
         question: 'Mağaza və obyekt açılışı üçün şar dekoru necə sifariş edilir?',
-        answer: 'Obyektinizin ünvanı, giriş qapısının ölçüləri, açılış tarixi və brendinizin rəngləri əsasında konsept hazırlanır və razılaşdırıldıqdan sonra montaj icra edilir.'
+        answer: 'Obyektinizin ünvanı, giriş qapısının ölçüləri, açılış tarixi və brendinizin rəngləri əsasında konsept hazırlanır və razılaşdırıldıqdan sonra quraşdırma icra edilir.'
       },
       {
         question: 'Qapı və girişlərin şarla bəzədilməsi hansı formalarda hazırlanır?',
@@ -1294,8 +1294,8 @@ export const CATEGORIES: CategoryInfo[] = [
         answer: 'Bəli. Brendinizin rəsmi rəng palitrasına (Pantone/CMYK) 100% uyğunlaşdırılmış keyfiyyətli lateks, xrom və pastel şarlardan istifadə olunur.'
       },
       {
-        question: 'Gecə və ya səhər tezdən açılışa qədər montaj tamamlana bilər?',
-        answer: 'Bəli. Ticarət mərkəzləri və küçə mağazalarının qrafikinə uyğunlaşaraq gecə saatlarında və ya tədbirdən 2-3 saat əvvəl montaj tam hazır təhvil verilir.'
+        question: 'Gecə və ya səhər tezdən açılışa qədər quraşdırma tamamlana bilər?',
+        answer: 'Bəli. Ticarət mərkəzləri və küçə mağazalarının qrafikinə uyğunlaşaraq gecə saatlarında və ya tədbirdən 2-3 saat əvvəl quraşdırma tam hazır təhvil verilir.'
       }
     ]
   }

@@ -62,7 +62,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal
                 DreamArt Events olaraq, hər bir tədbirə sadəcə dekorasiya kimi deyil, unudulmaz həyat anlarının səhnəsi kimi yanaşırıq. Biz şablon həllərdən uzaq durur, məkanın ruhuna və cütlüyün xarakterinə uyğun fərdi hekayələr qururuq.
               </p>
               <p>
-                Kolleksiyamızda canlı çiçək kompozisiyaları, zərif şam işıqlandırması, eksklüziv xonça xidmətləri və ən son trendlər birləşir. Bakı ilə yanaşı, Qəbələ, Gəncə, Şəki və digər bölgələrdə də layihələrimizi eyni yüksək keyfiyyət standartı ilə icra edirik.
+                Kolleksiyamızda canlı çiçək kompozisiyaları, zərif şam işıqlandırması, zərif xonça xidmətləri və ən son trendlər birləşir. Bakı ilə yanaşı, Qəbələ, Gəncə, Şəki və digər bölgələrdə də layihələrimizi eyni yüksək keyfiyyət standartı ilə icra edirik.
               </p>
             </div>
           </div>
@@ -76,7 +76,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ navigate, onOpenQuoteModal
             <div className="bg-[#121212] p-6 border border-white/10 rounded-sm text-center">
               <span className="font-serif text-3xl text-[#C5A059] block mb-1">100%</span>
               <h3 className="text-xs uppercase tracking-wider text-white font-medium mb-1">Fərdi Konsept</h3>
-              <p className="text-xs text-white/60 font-light">Hər müştərimiz üçün eksklüziv rəng və eskiz seçimi.</p>
+              <p className="text-xs text-white/60 font-light">Hər müştərimiz üçün xüsusi rəng və eskiz seçimi.</p>
             </div>
             <div className="bg-[#121212] p-6 border border-white/10 rounded-sm text-center">
               <span className="font-serif text-3xl text-[#C5A059] block mb-1">24/7</span>

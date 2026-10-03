@@ -30,7 +30,7 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
 
   const xoncaCover = imageService.getCoverImage('xonca-main', 'xonca_service', '/images/xonca-xidmeti-cover.jpg');
   const xoncaImgs = imageService.getImagesByTarget('xonca-main', 'xonca_service');
-  const xoncaAlt = xoncaImgs[0]?.altText || 'Eksklüziv Xonça Dizaynı';
+  const xoncaAlt = xoncaImgs[0]?.altText || 'Zərif Xonça Dizaynı';
   return (
     <section id="spotlight-section" className="py-14 sm:py-20 bg-[#0B0B0B] border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,7 +90,7 @@ export const RegionalSection: React.FC<RegionalSectionProps> = ({
           <div className="bg-[#121212] border border-white/10 hover:border-[#C5A059]/60 rounded-sm p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 relative overflow-hidden group">
             <div className="relative z-10">
               <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-[#C5A059] font-medium font-sans block mb-2">
-                EKSKLÜZİV DİZAYNLAR
+                ZƏRİF DİZAYNLAR
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal mb-3">
                 Xonça xidməti

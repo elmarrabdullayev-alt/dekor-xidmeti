@@ -32,7 +32,7 @@ const HERO_SLIDES: HeroSlide[] = [
     id: 'hero-slide-2',
     image: '/images/dreamart-nisan-dekoru-fotozona.webp',
     fallbackUrl: '/images/dreamart-nisan-dekoru-fotozona.webp',
-    title: 'Zərif Nişan & Fotozona Tərtibatı',
+    title: 'Zərif Nişan & Fotozona Dekoru',
     subtitle: 'Müasir İşıqlandırma və Estetik Dizayn',
     alt: 'DreamArt Events eksklüziv tədbir və nişan dizaynı, fotozona və konsept bəzədilməsi',
   },
@@ -313,7 +313,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
 
             {/* Supporting Text with gentle text shadow: concise 2-3 lines on mobile */}
             <p className="text-xs sm:text-base md:text-lg text-white/90 sm:text-white/95 font-light leading-relaxed max-w-xs sm:max-w-2xl mb-5 sm:mb-9 drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] line-clamp-3 sm:line-clamp-none">
-              Toy, nişan, xına, ad günü, korporativ tədbirlər və xonça xidməti üçün peşəkar dekor və konsept həlləri.
+              Toy, nişan, xına, ad günü, korporativ tədbirlər və xonça xidməti üçün fərdi dizayn və peşəkar dekorasiya xidməti.
             </p>
 
             {/* CTA Buttons: primary prominent, secondary subtle */}
@@ -332,7 +332,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onViewPortf
                 onClick={onViewPortfolio}
                 className="bg-black/40 sm:bg-black/60 hover:bg-black/85 backdrop-blur-md border border-white/20 sm:border-white/30 hover:border-[#C5A059] text-white/85 sm:text-white px-4 sm:px-8 py-3 sm:py-3.5 rounded-sm text-[11px] sm:text-[13px] font-normal sm:font-medium tracking-wide inline-flex items-center gap-1.5 sm:gap-2.5 transition-all duration-300 shadow-lg hover:translate-y-[-1px] cursor-pointer"
               >
-                <span>Portfoliyoya bax</span>
+                <span>Portfolioya bax</span>
                 <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-75" />
               </button>
             </div>

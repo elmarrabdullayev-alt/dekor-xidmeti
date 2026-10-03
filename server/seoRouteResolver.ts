@@ -144,7 +144,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   if (cleanPath === '/meqaleler') {
     return {
       title: 'Məqalələr | Toy, Nişan və Tədbir Dekoru üzrə Faydalı Məlumatlar',
-      description: 'Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə tərtibatı üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri.',
+      description: 'Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə planlaması üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri.',
       canonicalUrl: `${PRIMARY_DOMAIN}/meqaleler`,
       robots: 'index, follow',
       ogImage: `${PRIMARY_DOMAIN}/images/dreamart-toy-dekoru-qizili-altar.webp`,
@@ -154,7 +154,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
           'name': 'Məqalələr | Toy, Nişan və Tədbir Dekoru üzrə Faydalı Məlumatlar',
-          'description': 'Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə tərtibatı üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri.',
+          'description': 'Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə planlaması üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri.',
           'url': `${PRIMARY_DOMAIN}/meqaleler`
         },
         getBreadcrumbSchema([
@@ -261,7 +261,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
   if (cleanPath === '/xidmetler') {
     return {
       title: 'Dekor Xidmətlərimiz və İş Prosesi | DreamArt Weddings',
-      description: 'Fərdi dekor konsepti, floristik dizayn, çatdırılma, montaj, sökülmə və xonça xidmətləri. Bakı və regionlar üçün peşəkar servis.',
+      description: 'Fərdi dekor konsepti, floristik dizayn, çatdırılma, quraşdırma, sökülmə və xonça xidmətləri. Bakı və regionlar üçün peşəkar servis.',
       canonicalUrl: `${PRIMARY_DOMAIN}/xidmetler`,
       robots: 'index, follow',
       ogImage: DEFAULT_IMAGE,
@@ -767,7 +767,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
     const qebeleFaqs = [
       {
         question: 'DreamArt Weddings Qəbələdə toy dekoru xidməti göstərir?',
-        answer: 'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək tərtibatı və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
+        answer: 'Bəli. DreamArt Weddings Qəbələ şəhəri, dağ kurortları, fərdi villalar və ziyafət məkanları üçün tam həcmli toy dekorasiyası layihələri həyata keçirir. Konsept dizaynı, çiçək dekoru və quraşdırma komandası Bakıdan birbaşa Qəbələyə ezam olunur.'
       },
       {
         question: 'Qəbələdə destination wedding dekoru sifariş etmək mümkündür?',
@@ -779,7 +779,7 @@ export function resolveRouteSeo(pathname: string): RouteSeoData {
       },
       {
         question: 'Bakıdan Qəbələyə dekor və quraşdırma komandası gəlir?',
-        answer: 'Bəli. Canlı çiçəklər və dekorasiya elementləri Bakıdakı emalatxanamızdan temperatur nəzarətli xüsusi yük maşınları ilə Qəbələyə daşınır. Peşəkar florist və montaj qrupumuz tədbirdən saatlar öncə məkanda tam quraşdırmanı həyata keçirir.'
+        answer: 'Bəli. Canlı çiçəklər və dekorasiya elementləri Bakıdakı emalatxanamızdan temperatur nəzarətli xüsusi yük maşınları ilə Qəbələyə daşınır. Peşəkar florist və quraşdırma komandamız tədbirdən saatlar öncə məkanda tam quraşdırmanı həyata keçirir.'
       },
       {
         question: 'Qəbələdə bir neçə günlük toy tədbiri üçün fərqli dekor konseptləri hazırlamaq mümkündür?',

@@ -207,7 +207,7 @@ export const VenuesCatalogPage: React.FC<VenuesCatalogPageProps> = ({
                       {/* CTA Button */}
                       <div className="pt-3 border-t border-white/5 flex items-center justify-between">
                         <span className="text-[11px] text-white/50">
-                          {relatedCount > 0 ? `${relatedCount} dekor layihəsi` : 'Məkan tərtibatı'}
+                          {relatedCount > 0 ? `${relatedCount} dekor layihəsi` : 'Məkan dekorasiyası'}
                         </span>
 
                         <div className="inline-flex items-center gap-1.5 text-xs text-[#C5A059] group-hover:text-[#E5C378] font-medium tracking-wider">

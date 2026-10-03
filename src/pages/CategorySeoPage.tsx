@@ -577,7 +577,7 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
                 <div className="flex items-center gap-2.5 text-xs sm:text-sm text-white/80 font-light">
                   <Building2 className="w-4 h-4 text-[#C5A059] shrink-0" />
                   <span>
-                    <strong className="font-medium text-white">{category.name}</strong> tərtibatı icra edilmiş məkanlar:
+                    <strong className="font-medium text-white">{category.name}</strong> layihələri icra edilmiş məkanlar:
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs">
@@ -620,7 +620,7 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
             <div className="p-4 sm:p-5 bg-[#121212] border border-white/10 rounded-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/70">
               <span className="flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5 text-[#C5A059] shrink-0" />
-                <span>Bütün real işlərimiz, məkan tərtibatları və arxiv layihələrimiz tam portfolioda təqdim olunur.</span>
+                <span>Bütün real işlərimiz, məkan dekorasiyaları və arxiv layihələrimiz tam portfolioda təqdim olunur.</span>
               </span>
               <div className="flex items-center gap-3 shrink-0">
                 <button

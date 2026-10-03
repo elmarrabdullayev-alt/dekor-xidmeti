@@ -220,7 +220,8 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, presetD
                     <option value="Xına dekoru" className="bg-[#181818] text-white">Xına gecəsi</option>
                     <option value="Ad günü dekoru" className="bg-[#181818] text-white">Ad günü</option>
                     <option value="Korporativ tədbir" className="bg-[#181818] text-white">Korporativ</option>
-                    <option value="Zal dekoru" className="bg-[#181818] text-white">Zal tərtibatı</option>
+                    <option value="Zal dekoru" className="bg-[#181818] text-white">Banket və zal dekoru</option>
+                    <option value="Mağaza açılış dekoru" className="bg-[#181818] text-white">Mağaza və obyekt açılışı</option>
                     <option value="Xonça xidməti" className="bg-[#181818] text-white">Xonça xidməti</option>
                   </select>
                 </div>

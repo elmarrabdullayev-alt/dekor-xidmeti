@@ -30,7 +30,7 @@ export const ArticlesHubPage: React.FC<ArticlesHubPageProps> = ({ navigate, onOp
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
       'name': 'Məqalələr | Toy, Nişan və Tədbir Dekoru üzrə Faydalı Məlumatlar',
-      'description': 'Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə tərtibatı üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri.',
+      'description': 'Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə planlaması üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri.',
       'url': 'https://dreamartweddings.com/meqaleler'
     },
     getBreadcrumbSchema(breadcrumbs)
@@ -48,7 +48,7 @@ export const ArticlesHubPage: React.FC<ArticlesHubPageProps> = ({ navigate, onOp
     <div className="bg-[#0B0B0B] text-[#EAEAEA] min-h-screen">
       <SeoHead
         title="Məqalələr | Toy, Nişan və Tədbir Dekoru üzrə Faydalı Məlumatlar"
-        description="Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə tərtibatı üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri."
+        description="Toy, nişan, xına və tədbir dekorunun planlanması, gül seçimi, fotozona və büdcə planlaması üzrə DreamArt Weddings peşəkar məqalələri və bələdçiləri."
         canonicalPath="/meqaleler"
         ogImage="https://dreamartweddings.com/images/dreamart-toy-dekoru-qizili-altar.webp"
         jsonLd={jsonLd}

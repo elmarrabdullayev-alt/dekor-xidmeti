@@ -239,7 +239,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                       <p className="text-xs text-white/50 mt-1">
                         {verifiedProjects.length > 0
                           ? `${venue.name} məkanında icra edilmiş faktiki dekorasiya və məkan görüntüləri`
-                          : `${venue.name} üçün məkan görüntüləri və tərtibat konseptləri`}
+                          : `${venue.name} üçün məkan görüntüləri və dekorasiya konseptləri`}
                       </p>
                     </div>
                     <span className="text-xs text-[#C5A059] font-mono">{venueGalleryPhotos.length} foto</span>
@@ -324,7 +324,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                   </h3>
                   <div className="pl-5 border-l-2 border-[#C5A059]/50 space-y-3">
                     <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
-                      <strong>{venue.name}</strong> məkanında toy və ziyafət dekorasiyasını birbaşa DreamArt Weddings komandasına sifariş etmək olar. Məkanın daxili memarlığına uyğun fərdi floristika, bəy-gəlin masası, arxa fon tağı və işıqlandırma tərtibatı təqdim edilir. Operativ smeta və konsultasiya üçün WhatsApp ilə əlaqə saxlaya və ya{' '}
+                      <strong>{venue.name}</strong> məkanında toy və ziyafət dekorasiyasını birbaşa DreamArt Weddings komandasına sifariş etmək olar. Məkanın daxili memarlığına uyğun fərdi floristika, bəy-gəlin masası, arxa fon tağı və zərif işıqlandırma dekoru təqdim edilir. Operativ smeta və konsultasiya üçün WhatsApp ilə əlaqə saxlaya və ya{' '}
                       <button
                         onClick={() => navigate('/elaqe')}
                         className="text-[#C5A059] hover:underline font-medium cursor-pointer"
@@ -456,7 +456,7 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
                       {venue.name} məkanında real dekor layihələri
                     </h2>
                     <p className="text-xs text-white/50 mt-1">
-                      DreamArt Weddings komandası tərəfindən icra edilmiş faktiki tərtibatlar
+                      DreamArt Weddings komandası tərəfindən icra edilmiş real dekorasiya layihələri
                     </p>
                   </div>
                   {verifiedProjects.length > 0 && (
