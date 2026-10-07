@@ -139,6 +139,38 @@ async function startServer() {
   // Recognize proxy headers from Cloud Run and Render load balancers
   app.set('trust proxy', 1);
 
+  // Canonical Domain & Protocol 301 Redirection Middleware:
+  // Enforces primary canonical domain: https://dreamartweddings.com
+  // - All www requests (http & https) 301 redirect to https://dreamartweddings.com
+  // - Plain http requests on production apex domain 301 redirect to https://dreamartweddings.com
+  app.use((req, res, next) => {
+    const rawHost = (req.headers.host || '').trim().toLowerCase();
+    const hostname = rawHost.split(':')[0]; // strip port if present
+    const forwardedProto = (req.headers['x-forwarded-proto'] as string | undefined)?.toLowerCase();
+    const isHttps = forwardedProto === 'https' || req.protocol === 'https';
+
+    const isWwwDomain =
+      hostname === 'www.dreamartweddings.com' ||
+      (hostname.startsWith('www.') && hostname.includes('dreamartweddings.com'));
+    const isApexDomain = hostname === 'dreamartweddings.com';
+
+    // 1. If requested via www (http or https), 301 redirect to canonical https apex
+    if (isWwwDomain) {
+      const canonicalTarget = `https://dreamartweddings.com${req.originalUrl}`;
+      res.setHeader('Location', canonicalTarget);
+      return res.status(301).end();
+    }
+
+    // 2. If requested via http on production apex domain, 301 redirect to https
+    if (isApexDomain && !isHttps && (IS_PRODUCTION || forwardedProto === 'http')) {
+      const canonicalTarget = `https://dreamartweddings.com${req.originalUrl}`;
+      res.setHeader('Location', canonicalTarget);
+      return res.status(301).end();
+    }
+
+    next();
+  });
+
   // CORS Middleware for cross-origin or iframe requests with credentials
   app.use((req, res, next) => {
     const origin = req.headers.origin;
@@ -167,6 +199,25 @@ async function startServer() {
       immutable: true,
     })
   );
+
+  // Fast static delivery for robots.txt and sitemap.xml
+  app.get('/robots.txt', (_req: Request, res: Response) => {
+    const publicPath = path.join(process.cwd(), 'public', 'robots.txt');
+    const distPath = path.join(process.cwd(), 'dist', 'robots.txt');
+    const targetPath = fs.existsSync(publicPath) ? publicPath : distPath;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.sendFile(targetPath);
+  });
+
+  app.get('/sitemap.xml', (_req: Request, res: Response) => {
+    const publicPath = path.join(process.cwd(), 'public', 'sitemap.xml');
+    const distPath = path.join(process.cwd(), 'dist', 'sitemap.xml');
+    const targetPath = fs.existsSync(publicPath) ? publicPath : distPath;
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.sendFile(targetPath);
+  });
 
   // Static AI discovery endpoints (fast static delivery, application/json and text/plain)
   app.get('/ai-catalog.json', (_req: Request, res: Response) => {
