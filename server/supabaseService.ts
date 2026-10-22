@@ -420,12 +420,12 @@ export async function uploadImageToSupabase(params: {
       );
       nextOrder = maxOrder + 1;
       if (shouldBeCover) {
-        const isCat = params.section === 'category_cover';
+        const isCat = params.section === 'category_cover' || params.section === 'category_image';
         const catAliases = isCat ? getCategoryAliases(params.targetId) : [params.targetId];
         await client
           .from(ADMIN_IMAGES_TABLE)
           .update({ is_cover: false })
-          .eq('group_name', params.section)
+          .in('group_name', isCat ? ['category_image', 'category_cover'] : [params.section])
           .in('target_id', catAliases);
       }
     } else {
@@ -715,13 +715,13 @@ export async function setCoverInSupabase(id: string): Promise<void> {
       .single();
 
     if (target) {
-      const isCat = target.group_name === 'category_cover';
+      const isCat = target.group_name === 'category_cover' || target.group_name === 'category_image';
       const catAliases = isCat ? getCategoryAliases(target.target_id) : [target.target_id];
 
       await client
         .from(ADMIN_IMAGES_TABLE)
         .update({ is_cover: false })
-        .eq('group_name', target.group_name)
+        .in('group_name', isCat ? ['category_image', 'category_cover'] : [target.group_name])
         .in('target_id', catAliases);
 
       await client

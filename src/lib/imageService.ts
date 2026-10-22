@@ -1,5 +1,5 @@
 import { ManagedImage, ImageSection } from '../types';
-import { getCategoryAliases } from './categoryMapping';
+import { getCategoryAliases, normalizeCategoryIdentifier } from './categoryMapping';
 import { sanitizeDecorText } from './sanitizeHelper';
 
 /**

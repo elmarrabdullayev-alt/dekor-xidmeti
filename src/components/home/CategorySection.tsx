@@ -15,38 +15,75 @@ interface CategorySectionProps {
 /**
  * Resolves the real Supabase admin-managed cover image for each category.
  * Priority:
- * 1. Admin/Supabase category image with group_name = category_cover, target_id = canonical slug (or alias), and is_cover = true
- * 2. Fallback to category heroImage only when no admin cover exists
+ * 1. Canonical category_image with target_id = canonical slug and is_cover = true
+ * 2. Legacy category_cover records for backwards compatibility (is_cover = true)
+ * 3. Any category image for this target
+ * 4. Category-specific fallback only when no managed cover exists
  */
 export const getCategoryCoverImage = (cat: CategoryInfo): string => {
   const canonical = normalizeCategoryIdentifier(cat.slug || cat.canonicalSlug || cat.id);
   const aliases = getCategoryAliases(cat.slug || cat.canonicalSlug || cat.id);
   const allImages = imageService.getAllImages();
 
-  // 1. Strict Priority 1: Admin/Supabase category image with is_cover=true
-  const explicitCover = allImages.find(
+  // Priority 1: Canonical category_image with targetId === canonical and is_cover === true
+  const canonicalCover = allImages.find(
     (img) =>
-      (img.section === 'category_image' || img.section === 'category_cover') &&
+      (img.section === 'category_image' || img.group === 'category_image') &&
+      img.targetId === canonical &&
+      img.isCover === true &&
+      Boolean(img.url)
+  );
+  if (canonicalCover?.url) {
+    return canonicalCover.url;
+  }
+
+  // Priority 1B: Canonical category_image with aliases (is_cover === true)
+  const canonicalAliasCover = allImages.find(
+    (img) =>
+      (img.section === 'category_image' || img.group === 'category_image') &&
+      aliases.includes(img.targetId) &&
+      img.isCover === true &&
+      Boolean(img.url)
+  );
+  if (canonicalAliasCover?.url) {
+    return canonicalAliasCover.url;
+  }
+
+  // Priority 2: Legacy category_cover record with is_cover === true
+  const legacyCover = allImages.find(
+    (img) =>
+      (img.section === 'category_cover' || img.group === 'category_cover') &&
       (img.targetId === canonical || aliases.includes(img.targetId)) &&
       img.isCover === true &&
       Boolean(img.url)
   );
-  if (explicitCover?.url) {
-    return explicitCover.url;
+  if (legacyCover?.url) {
+    return legacyCover.url;
   }
 
-  // Fallback 1B: If category images exist for this target but none is explicitly marked is_cover
-  const firstCatCover = allImages.find(
+  // Priority 2B: Any canonical category_image (first if none marked is_cover)
+  const firstCatImage = allImages.find(
     (img) =>
-      (img.section === 'category_image' || img.section === 'category_cover') &&
+      (img.section === 'category_image' || img.group === 'category_image') &&
       (img.targetId === canonical || aliases.includes(img.targetId)) &&
       Boolean(img.url)
   );
-  if (firstCatCover?.url) {
-    return firstCatCover.url;
+  if (firstCatImage?.url) {
+    return firstCatImage.url;
   }
 
-  // 2. Strict Priority 2: Category-specific fallback only when no admin cover exists
+  // Priority 2C: Any legacy category_cover image
+  const firstLegacyCover = allImages.find(
+    (img) =>
+      (img.section === 'category_cover' || img.group === 'category_cover') &&
+      (img.targetId === canonical || aliases.includes(img.targetId)) &&
+      Boolean(img.url)
+  );
+  if (firstLegacyCover?.url) {
+    return firstLegacyCover.url;
+  }
+
+  // Priority 3: Category-specific hardcoded fallback only when no admin cover exists
   return cat.heroImage || '/images/dreamart-toy-dekoru-qizili-altar.webp';
 };
 
@@ -87,7 +124,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({ onSelectCatego
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
           {CATEGORIES.map((cat) => {
             const cmsCoverUrl = getCategoryCoverImage(cat);
-            const targetImages = imageService.getImagesByTarget(cat.slug, 'category_cover');
+            const targetImages = imageService.getImagesByTarget(cat.slug, 'category_image');
             const altText = targetImages[0]?.altText || cat.name;
 
             return (

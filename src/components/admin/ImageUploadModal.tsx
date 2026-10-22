@@ -626,16 +626,27 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
             </div>
 
             {/* Cover Image checkbox */}
-            <label className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/5 border border-white/10 cursor-pointer">
+            <label className="flex items-start gap-2.5 p-2.5 rounded-lg bg-white/5 border border-white/10 cursor-pointer hover:bg-white/[0.08] transition">
               <input
                 type="checkbox"
                 checked={isCover}
                 onChange={(e) => setIsCover(e.target.checked)}
-                className="w-4 h-4 rounded text-[#C5A262] focus:ring-[#C5A262]"
+                className="w-4 h-4 rounded text-[#C5A262] focus:ring-[#C5A262] mt-0.5 shrink-0"
               />
-              <span className="text-xs text-neutral-200 font-medium">
-                Bu şəkli əsas "Qapaq şəkli" (Cover image) kimi təyin et
-              </span>
+              <div className="flex flex-col">
+                <span className="text-xs text-neutral-200 font-medium">
+                  {section === 'category_image' || section === 'category_cover'
+                    ? 'Ana səhifə qapağı et'
+                    : 'Bu şəkli əsas "Qapaq şəkli" (Cover image) kimi təyin et'}
+                </span>
+                <span className="text-[10px] text-neutral-400 mt-0.5">
+                  {section === 'category_image' || section === 'category_cover'
+                    ? (isCover
+                        ? 'İşarələnib: Yeni şəkil ana səhifədə kateqoriya qapağı olacaq, əvvəlki qapaq qalereyada saxlanılacaq.'
+                        : 'İşarələnməyib: Şəkil xidmət qalereyasına əlavə olunacaq, ana səhifə qapağı dəyişməyəcək.')
+                    : 'İşarələnərsə, bu şəkil layihə/məkanın əsas nümayiş şəkli olacaq.'}
+                </span>
+              </div>
             </label>
 
             {/* Change selection button */}

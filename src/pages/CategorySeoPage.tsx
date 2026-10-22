@@ -113,8 +113,9 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
   };
 
   const heroImage = getCategoryCoverImage(category);
-  const cmsImgs = imageService.getImagesByTarget(category.slug, 'category_cover');
-  const heroAlt = cmsImgs[0]?.altText || category.seoH1 || categoryProjects[0]?.imageAltText || `${category.name} - DreamArt Weddings`;
+  const allCategoryImages = imageService.getImagesByTarget(category.slug, 'category_image');
+  const heroAlt = allCategoryImages.find(i => i.isCover)?.altText || allCategoryImages[0]?.altText || category.seoH1 || categoryProjects[0]?.imageAltText || `${category.name} - DreamArt Weddings`;
+  const categoryGalleryImages = allCategoryImages.filter(img => !img.isCover && img.url !== heroImage);
 
   const jsonLd = [
     getCategoryServiceSchema(category),
@@ -528,6 +529,50 @@ export const CategorySeoPage: React.FC<CategorySeoPageProps> = ({
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+        )}
+
+        {/* Managed Category Service Gallery Section */}
+        {categoryGalleryImages.length > 0 && (
+          <section id="category-service-gallery" className="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/10">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-4 border-b border-white/10">
+              <div>
+                <span className="text-[10px] uppercase tracking-[0.3em] text-[#C5A059] block mb-1 font-medium font-sans">
+                  FOTO QALEREYA
+                </span>
+                <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-white font-normal">
+                  {category.name} Üzrə Xidmət Qalereyası
+                </h2>
+              </div>
+              <div className="mt-3 sm:mt-0 text-xs uppercase tracking-wider text-white/50 font-mono">
+                {categoryGalleryImages.length} fotoşəkil
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {categoryGalleryImages.map((img) => (
+                <div
+                  key={img.id}
+                  className="group relative rounded-sm overflow-hidden bg-[#141414] border border-white/10 hover:border-[#C5A059]/60 transition-all duration-300 shadow-md flex flex-col"
+                >
+                  <div className="aspect-4/3 overflow-hidden bg-black/60 relative">
+                    <img
+                      src={img.url}
+                      alt={img.altText || `${category.name} dekorasiyası`}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-95 group-hover:brightness-105"
+                    />
+                  </div>
+                  {img.altText && (
+                    <div className="p-3 bg-[#111111] border-t border-white/5">
+                      <p className="text-xs text-white/80 line-clamp-1 font-light">
+                        {img.altText}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </section>
         )}

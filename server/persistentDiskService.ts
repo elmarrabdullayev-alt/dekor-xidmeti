@@ -248,12 +248,12 @@ export async function uploadImageRecord(params: {
   const localRecord = await dbMutex.run(async () => {
     const images = readDbSafe();
     const shouldBeCover = Boolean(params.isCover);
-    const isCategory = params.section === 'category_cover';
+    const isCategory = params.section === 'category_cover' || params.section === 'category_image';
     const catAliases = isCategory ? getCategoryAliases(params.targetId) : [params.targetId];
 
     if (shouldBeCover) {
       images.forEach((img) => {
-        const matchesCategory = isCategory && (img.group === 'category_cover' || img.section === 'category_cover') && catAliases.includes(img.targetId);
+        const matchesCategory = isCategory && (img.group === 'category_cover' || img.section === 'category_cover' || img.group === 'category_image' || img.section === 'category_image') && catAliases.includes(img.targetId);
         const matchesStandard = img.group === params.section && img.targetId === params.targetId;
         if (matchesCategory || matchesStandard) {
           img.isCover = false;
@@ -262,7 +262,7 @@ export async function uploadImageRecord(params: {
     }
 
     const groupImages = images.filter(
-      (img) => (isCategory && (img.group === 'category_cover' || img.section === 'category_cover') && catAliases.includes(img.targetId)) ||
+      (img) => (isCategory && (img.group === 'category_cover' || img.section === 'category_cover' || img.group === 'category_image' || img.section === 'category_image') && catAliases.includes(img.targetId)) ||
                (img.group === params.section && img.targetId === params.targetId)
     );
     const maxOrder = groupImages.reduce(
@@ -449,11 +449,11 @@ export async function setCoverRecord(id: string): Promise<void> {
       return;
     }
 
-    const isCategory = target.group === 'category_cover' || target.section === 'category_cover';
+    const isCategory = target.group === 'category_cover' || target.section === 'category_cover' || target.group === 'category_image' || target.section === 'category_image';
     const catAliases = isCategory ? getCategoryAliases(target.targetId) : [target.targetId];
 
     images.forEach((img) => {
-      const matchesCategory = isCategory && (img.group === 'category_cover' || img.section === 'category_cover') && catAliases.includes(img.targetId);
+      const matchesCategory = isCategory && (img.group === 'category_cover' || img.section === 'category_cover' || img.group === 'category_image' || img.section === 'category_image') && catAliases.includes(img.targetId);
       const matchesStandard = img.group === target.group && img.targetId === target.targetId;
       if (matchesCategory || matchesStandard) {
         img.isCover = img.id === id;

@@ -200,6 +200,7 @@ export interface ManagedImage {
   altText: string;
   alt?: string;
   section: ImageSection;
+  group?: string;
   targetId: string;
   targetName: string;
   isCover: boolean;

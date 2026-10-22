@@ -228,9 +228,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     heroImage: '/images/dreamart-nisan-dekoru-fotozona.webp'
   };
   const activeCategoryCoverUrl = getCategoryCoverImage(activeCategoryInfo as any);
-  const activeCatCoverImages = imageService.getImagesByTarget(activeCategorySlug, 'category_cover');
-  const activeCatCoverImage = activeCatCoverImages.find(i => i.isCover) || (activeCatCoverImages.length > 0 ? activeCatCoverImages[0] : null);
-  const activeCatGalleryImages = activeCatCoverImages.filter(img => img.id !== activeCatCoverImage?.id);
+  const activeCatImages = imageService.getImagesByTarget(activeCategorySlug, 'category_image');
+  const canonicalCover = activeCatImages.find(i => (i.section === 'category_image' || i.group === 'category_image') && i.targetId === activeCategorySlug && i.isCover);
+  const aliasCover = !canonicalCover ? activeCatImages.find(i => (i.section === 'category_image' || i.group === 'category_image') && i.isCover) : null;
+  const legacyCover = !canonicalCover && !aliasCover ? activeCatImages.find(i => (i.section === 'category_cover' || i.group === 'category_cover') && i.isCover) : null;
+  const activeCatCoverImage = canonicalCover || aliasCover || legacyCover || (activeCatImages.length > 0 ? activeCatImages[0] : null);
+  const activeCatGalleryImages = activeCatImages.filter(img => img.id !== activeCatCoverImage?.id);
 
   // Images for current active target
   let activeImages: ManagedImage[] = [];
@@ -246,10 +249,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
       .filter(img => img.section === 'decor_project' && img.targetId === selectedProject.id)
       .sort((a, b) => a.order - b.order);
   } else if (activeAdminTab === 'decors' && !selectedProject) {
-    uploadSection = 'category_cover';
+    uploadSection = 'category_image';
     uploadTargetId = activeCategorySlug;
     uploadTargetName = activeCategory.name;
-    activeImages = activeCatCoverImages;
+    activeImages = activeCatImages;
   } else if (activeAdminTab === 'venues') {
     uploadSection = 'venue_project';
     uploadTargetId = activeVenueSlug;
@@ -687,7 +690,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                             id="category-change-cover-btn"
                             onClick={() => {
                               setCustomUploadTarget({
-                                section: 'category_cover',
+                                section: 'category_image',
                                 targetId: activeCategorySlug,
                                 targetName: `${activeCategory.name} Qapaq`,
                                 initialIsCover: true
@@ -732,7 +735,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                         id="category-add-cover-initial-btn"
                         onClick={() => {
                           setCustomUploadTarget({
-                            section: 'category_cover',
+                            section: 'category_image',
                             targetId: activeCategorySlug,
                             targetName: `${activeCategory.name} Qapaq`,
                             initialIsCover: true
@@ -759,12 +762,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                         Bu xidmətə aid qapaq olmayan bütün qalereya şəkilləri. İstənilən şəkli "Qapaq et" düyməsi ilə əsas qapaq edə bilərsiniz.
                       </p>
                     </div>
-                    {/* Exactly ONE button: "Qalereyaya şəkil əlavə et" */}
+                    {/* Exactly ONE button: "+ Yeni şəkil əlavə et" */}
                     <button
                       id="category-gallery-add-btn"
                       onClick={() => {
                         setCustomUploadTarget({
-                          section: 'category_cover',
+                          section: 'category_image',
                           targetId: activeCategorySlug,
                           targetName: activeCategory.name,
                           initialIsCover: false
@@ -774,7 +777,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                       className="px-3.5 py-1.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center gap-1.5 transition shadow cursor-pointer shrink-0 self-start sm:self-auto"
                     >
                       <Upload className="w-3.5 h-3.5" />
-                      <span>Qalereyaya şəkil əlavə et</span>
+                      <span>+ Yeni şəkil əlavə et</span>
                     </button>
                   </div>
 
@@ -787,7 +790,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                         Qalereyada əlavə şəkil yoxdur.
                       </p>
                       <p className="text-[11px] text-neutral-500 mt-1">
-                        Yuxarıdakı "Qalereyaya şəkil əlavə et" düyməsindən istifadə edərək bu xidmətə aid fotoşəkillər əlavə edə bilərsiniz.
+                        Yuxarıdakı "+ Yeni şəkil əlavə et" düyməsindən istifadə edərək bu xidmətə aid fotoşəkillər əlavə edə bilərsiniz.
                       </p>
                     </div>
                   ) : (
