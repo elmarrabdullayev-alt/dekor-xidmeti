@@ -229,23 +229,33 @@ class ImageService {
   }
 
   public getImagesByTarget(targetId: string, section?: ImageSection): ManagedImage[] {
+    const canonical = normalizeCategoryIdentifier(targetId);
     const aliases = getCategoryAliases(targetId);
+    const isCategoryQuery = section === 'category_image' || section === 'category_cover';
+
     return this.getAllImages()
       .filter((img) => {
+        const isCatImg = img.section === 'category_image' || img.section === 'category_cover';
+        if (isCategoryQuery) {
+          if (!isCatImg) return false;
+          return img.targetId === canonical || img.targetId === targetId || aliases.includes(img.targetId);
+        }
+
         const matchesTarget =
           img.targetId === targetId ||
-          aliases.includes(img.targetId) ||
-          (section === 'category_cover' && aliases.includes(img.targetId));
+          img.targetId === canonical ||
+          aliases.includes(img.targetId);
         return matchesTarget && (!section || img.section === section);
       })
       .sort((a, b) => (a.order || 0) - (b.order || 0));
   }
 
   public getCoverImage(targetId: string, section?: ImageSection, fallbackUrl: string = ''): string {
-    const targetImages = this.getImagesByTarget(targetId, section);
+    const isCategoryQuery = section === 'category_image' || section === 'category_cover';
+    const targetImages = this.getImagesByTarget(targetId, isCategoryQuery ? 'category_image' : section);
     const cover = targetImages.find((img) => img.isCover);
     if (cover) return withCacheBuster(cover.url, cover.updatedAt || cover.uploadedAt);
-    if (targetImages.length > 0) return withCacheBuster(targetImages[0].url, targetImages[0].updatedAt || targetImages[0].uploadedAt);
+    if (!isCategoryQuery && targetImages.length > 0) return withCacheBuster(targetImages[0].url, targetImages[0].updatedAt || targetImages[0].uploadedAt);
     return fallbackUrl;
   }
 

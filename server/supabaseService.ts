@@ -124,7 +124,7 @@ export function getStructuredStorageKey(
     }
   } else if (cleanSection === 'xonca_service' || cleanTarget === 'xonca-main') {
     baseFolder = 'services/xonca';
-  } else if (cleanSection === 'category_cover') {
+  } else if (cleanSection === 'category_cover' || cleanSection === 'category_image') {
     baseFolder = `categories/${cleanTarget || 'category'}`;
   } else if (cleanSection === 'services' || cleanSection === 'service_header') {
     baseFolder = `services/${cleanTarget || 'general'}`;
@@ -196,7 +196,7 @@ export function getPublicStorageUrl(storageKey: string): string {
  */
 export function mapDbRowToStoredImage(row: any): StoredImage {
   let group = row.group_name || row.group || row.section || 'general';
-  if (group === 'category' || group === 'categories') group = 'category_cover';
+  if (group === 'category' || group === 'categories' || group === 'category_cover' || group === 'category_image') group = 'category_image';
   if (group === 'decor' || group === 'decors') group = 'decor_project';
   if (group === 'venue' || group === 'venues') group = 'venue_project';
   if (group === 'hero') group = 'home_hero';

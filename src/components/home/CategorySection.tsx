@@ -26,7 +26,7 @@ export const getCategoryCoverImage = (cat: CategoryInfo): string => {
   // 1. Strict Priority 1: Admin/Supabase category image with is_cover=true
   const explicitCover = allImages.find(
     (img) =>
-      img.section === 'category_cover' &&
+      (img.section === 'category_image' || img.section === 'category_cover') &&
       (img.targetId === canonical || aliases.includes(img.targetId)) &&
       img.isCover === true &&
       Boolean(img.url)
@@ -35,10 +35,10 @@ export const getCategoryCoverImage = (cat: CategoryInfo): string => {
     return explicitCover.url;
   }
 
-  // Fallback 1B: If category_cover images exist for this target but none is explicitly marked is_cover
+  // Fallback 1B: If category images exist for this target but none is explicitly marked is_cover
   const firstCatCover = allImages.find(
     (img) =>
-      img.section === 'category_cover' &&
+      (img.section === 'category_image' || img.section === 'category_cover') &&
       (img.targetId === canonical || aliases.includes(img.targetId)) &&
       Boolean(img.url)
   );
