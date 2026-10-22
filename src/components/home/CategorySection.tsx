@@ -14,89 +14,40 @@ interface CategorySectionProps {
 
 /**
  * Resolves the real Supabase admin-managed cover image for each category.
- * Guaranteed to match desktop and mobile seamlessly without static unsplash fallback overriding Supabase.
+ * Priority:
+ * 1. Admin/Supabase category image with group_name = category_cover, target_id = canonical slug (or alias), and is_cover = true
+ * 2. Fallback to category heroImage only when no admin cover exists
  */
 export const getCategoryCoverImage = (cat: CategoryInfo): string => {
   const canonical = normalizeCategoryIdentifier(cat.slug || cat.canonicalSlug || cat.id);
   const aliases = getCategoryAliases(cat.slug || cat.canonicalSlug || cat.id);
-
-  // 1. Direct match by slug, canonicalSlug, id or any alias for category_cover
-  for (const alias of aliases) {
-    const directCover = imageService.getCoverImage(alias, 'category_cover');
-    if (directCover && !directCover.includes('unsplash.com')) {
-      return directCover;
-    }
-  }
-
-  // 2. Direct match across any section by slug, canonicalSlug, or alias
-  for (const alias of aliases) {
-    const anySectionCover = imageService.getCoverImage(alias);
-    if (anySectionCover && !anySectionCover.includes('unsplash.com')) {
-      return anySectionCover;
-    }
-  }
-
-  // 3. Decor projects belonging to this category from store (hydrated with real Supabase images)
-  const categoryProjects = store.getDecorsByCategory(canonical as any);
-  if (categoryProjects && categoryProjects.length > 0) {
-    for (const proj of categoryProjects) {
-      const projCover =
-        imageService.getCoverImage(proj.id, 'decor_project') ||
-        imageService.getCoverImage(proj.slug, 'decor_project') ||
-        imageService.getCoverImage(proj.id) ||
-        imageService.getCoverImage(proj.slug);
-
-      if (projCover && !projCover.includes('unsplash.com')) {
-        return projCover;
-      }
-      if (proj.mainImage && !proj.mainImage.includes('unsplash.com')) {
-        return proj.mainImage;
-      }
-    }
-  }
-
-  // 4. Default decor ID mapping for admin-managed projects (decor-4 for adgunu, decor-2 for ozelgunler, etc.)
-  const mappedId = CATEGORY_DECOR_MAP[canonical] || CATEGORY_DECOR_MAP[cat.slug];
-  if (mappedId) {
-    const mappedCover =
-      imageService.getCoverImage(mappedId, 'decor_project') ||
-      imageService.getCoverImage(mappedId);
-    if (mappedCover && !mappedCover.includes('unsplash.com')) {
-      return mappedCover;
-    }
-  }
-
-  // 5. Look for any managed Supabase image matching category slug or keywords
   const allImages = imageService.getAllImages();
-  const slugClean = canonical.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const match = allImages.find((img) => {
-    if (!img.url || img.url.includes('unsplash.com')) return false;
-    const targetClean = (img.targetId || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const nameClean = (img.targetName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const altClean = (img.altText || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    return (
-      targetClean.includes(slugClean) ||
-      nameClean.includes(slugClean) ||
-      altClean.includes(slugClean)
-    );
-  });
-  if (match && match.url) {
-    return match.url;
+
+  // 1. Strict Priority 1: Admin/Supabase category image with is_cover=true
+  const explicitCover = allImages.find(
+    (img) =>
+      img.section === 'category_cover' &&
+      (img.targetId === canonical || aliases.includes(img.targetId)) &&
+      img.isCover === true &&
+      Boolean(img.url)
+  );
+  if (explicitCover?.url) {
+    return explicitCover.url;
   }
 
-  // 6. Direct cover if found (including fallback)
-  for (const alias of aliases) {
-    const fallbackCover = imageService.getCoverImage(alias, 'category_cover');
-    if (fallbackCover) return fallbackCover;
+  // Fallback 1B: If category_cover images exist for this target but none is explicitly marked is_cover
+  const firstCatCover = allImages.find(
+    (img) =>
+      img.section === 'category_cover' &&
+      (img.targetId === canonical || aliases.includes(img.targetId)) &&
+      Boolean(img.url)
+  );
+  if (firstCatCover?.url) {
+    return firstCatCover.url;
   }
 
-  // 7. Project main image if present
-  if (categoryProjects && categoryProjects[0]?.mainImage) {
-    return categoryProjects[0].mainImage;
-  }
-
-  // 8. Category heroImage
-  return cat.heroImage;
+  // 2. Strict Priority 2: Category-specific fallback only when no admin cover exists
+  return cat.heroImage || '/images/dreamart-toy-dekoru-qizili-altar.webp';
 };
 
 export const CategorySection: React.FC<CategorySectionProps> = ({ onSelectCategory, onViewAll }) => {

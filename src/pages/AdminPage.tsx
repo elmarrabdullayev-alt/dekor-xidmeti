@@ -229,7 +229,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
   };
   const activeCategoryCoverUrl = getCategoryCoverImage(activeCategoryInfo as any);
   const activeCatCoverImages = imageService.getImagesByTarget(activeCategorySlug, 'category_cover');
-  const activeCatManagedImage = activeCatCoverImages.find(i => i.isCover) || activeCatCoverImages[0];
+  const activeCatCoverImage = activeCatCoverImages.find(i => i.isCover) || (activeCatCoverImages.length > 0 ? activeCatCoverImages[0] : null);
+  const activeCatGalleryImages = activeCatCoverImages.filter(img => img.id !== activeCatCoverImage?.id);
 
   // Images for current active target
   let activeImages: ManagedImage[] = [];
@@ -589,43 +590,27 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
             {/* LEVEL 1: Category Project List & Category Cover (Shown when no project is open) */}
             {!selectedProjectId && (
               <div className="space-y-6">
-                {/* Category Header */}
+                {/* Category Header (Single clean view with public page link only) */}
                 <div className="bg-[#141414] border border-[#242424] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <h2 className="text-base font-semibold text-white flex items-center gap-2">
                       <span>{activeCategory.icon}</span>
-                      <span>{activeCategory.name} Bölməsi</span>
+                      <span>{activeCategory.name}</span>
                     </h2>
                     <p className="text-xs text-neutral-400 mt-1">{activeCategory.desc}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => navigate(`/${activeCategory.slug}`)}
-                      className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 text-xs flex items-center gap-1.5 transition cursor-pointer"
+                      className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 hover:text-white text-xs flex items-center gap-1.5 transition cursor-pointer"
                     >
                       <Eye className="w-3.5 h-3.5 text-[#C5A262]" />
                       <span>İctimai Səhifəyə Bax</span>
                     </button>
-                    <button
-                      id="category-header-add-btn"
-                      onClick={() => {
-                        setCustomUploadTarget({
-                          section: 'category_cover',
-                          targetId: activeCategorySlug,
-                          targetName: activeCategory.name,
-                          initialIsCover: false
-                        });
-                        setIsUploadOpen(true);
-                      }}
-                      className="px-4 py-2 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-1.5 transition shadow cursor-pointer shrink-0"
-                    >
-                      <Upload className="w-4 h-4" />
-                      <span>Yeni Şəkil Əlavə Et</span>
-                    </button>
                   </div>
                 </div>
 
-                {/* 1. DEDICATED CATEGORY COVER IMAGE MANAGEMENT CARD */}
+                {/* A. QAPAQ ŞƏKLİ (Show exactly ONE current cover image) */}
                 <div className="bg-[#161616] border border-[#2B2B2B] hover:border-[#C5A262]/60 rounded-2xl p-4 sm:p-5 transition shadow-xl space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#242424]">
                     <div className="flex items-center gap-2.5">
@@ -634,132 +619,147 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                       </div>
                       <div>
                         <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                          <span>{activeCategory.name} — Əsas Qapaq Şəkli (Cover)</span>
+                          <span>{activeCategory.name} — Qapaq Şəkli</span>
                           <span className="px-2 py-0.5 rounded-full text-[10px] bg-[#C5A262]/20 text-[#C5A262] font-mono border border-[#C5A262]/30">
-                            Sayt üzrə aktiv
+                            {activeCatCoverImage ? 'Əsas qapaq şəkli' : 'Qapaq təyin edilməyib'}
                           </span>
                         </h3>
                         <p className="text-[11px] text-neutral-400">
-                          Ana səhifədə, xidmət kataloqunda və /{activeCategory.slug} səhifəsinin yuxarı bannerində nümayiş olunan qapaq şəkli.
+                          Ana səhifə kartında və /{activeCategory.slug} səhifəsinin yuxarı hissəsində nümayiş olunan əsas cover şəkli.
                         </p>
                       </div>
                     </div>
-
-                    <button
-                      id="category-add-cover-btn"
-                      onClick={() => {
-                        setCustomUploadTarget({
-                          section: 'category_cover',
-                          targetId: activeCategorySlug,
-                          targetName: `${activeCategory.name} Qapaq`,
-                          initialIsCover: true
-                        });
-                        setIsUploadOpen(true);
-                      }}
-                      className="px-3.5 py-1.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-1.5 transition shadow cursor-pointer self-start sm:self-auto shrink-0"
-                    >
-                      <Upload className="w-3.5 h-3.5" />
-                      <span>Yeni Qapaq Yüklə</span>
-                    </button>
                   </div>
 
-                  <div className="flex flex-col md:flex-row gap-4 items-start">
-                    <div className="relative w-full md:w-64 aspect-video rounded-xl overflow-hidden bg-black/60 border border-[#333] shrink-0 group">
-                      <img
-                        src={activeCategoryCoverUrl}
-                        alt={`${activeCategory.name} Qapaq`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/80 text-[10px] text-[#C5A262] font-semibold border border-[#C5A262]/30 flex items-center gap-1">
-                        <Star className="w-3 h-3 fill-[#C5A262]" />
-                        <span>Qapaq</span>
-                      </div>
-                      {activeCatManagedImage && (
+                  {activeCatCoverImage ? (
+                    <div className="flex flex-col md:flex-row gap-4 items-start">
+                      <div className="relative w-full md:w-64 aspect-video rounded-xl overflow-hidden bg-black/60 border border-[#C5A262]/50 shrink-0 group">
+                        <img
+                          src={activeCatCoverImage.thumbUrl || activeCatCoverImage.url}
+                          alt={activeCatCoverImage.altText || `${activeCategory.name} Qapaq`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                        <div className="absolute top-2 left-2 px-2.5 py-1 rounded bg-[#C5A262] text-black text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-md">
+                          <Star className="w-3 h-3 fill-black" />
+                          <span>Əsas qapaq şəkli</span>
+                        </div>
                         <div className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/75 text-[9px] text-neutral-300 font-mono">
-                          {activeCatManagedImage.filename}
+                          {activeCatCoverImage.filename}
                         </div>
-                      )}
-                    </div>
+                      </div>
 
-                    <div className="flex-1 space-y-2.5 w-full">
-                      <div className="text-xs text-neutral-300 space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-neutral-500">Mənbə:</span>
-                          <span className="font-mono text-[11px] text-[#E5C378]">
-                            {activeCatManagedImage ? 'Admin Qeydiyyatı (admin_images)' : 'Avtomatik Mapped Qapaq'}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-neutral-500">Target ID:</span>
-                          <span className="font-mono text-[11px] text-neutral-300">
-                            {activeCategorySlug}
-                          </span>
-                        </div>
-                        {activeCatManagedImage?.altText && (
-                          <div className="flex items-start gap-2">
-                            <span className="text-neutral-500 shrink-0">Alt Mətni:</span>
-                            <span className="text-neutral-400 italic text-[11px]">
-                              {activeCatManagedImage.altText}
+                      <div className="flex-1 space-y-2.5 w-full">
+                        <div className="text-xs text-neutral-300 space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-neutral-500">Status:</span>
+                            <span className="font-semibold text-[11px] text-[#E5C378]">
+                              Əsas qapaq şəkli (aktiv)
                             </span>
                           </div>
-                        )}
-                      </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-neutral-500">Target ID:</span>
+                            <span className="font-mono text-[11px] text-neutral-300">
+                              {activeCategorySlug}
+                            </span>
+                          </div>
+                          {activeCatCoverImage.altText && (
+                            <div className="flex items-start gap-2">
+                              <span className="text-neutral-500 shrink-0">Alt Mətni:</span>
+                              <span className="text-neutral-400 italic text-[11px]">
+                                {activeCatCoverImage.altText}
+                              </span>
+                            </div>
+                          )}
+                          {activeCatCoverImage.venueId && (
+                            <div className="flex items-center gap-2">
+                              <span className="text-neutral-500 shrink-0">Məkan:</span>
+                              <span className="text-[#C5A262] text-[11px] font-medium">
+                                {venues.find(v => v.id === activeCatCoverImage.venueId || v.slug === activeCatCoverImage.venueId)?.name || activeCatCoverImage.venueId}
+                              </span>
+                            </div>
+                          )}
+                        </div>
 
-                      <div className="pt-2 flex flex-wrap items-center gap-2">
-                        {activeCatManagedImage && (
-                          <>
-                            <button
-                              onClick={() => setReplacingImage(activeCatManagedImage)}
-                              className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer"
-                              title="Bu şəkli yenisi ilə əvəzlə"
-                            >
-                              <RefreshCw className="w-3.5 h-3.5 text-[#C5A262]" />
-                              <span>Şəkli Əvəzlə</span>
-                            </button>
-                            <button
-                              onClick={() => setEditingMetaImage(activeCatManagedImage)}
-                              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer border border-white/5"
-                              title="Alt mətni və fayl adını redaktə et"
-                            >
-                              <Edit3 className="w-3.5 h-3.5" />
-                              <span>Meta Redaktə</span>
-                            </button>
-                          </>
-                        )}
-                        <button
-                          onClick={() => setPreviewImage(activeCatManagedImage || {
-                            id: 'preview-' + activeCategorySlug,
-                            url: activeCategoryCoverUrl,
-                            filename: activeCategorySlug + '-cover.webp',
-                            altText: activeCategory.name,
+                        {/* Exactly the 3 required actions: Qapaq şəklini dəyiş, Tam ölçüdə bax, Alt mətni redaktə et */}
+                        <div className="pt-2 flex flex-wrap items-center gap-2">
+                          <button
+                            id="category-change-cover-btn"
+                            onClick={() => {
+                              setCustomUploadTarget({
+                                section: 'category_cover',
+                                targetId: activeCategorySlug,
+                                targetName: `${activeCategory.name} Qapaq`,
+                                initialIsCover: true
+                              });
+                              setIsUploadOpen(true);
+                            }}
+                            className="px-3.5 py-1.5 rounded-lg bg-[#C5A262] hover:bg-[#b08d4f] text-black text-xs font-semibold flex items-center gap-1.5 transition shadow cursor-pointer"
+                            title="Yeni qapaq şəkli yükləyin (hazırkı qapaq qalereyada saxlanılacaq)"
+                          >
+                            <RefreshCw className="w-3.5 h-3.5" />
+                            <span>Qapaq şəklini dəyiş</span>
+                          </button>
+
+                          <button
+                            id="category-preview-cover-btn"
+                            onClick={() => setPreviewImage(activeCatCoverImage)}
+                            className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer border border-white/5"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>Tam ölçüdə bax</span>
+                          </button>
+
+                          <button
+                            id="category-edit-meta-cover-btn"
+                            onClick={() => setEditingMetaImage(activeCatCoverImage)}
+                            className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer border border-white/5"
+                            title="Alt mətni redaktə et"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                            <span>Alt mətni redaktə et</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    /* If no cover exists: show only "Qapaq şəkli əlavə et" */
+                    <div className="py-6 text-center border-2 border-dashed border-[#262626] rounded-xl bg-black/30 p-4 space-y-3">
+                      <p className="text-xs text-neutral-400">
+                        Bu kateqoriya üçün hələ fərdi qapaq şəkli təyin edilməyib.
+                      </p>
+                      <button
+                        id="category-add-cover-initial-btn"
+                        onClick={() => {
+                          setCustomUploadTarget({
                             section: 'category_cover',
                             targetId: activeCategorySlug,
-                            targetName: activeCategory.name,
-                            isCover: true,
-                            order: 0
-                          })}
-                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                          <span>Tam Ölçüdə Bax</span>
-                        </button>
-                      </div>
+                            targetName: `${activeCategory.name} Qapaq`,
+                            initialIsCover: true
+                          });
+                          setIsUploadOpen(true);
+                        }}
+                        className="px-4 py-2 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs inline-flex items-center gap-1.5 transition shadow cursor-pointer"
+                      >
+                        <Upload className="w-4 h-4" />
+                        <span>Qapaq şəkli əlavə et</span>
+                      </button>
                     </div>
-                  </div>
+                  )}
                 </div>
 
-                {/* 1B. ALL DECOR SERVICE IMAGES LIST */}
+                {/* B. XİDMƏT QALEREYASI (Display all non-cover images) */}
                 <div className="space-y-4 pt-2">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                       <h3 className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
-                        {activeCategory.name} — Bütün Şəkillər ({activeCatCoverImages.length})
+                        Xidmət şəkilləri ({activeCatGalleryImages.length})
                       </h3>
                       <p className="text-[11px] text-neutral-500 mt-0.5">
-                        Bu dekor xidmətinə aid bütün şəkillər. İstənilən şəkli "Qapaq et" düyməsi ilə əsas qapaq edə bilərsiniz.
+                        Bu xidmətə aid qapaq olmayan bütün qalereya şəkilləri. İstənilən şəkli "Qapaq et" düyməsi ilə əsas qapaq edə bilərsiniz.
                       </p>
                     </div>
+                    {/* Exactly ONE button: "Qalereyaya şəkil əlavə et" */}
                     <button
                       id="category-gallery-add-btn"
                       onClick={() => {
@@ -771,49 +771,33 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                         });
                         setIsUploadOpen(true);
                       }}
-                      className="px-3.5 py-1.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center gap-1.5 transition shadow cursor-pointer shrink-0"
+                      className="px-3.5 py-1.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center gap-1.5 transition shadow cursor-pointer shrink-0 self-start sm:self-auto"
                     >
                       <Upload className="w-3.5 h-3.5" />
-                      <span>Yeni Şəkil Əlavə Et</span>
+                      <span>Qalereyaya şəkil əlavə et</span>
                     </button>
                   </div>
 
-                  {activeCatCoverImages.length === 0 ? (
-                    <div className="py-8 text-center border-2 border-dashed border-[#262626] rounded-2xl bg-[#141414]/50 p-6 space-y-2">
-                      <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mx-auto text-neutral-500">
+                  {activeCatGalleryImages.length === 0 ? (
+                    <div className="py-8 text-center border-2 border-dashed border-[#262626] rounded-2xl bg-[#141414]/50 p-6">
+                      <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mx-auto text-neutral-500 mb-2">
                         <ImageIcon className="w-5 h-5" />
                       </div>
-                      <p className="text-xs font-medium text-neutral-300">
-                        Bu dekor xidməti üçün hələ fərdi CMS şəkli yüklənməyib
+                      <p className="text-xs font-medium text-neutral-400">
+                        Qalereyada əlavə şəkil yoxdur.
                       </p>
-                      <button
-                        onClick={() => {
-                          setCustomUploadTarget({
-                            section: 'category_cover',
-                            targetId: activeCategorySlug,
-                            targetName: activeCategory.name,
-                            initialIsCover: false
-                          });
-                          setIsUploadOpen(true);
-                        }}
-                        className="px-3.5 py-1.5 rounded-xl bg-[#C5A262] text-black font-semibold text-xs inline-flex items-center gap-1.5 mt-1 cursor-pointer hover:bg-[#b08d4f] transition"
-                      >
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>İlk Şəkli Yüklə</span>
-                      </button>
+                      <p className="text-[11px] text-neutral-500 mt-1">
+                        Yuxarıdakı "Qalereyaya şəkil əlavə et" düyməsindən istifadə edərək bu xidmətə aid fotoşəkillər əlavə edə bilərsiniz.
+                      </p>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                      {activeCatCoverImages.map((img, idx) => {
-                        const isCover = img.isCover;
-
+                      {activeCatGalleryImages.map((img, idx) => {
                         return (
                           <div
                             key={img.id}
                             id={`cat-image-card-${img.id}`}
-                            className={`relative rounded-2xl overflow-hidden bg-[#161616] border transition flex flex-col shadow-lg ${
-                              isCover ? 'border-[#C5A262] ring-2 ring-[#C5A262]/50 shadow-xl' : 'border-[#262626]'
-                            }`}
+                            className="relative rounded-2xl overflow-hidden bg-[#161616] border border-[#262626] hover:border-[#383838] transition flex flex-col shadow-lg"
                           >
                             {/* Visual Card Image */}
                             <div className="relative aspect-video w-full overflow-hidden bg-black/60">
@@ -824,17 +808,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                                 loading="lazy"
                               />
 
-                              {/* Single Cover Badge */}
-                              {isCover ? (
-                                <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md bg-[#C5A262] text-black font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-md">
-                                  <Star className="w-3 h-3 fill-black" />
-                                  Əsas Qapaq Şəkli
-                                </div>
-                              ) : (
-                                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/75 border border-white/10 text-neutral-300 text-[10px] font-mono">
-                                  Xidmət Şəkli
-                                </div>
-                              )}
+                              {/* Gallery badge */}
+                              <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/75 border border-white/10 text-neutral-300 text-[10px] font-mono">
+                                Xidmət Şəkli
+                              </div>
 
                               {/* Order indicator */}
                               <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/70 border border-white/10 text-white text-[10px] font-mono">
@@ -875,21 +852,19 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                               {/* Action Toolbar */}
                               <div className="pt-2 border-t border-[#242424] space-y-2">
                                 <div className="grid grid-cols-2 gap-2">
+                                  {/* Action: Qapaq et */}
                                   <button
                                     id={`set-cover-cat-btn-${img.id}`}
                                     type="button"
                                     onClick={() => handleSetCover(img.id)}
-                                    disabled={isCover}
-                                    className={`py-1.5 px-2 text-[11px] rounded-lg border font-medium flex items-center justify-center gap-1 transition ${
-                                      isCover
-                                        ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/40 cursor-default'
-                                        : 'bg-white/5 text-neutral-200 border-white/10 hover:bg-[#C5A262] hover:text-black hover:border-[#C5A262] cursor-pointer'
-                                    }`}
+                                    className="py-1.5 px-2 text-[11px] rounded-lg border font-medium flex items-center justify-center gap-1 transition bg-white/5 text-neutral-200 border-white/10 hover:bg-[#C5A262] hover:text-black hover:border-[#C5A262] cursor-pointer"
+                                    title="Bu şəkli kateqoriyanın əsas qapaq şəkli et"
                                   >
                                     <Star className="w-3 h-3" />
-                                    <span>{isCover ? 'Qapaqdır' : 'Qapaq et'}</span>
+                                    <span>Qapaq et</span>
                                   </button>
 
+                                  {/* Action: Şəkli dəyiş */}
                                   <button
                                     id={`replace-cat-img-btn-${img.id}`}
                                     type="button"
@@ -897,11 +872,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                                     className="py-1.5 px-2 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 font-medium flex items-center justify-center gap-1 transition cursor-pointer"
                                   >
                                     <RefreshCw className="w-3.5 h-3.5 text-[#C5A262]" />
-                                    <span>Şəkil dəyiş</span>
+                                    <span>Şəkli dəyiş</span>
                                   </button>
                                 </div>
 
-                                {/* Venue Link Action */}
+                                {/* Action: Məkanla əlaqələndir */}
                                 <button
                                   id={`link-venue-cat-btn-${img.id}`}
                                   type="button"
@@ -932,7 +907,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                                       id={`move-down-cat-btn-${img.id}`}
                                       type="button"
                                       onClick={() => handleMove(img.id, 'down')}
-                                      disabled={idx === activeCatCoverImages.length - 1}
+                                      disabled={idx === activeCatGalleryImages.length - 1}
                                       title="Sonraya çək"
                                       className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                                     >
@@ -950,15 +925,17 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                                     >
                                       <Eye className="w-3.5 h-3.5" />
                                     </button>
+                                    {/* Action: Alt mətn */}
                                     <button
                                       id={`edit-meta-cat-btn-${img.id}`}
                                       type="button"
                                       onClick={() => setEditingMetaImage(img)}
-                                      title="Fayl adı və Alt mətnini redaktə et"
+                                      title="Alt mətnini redaktə et"
                                       className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-[#C5A262] transition cursor-pointer"
                                     >
                                       <Edit3 className="w-3.5 h-3.5" />
                                     </button>
+                                    {/* Action: Sil */}
                                     <button
                                       id={`delete-cat-img-btn-${img.id}`}
                                       type="button"

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { X, Upload, Sparkles, Check, Image as ImageIcon, Sliders, Smartphone, Layers, Loader2, MapPin } from 'lucide-react';
 import { ImageSection, ManagedImage } from '../../types';
 import { store } from '../../lib/store';
@@ -52,8 +52,20 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
   // User-editable fields
   const [filename, setFilename] = useState('');
   const [altText, setAltText] = useState('');
-  const [isCover, setIsCover] = useState(initialIsCover);
+  const [isCover, setIsCover] = useState(Boolean(initialIsCover));
   const [selectedVenueId, setSelectedVenueId] = useState<string>('');
+
+  // Sync state whenever modal opens or initialIsCover changes
+  useEffect(() => {
+    if (isOpen) {
+      setIsCover(Boolean(initialIsCover));
+      setSelectedFile(null);
+      setOptimized(null);
+      setBatchFiles([]);
+      setError(null);
+      setSelectedVenueId('');
+    }
+  }, [isOpen, initialIsCover]);
 
   const venuesList = store.getVenues(false);
 

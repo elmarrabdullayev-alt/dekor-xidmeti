@@ -6,6 +6,7 @@ import type { ManagedImage, ImageSection } from '../src/types';
 import type { StoredImage } from './imageUtils.ts';
 import { generateSeoFilename, processImageWithSharp } from './imageUtils.ts';
 import { readDbSafe } from './persistentDiskService.ts';
+import { getCategoryAliases } from '../src/lib/categoryMapping.ts';
 
 dotenv.config();
 
@@ -419,11 +420,13 @@ export async function uploadImageToSupabase(params: {
       );
       nextOrder = maxOrder + 1;
       if (shouldBeCover) {
+        const isCat = params.section === 'category_cover';
+        const catAliases = isCat ? getCategoryAliases(params.targetId) : [params.targetId];
         await client
           .from(ADMIN_IMAGES_TABLE)
           .update({ is_cover: false })
           .eq('group_name', params.section)
-          .eq('target_id', params.targetId);
+          .in('target_id', catAliases);
       }
     } else {
       shouldBeCover = true;
@@ -712,11 +715,14 @@ export async function setCoverInSupabase(id: string): Promise<void> {
       .single();
 
     if (target) {
+      const isCat = target.group_name === 'category_cover';
+      const catAliases = isCat ? getCategoryAliases(target.target_id) : [target.target_id];
+
       await client
         .from(ADMIN_IMAGES_TABLE)
         .update({ is_cover: false })
         .eq('group_name', target.group_name)
-        .eq('target_id', target.target_id);
+        .in('target_id', catAliases);
 
       await client
         .from(ADMIN_IMAGES_TABLE)
