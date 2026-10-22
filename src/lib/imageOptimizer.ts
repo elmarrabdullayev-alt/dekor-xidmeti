@@ -4,7 +4,7 @@
  * generates 480px thumbnail variants, and compresses to WebP with target ~100-350KB.
  */
 
-import { ImageSection } from '../types';
+import type { ImageSection } from '../types/index.ts';
 
 export interface OptimizedImageResult {
   fullDataUrl: string;

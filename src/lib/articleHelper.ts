@@ -1,9 +1,9 @@
-import { Article, ManagedImage } from '../types';
-import { imageService } from './imageService';
-import { CATEGORIES } from '../data/categories';
-import { INITIAL_DECORS } from '../data/initialDecors';
-import { INITIAL_VENUES } from '../data/initialVenues';
-import { getCategoryCoverImage } from './categoryHelper';
+import type { Article, ManagedImage } from '../types/index.ts';
+import { imageService } from './imageService.ts';
+import { CATEGORIES } from '../data/categories.ts';
+import { INITIAL_DECORS } from '../data/initialDecors.ts';
+import { INITIAL_VENUES } from '../data/initialVenues.ts';
+import { getCategoryCoverImage } from './categoryHelper.ts';
 
 /**
  * Resolves an article's display image respecting strict priority:

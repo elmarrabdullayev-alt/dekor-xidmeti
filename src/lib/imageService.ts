@@ -1,6 +1,6 @@
-import { ManagedImage, ImageSection } from '../types';
-import { getCategoryAliases, normalizeCategoryIdentifier } from './categoryMapping';
-import { sanitizeDecorText } from './sanitizeHelper';
+import type { ManagedImage, ImageSection } from '../types/index.ts';
+import { getCategoryAliases, normalizeCategoryIdentifier } from './categoryMapping.ts';
+import { sanitizeDecorText } from './sanitizeHelper.ts';
 
 /**
  * Appends safe cache-busting query parameter based on updatedAt timestamp/version

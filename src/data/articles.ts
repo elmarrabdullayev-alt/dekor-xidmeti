@@ -1,4 +1,4 @@
-import { Article } from '../types';
+import type { Article } from '../types/index.ts';
 
 export const INITIAL_ARTICLES: Article[] = [
   {

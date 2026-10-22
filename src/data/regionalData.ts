@@ -1,4 +1,4 @@
-import { RegionalLocationInfo } from '../types';
+import type { RegionalLocationInfo } from '../types/index.ts';
 
 export const REGIONAL_LOCATIONS: RegionalLocationInfo[] = [
   {

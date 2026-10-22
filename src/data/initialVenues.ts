@@ -1,5 +1,5 @@
-import { VenueItem } from '../types';
-import { generateDefaultVenueFaqs } from '../lib/venueHelper';
+import type { VenueItem } from '../types/index.ts';
+import { generateDefaultVenueFaqs } from '../lib/venueHelper.ts';
 
 export const INITIAL_VENUES: VenueItem[] = [
   {

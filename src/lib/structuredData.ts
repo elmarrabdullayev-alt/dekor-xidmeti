@@ -1,5 +1,5 @@
-import { CategoryInfo, DecorItem, FAQItem, Article } from '../types';
-import { sanitizeDecorText, PRESERVED_SLUG, TARGET_PUBLIC_TITLE } from './sanitizeHelper';
+import type { CategoryInfo, DecorItem, FAQItem, Article } from '../types/index.ts';
+import { sanitizeDecorText, PRESERVED_SLUG, TARGET_PUBLIC_TITLE } from './sanitizeHelper.ts';
 
 export function getLocalBusinessSchema() {
   return {

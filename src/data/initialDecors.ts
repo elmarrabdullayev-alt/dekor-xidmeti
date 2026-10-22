@@ -1,4 +1,4 @@
-import { DecorItem } from '../types';
+import type { DecorItem } from '../types/index.ts';
 
 export const INITIAL_DECORS: DecorItem[] = [
   {

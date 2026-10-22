@@ -1,4 +1,4 @@
-import type { ManagedImage } from '../src/types';
+import type { ManagedImage } from '../src/types/index.ts';
 
 export function getInitialSeedImages(): ManagedImage[] {
   const now = new Date().toISOString();

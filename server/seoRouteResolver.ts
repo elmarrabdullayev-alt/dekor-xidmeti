@@ -15,7 +15,7 @@ import {
 import { isVenueIndexable, getVenueStructuredData } from '../src/lib/venueHelper.ts';
 import { isProjectIndexable } from '../src/lib/seoHelper.ts';
 import { isArticleIndexable } from '../src/lib/articleHelper.ts';
-import { DecorCategorySlug } from '../src/types/index.ts';
+import type { DecorCategorySlug } from '../src/types/index.ts';
 import { sanitizeDecorText } from '../src/lib/sanitizeHelper.ts';
 
 export interface RouteSeoData {

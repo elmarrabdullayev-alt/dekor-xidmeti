@@ -1,5 +1,5 @@
-import { VenueItem, DecorItem, FAQItem } from '../types';
-import { generateSlug } from './seoHelper';
+import type { VenueItem, DecorItem, FAQItem } from '../types/index.ts';
+import { generateSlug } from './seoHelper.ts';
 
 /**
  * Checks if a venue satisfies all quality and project criteria to be indexable.

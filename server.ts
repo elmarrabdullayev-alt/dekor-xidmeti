@@ -30,7 +30,7 @@ import { runSupabaseMigration } from './server/migrateToSupabase.ts';
 import { handleQuoteRequest, isTelegramConfigured, runDirectTelegramTest } from './server/telegramService.ts';
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-const PORT = IS_PRODUCTION && process.env.PORT ? Number(process.env.PORT) : 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'dreamart2026';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'dreamart-dev-session-key-strictly-dev-only-2026';
 

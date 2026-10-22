@@ -1,7 +1,7 @@
-import { imageService } from './imageService';
-import { CATEGORIES } from '../data/categories';
-import { CategoryInfo } from '../types';
-import { normalizeCategoryIdentifier, getCategoryAliases } from './categoryMapping';
+import { imageService } from './imageService.ts';
+import { CATEGORIES } from '../data/categories.ts';
+import type { CategoryInfo } from '../types/index.ts';
+import { normalizeCategoryIdentifier, getCategoryAliases } from './categoryMapping.ts';
 
 /**
  * Single Authoritative Source of Truth for Decor Category Cover Image Resolution.

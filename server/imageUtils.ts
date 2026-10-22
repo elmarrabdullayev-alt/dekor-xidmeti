@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import sharp, { type Metadata } from 'sharp';
-import type { ManagedImage, ImageSection } from '../src/types';
+import type { ManagedImage, ImageSection } from '../src/types/index.ts';
 
 export interface StoredImage {
   id: string;

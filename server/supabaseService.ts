@@ -2,7 +2,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import path from 'path';
 import sharp from 'sharp';
-import type { ManagedImage, ImageSection } from '../src/types';
+import type { ManagedImage, ImageSection } from '../src/types/index.ts';
 import type { StoredImage } from './imageUtils.ts';
 import { generateSeoFilename, processImageWithSharp } from './imageUtils.ts';
 import { readDbSafe } from './persistentDiskService.ts';

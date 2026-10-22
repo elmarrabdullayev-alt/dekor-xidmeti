@@ -1,11 +1,11 @@
-import { DecorItem, InquiryRequest, SiteSettings, DecorCategorySlug, VenueItem, ManagedImage } from '../types';
-import { INITIAL_DECORS } from '../data/initialDecors';
-import { INITIAL_VENUES } from '../data/initialVenues';
-import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData';
-import { imageService } from './imageService';
-import { sanitizeDecorText, PRESERVED_SLUG, TARGET_PUBLIC_TITLE } from './sanitizeHelper';
-import { getCategoryCoverImage } from './categoryHelper';
-import { CATEGORY_DECOR_MAP } from './categoryMapping';
+import type { DecorItem, InquiryRequest, SiteSettings, DecorCategorySlug, VenueItem, ManagedImage } from '../types/index.ts';
+import { INITIAL_DECORS } from '../data/initialDecors.ts';
+import { INITIAL_VENUES } from '../data/initialVenues.ts';
+import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData.ts';
+import { imageService } from './imageService.ts';
+import { sanitizeDecorText, PRESERVED_SLUG, TARGET_PUBLIC_TITLE } from './sanitizeHelper.ts';
+import { getCategoryCoverImage } from './categoryHelper.ts';
+import { CATEGORY_DECOR_MAP } from './categoryMapping.ts';
 
 export { sanitizeDecorText };
 

@@ -3,7 +3,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import sharp from 'sharp';
 import { getInitialSeedImages } from './initialImages.ts';
-import type { ManagedImage, ImageSection } from '../src/types';
+import type { ManagedImage, ImageSection } from '../src/types/index.ts';
 import { getCategoryAliases, normalizeCategoryIdentifier } from '../src/lib/categoryMapping.ts';
 import {
   type StoredImage,
