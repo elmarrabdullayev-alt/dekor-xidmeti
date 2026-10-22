@@ -7,7 +7,7 @@ import { SeoHead } from '../components/layout/SeoHead';
 import { getCategoryServiceSchema, getFaqPageSchema, getBreadcrumbSchema } from '../lib/structuredData';
 import { isVenueIndexable } from '../lib/venueHelper';
 import { imageService } from '../lib/imageService';
-import { getCategoryCoverImage } from '../components/home/CategorySection';
+import { getCategoryCoverImage } from '../lib/categoryHelper';
 import {
   Sparkles,
   MapPin,

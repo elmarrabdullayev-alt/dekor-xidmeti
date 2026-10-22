@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CATEGORIES } from '../data/categories';
 import { DecorCategorySlug, DecorItem } from '../types';
 import { DecorCard } from '../components/decor/DecorCard';
 import { SeoHead } from '../components/layout/SeoHead';
+import { imageService } from '../lib/imageService';
+import { getCategoryCoverImage } from '../lib/categoryHelper';
+import { getOptimizedImageUrl, getSrcSet } from '../lib/responsiveImage';
+import { ArrowRight } from 'lucide-react';
 
 interface DecorsCatalogPageProps {
   decors: DecorItem[];
@@ -17,6 +21,14 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedCity, setSelectedCity] = useState<string>('all');
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    const unsub = imageService.subscribe(() => {
+      setVersion((v) => v + 1);
+    });
+    return () => unsub();
+  }, []);
 
   const filteredDecors = decors.filter(d => {
     const matchCat = selectedCategory === 'all' || d.category === selectedCategory;
@@ -45,6 +57,61 @@ export const DecorsCatalogPage: React.FC<DecorsCatalogPageProps> = ({
             <p className="text-xs sm:text-sm text-white/70 font-light max-w-md mx-auto">
               Tədbirinizə uyğun ən zövqlü və unikal dekor konseptlərini kəşf edin.
             </p>
+          </div>
+
+          {/* Category Showcase Cards - Unified single source of truth across website */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-white/10">
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#C5A059] font-medium font-sans">
+                DEKOR KATEQORİYALARI
+              </span>
+              <span className="text-xs text-white/50">
+                11 Əsas Xidmət İstiqaməti
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {CATEGORIES.slice(0, 6).map((cat) => {
+                const coverUrl = getCategoryCoverImage(cat);
+                const isSelected = selectedCategory === cat.slug;
+                return (
+                  <div
+                    key={cat.id}
+                    id={`catalog-cat-card-${cat.slug}`}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${cat.name} kateqoriyası üzrə layihələr`}
+                    onClick={() => setSelectedCategory(selectedCategory === cat.slug ? 'all' : cat.slug)}
+                    className={`bg-[#141414] rounded-sm overflow-hidden border transition-all duration-300 group cursor-pointer flex flex-col ${
+                      isSelected
+                        ? 'border-[#C5A059] ring-1 ring-[#C5A059]'
+                        : 'border-white/10 hover:border-[#C5A059]/60'
+                    }`}
+                  >
+                    <div className="aspect-4/3 overflow-hidden bg-[#1A1A1A] relative">
+                      <img
+                        key={coverUrl}
+                        src={getOptimizedImageUrl(coverUrl, 360)}
+                        srcSet={getSrcSet(coverUrl, [240, 360, 480])}
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                        width={300}
+                        height={225}
+                        alt={cat.name}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 brightness-90"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+                    </div>
+                    <div className="p-2.5 bg-[#111111] flex items-center justify-between border-t border-white/5">
+                      <span className="text-[11px] sm:text-xs font-medium text-white/90 group-hover:text-[#E5C378] transition-colors truncate">
+                        {cat.name}
+                      </span>
+                      <ArrowRight className="w-3 h-3 text-[#C5A059] shrink-0 ml-1" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* Filter Pills */}

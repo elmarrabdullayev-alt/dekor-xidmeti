@@ -4,6 +4,8 @@ import { INITIAL_VENUES } from '../data/initialVenues';
 import { REGIONAL_POLICY_STATEMENT } from '../data/regionalData';
 import { imageService } from './imageService';
 import { sanitizeDecorText, PRESERVED_SLUG, TARGET_PUBLIC_TITLE } from './sanitizeHelper';
+import { getCategoryCoverImage } from './categoryHelper';
+import { CATEGORY_DECOR_MAP } from './categoryMapping';
 
 export { sanitizeDecorText };
 
@@ -111,9 +113,14 @@ class DecorStore {
     const allManaged = Array.from(uniqueMap.values()).sort((a, b) => (a.order || 0) - (b.order || 0));
 
     const coverObj = allManaged.find(img => img.isCover) || allManaged[0];
+    const categoryCoverUrl = getCategoryCoverImage(itemToHydrate.category);
+    const isCategoryRepresentative = CATEGORY_DECOR_MAP[itemToHydrate.category] === itemToHydrate.id;
+
     const coverUrl = coverObj?.url ||
                      imageService.getCoverImage(itemToHydrate.id, 'decor_project') ||
                      imageService.getCoverImage(itemToHydrate.slug, 'decor_project') ||
+                     (isCategoryRepresentative && categoryCoverUrl ? categoryCoverUrl : undefined) ||
+                     (allManaged.length === 0 && categoryCoverUrl ? categoryCoverUrl : undefined) ||
                      itemToHydrate.mainImage;
 
     const nonCoverImgs = allManaged.filter(img => img.id !== coverObj?.id).map(i => i.url);

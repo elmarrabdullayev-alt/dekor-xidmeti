@@ -3,6 +3,9 @@ import { SeoHead } from '../components/layout/SeoHead';
 import { ServicesSection } from '../components/home/ServicesSection';
 import { Sparkles, CheckCircle, Clock, ShieldCheck, HeartHandshake, ArrowRight } from 'lucide-react';
 import { imageService } from '../lib/imageService';
+import { getCategoryCoverImage } from '../lib/categoryHelper';
+import { CATEGORIES } from '../data/categories';
+import { getOptimizedImageUrl, getSrcSet } from '../lib/responsiveImage';
 
 interface ServicesPageProps {
   navigate: (path: string) => void;
@@ -19,9 +22,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, onOpenQuot
     return () => unsub();
   }, []);
 
-  const serviceHeaderCover =
-    imageService.getCoverImage('toy-dekoru', 'category_cover') ||
-    '/images/dreamart-toy-dekoru-qizili-altar.webp';
+  const serviceHeaderCover = getCategoryCoverImage('toy-dekoru');
 
   return (
     <>
@@ -51,6 +52,74 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, onOpenQuot
             <p className="text-xs sm:text-sm md:text-base text-white/70 font-light max-w-2xl mx-auto leading-relaxed">
               Toy, nişan, xına, xonça və korporativ tədbirlərinizin hər bir detalını ilk eskizdən son quraşdırmaya qədər peşəkarlıqla idarə edirik.
             </p>
+          </div>
+        </section>
+
+        {/* All Decor Categories Grid - Unified with Homepage and Dekorlar */}
+        <section id="services-categories-grid" className="py-14 sm:py-18 bg-[#0E0E0E] border-b border-white/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
+              <div>
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-[#C5A059] font-medium font-sans block mb-1">
+                  KATEQORİYALAR ÜZRƏ XİDMƏTLƏR
+                </span>
+                <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal">
+                  Bütün Dekorasiya Xidmətlərimiz
+                </h2>
+              </div>
+              <p className="text-xs text-white/60 max-w-md">
+                Hər bir xidmət növü üçün fərdi konsept, təbii floristika və peşəkar montaj təmin edilir.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+              {CATEGORIES.map((cat) => {
+                const coverUrl = getCategoryCoverImage(cat);
+                const targetImages = imageService.getImagesByTarget(cat.slug, 'category_image');
+                const altText = targetImages[0]?.altText || cat.name;
+
+                return (
+                  <div
+                    key={cat.id}
+                    id={`service-card-${cat.slug}`}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${cat.name} xidmətinə bax`}
+                    onClick={() => navigate(`/${cat.slug}`)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        navigate(`/${cat.slug}`);
+                      }
+                    }}
+                    className="bg-[#141414] rounded-sm overflow-hidden border border-white/10 hover:border-[#C5A059]/80 shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col focus:outline-hidden focus:ring-1 focus:ring-[#C5A059]"
+                  >
+                    <div className="aspect-3/4 overflow-hidden bg-[#1A1A1A] relative">
+                      <img
+                        key={coverUrl}
+                        src={getOptimizedImageUrl(coverUrl, 480)}
+                        srcSet={getSrcSet(coverUrl, [360, 480, 640])}
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                        width={400}
+                        height={533}
+                        alt={altText}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out brightness-90 contrast-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+                    </div>
+
+                    <div className="p-3 bg-[#111111] flex items-center justify-between border-t border-white/5">
+                      <span className="text-xs sm:text-[13px] font-medium text-white/90 group-hover:text-[#E5C378] transition-colors truncate">
+                        {cat.name}
+                      </span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#C5A059] group-hover:translate-x-0.5 transition-transform shrink-0 ml-1" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </section>
 

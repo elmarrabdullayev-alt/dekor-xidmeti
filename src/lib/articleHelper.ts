@@ -3,6 +3,7 @@ import { imageService } from './imageService';
 import { CATEGORIES } from '../data/categories';
 import { INITIAL_DECORS } from '../data/initialDecors';
 import { INITIAL_VENUES } from '../data/initialVenues';
+import { getCategoryCoverImage } from './categoryHelper';
 
 /**
  * Resolves an article's display image respecting strict priority:
@@ -45,10 +46,10 @@ export function resolveArticleImage(article: Article): { url: string; alt: strin
     }
   }
 
-  // 3. Check category images
+  // 3. Check category images using unified single source of truth
   const category = CATEGORIES.find(c => c.slug === article.categorySlug);
-  if (category?.heroImage) {
-    const catCover = imageService.getCoverImage(category.slug, 'category_cover');
+  if (category) {
+    const catCover = getCategoryCoverImage(category);
     if (catCover) {
       return {
         url: catCover,
