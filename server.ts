@@ -29,8 +29,8 @@ import {
 import { runSupabaseMigration } from './server/migrateToSupabase.ts';
 import { handleQuoteRequest, isTelegramConfigured, runDirectTelegramTest } from './server/telegramService.ts';
 
-const PORT = Number(process.env.PORT) || 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const PORT = IS_PRODUCTION && process.env.PORT ? Number(process.env.PORT) : 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'dreamart2026';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'dreamart-dev-session-key-strictly-dev-only-2026';
 
@@ -178,7 +178,7 @@ async function startServer() {
       res.setHeader('Access-Control-Allow-Origin', origin);
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With,X-Upload-Request-Id');
     }
     if (req.method === 'OPTIONS') {
       return res.sendStatus(204);
@@ -457,8 +457,63 @@ async function startServer() {
     }
   });
 
+interface UploadIdempotencyRecord {
+  timestamp: number;
+  status: 'pending' | 'completed' | 'failed';
+  result?: any;
+  error?: string;
+}
+
+const uploadIdempotencyStore = new Map<string, UploadIdempotencyRecord>();
+
+// Clean up idempotency entries older than 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of uploadIdempotencyStore.entries()) {
+    if (now - entry.timestamp > 5 * 60 * 1000) {
+      uploadIdempotencyStore.delete(key);
+    }
+  }
+}, 60 * 1000).unref?.();
+
   // Protected: Upload new image (validated and processed by Sharp)
   app.post('/api/images/upload', requireAdminAuth, async (req, res) => {
+    const uploadRequestId =
+      (req.headers['x-upload-request-id'] as string) ||
+      req.body?.uploadRequestId ||
+      `req-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+
+    console.log(`[upload] request received | requestId: ${uploadRequestId}`);
+
+    // Idempotency check: prevent duplicate execution for identical request ID
+    const cached = uploadIdempotencyStore.get(uploadRequestId);
+    if (cached) {
+      if (cached.status === 'completed' && cached.result) {
+        console.log(`[upload] Idempotent hit: returning cached result for requestId: ${uploadRequestId}`);
+        return res.status(200).json(cached.result);
+      }
+      if (cached.status === 'pending') {
+        console.log(`[upload] Duplicate request in-flight: waiting for existing requestId: ${uploadRequestId}`);
+        for (let i = 0; i < 25; i++) {
+          await new Promise((r) => setTimeout(r, 400));
+          const updated = uploadIdempotencyStore.get(uploadRequestId);
+          if (updated && updated.status === 'completed' && updated.result) {
+            console.log(`[upload] In-flight request resolved: returning result for requestId: ${uploadRequestId}`);
+            return res.status(200).json(updated.result);
+          }
+          if (updated && updated.status === 'failed') {
+            return res.status(400).json({ error: updated.error || 'Şəkil yüklənərkən xəta baş verdi' });
+          }
+        }
+        return res.status(409).json({ error: 'Bu şəkil hal-hazırda yüklənir, zəhmət olmasa gözləyin.' });
+      }
+    }
+
+    uploadIdempotencyStore.set(uploadRequestId, {
+      timestamp: Date.now(),
+      status: 'pending',
+    });
+
     try {
       const {
         section,
@@ -469,9 +524,11 @@ async function startServer() {
         isCover,
         imageBase64,
         focalPoint,
+        venueId,
       } = req.body;
 
       if (!section || !targetId || !imageBase64) {
+        uploadIdempotencyStore.delete(uploadRequestId);
         return res.status(400).json({ error: 'Bütün vacib parametrlər (section, targetId, imageBase64) tələb olunur.' });
       }
 
@@ -482,6 +539,7 @@ async function startServer() {
           (img) => img.section === 'indian_wedding' || img.targetId === 'indian-wedding'
         ).length;
         if (existingCount >= 2) {
+          uploadIdempotencyStore.delete(uploadRequestId);
           return res.status(400).json({
             error: 'Indian Wedding bölməsi üçün maksimum 2 şəkil yüklənə bilər (2/2 həddi dolub).'
           });
@@ -495,6 +553,7 @@ async function startServer() {
           (img) => img.section === 'destination_wedding' || img.targetId === 'destination-wedding'
         ).length;
         if (existingCount >= 2) {
+          uploadIdempotencyStore.delete(uploadRequestId);
           return res.status(400).json({
             error: 'Destination Wedding bölməsi üçün maksimum 2 şəkil yüklənə bilər (2/2 həddi dolub).'
           });
@@ -507,6 +566,7 @@ async function startServer() {
 
       // Check upload limit: 10MB raw (return 413 if oversized)
       if (rawBuffer.length > 10 * 1024 * 1024) {
+        uploadIdempotencyStore.delete(uploadRequestId);
         return res.status(413).json({ error: 'Şəkil ölçüsü 10MB-dan çox ola bilməz (HTTP 413).' });
       }
 
@@ -519,10 +579,23 @@ async function startServer() {
         altText,
         isCover,
         focalPoint,
+        requestId: uploadRequestId,
+        venueId: venueId ? String(venueId).trim() : undefined,
+      });
+
+      uploadIdempotencyStore.set(uploadRequestId, {
+        timestamp: Date.now(),
+        status: 'completed',
+        result: created,
       });
 
       return res.status(201).json(created);
     } catch (err: any) {
+      uploadIdempotencyStore.set(uploadRequestId, {
+        timestamp: Date.now(),
+        status: 'failed',
+        error: err.message,
+      });
       console.error('Upload error:', err);
       const statusCode = err.status || 500;
       return res.status(statusCode).json({ error: err.message || 'Şəkil saxlanılarkən xəta baş verdi' });
@@ -560,14 +633,35 @@ async function startServer() {
   app.put('/api/images/:id', requireAdminAuth, async (req, res) => {
     try {
       const { id } = req.params;
-      const { altText, filename, focalPoint } = req.body;
+      const { altText, filename, focalPoint, venueId } = req.body;
 
-      const updated = await updateImageMetaRecord(id, { altText, filename, focalPoint });
+      const updated = await updateImageMetaRecord(id, {
+        altText,
+        filename,
+        focalPoint,
+        venueId: venueId !== undefined ? (venueId ? String(venueId).trim() : null) : undefined,
+      });
       return res.json(updated);
     } catch (err: any) {
       console.error('Metadata update error:', err);
       const statusCode = err.status || 500;
       return res.status(statusCode).json({ error: err.message || 'Yenilənmə xətası' });
+    }
+  });
+
+  // Protected: Set or change venue association for an image
+  app.post('/api/images/:id/venue', requireAdminAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { venueId } = req.body;
+      const cleanedVenueId = venueId ? String(venueId).trim() : null;
+      console.log(`[Venue Link] Image "${id}" linked to venue: "${cleanedVenueId || 'none'}"`);
+      const updated = await updateImageMetaRecord(id, { venueId: cleanedVenueId });
+      return res.json(updated);
+    } catch (err: any) {
+      console.error('Venue link error:', err);
+      const statusCode = err.status || 500;
+      return res.status(statusCode).json({ error: err.message || 'Məkan əlaqələndirilməsi zamanı xəta' });
     }
   });
 

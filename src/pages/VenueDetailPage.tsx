@@ -78,8 +78,16 @@ export const VenueDetailPage: React.FC<VenueDetailPageProps> = ({
     ...imageService.getImagesByTarget(venue.slug, 'venue_project'),
     ...imageService.getImagesByTarget(venue.id, 'venue_project')
   ];
+  // Also include Decor Service images explicitly linked to this venue
+  const linkedServiceImages = imageService.getAllImages().filter(
+    img => img.section !== 'venue_project' && (img.venueId === venue.id || img.venueId === venue.slug)
+  );
+
   const uniqueMap = new Map<string, ManagedImage>();
   managedVenueImages.forEach(img => uniqueMap.set(img.id, img));
+  linkedServiceImages.forEach(img => {
+    if (!uniqueMap.has(img.id)) uniqueMap.set(img.id, img);
+  });
   const allVenueImages = Array.from(uniqueMap.values()).sort((a, b) => (a.order || 0) - (b.order || 0));
 
   // Cover image: explicit isCover === true, or first image, or fallback

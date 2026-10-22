@@ -71,7 +71,7 @@ export function adaptInitialSeed(img: ManagedImage, index: number): StoredImage 
     order: index,
     focalPoint: img.focalPoint,
     projectId: isVenue ? undefined : img.targetId,
-    venueId: isVenue ? img.targetId : undefined,
+    venueId: isVenue ? img.targetId : (img.venueId || undefined),
     createdAt: img.uploadedAt || now,
     updatedAt: now,
     section: img.section,

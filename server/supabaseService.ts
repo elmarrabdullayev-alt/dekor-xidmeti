@@ -244,7 +244,7 @@ export function mapDbRowToStoredImage(row: any): StoredImage {
     order: typeof (row.sort_order ?? row.order) === 'number' ? (row.sort_order ?? row.order) : 0,
     focalPoint: row.focal_point || row.focalPoint || undefined,
     projectId: isVenue ? undefined : targetId,
-    venueId: isVenue ? targetId : undefined,
+    venueId: isVenue ? targetId : (row.venue_id || row.venueId || undefined),
     createdAt: row.created_at || row.createdAt || new Date().toISOString(),
     updatedAt: row.updated_at || row.updatedAt || new Date().toISOString(),
     section: group as ImageSection,
@@ -355,7 +355,10 @@ export async function uploadImageToSupabase(params: {
   altText?: string;
   isCover?: boolean;
   focalPoint?: { x: number; y: number };
+  requestId?: string;
+  venueId?: string | null;
 }): Promise<StoredImage> {
+  const reqId = params.requestId || `req-${Date.now()}`;
   const client = getSupabaseClient();
   if (!client) throw new Error('Supabase client is not configured.');
 
@@ -365,7 +368,7 @@ export async function uploadImageToSupabase(params: {
   const mainStorageKey = getStructuredStorageKey(params.section, params.targetId, params.filename, false);
   const thumbStorageKey = getStructuredStorageKey(params.section, params.targetId, params.filename, true);
 
-  console.log(`[Supabase Upload] Uploading main file -> Bucket: "${bucketName}", Key: "${mainStorageKey}" (${params.imageBuffer.length} bytes)...`);
+  console.log(`[upload] storage upload started | requestId: ${reqId} | mainKey: ${mainStorageKey}`);
 
   // 1. Upload main image to Supabase Storage
   const { error: mainUploadError } = await client.storage
@@ -380,8 +383,6 @@ export async function uploadImageToSupabase(params: {
     console.error(`[Supabase Storage ERROR] Main upload failed: ${mainUploadError.message}`);
     throw new Error(`Supabase Storage upload failed: ${mainUploadError.message}`);
   }
-
-  console.log(`[Supabase Upload] Main file uploaded successfully. Uploading thumb -> "${thumbStorageKey}"...`);
 
   // 2. Upload thumbnail to Supabase Storage
   const { error: thumbUploadError } = await client.storage
@@ -412,7 +413,11 @@ export async function uploadImageToSupabase(params: {
       .eq('target_id', params.targetId);
 
     if (existingGroup && existingGroup.length > 0) {
-      nextOrder = existingGroup.length;
+      const maxOrder = existingGroup.reduce(
+        (max, img) => Math.max(max, typeof img.sort_order === 'number' ? img.sort_order : 0),
+        -1
+      );
+      nextOrder = maxOrder + 1;
       if (shouldBeCover) {
         await client
           .from(ADMIN_IMAGES_TABLE)
@@ -429,6 +434,7 @@ export async function uploadImageToSupabase(params: {
   const now = new Date().toISOString();
 
   // 5. Insert record into admin_images using schema-resilient upsert
+  console.log(`[upload] DB insert started | requestId: ${reqId} | table: ${ADMIN_IMAGES_TABLE} | id: ${newId}`);
   const fullRow = {
     id: newId,
     group_name: params.section,
@@ -446,6 +452,8 @@ export async function uploadImageToSupabase(params: {
     size_kb: params.sizeKb,
     format: 'webp',
     focal_point: params.focalPoint || null,
+    venue_id: params.venueId || null,
+    venueId: params.venueId || null,
     created_at: now,
     updated_at: now,
   };
@@ -456,7 +464,7 @@ export async function uploadImageToSupabase(params: {
     throw new Error(`Supabase DB insert failed: ${insertError.message}`);
   }
 
-  console.log(`[Supabase Upload] Success! Image "${newId}" saved in Storage & DB -> ${publicUrl}`);
+  console.log(`[upload] success | requestId: ${reqId} | id: ${newId}`);
   return mapDbRowToStoredImage(inserted || fullRow);
 }
 
@@ -725,7 +733,7 @@ export async function setCoverInSupabase(id: string): Promise<void> {
  */
 export async function updateImageMetaInSupabase(
   id: string,
-  updates: { altText?: string; filename?: string; focalPoint?: { x: number; y: number } }
+  updates: { altText?: string; filename?: string; focalPoint?: { x: number; y: number }; venueId?: string | null }
 ): Promise<StoredImage> {
   const client = getSupabaseClient();
   if (!client) throw new Error('Supabase client is not configured.');
@@ -739,6 +747,10 @@ export async function updateImageMetaInSupabase(
   }
   if (updates.focalPoint) {
     dbUpdates.focal_point = updates.focalPoint;
+  }
+  if (updates.venueId !== undefined) {
+    dbUpdates.venue_id = updates.venueId || null;
+    dbUpdates.venueId = updates.venueId || null;
   }
 
   // Attempt update

@@ -78,11 +78,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
 
   // Modals state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [customUploadTarget, setCustomUploadTarget] = useState<{ section: ImageSection; targetId: string; targetName: string } | null>(null);
+  const [customUploadTarget, setCustomUploadTarget] = useState<{ section: ImageSection; targetId: string; targetName: string; initialIsCover?: boolean } | null>(null);
   const [replacingImage, setReplacingImage] = useState<ManagedImage | null>(null);
   const [editingMetaImage, setEditingMetaImage] = useState<ManagedImage | null>(null);
   const [deletingImage, setDeletingImage] = useState<ManagedImage | null>(null);
   const [previewImage, setPreviewImage] = useState<ManagedImage | null>(null);
+  const [linkingVenueImage, setLinkingVenueImage] = useState<ManagedImage | null>(null);
+  const [selectedVenueForLink, setSelectedVenueForLink] = useState<string>('');
+  const [isSavingVenueLink, setIsSavingVenueLink] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isMigrating, setIsMigrating] = useState(false);
 
@@ -179,6 +182,37 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     }
   };
 
+  const handleSaveVenueLink = async () => {
+    if (!linkingVenueImage) return;
+    setIsSavingVenueLink(true);
+    try {
+      await imageService.linkVenueToImage(
+        linkingVenueImage.id,
+        selectedVenueForLink ? selectedVenueForLink.trim() : null
+      );
+      showNotice(
+        selectedVenueForLink
+          ? 'Şəkil məkanla uğurla əlaqələndirildi!'
+          : 'Məkan əlaqələndirilməsi silindi.'
+      );
+      setLinkingVenueImage(null);
+      setSelectedVenueForLink('');
+    } catch (err: any) {
+      showNotice(err.message || 'Məkan əlaqələndirilməsi zamanı xəta baş verdi');
+    } finally {
+      setIsSavingVenueLink(false);
+    }
+  };
+
+  const handleUnlinkVenue = async (imgId: string) => {
+    try {
+      await imageService.linkVenueToImage(imgId, null);
+      showNotice('Şəkil məkandan ayrıldı (xidmət qalereyasında saxlanılır).');
+    } catch (err: any) {
+      showNotice(err.message || 'Məkandan ayırma xətası');
+    }
+  };
+
   // Filter projects by active category and aliases
   const categoryAliases = getCategoryAliases(activeCategorySlug);
   const categoryProjects = decors.filter(d => d.category === activeCategorySlug || categoryAliases.includes(d.category));
@@ -210,14 +244,28 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
     activeImages = images
       .filter(img => img.section === 'decor_project' && img.targetId === selectedProject.id)
       .sort((a, b) => a.order - b.order);
+  } else if (activeAdminTab === 'decors' && !selectedProject) {
+    uploadSection = 'category_cover';
+    uploadTargetId = activeCategorySlug;
+    uploadTargetName = activeCategory.name;
+    activeImages = activeCatCoverImages;
   } else if (activeAdminTab === 'venues') {
     uploadSection = 'venue_project';
     uploadTargetId = activeVenueSlug;
     const v = venues.find(item => item.slug === activeVenueSlug) || INITIAL_VENUES.find(item => item.slug === activeVenueSlug);
     uploadTargetName = v?.name || activeVenueSlug;
-    activeImages = images
-      .filter(img => img.section === 'venue_project' && (img.targetId === activeVenueSlug || (v && img.targetId === v.id)))
-      .sort((a, b) => a.order - b.order);
+    const directVenueImgs = images.filter(
+      img => img.section === 'venue_project' && (img.targetId === activeVenueSlug || (v && img.targetId === v.id))
+    );
+    const linkedServiceImgs = images.filter(
+      img => img.section !== 'venue_project' && (img.venueId === activeVenueSlug || (v && (img.venueId === v.id || img.venueId === v.slug)))
+    );
+    const venueMap = new Map<string, ManagedImage>();
+    directVenueImgs.forEach(img => venueMap.set(img.id, img));
+    linkedServiceImgs.forEach(img => {
+      if (!venueMap.has(img.id)) venueMap.set(img.id, img);
+    });
+    activeImages = Array.from(venueMap.values()).sort((a, b) => (a.order || 0) - (b.order || 0));
   } else if (activeAdminTab === 'hero') {
     uploadSection = 'home_hero';
     uploadTargetId = activeHeroTargetId;
@@ -558,6 +606,22 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                       <Eye className="w-3.5 h-3.5 text-[#C5A262]" />
                       <span>İctimai Səhifəyə Bax</span>
                     </button>
+                    <button
+                      id="category-header-add-btn"
+                      onClick={() => {
+                        setCustomUploadTarget({
+                          section: 'category_cover',
+                          targetId: activeCategorySlug,
+                          targetName: activeCategory.name,
+                          initialIsCover: false
+                        });
+                        setIsUploadOpen(true);
+                      }}
+                      className="px-4 py-2 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center justify-center gap-1.5 transition shadow cursor-pointer shrink-0"
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>Yeni Şəkil Əlavə Et</span>
+                    </button>
                   </div>
                 </div>
 
@@ -582,11 +646,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                     </div>
 
                     <button
+                      id="category-add-cover-btn"
                       onClick={() => {
                         setCustomUploadTarget({
                           section: 'category_cover',
                           targetId: activeCategorySlug,
-                          targetName: `${activeCategory.name} Qapaq`
+                          targetName: `${activeCategory.name} Qapaq`,
+                          initialIsCover: true
                         });
                         setIsUploadOpen(true);
                       }}
@@ -681,6 +747,236 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                       </div>
                     </div>
                   </div>
+                </div>
+
+                {/* 1B. ALL DECOR SERVICE IMAGES LIST */}
+                <div className="space-y-4 pt-2">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
+                        {activeCategory.name} — Bütün Şəkillər ({activeCatCoverImages.length})
+                      </h3>
+                      <p className="text-[11px] text-neutral-500 mt-0.5">
+                        Bu dekor xidmətinə aid bütün şəkillər. İstənilən şəkli "Qapaq et" düyməsi ilə əsas qapaq edə bilərsiniz.
+                      </p>
+                    </div>
+                    <button
+                      id="category-gallery-add-btn"
+                      onClick={() => {
+                        setCustomUploadTarget({
+                          section: 'category_cover',
+                          targetId: activeCategorySlug,
+                          targetName: activeCategory.name,
+                          initialIsCover: false
+                        });
+                        setIsUploadOpen(true);
+                      }}
+                      className="px-3.5 py-1.5 rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black font-semibold text-xs flex items-center gap-1.5 transition shadow cursor-pointer shrink-0"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Yeni Şəkil Əlavə Et</span>
+                    </button>
+                  </div>
+
+                  {activeCatCoverImages.length === 0 ? (
+                    <div className="py-8 text-center border-2 border-dashed border-[#262626] rounded-2xl bg-[#141414]/50 p-6 space-y-2">
+                      <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mx-auto text-neutral-500">
+                        <ImageIcon className="w-5 h-5" />
+                      </div>
+                      <p className="text-xs font-medium text-neutral-300">
+                        Bu dekor xidməti üçün hələ fərdi CMS şəkli yüklənməyib
+                      </p>
+                      <button
+                        onClick={() => {
+                          setCustomUploadTarget({
+                            section: 'category_cover',
+                            targetId: activeCategorySlug,
+                            targetName: activeCategory.name,
+                            initialIsCover: false
+                          });
+                          setIsUploadOpen(true);
+                        }}
+                        className="px-3.5 py-1.5 rounded-xl bg-[#C5A262] text-black font-semibold text-xs inline-flex items-center gap-1.5 mt-1 cursor-pointer hover:bg-[#b08d4f] transition"
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>İlk Şəkli Yüklə</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {activeCatCoverImages.map((img, idx) => {
+                        const isCover = img.isCover;
+
+                        return (
+                          <div
+                            key={img.id}
+                            id={`cat-image-card-${img.id}`}
+                            className={`relative rounded-2xl overflow-hidden bg-[#161616] border transition flex flex-col shadow-lg ${
+                              isCover ? 'border-[#C5A262] ring-2 ring-[#C5A262]/50 shadow-xl' : 'border-[#262626]'
+                            }`}
+                          >
+                            {/* Visual Card Image */}
+                            <div className="relative aspect-video w-full overflow-hidden bg-black/60">
+                              <img
+                                src={img.thumbUrl || img.url}
+                                alt={img.altText}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                              />
+
+                              {/* Single Cover Badge */}
+                              {isCover ? (
+                                <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md bg-[#C5A262] text-black font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-md">
+                                  <Star className="w-3 h-3 fill-black" />
+                                  Əsas Qapaq Şəkli
+                                </div>
+                              ) : (
+                                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/75 border border-white/10 text-neutral-300 text-[10px] font-mono">
+                                  Xidmət Şəkli
+                                </div>
+                              )}
+
+                              {/* Order indicator */}
+                              <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/70 border border-white/10 text-white text-[10px] font-mono">
+                                #{idx + 1}
+                              </div>
+
+                              {/* Resolution & Size */}
+                              <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/75 text-[10px] font-mono text-neutral-300">
+                                {img.width || 1200}×{img.height || 800} • WebP
+                              </div>
+                            </div>
+
+                            {/* Metadata & Actions */}
+                            <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                              <div className="space-y-1.5">
+                                <div className="text-xs font-mono text-neutral-200 truncate" title={img.filename}>
+                                  {img.filename}
+                                </div>
+                                <div className="text-[11px] text-neutral-400 line-clamp-2" title={img.altText}>
+                                  {img.altText}
+                                </div>
+                                {/* Venue linkage badge */}
+                                {img.venueId ? (
+                                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#C5A262]/10 border border-[#C5A262]/30 text-[#E5C378] text-[10px] font-medium">
+                                    <MapPin className="w-3 h-3 text-[#C5A262] shrink-0" />
+                                    <span className="truncate">
+                                      Məkan: {venues.find(v => v.id === img.venueId || v.slug === img.venueId)?.name || img.venueId}
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/[0.03] border border-white/5 text-neutral-500 text-[10px]">
+                                    <MapPin className="w-3 h-3 text-neutral-600 shrink-0" />
+                                    <span>Məkan təyin edilməyib</span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Action Toolbar */}
+                              <div className="pt-2 border-t border-[#242424] space-y-2">
+                                <div className="grid grid-cols-2 gap-2">
+                                  <button
+                                    id={`set-cover-cat-btn-${img.id}`}
+                                    type="button"
+                                    onClick={() => handleSetCover(img.id)}
+                                    disabled={isCover}
+                                    className={`py-1.5 px-2 text-[11px] rounded-lg border font-medium flex items-center justify-center gap-1 transition ${
+                                      isCover
+                                        ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/40 cursor-default'
+                                        : 'bg-white/5 text-neutral-200 border-white/10 hover:bg-[#C5A262] hover:text-black hover:border-[#C5A262] cursor-pointer'
+                                    }`}
+                                  >
+                                    <Star className="w-3 h-3" />
+                                    <span>{isCover ? 'Qapaqdır' : 'Qapaq et'}</span>
+                                  </button>
+
+                                  <button
+                                    id={`replace-cat-img-btn-${img.id}`}
+                                    type="button"
+                                    onClick={() => setReplacingImage(img)}
+                                    className="py-1.5 px-2 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 font-medium flex items-center justify-center gap-1 transition cursor-pointer"
+                                  >
+                                    <RefreshCw className="w-3.5 h-3.5 text-[#C5A262]" />
+                                    <span>Şəkil dəyiş</span>
+                                  </button>
+                                </div>
+
+                                {/* Venue Link Action */}
+                                <button
+                                  id={`link-venue-cat-btn-${img.id}`}
+                                  type="button"
+                                  onClick={() => {
+                                    setLinkingVenueImage(img);
+                                    setSelectedVenueForLink(img.venueId || '');
+                                  }}
+                                  className="w-full py-1.5 px-2 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 hover:text-white font-medium flex items-center justify-center gap-1.5 transition cursor-pointer"
+                                  title="Məkan əlaqələndir / dəyiş"
+                                >
+                                  <MapPin className="w-3.5 h-3.5 text-[#C5A262]" />
+                                  <span>{img.venueId ? 'Məkan əlaqəsini dəyiş / sil' : 'Məkanla əlaqələndir'}</span>
+                                </button>
+
+                                <div className="flex items-center justify-between gap-1">
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      id={`move-up-cat-btn-${img.id}`}
+                                      type="button"
+                                      onClick={() => handleMove(img.id, 'up')}
+                                      disabled={idx === 0}
+                                      title="Əvvələ çək"
+                                      className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                                    >
+                                      <ArrowUp className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button
+                                      id={`move-down-cat-btn-${img.id}`}
+                                      type="button"
+                                      onClick={() => handleMove(img.id, 'down')}
+                                      disabled={idx === activeCatCoverImages.length - 1}
+                                      title="Sonraya çək"
+                                      className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                                    >
+                                      <ArrowDown className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      id={`preview-cat-btn-${img.id}`}
+                                      type="button"
+                                      onClick={() => setPreviewImage(img)}
+                                      title="Tam ölçüdə bax"
+                                      className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition cursor-pointer"
+                                    >
+                                      <Eye className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button
+                                      id={`edit-meta-cat-btn-${img.id}`}
+                                      type="button"
+                                      onClick={() => setEditingMetaImage(img)}
+                                      title="Fayl adı və Alt mətnini redaktə et"
+                                      className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-[#C5A262] transition cursor-pointer"
+                                    >
+                                      <Edit3 className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button
+                                      id={`delete-cat-img-btn-${img.id}`}
+                                      type="button"
+                                      onClick={() => setDeletingImage(img)}
+                                      title="Şəkli sil"
+                                      className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 hover:text-red-200 transition cursor-pointer"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 {/* 2. CATEGORY PROJECT CARDS SECTION */}
@@ -933,13 +1229,27 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
 
                             {/* Metadata & Actions */}
                             <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                              <div className="space-y-1">
+                              <div className="space-y-1.5">
                                 <div className="text-xs font-mono text-neutral-200 truncate" title={img.filename}>
                                   {img.filename}
                                 </div>
                                 <div className="text-[11px] text-neutral-400 line-clamp-2" title={img.altText}>
                                   {img.altText}
                                 </div>
+                                {/* Venue linkage badge */}
+                                {img.venueId ? (
+                                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#C5A262]/10 border border-[#C5A262]/30 text-[#E5C378] text-[10px] font-medium">
+                                    <MapPin className="w-3 h-3 text-[#C5A262] shrink-0" />
+                                    <span className="truncate">
+                                      Məkan: {venues.find(v => v.id === img.venueId || v.slug === img.venueId)?.name || img.venueId}
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/[0.03] border border-white/5 text-neutral-500 text-[10px]">
+                                    <MapPin className="w-3 h-3 text-neutral-600 shrink-0" />
+                                    <span>Məkan təyin edilməyib</span>
+                                  </div>
+                                )}
                               </div>
 
                               {/* Action Toolbar */}
@@ -970,6 +1280,21 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                                     <span>Şəkil dəyiş</span>
                                   </button>
                                 </div>
+
+                                {/* Venue Link Action */}
+                                <button
+                                  id={`link-venue-proj-btn-${img.id}`}
+                                  type="button"
+                                  onClick={() => {
+                                    setLinkingVenueImage(img);
+                                    setSelectedVenueForLink(img.venueId || '');
+                                  }}
+                                  className="w-full py-1.5 px-2 text-[11px] rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 hover:text-white font-medium flex items-center justify-center gap-1.5 transition cursor-pointer"
+                                  title="Məkan əlaqələndir / dəyiş"
+                                >
+                                  <MapPin className="w-3.5 h-3.5 text-[#C5A262]" />
+                                  <span>{img.venueId ? 'Məkan əlaqəsini dəyiş / sil' : 'Məkanla əlaqələndir'}</span>
+                                </button>
 
                                 <div className="flex items-center justify-between gap-1">
                                   <div className="flex items-center gap-1">
@@ -1066,7 +1391,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                 <div className="flex flex-wrap gap-2 pt-1">
                   {venues.map(v => {
                     const isSelected = v.slug === activeVenueSlug;
-                    const count = images.filter(img => img.section === 'venue_project' && (img.targetId === v.slug || img.targetId === v.id)).length;
+                    const count = images.filter(img => (img.section === 'venue_project' && (img.targetId === v.slug || img.targetId === v.id)) || (img.section !== 'venue_project' && (img.venueId === v.slug || img.venueId === v.id))).length;
 
                     return (
                       <button
@@ -1189,9 +1514,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                                 <Star className="w-3 h-3 fill-black" />
                                 Əsas Qapaq
                               </div>
-                            ) : (
+                            ) : img.section === 'venue_project' ? (
                               <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/75 border border-white/10 text-neutral-300 text-[10px] font-mono">
-                                Qalereya Şəkli
+                                Birbaşa məkan şəkli
+                              </div>
+                            ) : (
+                              <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-[#C5A262]/20 border border-[#C5A262]/40 text-[#E5C378] text-[10px] font-mono flex items-center gap-1 shadow-sm">
+                                <Sparkles className="w-2.5 h-2.5 text-[#C5A262]" />
+                                <span>Xidmət şəkli ({img.targetName || img.targetId})</span>
                               </div>
                             )}
 
@@ -1266,14 +1596,25 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
                                   >
                                     <Edit3 className="w-3.5 h-3.5" />
                                   </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => setDeletingImage(img)}
-                                    title="Şəkli sil"
-                                    className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 hover:text-red-200 transition cursor-pointer"
-                                  >
-                                    <Trash2 className="w-3.5 h-3.5" />
-                                  </button>
+                                  {img.section !== 'venue_project' ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleUnlinkVenue(img.id)}
+                                      title="Məkandan ayır (Şəkil öz xidmət qalereyasında qalır, yalnız bu məkandan çıxarılır)"
+                                      className="p-1.5 rounded-lg bg-amber-950/30 hover:bg-amber-900/50 text-amber-400 hover:text-amber-200 transition cursor-pointer"
+                                    >
+                                      <X className="w-3.5 h-3.5" />
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      onClick={() => setDeletingImage(img)}
+                                      title="Şəkli sil"
+                                      className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 hover:text-red-200 transition cursor-pointer"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -1890,8 +2231,22 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
           section={customUploadTarget?.section || uploadSection}
           targetId={customUploadTarget?.targetId || uploadTargetId}
           targetName={customUploadTarget?.targetName || uploadTargetName}
-          maxAllowed={uploadSection === 'indian_wedding' || uploadSection === 'destination_wedding' ? 2 : undefined}
-          currentCount={activeImages.length}
+          initialIsCover={customUploadTarget?.initialIsCover ?? false}
+          maxAllowed={
+            (customUploadTarget?.section || uploadSection) === 'indian_wedding' ||
+            (customUploadTarget?.section || uploadSection) === 'destination_wedding'
+              ? 2
+              : undefined
+          }
+          currentCount={
+            customUploadTarget
+              ? images.filter(
+                  (img) =>
+                    img.section === customUploadTarget.section &&
+                    img.targetId === customUploadTarget.targetId
+                ).length
+              : activeImages.length
+          }
           onSuccess={() => {
             showNotice('Yeni şəkil uğurla yükləndi və optimallaşdırıldı!');
             setCustomUploadTarget(null);
@@ -1932,6 +2287,103 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate, currentPath }) =
           onConfirm={handleConfirmDelete}
           isDeleting={isDeleting}
         />
+      )}
+
+      {/* Link Venue Modal */}
+      {linkingVenueImage && (
+        <div
+          id="link-venue-modal-backdrop"
+          onClick={() => { setLinkingVenueImage(null); setSelectedVenueForLink(''); }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-fade-in"
+        >
+          <div
+            id="link-venue-modal-dialog"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md bg-[#161616] border border-[#2B2B2B] rounded-2xl p-5 sm:p-6 shadow-2xl text-white space-y-4"
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-[#242424]">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-[#C5A262]/10 border border-[#C5A262]/30 flex items-center justify-center text-[#C5A262]">
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-white">Məkan Əlaqələndir / Dəyiş</h3>
+                  <p className="text-[11px] text-neutral-400">Şəkli fiziki dublikat yaratmadan məkan qalereyasına bağlayın</p>
+                </div>
+              </div>
+              <button
+                onClick={() => { setLinkingVenueImage(null); setSelectedVenueForLink(''); }}
+                className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Image Preview & Details */}
+            <div className="flex items-center gap-3 p-3 bg-black/40 rounded-xl border border-white/5">
+              <img
+                src={linkingVenueImage.thumbUrl || linkingVenueImage.url}
+                alt={linkingVenueImage.altText}
+                className="w-16 h-12 object-cover rounded-lg border border-white/10 shrink-0"
+              />
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-mono text-neutral-200 truncate">{linkingVenueImage.filename}</div>
+                <div className="text-[11px] text-neutral-400 truncate">{linkingVenueImage.targetName || linkingVenueImage.targetId}</div>
+              </div>
+            </div>
+
+            {/* Venue Select */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-neutral-300">
+                İşlədiyimiz Məkanı Seçin:
+              </label>
+              <select
+                id="link-venue-dropdown-select"
+                value={selectedVenueForLink}
+                onChange={(e) => setSelectedVenueForLink(e.target.value)}
+                className="w-full px-3 py-2.5 text-xs bg-[#1E1E1E] border border-[#333] rounded-xl text-neutral-200 focus:outline-none focus:border-[#C5A262] cursor-pointer"
+              >
+                <option value="">Məkan seçilməyib (Əlaqəni sil)</option>
+                {venues.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name} ({v.city})
+                  </option>
+                ))}
+              </select>
+              <p className="text-[11px] text-neutral-500 font-light leading-relaxed">
+                Bu şəkli bir məkana bağladıqda şəkil həm öz dekor xidmətində qalır, həm də həmin restoran/şadlıq sarayının qalereyasında və ictimai səhifəsində nümayiş olunur. Heç bir fayl dublikatı yaranmır.
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-2 border-t border-[#242424] flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => { setLinkingVenueImage(null); setSelectedVenueForLink(''); }}
+                disabled={isSavingVenueLink}
+                className="px-4 py-2 text-xs font-medium rounded-xl text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 transition cursor-pointer"
+              >
+                Ləğv et
+              </button>
+              <button
+                id="confirm-venue-link-btn"
+                type="button"
+                onClick={handleSaveVenueLink}
+                disabled={isSavingVenueLink}
+                className="px-5 py-2 text-xs font-semibold rounded-xl bg-[#C5A262] hover:bg-[#b08d4f] text-black transition flex items-center gap-1.5 cursor-pointer shadow-md disabled:opacity-50"
+              >
+                {isSavingVenueLink ? (
+                  <>Yadda saxlanılır...</>
+                ) : (
+                  <>
+                    <Check className="w-4 h-4" />
+                    Yadda Saxla
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Image Preview Lightbox Modal */}

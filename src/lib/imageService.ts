@@ -203,11 +203,19 @@ class ImageService {
   }
 
   public getAllImages(): ManagedImage[] {
-    return this.images.map((img) => ({
-      ...img,
-      url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
-      thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
-    }));
+    const seen = new Set<string>();
+    const uniqueImages: ManagedImage[] = [];
+    for (const img of this.images) {
+      if (!seen.has(img.id)) {
+        seen.add(img.id);
+        uniqueImages.push({
+          ...img,
+          url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
+          thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
+        });
+      }
+    }
+    return uniqueImages;
   }
 
   public getImages(): ManagedImage[] {
@@ -215,19 +223,14 @@ class ImageService {
   }
 
   public getImagesBySection(section: ImageSection): ManagedImage[] {
-    return this.images
+    return this.getAllImages()
       .filter((img) => img.section === section)
-      .map((img) => ({
-        ...img,
-        url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
-        thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
-      }))
       .sort((a, b) => (a.order || 0) - (b.order || 0));
   }
 
   public getImagesByTarget(targetId: string, section?: ImageSection): ManagedImage[] {
     const aliases = getCategoryAliases(targetId);
-    return this.images
+    return this.getAllImages()
       .filter((img) => {
         const matchesTarget =
           img.targetId === targetId ||
@@ -235,11 +238,6 @@ class ImageService {
           (section === 'category_cover' && aliases.includes(img.targetId));
         return matchesTarget && (!section || img.section === section);
       })
-      .map((img) => ({
-        ...img,
-        url: withCacheBuster(img.url, img.updatedAt || img.uploadedAt),
-        thumbUrl: withCacheBuster(img.thumbUrl || img.url, img.updatedAt || img.uploadedAt),
-      }))
       .sort((a, b) => (a.order || 0) - (b.order || 0));
   }
 
@@ -272,17 +270,26 @@ class ImageService {
     width?: number;
     height?: number;
     focalPoint?: { x: number; y: number };
+    uploadRequestId?: string;
+    venueId?: string | null;
   }): Promise<ManagedImage> {
-    console.log('[Auth Client Debug] uploadImage calling /api/images/upload with credentials: include');
+    const uploadRequestId =
+      data.uploadRequestId ||
+      `req-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+
+    console.log(`[upload] request sent | requestId: ${uploadRequestId} | section: ${data.section} | target: ${data.targetId}`);
+
     const res = await fetch('/api/images/upload', {
       method: 'POST',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Upload-Request-Id': uploadRequestId,
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify({ ...data, uploadRequestId }),
     });
-    console.log('[Auth Client Debug] uploadImage response status:', res.status);
+
+    console.log(`[upload] request completed | status: ${res.status} | requestId: ${uploadRequestId}`);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: 'Yükləmə xətası' }));
@@ -333,6 +340,7 @@ class ImageService {
       altText?: string;
       filename?: string;
       focalPoint?: { x: number; y: number };
+      venueId?: string | null;
     }
   ): Promise<ManagedImage> {
     const res = await fetch(`/api/images/${id}`, {
@@ -346,6 +354,25 @@ class ImageService {
 
     if (!res.ok) {
       throw new Error('Məlumat yenilənmədi');
+    }
+
+    const updated = await res.json();
+    await this.fetchImages();
+    return updated;
+  }
+
+  public async linkVenueToImage(id: string, venueId: string | null): Promise<ManagedImage> {
+    const res = await fetch(`/api/images/${id}/venue`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ venueId: venueId ? venueId.trim() : null })
+    });
+
+    if (!res.ok) {
+      throw new Error('Məkan əlaqələndirilməsi uğursuz oldu');
     }
 
     const updated = await res.json();

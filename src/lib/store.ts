@@ -134,9 +134,17 @@ class DecorStore {
       ...imageService.getImagesByTarget(v.slug, 'venue_project'),
       ...imageService.getImagesByTarget(v.id, 'venue_project')
     ];
+    // Also include service images explicitly linked to this venue
+    const linkedServiceImgs = imageService.getAllImages().filter(
+      img => img.section !== 'venue_project' && (img.venueId === v.id || img.venueId === v.slug)
+    );
+
     // deduplicate by id
     const uniqueMap = new Map<string, ManagedImage>();
     managedImgs.forEach(img => uniqueMap.set(img.id, img));
+    linkedServiceImgs.forEach(img => {
+      if (!uniqueMap.has(img.id)) uniqueMap.set(img.id, img);
+    });
     const allManaged = Array.from(uniqueMap.values()).sort((a, b) => (a.order || 0) - (b.order || 0));
 
     // Cover image: image with isCover=true, or first image, or fallback

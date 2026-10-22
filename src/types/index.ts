@@ -208,6 +208,9 @@ export interface ManagedImage {
   focalPoint?: { x: number; y: number };
   sizeKb?: number;
   format: 'webp' | 'jpeg' | 'png';
+  venueId?: string;
+  venueName?: string;
+  venueSlug?: string;
   uploadedAt: string;
   updatedAt?: string;
 }

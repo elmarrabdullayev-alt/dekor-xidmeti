@@ -156,7 +156,15 @@ export async function getAllStoredImages(): Promise<StoredImage[]> {
         // Dual-read transition: check if local disk has images not yet in Supabase
         const localImages = readDbSafe();
         const supabaseIds = new Set(supabaseImages.map((img) => img.id));
-        const missingFromSupabase = localImages.filter((img) => !supabaseIds.has(img.id));
+        const supabaseFilenames = new Set(supabaseImages.map((img) => img.filename).filter(Boolean));
+        const supabaseUrls = new Set(supabaseImages.map((img) => img.url).filter(Boolean));
+
+        const missingFromSupabase = localImages.filter((img) => {
+          if (supabaseIds.has(img.id)) return false;
+          if (img.filename && supabaseFilenames.has(img.filename)) return false;
+          if (img.url && supabaseUrls.has(img.url)) return false;
+          return true;
+        });
 
         if (missingFromSupabase.length > 0) {
           console.log(
@@ -176,7 +184,7 @@ export async function getAllStoredImages(): Promise<StoredImage[]> {
   return images.sort((a, b) => a.order - b.order);
 }
 
-// 5. Upload Image Record (Primary: Supabase if configured + Local Disk Backup)
+// 5. Upload Image Record (Primary: Supabase if configured. Fallback: Local Disk ONLY on failure)
 export async function uploadImageRecord(params: {
   rawBuffer: Buffer;
   section: ImageSection;
@@ -186,7 +194,12 @@ export async function uploadImageRecord(params: {
   altText?: string;
   isCover?: boolean;
   focalPoint?: { x: number; y: number };
+  requestId?: string;
+  venueId?: string | null;
 }): Promise<StoredImage> {
+  const reqId = params.requestId || `req-${Date.now()}`;
+  console.log(`[upload] uploadImageRecord started | requestId: ${reqId} | section: ${params.section} | target: ${params.targetId}`);
+
   const isHero = params.section === 'home_hero' || params.section === 'hero_mobile';
   const processed = await processImageWithSharp(
     params.rawBuffer,
@@ -195,13 +208,42 @@ export async function uploadImageRecord(params: {
     isHero
   );
 
-  // Write processed files to disk (keeps local storage backup intact)
+  // Write processed files to disk so local static files cache is available
   const mainPath = path.join(UPLOADS_DIR, processed.filename);
   const thumbPath = path.join(THUMBS_DIR, processed.filename);
   fs.writeFileSync(mainPath, processed.imageBuffer);
   fs.writeFileSync(thumbPath, processed.thumbBuffer);
 
-  // Mutex-protected metadata write to local disk
+  // PRIMARY: If Supabase is configured, upload to Supabase ONLY!
+  // Fallback storage runs ONLY when Supabase upload explicitly fails (Requirement 8).
+  if (isSupabaseConfigured()) {
+    try {
+      const supabaseRecord = await uploadImageToSupabase({
+        imageBuffer: processed.imageBuffer,
+        thumbBuffer: processed.thumbBuffer,
+        filename: processed.filename,
+        width: processed.width,
+        height: processed.height,
+        sizeKb: processed.sizeKb,
+        section: params.section,
+        targetId: params.targetId,
+        targetName: params.targetName,
+        altText: params.altText,
+        isCover: params.isCover,
+        focalPoint: params.focalPoint,
+        requestId: reqId,
+        venueId: params.venueId,
+      });
+
+      console.log(`[upload] Supabase upload succeeded: ${supabaseRecord.id}. Skipping local logical DB insert to prevent duplicates | requestId: ${reqId}`);
+      return supabaseRecord;
+    } catch (err: any) {
+      console.error(`[upload] Supabase upload failed, falling back to local persistent disk: ${err.message} | requestId: ${reqId}`);
+    }
+  }
+
+  // FALLBACK: When Supabase is not configured or Supabase upload failed
+  console.log(`[upload] storage upload started (local disk) | requestId: ${reqId}`);
   const localRecord = await dbMutex.run(async () => {
     const images = readDbSafe();
     const shouldBeCover = Boolean(params.isCover);
@@ -217,7 +259,11 @@ export async function uploadImageRecord(params: {
     const groupImages = images.filter(
       (img) => img.group === params.section && img.targetId === params.targetId
     );
-    const nextOrder = groupImages.length;
+    const maxOrder = groupImages.reduce(
+      (max, img) => Math.max(max, typeof img.order === 'number' ? img.order : 0),
+      -1
+    );
+    const nextOrder = maxOrder + 1;
 
     const isVenue = params.section === 'venue_project';
     const now = new Date().toISOString();
@@ -236,7 +282,7 @@ export async function uploadImageRecord(params: {
       order: nextOrder,
       focalPoint: params.focalPoint,
       projectId: isVenue ? undefined : params.targetId,
-      venueId: isVenue ? params.targetId : undefined,
+      venueId: isVenue ? params.targetId : (params.venueId || undefined),
       createdAt: now,
       updatedAt: now,
       section: params.section,
@@ -246,48 +292,16 @@ export async function uploadImageRecord(params: {
       sizeKb: processed.sizeKb,
     };
 
+    console.log(`[upload] DB insert started (local disk) | requestId: ${reqId} | id: ${newRecord.id}`);
     images.push(newRecord);
-    normalizeGroupOrders(images, params.section, params.targetId);
+    if (shouldBeCover) {
+      normalizeGroupOrders(images, params.section, params.targetId);
+    }
     atomicWriteDb(images);
 
+    console.log(`[upload] success (local disk) | requestId: ${reqId} | id: ${newRecord.id}`);
     return newRecord;
   });
-
-  // If Supabase is configured, upload to Supabase Storage & DB
-  if (isSupabaseConfigured()) {
-    try {
-      const supabaseRecord = await uploadImageToSupabase({
-        imageBuffer: processed.imageBuffer,
-        thumbBuffer: processed.thumbBuffer,
-        filename: processed.filename,
-        width: processed.width,
-        height: processed.height,
-        sizeKb: processed.sizeKb,
-        section: params.section,
-        targetId: params.targetId,
-        targetName: params.targetName,
-        altText: params.altText,
-        isCover: params.isCover,
-        focalPoint: params.focalPoint,
-      });
-
-      // Update local persistent disk mirror record with Supabase URLs
-      await dbMutex.run(async () => {
-        const images = readDbSafe();
-        const local = images.find((i) => i.id === localRecord.id);
-        if (local) {
-          local.url = supabaseRecord.url;
-          local.thumbUrl = supabaseRecord.thumbUrl;
-          atomicWriteDb(images);
-        }
-      });
-
-      console.log(`[Upload Success] Saved to Supabase: ${supabaseRecord.id} -> ${supabaseRecord.url}`);
-      return supabaseRecord;
-    } catch (err: any) {
-      console.error('[Upload Error] Supabase write failed, falling back to local persistent record:', err.message);
-    }
-  }
 
   return localRecord;
 }
@@ -372,7 +386,7 @@ export async function replaceImageRecord(
 // 7. Update Image Meta Record
 export async function updateImageMetaRecord(
   id: string,
-  updates: { altText?: string; filename?: string; focalPoint?: { x: number; y: number } }
+  updates: { altText?: string; filename?: string; focalPoint?: { x: number; y: number }; venueId?: string | null }
 ): Promise<StoredImage> {
   let supabaseRecord: StoredImage | null = null;
   if (isSupabaseConfigured()) {
@@ -399,6 +413,9 @@ export async function updateImageMetaRecord(
     }
     if (updates.focalPoint) {
       target.focalPoint = updates.focalPoint;
+    }
+    if (updates.venueId !== undefined) {
+      target.venueId = updates.venueId || undefined;
     }
     target.updatedAt = new Date().toISOString();
 

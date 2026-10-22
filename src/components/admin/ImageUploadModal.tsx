@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { X, Upload, Sparkles, Check, Image as ImageIcon, Sliders, Smartphone, Layers, Loader2 } from 'lucide-react';
+import { X, Upload, Sparkles, Check, Image as ImageIcon, Sliders, Smartphone, Layers, Loader2, MapPin } from 'lucide-react';
 import { ImageSection, ManagedImage } from '../../types';
+import { store } from '../../lib/store';
 import {
   optimizeUploadedImage,
   OptimizedImageResult,
@@ -18,6 +19,7 @@ interface ImageUploadModalProps {
   targetName: string;
   maxAllowed?: number;
   currentCount?: number;
+  initialIsCover?: boolean;
   onSuccess: (newImage: ManagedImage) => void;
 }
 
@@ -29,9 +31,11 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
   targetName,
   maxAllowed,
   currentCount = 0,
+  initialIsCover = false,
   onSuccess
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const submittingRef = useRef<boolean>(false);
 
   // Single file mode
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -48,7 +52,10 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
   // User-editable fields
   const [filename, setFilename] = useState('');
   const [altText, setAltText] = useState('');
-  const [isCover, setIsCover] = useState(false);
+  const [isCover, setIsCover] = useState(initialIsCover);
+  const [selectedVenueId, setSelectedVenueId] = useState<string>('');
+
+  const venuesList = store.getVenues(false);
 
   // Focal point for Hero 16:9
   const [focalPosition, setFocalPosition] = useState<'center' | 'top' | 'bottom'>('center');
@@ -136,7 +143,17 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
     }
   };
 
-  const handleSingleSave = async () => {
+  const handleSingleSave = async (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    // Submitting guard: prevent duplicate submission
+    if (submittingRef.current || isUploading) {
+      console.warn('[upload] Duplicate submit ignored: already uploading');
+      return;
+    }
+
     if (!optimized) {
       setError('Zəhmət olmasa bir şəkil seçin');
       return;
@@ -152,8 +169,12 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
       return;
     }
 
+    submittingRef.current = true;
     setIsUploading(true);
     setError(null);
+
+    const uploadRequestId = `req-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    console.log(`[upload] submit started | requestId: ${uploadRequestId}`);
 
     try {
       const focalY = focalPosition === 'top' ? 20 : focalPosition === 'bottom' ? 80 : 50;
@@ -168,7 +189,9 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
         thumbBase64: optimized.thumbDataUrl,
         width: optimized.width,
         height: optimized.height,
-        focalPoint: section === 'home_hero' ? { x: 50, y: focalY } : undefined
+        focalPoint: section === 'home_hero' ? { x: 50, y: focalY } : undefined,
+        uploadRequestId,
+        venueId: selectedVenueId ? selectedVenueId : undefined,
       });
 
       onSuccess(newImage);
@@ -176,13 +199,23 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
     } catch (err: any) {
       setError(err.message || 'Serverə yüklənmə zamanı xəta baş verdi');
     } finally {
+      submittingRef.current = false;
       setIsUploading(false);
     }
   };
 
-  const handleBatchSave = async () => {
-    if (batchFiles.length === 0) return;
+  const handleBatchSave = async (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
 
+    if (batchFiles.length === 0) return;
+    if (submittingRef.current || isUploading) {
+      console.warn('[upload] Duplicate batch submit ignored: already uploading');
+      return;
+    }
+
+    submittingRef.current = true;
     setIsUploading(true);
     setError(null);
     setUploadProgress({ current: 0, total: batchFiles.length });
@@ -210,6 +243,9 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
           `-${Date.now().toString(36)}-${i + 1}.webp`
         );
 
+        const uploadRequestId = `req-${Date.now()}-${i + 1}-${Math.random().toString(36).substring(2, 7)}`;
+        console.log(`[upload] submit started | batch item: ${i + 1}/${batchFiles.length} | requestId: ${uploadRequestId}`);
+
         lastUploaded = await imageService.uploadImage({
           section,
           targetId,
@@ -221,6 +257,8 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
           thumbBase64: result.thumbDataUrl,
           width: result.width,
           height: result.height,
+          uploadRequestId,
+          venueId: selectedVenueId ? selectedVenueId : undefined,
         });
       }
 
@@ -231,15 +269,18 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
     } catch (err: any) {
       setError(err.message || 'Bəzi şəkillər yüklənərkən xəta baş verdi');
     } finally {
+      submittingRef.current = false;
       setIsUploading(false);
       setUploadProgress(null);
     }
   };
 
   const handleClose = () => {
+    submittingRef.current = false;
     setSelectedFile(null);
     setBatchFiles([]);
     setOptimized(null);
+    setSelectedVenueId('');
     setError(null);
     setIsProcessing(false);
     setIsUploading(false);
@@ -290,7 +331,7 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
           multiple
           onChange={handleFileChange}
           className="hidden"
-          id="mobile-image-file-input"
+          id="decor-image-file-input"
         />
 
         {/* State 1: No file selected */}
@@ -304,7 +345,7 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
               className="w-full py-10 px-4 border-2 border-dashed border-[#3A3A3A] hover:border-[#C5A262] rounded-xl flex flex-col items-center justify-center gap-2 bg-[#1A1A1A] transition text-center group cursor-pointer"
             >
               <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-[#C5A262] group-hover:scale-110 transition">
-                <Smartphone className="w-6 h-6" />
+                <ImageIcon className="w-6 h-6" />
               </div>
               <div className="text-sm font-medium text-neutral-200">
                 {isProcessing ? 'Şəkillər emal edilir...' : 'Şəkil və ya şəkillər seçin'}
@@ -318,7 +359,7 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
 
         {/* State 2: Multiple Files Batch View */}
         {batchFiles.length > 1 && (
-          <div className="mt-4 space-y-4">
+          <form id="batch-upload-form" onSubmit={handleBatchSave} className="mt-4 space-y-4">
             <div className="p-3.5 rounded-xl bg-[#1A1A1A] border border-[#2A2A2A] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-lg bg-[#C5A262]/10 border border-[#C5A262]/30 flex items-center justify-center text-[#C5A262]">
@@ -369,6 +410,29 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
               </span>
             </label>
 
+            {/* Optional Venue Link */}
+            <div>
+              <label className="block text-xs font-medium text-neutral-300 mb-1 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-[#C5A262]" />
+                <span>Məkanla əlaqələndir (İxtiyari):</span>
+              </label>
+              <select
+                value={selectedVenueId}
+                onChange={(e) => setSelectedVenueId(e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-[#1E1E1E] border border-[#333] rounded-lg text-neutral-200 focus:outline-none focus:border-[#C5A262] cursor-pointer"
+              >
+                <option value="">Məkan seçilməyib</option>
+                {venuesList.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name} ({v.city})
+                  </option>
+                ))}
+              </select>
+              <p className="text-[10px] text-neutral-500 mt-1">
+                Şəkillər bu xidmət qalereyası ilə yanaşı seçilmiş məkanın qalereyasında da görünəcək.
+              </p>
+            </div>
+
             {uploadProgress && (
               <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2">
                 <div className="flex items-center justify-between text-xs">
@@ -388,12 +452,39 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
                 </div>
               </div>
             )}
-          </div>
+
+            {/* Batch Action Buttons */}
+            <div className="pt-4 border-t border-[#242424] flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={handleClose}
+                disabled={isUploading}
+                className="px-4 py-2 text-xs font-medium rounded-lg text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 transition cursor-pointer"
+              >
+                Ləğv et
+              </button>
+              <button
+                id="confirm-batch-upload-btn"
+                type="submit"
+                disabled={batchFiles.length === 0 || isUploading || isProcessing || submittingRef.current}
+                className="px-5 py-2 text-xs font-semibold rounded-lg bg-[#C5A262] hover:bg-[#b08d4f] text-black transition flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md"
+              >
+                {isUploading ? (
+                  <>Yüklənir...</>
+                ) : (
+                  <>
+                    <Check className="w-4 h-4" />
+                    Hamısını Yüklə ({batchFiles.length} şəkil)
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         )}
 
         {/* State 3: Single File Detailed View */}
         {optimized && batchFiles.length === 0 && (
-          <div className="mt-4 space-y-4">
+          <form id="single-upload-form" onSubmit={handleSingleSave} className="mt-4 space-y-4">
             {/* Preview with Optimization Stats */}
             <div className="relative rounded-xl overflow-hidden border border-[#2E2E2E] bg-black/40">
               <div className={section === 'home_hero' ? 'aspect-16/9 w-full' : 'max-h-64 w-full flex items-center justify-center'}>
@@ -498,6 +589,30 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
               />
             </div>
 
+            {/* Optional Venue Link */}
+            <div>
+              <label className="block text-xs font-medium text-neutral-300 mb-1 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-[#C5A262]" />
+                <span>Məkanla əlaqələndir (İxtiyari):</span>
+              </label>
+              <select
+                id="modal-venue-link-select"
+                value={selectedVenueId}
+                onChange={(e) => setSelectedVenueId(e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-[#1E1E1E] border border-[#333] rounded-lg text-neutral-200 focus:outline-none focus:border-[#C5A262] cursor-pointer"
+              >
+                <option value="">Məkan seçilməyib</option>
+                {venuesList.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name} ({v.city})
+                  </option>
+                ))}
+              </select>
+              <p className="text-[10px] text-neutral-500 mt-1">
+                Şəkil bu xidmət qalereyası ilə yanaşı seçilmiş məkanın qalereyasında da görünəcək.
+              </p>
+            </div>
+
             {/* Cover Image checkbox */}
             <label className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/5 border border-white/10 cursor-pointer">
               <input
@@ -519,56 +634,50 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
             >
               Başqa şəkil seç
             </button>
-          </div>
+
+            {/* Single File Action Buttons */}
+            <div className="pt-4 border-t border-[#242424] flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={handleClose}
+                disabled={isUploading}
+                className="px-4 py-2 text-xs font-medium rounded-lg text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 transition cursor-pointer"
+              >
+                Ləğv et
+              </button>
+
+              <button
+                id="confirm-upload-btn"
+                type="submit"
+                disabled={!optimized || isUploading || isProcessing || submittingRef.current}
+                className="px-5 py-2 text-xs font-semibold rounded-lg bg-[#C5A262] hover:bg-[#b08d4f] text-black transition flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md"
+              >
+                {isUploading ? (
+                  <>Serverə yüklənir...</>
+                ) : (
+                  <>
+                    <Check className="w-4 h-4" />
+                    Yadda Saxla və Yüklə
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         )}
 
-        {/* Action Buttons */}
-        <div className="mt-6 pt-4 border-t border-[#242424] flex items-center justify-end gap-2.5">
-          <button
-            type="button"
-            onClick={handleClose}
-            disabled={isUploading}
-            className="px-4 py-2 text-xs font-medium rounded-lg text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 transition cursor-pointer"
-          >
-            Ləğv et
-          </button>
-
-          {batchFiles.length > 1 ? (
+        {/* Action Buttons when no file selected */}
+        {!optimized && batchFiles.length === 0 && (
+          <div className="mt-6 pt-4 border-t border-[#242424] flex items-center justify-end">
             <button
-              id="confirm-batch-upload-btn"
               type="button"
-              onClick={handleBatchSave}
-              disabled={isUploading || isProcessing}
-              className="px-5 py-2 text-xs font-semibold rounded-lg bg-[#C5A262] hover:bg-[#b08d4f] text-black transition flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md"
+              onClick={handleClose}
+              disabled={isUploading}
+              className="px-4 py-2 text-xs font-medium rounded-lg text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 transition cursor-pointer"
             >
-              {isUploading ? (
-                <>Yüklənir...</>
-              ) : (
-                <>
-                  <Check className="w-4 h-4" />
-                  Hamısını Yüklə ({batchFiles.length} şəkil)
-                </>
-              )}
+              Ləğv et
             </button>
-          ) : (
-            <button
-              id="confirm-upload-btn"
-              type="button"
-              onClick={handleSingleSave}
-              disabled={!optimized || isUploading || isProcessing}
-              className="px-5 py-2 text-xs font-semibold rounded-lg bg-[#C5A262] hover:bg-[#b08d4f] text-black transition flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md"
-            >
-              {isUploading ? (
-                <>Serverə yüklənir...</>
-              ) : (
-                <>
-                  <Check className="w-4 h-4" />
-                  Yadda Saxla və Yüklə
-                </>
-              )}
-            </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
